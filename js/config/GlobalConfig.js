@@ -130,6 +130,7 @@ GlobalConfig.Controllers = {
         read: globalFix + '/CustomerGrid.json',
         update: globalFix + '/CustomerGrid.json',
         destroy: globalFix + '/CustomerGrid.json',
+        loadRuleCount:globalFix + '/loadRuleCount.json',
         addCustomer: globalFix + '/AddCustomer.json',
         updateCustomer: globalFix + '/UpdateCustomer.json',
         delCustomer: globalFix + '/DelCustomer.json',

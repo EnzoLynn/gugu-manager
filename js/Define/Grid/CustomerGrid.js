@@ -82,47 +82,47 @@ GridManager.CreateCustomerGrid = function(param) {
         text: '编号',
         dataIndex: 'customer_id',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }, {
         text: '客户名',
         dataIndex: 'customer_name',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }, {
         text: '手机号',
         dataIndex: 'mobile',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }, {
         text: '发放面单号开始',
         dataIndex: 'customize_number_from',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }, {
         text: '发放面单号结束',
         dataIndex: 'customize_number_to',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }, {
         text: '房租单价',
         dataIndex: 'rent_area',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }, {
         text: '面积单量比',
         dataIndex: 'area_to_order_number',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }, {
         text: '房租单价',
         dataIndex: 'rent_pre_price',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }, {
         text: '过期时间',
         dataIndex: 'expires_date',
         renderer: GlobalFun.UpdateRecord,
-        width:100
+        width: 100
     }];
     GridManager.CustomerGrid = Ext.create('chl.gird.CustomerGrid',
         GridManager.BaseGridCfg('CustomerGrid', 'CustomerGridState', tmpArr));
@@ -185,10 +185,63 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             allowBlank: false,
             blankText: '不能为空'
         }, {
-            name: 'Name',
-            fieldLabel: '姓名',
-            itemId: 'NameItemId1',
+            name: 'mobile',
+            fieldLabel: '手机号',
+            itemId: 'mobileItemId',
             validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空'
+        }, {
+            name: 'customize_number_from',
+            fieldLabel: '发放面单号开始',
+            itemId: 'customize_number_fromItemId',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空',
+            regex: GlobalConfig.RegexController.regexNumber,
+            regexText: '请输入数字'
+        }, {
+            name: 'customize_number_to',
+            fieldLabel: '发放面单号结束',
+            itemId: 'customize_number_toItemId',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空',
+            regex: GlobalConfig.RegexController.regexNumber,
+            regexText: '请输入数字'
+        }, {
+            name: 'rent_area',
+            fieldLabel: '租贷面积（平米）',
+            itemId: 'rent_areaItemId',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空',
+            regex: GlobalConfig.RegexController.regexNumber,
+            regexText: '请输入数字'
+        }, {
+            name: 'area_to_order_number',
+            fieldLabel: '面积单量比',
+            itemId: 'area_to_order_numberItemId',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空',
+            regex: GlobalConfig.RegexController.regexMoney2Fixed,
+            regexText: '请输入数字'
+        }, {
+            name: 'rent_pre_price',
+            fieldLabel: '房租单价',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空',
+            regex: GlobalConfig.RegexController.regexMoney2Fixed,
+            regexText: '请输入数字'
+        } , {
+            xtype: 'datefield',
+            minValue: new Date(),
+            value: new Date(),
+            name: 'expires_date',
+            format: 'Y-m-d',
+            fieldLabel: '过期时间',            
             allowBlank: false,
             blankText: '不能为空'
         }, {
@@ -220,7 +273,8 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
                             title: GlobalConfig.Province[key],
                             items: [{
                                 xtype: 'label',
-                                text: '现有规则:1'
+                                text: '现有规则:0',
+                                itemId:'lbl'+key
                             }, {
                                 xtype: 'button',
                                 width: 100,
