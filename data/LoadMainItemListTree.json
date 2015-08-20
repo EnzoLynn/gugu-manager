@@ -1,0 +1,67 @@
+{
+    "success": true,
+    "data": [{
+        "Id": "001",
+        "Text": "客户管理",
+        "IsLeaf": true,
+        "IconCls": "",
+        "Expanded": false,
+        "LinkSrc": "",
+        "Parent": {
+            "Id": "000",
+            "Text": "系统",
+            "IsLeaf": false,
+            "IconCls": null,
+            "Expanded": false,
+            "LinkSrc": null,
+            "Parent": null,
+            "Children": null,
+            "Cls": null
+        },
+        "Children": null,
+        "Cls": "treepanel-bigFontSize"
+    },{
+        "Id": "002",
+        "Text": "票据管理",
+        "IsLeaf": true,
+        "IconCls": "",
+        "Expanded": false,
+        "LinkSrc": "",
+        "Parent": {
+            "Id": "000",
+            "Text": "系统",
+            "IsLeaf": false,
+            "IconCls": null,
+            "Expanded": false,
+            "LinkSrc": null,
+            "Parent": null,
+            "Children": null,
+            "Cls": null
+        },
+        "Children": null,
+        "Cls": "treepanel-bigFontSize"
+    },{
+        "Id": "003",
+        "Text": "成本管理",
+        "IsLeaf": true,
+        "IconCls": "",
+        "Expanded": false,
+        "LinkSrc": "",
+        "Parent": {
+            "Id": "000",
+            "Text": "系统",
+            "IsLeaf": false,
+            "IconCls": null,
+            "Expanded": false,
+            "LinkSrc": null,
+            "Parent": null,
+            "Children": null,
+            "Cls": null
+        },
+        "Children": null,
+        "Cls": "treepanel-bigFontSize"
+    }],
+    "total": "200",
+    "msg": "成功",
+    "code": "01"
+}

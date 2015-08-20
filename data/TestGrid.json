@@ -1,0 +1,13 @@
+{
+    "success": true,
+    "data": [{
+        "Id": 38,
+        "Date": "2012-11-11 11:11:11",
+        "Applicanter": "ddd",
+        "IDNumber": "5111111",
+        "Telephone": "123123123"
+    }],
+    "total": "200",
+    "msg": "成功",
+    "code": "01"
+}

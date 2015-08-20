@@ -1,0 +1,1 @@
+{"version":3,"file":"RuleGridModel.js","sources":["../../../../js/Define/Model/RuleGridModel.js"],"names":["Ext","define","extend","idProperty","alternateClassName","fields","name","type","mapping"],"mappings":"AAAAA,IAAIC,OAAO,2BACPC,OAAQ,iBACRC,WAAY,KACZC,oBAAqB,iBACrBC,SACIC,KAAM,KACNC,KAAM,WAEND,KAAM,OACNE,QAAS,OACTD,KAAM"}

@@ -1,0 +1,2 @@
+Ext.define("chl.toolbar.Pagingtoolbar",{alias:"widget.Pagingtoolbar",extend:"Ext.toolbar.Paging",dock:"bottom",displayInfo:!0,emptyMsg:"没有记录",beforePageText:"页数",afterPageText:"共 {0}",refreshText:"刷新当前页",firstText:"首页",lastText:"末页",nextText:"下页",prevText:"前页",layout:{overflowHandler:"Menu"},initComponent:function(){var me=this;me.callParent(arguments),me.on("render",function(){me.down("#refresh").hide()})}});
+//# sourceMappingURL=Pagingtoolbar.js.map
