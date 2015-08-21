@@ -1,30 +1,22 @@
-//创建一个上下文菜单
-var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
-    items: [ActionBase.getAction('refreshCustomer'), '-',
-        ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer')
-        , ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
-    ]
-});
+ 
 
-
-Ext.define('chl.gird.CustomerGrid', {
-    alternateClassName: ['CustomerGrid'],
-    alias: 'widget.CustomerGrid',
+Ext.define('chl.gird.CustomerRentGrid', {
+    alternateClassName: ['CustomerRentGrid'],
+    alias: 'widget.CustomerRentGrid',
     extend: 'chl.grid.BaseGrid',
-    store: 'CustomerGridStoreId',
+    store: 'CustomerRentGridStoreId',
     stateful: false,
-    actionBaseName: 'CustomerGridAction',
+    actionBaseName: 'CustomerRentGridAction',
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {
             var me = this;
         },
-        itemdblclick: function(grid, record, hitem, index, e, opts) {
-            ActionBase.getAction('editCustomer').execute();
+        itemdblclick: function(grid, record, hitem, index, e, opts) { 
         },
         itemcontextmenu: function(view, rec, item, index, e, opts) {
             e.stopEvent();
 
-            CustomerGrid_RightMenu.showAt(e.getXY());
+            CustomerRentGrid_RightMenu.showAt(e.getXY());
         },
         beforeitemmousedown: function(view, record, item, index, e, options) {
             var me = this;
@@ -32,10 +24,45 @@ Ext.define('chl.gird.CustomerGrid', {
         selectionchange: function(view, seles, op) {
             if (!seles[0])
                 return;
-            ActionBase.updateActions('CustomerGridAction', seles);
+            //ActionBase.updateActions('CustomerRentGridAction', seles);
         }
     },
-    columns: [],
+    columns: [{
+        text: '编号',
+        dataIndex: 'customer_rent_id',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
+        text: '合同名',
+        dataIndex: 'title',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
+        text: '租贷面积(平米)',
+        dataIndex: 'rent_area',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
+        text: '面积单量比',
+        dataIndex: 'area_to_order_number',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
+        text: '房租单价',
+        dataIndex: 'rent_pre_price',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
+        text: '开始日期',
+        dataIndex: 'date_start',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
+        text: '结束日期',
+        dataIndex: 'date_end',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }],
     dockedItems: [{
         xtype: 'toolbar',
         itemId: 'toolbarID',
@@ -43,13 +70,13 @@ Ext.define('chl.gird.CustomerGrid', {
         layout: {
             overflowHandler: 'Menu'
         },
-        items: [ActionBase.getAction('refreshCustomer'),
-            ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
+        items: [ActionBase.getAction('refreshCustomerRent'),
+            ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRent'), ActionBase.getAction('addCustomerRentRent'), ActionBase.getAction('editCustomerRentRule')
         ]
     }, {
         xtype: 'Pagingtoolbar',
         itemId: 'pagingtoolbarID',
-        store: 'CustomerGridStoreId',
+        store: 'CustomerRentGridStoreId',
         dock: 'bottom',
         items: []
     }],
@@ -82,40 +109,25 @@ Ext.define('chl.gird.CustomerGrid', {
         store.loadPage(1);
         store.getProxy().extraParams.refresh = null;
 
-        ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
+        //ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
     }
 });
 
 
 //根据传入参数创建客户表，返回自身
-GridManager.CreateCustomerGrid = function(param) {
+GridManager.CreateCustomerRentGrid = function(param) {
     var tmpArr = [{
         text: '编号',
-        dataIndex: 'customer_id',
+        dataIndex: 'customer_rent_id',
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }, {
-        text: '客户名',
-        dataIndex: 'customer_name',
+        text: '合同名',
+        dataIndex: 'title',
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }, {
-        text: '手机号',
-        dataIndex: 'mobile',
-        renderer: GlobalFun.UpdateRecord,
-        width: 100
-    }, {
-        text: '发放面单号开始',
-        dataIndex: 'customize_number_from',
-        renderer: GlobalFun.UpdateRecord,
-        width: 100
-    }, {
-        text: '发放面单号结束',
-        dataIndex: 'customize_number_to',
-        renderer: GlobalFun.UpdateRecord,
-        width: 100
-    }, {
-        text: '房租单价',
+        text: '租贷面积(平米)',
         dataIndex: 'rent_area',
         renderer: GlobalFun.UpdateRecord,
         width: 100
@@ -140,28 +152,28 @@ GridManager.CreateCustomerGrid = function(param) {
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }];
-    GridManager.CustomerGrid = Ext.create('chl.gird.CustomerGrid',
-        GridManager.BaseGridCfg('CustomerGrid', 'CustomerGridState', tmpArr));
+    GridManager.CustomerRentGrid = Ext.create('chl.gird.CustomerRentGrid',
+        GridManager.BaseGridCfg('CustomerRentGrid', 'CustomerRentGridState', tmpArr));
     if (param && param.needLoad) {
-        GridManager.CustomerGrid.loadGrid();
+        GridManager.CustomerRentGrid.loadGrid();
     }
-    return GridManager.CustomerGrid;
+    return GridManager.CustomerRentGrid;
 };
 
 
 //加载SelectionChange事件
-GridManager.SetCustomerGridSelectionChangeEvent = function(param) {
-    GridManager.CustomerGrid.on('selectionchange', function(view, seles, op) {
+GridManager.SetCustomerRentGridSelectionChangeEvent = function(param) {
+    GridManager.CustomerRentGrid.on('selectionchange', function(view, seles, op) {
         if (!seles[0])
             return;
 
     });
 };
 //添加客户编辑
-Ext.define('chl.Grid.AddUpdateCustomerWin', {
+Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
     extend: 'Ext.window.Window',
     title: "添加",
-    defaultFocus: 'CustomerItemId',
+    defaultFocus: 'CustomerRentItemId',
     iconCls: '',
     record: false,
     //border: false,
@@ -192,9 +204,9 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             maxLengthText: '最大长度为100'
         },
         items: [{
-            name: 'customer_name',
+            name: 'CustomerRent_name',
             fieldLabel: '客户名',
-            itemId: 'customer_nameItemId',
+            itemId: 'CustomerRent_nameItemId',
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
@@ -326,12 +338,12 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
 
             if (form.isValid()) {
 
-                var url = w.action == "create" ? GlobalConfig.Controllers.CustomerGrid.addCustomer : GlobalConfig.Controllers.CustomerGrid.updateCustomer;
+                var url = w.action == "create" ? GlobalConfig.Controllers.CustomerRentGrid.addCustomerRent : GlobalConfig.Controllers.CustomerRentGrid.updateCustomerRent;
                 form.submit({
                     url: url,
                     params: {
                         req: 'dataset',
-                        dataname: 'AddUpdateCustomer', // dataset名称，根据实际情况设置,数据库名
+                        dataname: 'AddUpdateCustomerRent', // dataset名称，根据实际情况设置,数据库名
                         restype: 'json',
                         Id: w.record ? w.record.data.ControllTid : 0,
                         logId: w.record ? w.record.data.Id : 0,
@@ -361,14 +373,14 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
 });
 
 // 添加合同
-Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
+Ext.define('chl.Grid.AddUpdateCustomerRentRentWin', {
     extend: 'Ext.window.Window',
     title: "添加",
-    defaultFocus: 'customer_nameItemId',
+    defaultFocus: 'CustomerRentItemId',
     iconCls: '',
     record: false,
     //border: false,
-    height: 700,
+    height: 300,
     width: 830,
     layout: 'vbox',
     modal: true,
@@ -377,7 +389,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         xtype: 'form',
         itemId: 'formId',
         autoScroll: true,
-        height: 210,
+        height: 450,
         width: 810,
         border: false,
         bodyPadding: 5,
@@ -395,9 +407,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             maxLengthText: '最大长度为100'
         },
         items: [{
-            name: 'customer_name',
+            name: 'CustomerRent_name',
             fieldLabel: '客户名',
-            itemId: 'customer_nameItemId',
+            itemId: 'CustomerRent_nameItemId',
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
@@ -478,7 +490,6 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }, {
             xtype: 'button',
             width: 100,
-            margin:'0 0 0 600',
             text: '添加',
             handler: function(com) {
                 var me = this;
@@ -488,14 +499,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
 
                 if (form.isValid()) {
 
-                    var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRent;
+                    var url = GlobalConfig.Controllers.CustomerRentGrid.addCustomerRentRent;
                     form.submit({
                         url: url,
                         params: {
                             req: 'dataset',
-                            dataname: 'addCustomerRent', // dataset名称，根据实际情况设置,数据库名
+                            dataname: 'addCustomerRentRent', // dataset名称，根据实际情况设置,数据库名
                             restype: 'json',
-                            customerId: w.cid,
+                            CustomerRentId: w.cid,
                             action: w.action,
                             sessiontoken: GlobalFun.getSeesionToken()
                         },
@@ -515,9 +526,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             }
         }]
     }, {
-        xtype: 'CustomerRentGrid',  
-        padding:'5 5 5 5',
-        height:400
+        xtype: 'grid'
     }],
     buttons: [{
         text: '关闭',
@@ -529,10 +538,10 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
 });
 
 //添加编辑窗口  规则
-Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
+Ext.define('chl.Grid.AddUpdateCustomerRentRuleWin', {
     extend: 'Ext.window.Window',
     title: "添加",
-    defaultFocus: 'CustomerItemId',
+    defaultFocus: 'CustomerRentItemId',
     iconCls: '',
     record: false,
     //border: false,
@@ -563,9 +572,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
             maxLengthText: '最大长度为100'
         },
         items: [{
-            name: 'customer_name',
+            name: 'CustomerRent_name',
             fieldLabel: '客户名',
-            itemId: 'customer_nameItemId',
+            itemId: 'CustomerRent_nameItemId',
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
@@ -800,12 +809,12 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
 
                                                         if (form.isValid()) {
 
-                                                            var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
+                                                            var url = GlobalConfig.Controllers.CustomerRentGrid.addCustomerRentRule;
                                                             form.submit({
                                                                 url: url,
                                                                 params: {
                                                                     req: 'dataset',
-                                                                    dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
+                                                                    dataname: 'addCustomerRentRule', // dataset名称，根据实际情况设置,数据库名
                                                                     restype: 'json',
                                                                     price_type: 0,
                                                                     province: w.pid,
@@ -969,12 +978,12 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                         w.down('#rd_price0').setDisabled(true);
                                                         if (form.isValid()) {
 
-                                                            var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
+                                                            var url = GlobalConfig.Controllers.CustomerRentGrid.addCustomerRentRule;
                                                             form.submit({
                                                                 url: url,
                                                                 params: {
                                                                     req: 'dataset',
-                                                                    dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
+                                                                    dataname: 'addCustomerRentRule', // dataset名称，根据实际情况设置,数据库名
                                                                     restype: 'json',
                                                                     price_type: 1,
                                                                     province: w.pid,

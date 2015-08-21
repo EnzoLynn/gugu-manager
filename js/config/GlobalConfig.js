@@ -36,6 +36,8 @@ GlobalConfig.ViewPort = '';
 
 //全局表格分页控制
 GlobalConfig.GridPageSize = 50;
+//最大值
+GlobalConfig.MaxLimit = 99999;
 
 //树管理
 Ext.namespace('TreeManager', 'TreeManager');
@@ -130,11 +132,20 @@ GlobalConfig.Controllers = {
         read: globalFix + '/CustomerGrid.json',
         update: globalFix + '/CustomerGrid.json',
         destroy: globalFix + '/CustomerGrid.json',
+        loadRuleCount: globalFix + '/loadRuleCount.json',
         addCustomer: globalFix + '/AddCustomer.json',
+        addCustomerRent: globalFix + '/addCustomerRent.php',
+        addCustomerRule: globalFix + '/AddCustomerRule.php',
         updateCustomer: globalFix + '/UpdateCustomer.json',
         delCustomer: globalFix + '/DelCustomer.json',
-        outPutExcelCustomer: globalFix + '/OutPutExcelCustomer.json',
+        getCustomerRule: globalFix + '/GetCustomerRule.json',
         uploadCustomerExcel: globalFix + '/UploadCustomerExcel.json'
+    },
+    CustomerRentGrid: { //合同
+        create: globalFix + '/CustomerRentGrid.json',
+        read: globalFix + '/CustomerRentGrid.json',
+        update: globalFix + '/CustomerRentGrid.json',
+        destroy: globalFix + '/CustomerRentGrid.json'
     },
     TombstoneGrid: { //墓碑表
         create: '/LoadTombstoneGrid',
@@ -187,7 +198,9 @@ GlobalConfig.RegexController = {
     //墓区编码验证
     regexAreaCode: /^\d{3}$/,
     //金额验证，两位小数
-    regexMoney2Fixed: /^[1-9]\d{0,8}((\.)?\d{1,2})?$/
+    regexMoney2Fixed: /^[0-9]\d{0,8}((\.)?\d{1,2})?$/,
+    //重量验证，3位小数
+    regexMoney3Fixed: /^[0-9]\d{0,8}((\.)?\d{1,3})?$/
 };
 
 

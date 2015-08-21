@@ -1,7 +1,7 @@
 Ext.onReady(function() {
     Ext.getBody().mask('正在加载...');
     //修正Bug
-    GlobalFun.fixedBugs(); 
+    GlobalFun.fixedBugs();
     //创建Cookie状态保存  
     Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider', {
         expires: new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30))
@@ -51,6 +51,10 @@ Ext.onReady(function() {
         GridManager.SetTestGridSelectionChangeEvent();
 
         //创建客户管理表格
+        // GridManager.CreateCustomerRentGrid({
+        //     needLoad: false
+        // });
+        // GridManager.SetCustomerRentGridSelectionChangeEvent();
         GridManager.CreateCustomerGrid({
             needLoad: false
         });
@@ -129,7 +133,7 @@ Ext.onReady(function() {
                     height: 400,
                     listeners: {
                         boxready: function(com, width, height, opts) {
-                            com.add(GridManager.ManageDfGrid,GridManager.TestGrid);
+                            com.add(GridManager.ManageDfGrid, GridManager.TestGrid);
                             com.add(GridManager.CustomerGrid);
                         }
                     },
@@ -241,6 +245,6 @@ Ext.onReady(function() {
 
     LoadBaseEnumStore();
 
-     GlobalFun.JsonToArray( GlobalConfig.Province);
+    GlobalFun.JsonToArray(GlobalConfig.Province);
 
 });

@@ -1,18 +1,18 @@
 Ext.create('Ext.data.Store', {
-    model: 'chl.Model.CustomerGridModel',
-    storeId: 'CustomerGridStoreId',
+    model: 'chl.Model.CustomerRentGridModel',
+    storeId: 'CustomerRentGridStoreId',
     filterMap: Ext.create('Ext.util.HashMap'),
     pageSize: GlobalConfig.GridPageSize,
     autoLoad: false,
     remoteSort: true,     //排序通过查询数据库
     sorters: [{
-        property: 'customer_id',
+        property: 'CustomerRent_id',
         direction: 'DESC'
     }],
     autoSync: false,
     proxy: {
         type: 'ajax',
-        api: GlobalConfig.Controllers.CustomerGrid,
+        api: GlobalConfig.Controllers.CustomerRentGrid,
         filterParam: 'filter',
         sortParam: 'sort',
         directionParam: 'dir',
@@ -21,7 +21,7 @@ Ext.create('Ext.data.Store', {
         simpleSortMode: true,		//单一字段排序
         extraParams: {
             req: 'data',
-            dataname: 'CustomerRent',             //dataset名称，根据实际情况设置,数据库名
+            dataname: 'User',             //dataset名称，根据实际情况设置,数据库名
             restype: 'json',
             sessiontoken: GlobalFun.getSeesionToken(),
             folderid: -1,

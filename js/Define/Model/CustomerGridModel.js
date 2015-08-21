@@ -30,7 +30,10 @@ Ext.define('chl.Model.CustomerGridModel', {
         name: 'rent_pre_price', 
         type: 'string'
     }, {
-        name: 'expires_date', 
+        name: 'date_start', 
+        type: 'string'
+    }, {
+        name: 'date_end', 
         type: 'string'
     }, {
         name: 'updated_at', 
