@@ -36,6 +36,8 @@ GlobalConfig.ViewPort = '';
 
 //全局表格分页控制
 GlobalConfig.GridPageSize = 50;
+//最大值
+GlobalConfig.MaxLimit = 99999;
 
 //树管理
 Ext.namespace('TreeManager', 'TreeManager');
@@ -132,6 +134,7 @@ GlobalConfig.Controllers = {
         destroy: globalFix + '/CustomerGrid.json',
         loadRuleCount:globalFix + '/loadRuleCount.json',
         addCustomer: globalFix + '/AddCustomer.json',
+        addCustomerRule:globalFix + '/AddCustomerRule.php',
         updateCustomer: globalFix + '/UpdateCustomer.json',
         delCustomer: globalFix + '/DelCustomer.json',
         outPutExcelCustomer: globalFix + '/OutPutExcelCustomer.json',

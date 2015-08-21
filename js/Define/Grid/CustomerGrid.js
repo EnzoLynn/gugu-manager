@@ -231,19 +231,33 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             name: 'rent_pre_price',
             fieldLabel: '房租单价',
             validateOnBlur: false,
+            colspan: 2,
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexMoney2Fixed,
             regexText: '请输入数字'
-        } , {
+        }, {
             xtype: 'datefield',
             minValue: new Date(),
-            value: new Date(),
-            name: 'expires_date',
+            name: 'date_start',
             format: 'Y-m-d',
-            fieldLabel: '过期时间',            
+            fieldLabel: '开始时间',
             allowBlank: false,
-            blankText: '不能为空'
+            blankText: '不能为空',
+            itemId: 'date_start',
+            vtype: 'daterange',
+            endDateField: 'date_end'
+        }, {
+            xtype: 'datefield',
+            minValue: new Date(),
+            name: 'date_end',
+            format: 'Y-m-d',
+            fieldLabel: '结束时间',
+            allowBlank: false,
+            blankText: '不能为空',
+            itemId: 'date_end',
+            vtype: 'daterange',
+            startDateField: 'date_start'
         }, {
             xtype: 'fieldset',
             colspan: 2,
@@ -274,28 +288,29 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
                             items: [{
                                 xtype: 'label',
                                 text: '现有规则:0',
-                                itemId:'lbl'+key
+                                itemId: 'lbl' + key
                             }, {
                                 xtype: 'button',
                                 width: 100,
                                 text: '添加规则',
                                 myval: key,
                                 handler: function(com) {
-                                    var ruleWin = Ext.create('Ext.window.Window', {
-                                        title: com.myval,
+                                    Ext.create('Ext.window.Window', {
+                                        title: '添加规则' + '(' + GlobalConfig.Province[com.myval] + ')',
+                                        pid: com.myval,
                                         width: 800,
-                                        height: 600,
+                                        height: 700,
+                                        action: 'create',
                                         modal: true,
                                         autoScroll: true,
                                         layout: 'vbox',
                                         dockedItems: [{
                                             xtype: 'form',
+                                            itemId: 'formId',
                                             dock: 'top',
-                                            bodyStyle: {
-                                                padding: '10 5 5 5'
-                                            },
-
-                                            height: 130,
+                                            border: false,
+                                            bodyPadding: 5,
+                                            height: 280,
                                             width: 810,
                                             layout: {
                                                 type: 'table',
@@ -311,39 +326,155 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
                                                 maxLengthText: '最大长度为100'
                                             },
                                             items: [{
-                                                xtype: 'fieldcontainer',
-                                                fieldLabel: '区间',
-                                                labelWidth: 100,
-
-                                                width: 800,
+                                                xtype: 'fieldset',
+                                                title: '区间',
+                                                width: 780,
                                                 colspan: 2,
                                                 layout: 'hbox',
+                                                defaults: {
+                                                    labelAlign: 'right',
+                                                    labelPad: 15,
+                                                    width: 340,
+                                                    labelWidth: 125
+                                                },
                                                 items: [{
                                                     xtype: 'numberfield',
-                                                    validateOnChange: true,
+                                                    fieldLabel: '起始重量(kg)',
                                                     minValue: 0,
-                                                    maxValue: 9999 //,
-                                                        //regex:GlobalConfig.RegexController.regexNumber,
-                                                        //regexText:'请填写两位小数的数字'
-                                                }, {
-                                                    xtype: 'splitter'
+                                                    value: 0,
+                                                    maxValue: GlobalConfig.MaxLimit,
+                                                    regex: GlobalConfig.RegexController.regexMoney2Fixed,
+                                                    regexText: '请填写两位小数的数字'
                                                 }, {
                                                     xtype: 'numberfield',
+                                                    fieldLabel: '结束重量(kg)',
+                                                    minValue: 0,
+                                                    value: 1,
+                                                    maxValue: GlobalConfig.MaxLimit,
                                                     regex: GlobalConfig.RegexController.regexMoney2Fixed,
                                                     regexText: '请填写两位小数的数字'
                                                 }]
                                             }, {
-                                                fieldLabel: '价格'
+                                                xtype: 'fieldset',
+                                                title: '首重',
+                                                width: 780,
+                                                colspan: 2,
+                                                layout: 'hbox',
+                                                defaults: {
+                                                    labelAlign: 'right',
+                                                    labelPad: 15,
+                                                    width: 340,
+                                                    labelWidth: 125
+                                                },
+                                                items: [{
+                                                    xtype: 'textfield',
+                                                    name: 'weight_min',
+                                                    fieldLabel: '重量(kg)',
+                                                    minValue: 0,
+                                                    maxValue: GlobalConfig.MaxLimit,
+                                                    regex: GlobalConfig.RegexController.regexMoney2Fixed,
+                                                    regexText: '请填写两位小数的数字'
+                                                }, {
+                                                    xtype: 'textfield',
+                                                    name: 'weight_min_price',
+                                                    fieldLabel: '价格',
+                                                    minValue: 0,
+                                                    maxValue: GlobalConfig.MaxLimit,
+                                                    regex: GlobalConfig.RegexController.regexMoney2Fixed,
+                                                    regexText: '请填写两位小数的数字'
+                                                }]
+                                            }, {
+                                                xtype: 'fieldset',
+                                                title: '续重',
+                                                width: 780,
+                                                layout: {
+                                                    type: 'table',
+                                                    columns: 2
+                                                },
+                                                defaults: {
+                                                    labelAlign: 'right',
+                                                    labelPad: 15,
+                                                    width: 340,
+                                                    labelWidth: 125
+                                                },
+                                                colspan: 2,
+                                                items: [{
+                                                    xtype: 'textfield',
+                                                    name: 'weight_pre',
+                                                    fieldLabel: '重量(kg)',
+                                                    minValue: 0,
+                                                    maxValue: GlobalConfig.MaxLimit,
+                                                    regex: GlobalConfig.RegexController.regexMoney2Fixed,
+                                                    regexText: '请填写两位小数的数字'
+                                                }, {
+                                                    xtype: 'textfield',
+                                                    name: 'weight_pre_price',
+                                                    fieldLabel: '价格',
+                                                    minValue: 0,
+                                                    maxValue: GlobalConfig.MaxLimit,
+                                                    regex: GlobalConfig.RegexController.regexMoney2Fixed,
+                                                    regexText: '请填写两位小数的数字'
+                                                }, {
+                                                    xtype: 'fieldcontainer',
+                                                    colspan: 2,
+                                                    fieldLabel: '记重方式',
+                                                    defaultType: 'radiofield',
+                                                    layout: 'hbox',
+                                                    defaults: {
+                                                        flex: 1
+                                                    },
+                                                    items: [{
+                                                        boxLabel: '进位',
+                                                        name: 'size',
+                                                        inputValue: 'm'
+                                                    }, {
+                                                        boxLabel: '实重',
+                                                        name: 'size',
+                                                        inputValue: 'l'
+                                                    }]
+                                                }]
                                             }, {
                                                 xtype: 'button',
+                                                width: 100,
+                                                margin: '0 0 0 600',
                                                 colspan: 2,
                                                 text: '添加',
                                                 handler: function(com) {
-                                                    var win = com.up('window');
-                                                    win.add({
-                                                        xtype: 'fieldset',
-                                                        title: '规则1'
-                                                    });
+                                                    var me = this;
+                                                    var w = me.up('window');
+
+                                                    var form = w.down('#formId').getForm();
+
+                                                    if (form.isValid()) {
+
+                                                        var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
+                                                        form.submit({
+                                                            url: url,
+                                                            params: {
+                                                                req: 'dataset',
+                                                                dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
+                                                                restype: 'json',
+                                                                province: w.pid,
+                                                                action: w.action,
+                                                                sessiontoken: GlobalFun.getSeesionToken()
+                                                            },
+                                                            success: function(form, action) {
+                                                                win.add({
+                                                                    xtype: 'fieldset',
+                                                                    title: '规则1'
+                                                                });
+                                                                //w.grid.loadGrid();
+                                                                //w.close();
+
+                                                            },
+                                                            failure: function(form, action) {
+                                                                if (!GlobalFun.errorProcess(action.result.code)) {
+                                                                    Ext.Msg.alert('失败', action.result.msg);
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+
 
                                                 }
                                             }]
@@ -353,9 +484,11 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
                                             title: '规则1'
                                         }],
                                         buttons: [{
-                                            text: '确定'
-                                        }, {
-                                            text: '取消'
+                                            text: '退出',
+                                            handler: function() {
+                                                var me = this;
+                                                me.up('window').close();
+                                            }
                                         }]
                                     }).show();
                                 }
