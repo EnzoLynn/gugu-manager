@@ -191,7 +191,9 @@ GlobalConfig.RegexController = {
     //墓区编码验证
     regexAreaCode: /^\d{3}$/,
     //金额验证，两位小数
-    regexMoney2Fixed: /^[1-9]\d{0,8}((\.)?\d{1,2})?$/
+    regexMoney2Fixed: /^[0-9]\d{0,8}((\.)?\d{1,2})?$/,
+    //重量验证，3位小数
+    regexMoney3Fixed:/^[0-9]\d{0,8}((\.)?\d{1,3})?$/
 };
 
 
