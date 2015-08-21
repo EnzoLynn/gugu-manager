@@ -132,13 +132,20 @@ GlobalConfig.Controllers = {
         read: globalFix + '/CustomerGrid.json',
         update: globalFix + '/CustomerGrid.json',
         destroy: globalFix + '/CustomerGrid.json',
-        loadRuleCount:globalFix + '/loadRuleCount.json',
+        loadRuleCount: globalFix + '/loadRuleCount.json',
         addCustomer: globalFix + '/AddCustomer.json',
-        addCustomerRule:globalFix + '/AddCustomerRule.php',
+        addCustomerRent: globalFix + '/addCustomerRent.php',
+        addCustomerRule: globalFix + '/AddCustomerRule.php',
         updateCustomer: globalFix + '/UpdateCustomer.json',
         delCustomer: globalFix + '/DelCustomer.json',
-        outPutExcelCustomer: globalFix + '/OutPutExcelCustomer.json',
+        getCustomerRule: globalFix + '/GetCustomerRule.json',
         uploadCustomerExcel: globalFix + '/UploadCustomerExcel.json'
+    },
+    CustomerRentGrid: { //合同
+        create: globalFix + '/CustomerRentGrid.json',
+        read: globalFix + '/CustomerRentGrid.json',
+        update: globalFix + '/CustomerRentGrid.json',
+        destroy: globalFix + '/CustomerRentGrid.json'
     },
     TombstoneGrid: { //墓碑表
         create: '/LoadTombstoneGrid',
@@ -193,7 +200,7 @@ GlobalConfig.RegexController = {
     //金额验证，两位小数
     regexMoney2Fixed: /^[0-9]\d{0,8}((\.)?\d{1,2})?$/,
     //重量验证，3位小数
-    regexMoney3Fixed:/^[0-9]\d{0,8}((\.)?\d{1,3})?$/
+    regexMoney3Fixed: /^[0-9]\d{0,8}((\.)?\d{1,3})?$/
 };
 
 

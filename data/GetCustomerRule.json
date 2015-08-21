@@ -1,0 +1,44 @@
+{
+    "success": true,
+
+    "data": [{
+    	"rule_id":"1",
+    	"customer_id":"1",
+    	"customer_rent_id":"1",
+    	"province_code":"110000",
+    	"price_type":"0",
+    	"price_start":"5",
+    	"price_pre":"2" 
+    },{
+    	"rule_id":"1",
+    	"customer_id":"1",
+    	"customer_rent_id":"1",
+    	"weight_price_type":"110000",
+    	"price_type":"1",
+    	"weight_min_sign":"1",
+    	"weight_min":"5",
+    	"weight_max_sign":"2",
+    	"weight_max":"2",
+    	"weight_start_price":"2",
+    	"weight_pre":"2",
+    	"weight_pre_price":"2",
+    	"sort_order":"1"
+    },{
+    	"rule_id":"1",
+    	"customer_id":"1",
+    	"customer_rent_id":"1",
+    	"weight_price_type":"110000",
+    	"price_type":"1",
+    	"weight_min_sign":"1",
+    	"weight_min":"5",
+    	"weight_max_sign":"2",
+    	"weight_max":"2",
+    	"weight_start_price":"2",
+    	"weight_pre":"2",
+    	"weight_pre_price":"2",
+    	"sort_order":"2"
+    }],
+    "total": "200",
+    "msg": "成功",
+    "code": "01"
+}
