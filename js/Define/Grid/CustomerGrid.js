@@ -373,6 +373,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
     layout: 'vbox',
     modal: true,
     resizable: false,
+    bodyPadding: 5,
     items: [{
         xtype: 'form',
         itemId: 'formId',
@@ -396,6 +397,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         },
         items: [{
             name: 'customer_name',
+            xtype:'displayfield',
             fieldLabel: '客户名',
             itemId: 'customer_nameItemId',
             validateOnBlur: false,
@@ -404,13 +406,16 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }, {
             name: 'mobile',
             fieldLabel: '手机号',
+
+            xtype:'displayfield',
             itemId: 'mobileItemId',
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'customize_number_from',
-            fieldLabel: '发放面单号开始',
+            fieldLabel: '发放面单号开始',            
+            xtype:'displayfield',
             itemId: 'customize_number_fromItemId',
             validateOnBlur: false,
             allowBlank: false,
@@ -419,7 +424,8 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             regexText: '请输入数字'
         }, {
             name: 'customize_number_to',
-            fieldLabel: '发放面单号结束',
+            fieldLabel: '发放面单号结束',            
+            xtype:'displayfield',
             itemId: 'customize_number_toItemId',
             validateOnBlur: false,
             allowBlank: false,
@@ -454,8 +460,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             regex: GlobalConfig.RegexController.regexMoney2Fixed,
             regexText: '请输入数字'
         }, {
-            xtype: 'datefield',
-            minValue: new Date(),
+            xtype: 'datefield', 
             name: 'date_start',
             format: 'Y-m-d',
             fieldLabel: '开始时间',
@@ -465,8 +470,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             vtype: 'daterange',
             endDateField: 'date_end'
         }, {
-            xtype: 'datefield',
-            minValue: new Date(),
+            xtype: 'datefield', 
             name: 'date_end',
             format: 'Y-m-d',
             fieldLabel: '结束时间',
@@ -477,6 +481,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             startDateField: 'date_start'
         }, {
             xtype: 'button',
+            colspan:2,
             width: 100,
             margin:'0 0 0 600',
             text: '添加',
@@ -500,7 +505,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
                             sessiontoken: GlobalFun.getSeesionToken()
                         },
                         success: function(form, action) {
-
+                            w.down('CustomerRentGrid').loadGrid();
                             //w.grid.loadGrid();
                             //w.close();
 
@@ -516,7 +521,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }]
     }, {
         xtype: 'CustomerRentGrid',  
-        padding:'5 5 5 5',
+        margin:'5 0 0 0',
         height:400
     }],
     buttons: [{

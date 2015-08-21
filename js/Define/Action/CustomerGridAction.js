@@ -45,8 +45,8 @@ Ext.create('chl.Action.CustomerGridAction', {
     handler: function() {
         var me = this;
         var target = me.getTargetView();
-
-        ActionManager.addCustomerRent(target);
+        var record = target.getSelectionModel().getSelection()[0];
+        ActionManager.addCustomerRent(target,record);
 
 
     },
@@ -106,7 +106,7 @@ ActionManager.addCustomer = function(traget) {
 };
 
 //新增 添加合同
-ActionManager.addCustomerRent = function(traget) {
+ActionManager.addCustomerRent = function(traget,record) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateCustomerRentWin = Ext.create('chl.Grid.AddUpdateCustomerRentWin', {
         grid: traget,
@@ -117,7 +117,8 @@ ActionManager.addCustomerRent = function(traget) {
     });
     WindowManager.AddUpdateCustomerRentWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
-        WindowManager.AddUpdateCustomerRentWin.down('CustomerRentGrid').loadGrid();   
+        WindowManager.AddUpdateCustomerRentWin.down('CustomerRentGrid').loadGrid();
+        WindowManager.AddUpdateCustomerRentWin.down("#formId").loadRecord(record);   
     });
 };
 //添加规则
