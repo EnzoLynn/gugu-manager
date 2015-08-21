@@ -266,11 +266,13 @@ class CI_DB_result {
 		return $this->result_object;
 	}
     /*
-     * µ¥Ìõ¼ÇÂ¼²éÑ¯£¬Ö»·µ»Ø½á¹û¶ÔÏó
+     * å•è¡ŒæŸ¥è¯¢ï¼Œè¿”å›žå¯¹è±¡
      * @return	object
      * */
     public function result_one_object()
     {
+        $this->result_array = $this->result_object();
+
         if (count($this->result_object) > 0)
         {
             return $this->result_object[0];
@@ -297,16 +299,18 @@ class CI_DB_result {
             $this->result_object[] = $row;
         }
 
-        return $this->result_object[0];
+        return array();
     }
 
 	// --------------------------------------------------------------------
     /**
-     * µ¥Ìõ¼ÇÂ¼²éÑ¯£¬Ö»·µ»Ø½á¹û¶ÔÏó
+     * å•è¡ŒæŸ¥è¯¢ï¼Œè¿”å›žæ•°ç»„
      * @return	array
      */
     public function result_one_array()
     {
+        $this->result_array = $this->result_array();
+
         if (count($this->result_array) > 0)
         {
             return $this->result_array[0];
@@ -332,7 +336,7 @@ class CI_DB_result {
             $this->result_array[] = $row;
         }
 
-        return $this->result_array[0];
+        return array();
     }
 	/**
 	 * Query result. "array" version.
@@ -731,7 +735,7 @@ class CI_DB_result {
 
 
     /**
-     * À©Õ¹£¬µ¥Öµ²éÑ¯  2011-12-12
+     * å•å€¼æŸ¥è¯¢  2011-12-12
      *
      * Overridden by driver result classes.
      *
@@ -749,8 +753,13 @@ class CI_DB_result {
         @$one = $result[0][$fields[0]];
         return $one;
     }
+    //æŸ¥è¯¢ä¸€è¡Œ
+    public function fetch_row()
+    {
+        return $this->result_one_array();
+    }
     /**
-     * À©Õ¹´¦Àí½á¹û£¬µ¥ÁÐ²éÑ¯  2011-12-12
+     * è¿”å›žä¸€åˆ—
      *
      * Overridden by driver result classes.
      *
@@ -774,11 +783,11 @@ class CI_DB_result {
         return $arr;
     }
     /**
-     * À©Õ¹´¦Àí½á¹û£¬¼üÖµ²éÑ¯  2011-12-12
+     * è¿”å›žé”®å€¼å¯¹
      *
      * @access	public
-     * @param string $key ¼ü£¬Ä¬ÈÏÎª0
-     * @param string $value Öµ£¬Ä¬ÈÏÎª1
+     * @param string $key é”®
+     * @param string $value å€¼
      * @return	array $key=>$value
      */
     public function fetch_option($k_name = 0, $v_name = 1)

@@ -40,9 +40,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$autoload['packages'] = array('database','session');
+$autoload['packages'] = array();
 
-
+$autoload['libraries'] = array('database', 'session');
 /*
 | -------------------------------------------------------------------
 |  Auto-load Libraries
@@ -60,7 +60,7 @@ $autoload['packages'] = array('database','session');
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
 
-$autoload['helper'] = array('url', 'date', 'file');
+$autoload['helper'] = array('cookie', 'url', 'date', 'file');
 
 
 /*
