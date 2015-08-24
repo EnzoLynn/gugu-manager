@@ -1061,9 +1061,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                     margin: '0 0 0 630',
                                                                     text: '删除',
                                                                     handler: function(com) {
-                                                                        var rule_id = com.rule_id; 
+                                                                        var rule_id = com.rule_id;
                                                                         var param = {
-                                                                            'rule_id':rule_id,
+                                                                            'rule_id': rule_id,
                                                                             sessiontoken: GlobalFun.getSeesionToken()
                                                                         };
                                                                         // 调用
@@ -1074,7 +1074,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                             if (!GlobalFun.errorProcess(response.code)) {
                                                                                 Ext.Msg.alert('失败', response.msg);
                                                                             }
-                                                                        }, true,false,com.up('window').getEl());
+                                                                        }, true, false, com.up('window').getEl());
                                                                     }
                                                                 }]
                                                             };
@@ -1146,7 +1146,23 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                     rule_id: item['rule_id'],
                                                                     width: 100,
                                                                     margin: '0 0 0 630',
-                                                                    text: '删除'
+                                                                    text: '删除',
+                                                                    handler: function(com) {
+                                                                        var rule_id = com.rule_id;
+                                                                        var param = {
+                                                                            'rule_id': rule_id,
+                                                                            sessiontoken: GlobalFun.getSeesionToken()
+                                                                        };
+                                                                        // 调用
+                                                                        WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
+                                                                            GlobalConfig.CurrUserInfo = response.data[0];
+                                                                            callBack();
+                                                                        }, function(response, opts) {
+                                                                            if (!GlobalFun.errorProcess(response.code)) {
+                                                                                Ext.Msg.alert('失败', response.msg);
+                                                                            }
+                                                                        }, true, false, com.up('window').getEl());
+                                                                    }
                                                                 }]
                                                             };
                                                         }
