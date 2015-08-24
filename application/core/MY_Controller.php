@@ -15,12 +15,20 @@ class MY_Controller extends CI_Controller{
 //后台控制器
 class AdminController extends MY_Controller
 {
+    var $admin_id;
+
     public function __construct()
     {
         parent::__construct();
 
-        if(empty($_SESSION['admin_name'])) {
+        if(empty($this->input->set_cookie('login_sessiontoken'))) {
             echo '必须登录';exit;
         }
+
+//        $this->admin_id = (int)$_SESSION['admin_id'];
+//
+//        if(empty($_SESSION['admin_name'])) {
+//            echo '必须登录';exit;
+//        }
     }
 }
