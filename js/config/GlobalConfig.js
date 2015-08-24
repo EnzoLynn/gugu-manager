@@ -72,7 +72,7 @@ GlobalConfig.Controllers = {
         destroy: '/data/TestGrid.json',
     },
 
-    Heartbeat: '/login/heartbeat.json', //心跳
+    Heartbeat: 'login/heartbeat',//'/login/heartbeat.json', //心跳
 
     User: { //用户登录相关
         GetCurrUserInfo: '/login/ajaxLogin', //'/data/login.json',
@@ -84,11 +84,11 @@ GlobalConfig.Controllers = {
     },
     CustomerGrid: { //客户表
         create: globalFix + '/CustomerGrid.json',
-        read: globalFix + '/CustomerGrid.json',
+        read: 'customer/getList',//globalFix + '/CustomerGrid.json',
         update: globalFix + '/CustomerGrid.json',
         destroy: globalFix + '/CustomerGrid.json',
         loadRuleCount: globalFix + '/loadRuleCount.json',
-        addCustomer: globalFix + '/AddCustomer.json',
+        addCustomer: '/customer/add',//globalFix + '/AddCustomer.json',
         updateCustomer: globalFix + '/UpdateCustomer.json',
         addCustomerRent: globalFix + '/addCustomerRent.php',
         addCustomerRule: globalFix + '/AddCustomerRule.php',
