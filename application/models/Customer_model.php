@@ -57,7 +57,9 @@ class Customer_model extends CI_Model{
     }
 
     function addCustomer($data) {
-        return $this->db->insert('customer', $data);
+        $this->db->insert('customer', $data);
+        $customer_id =  $this->db->insert_id();
+        return $customer_id;
     }
 
     function addCustomerAndRent($data) {

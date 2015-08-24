@@ -54,7 +54,7 @@ class Login extends CI_Controller {
     }
 
     public function heartbeat() {
-        if($_COOKIE['login_sessiontoken'] == session_id() ) {
+        if($this->input->cookie('login_sessiontoken') == session_id() ) {
             $json = array(
                 'success' => true,
                 'data' => [],
