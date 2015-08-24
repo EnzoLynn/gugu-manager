@@ -14,9 +14,10 @@ class Login extends CI_Controller {
         $admin = $this->admin_model->login($admin_name, $admin_pwd);
 
         if($admin) {
-
-            $this->input->set_cookie('login_sessiontoken',$admin['admin_id'], 60*60*24);
-            $this->input->set_cookie('login_username',$admin['admin_name'], 60*60*24);
+            $_SESSION['admin_id'] = $admin['admin_id'];
+            $_SESSION['admin_name'] = $admin['admin_name'];
+            $this->input->set_cookie('login_sessiontoken', $admin['admin_id'], 60*60*24);
+            $this->input->set_cookie('login_username', $admin['admin_name'], 60*60*24);
 
             $json = array(
                 'success' => true,
