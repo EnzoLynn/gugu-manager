@@ -52,4 +52,24 @@ class Login extends CI_Controller {
         //echo '<pre>';print_r($json);exit;
         echo json_encode($json);
     }
+
+    public function heartbeat() {
+        if($_COOKIE['login_sessiontoken'] == session_id() ) {
+            $json = array(
+                'success' => true,
+                'data' => [],
+                'total' => 1,
+                'msg' => '成功',
+                'code' => '01'
+            );
+        }else{
+            $json = array(
+                'success' => false,
+                'msg' => '帐号或者密码错误',
+                'code' => 99
+            );
+        }
+        echo json_encode($json);
+        exit;
+    }
 }
