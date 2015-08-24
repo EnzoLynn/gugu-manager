@@ -75,7 +75,7 @@ GlobalConfig.Controllers = {
     Heartbeat: '/data/Heartbeat.json', //心跳
 
     User: { //用户登录相关
-        GetCurrUserInfo: '/login/ajaxLogin',//'/data/login.json',
+        GetCurrUserInfo: '/data/login.json',//'/login/ajaxLogin',
         CheckUserPassword: '/CheckUserPassword111',
         UserLoginOut: '/data/UserLoginOut.json'
     },
@@ -91,6 +91,7 @@ GlobalConfig.Controllers = {
         addCustomer: globalFix + '/AddCustomer.json',
         addCustomerRent: globalFix + '/addCustomerRent.php',
         addCustomerRule: globalFix + '/AddCustomerRule.php',
+        delCustomerRule:globalFix + '/DelCustomerRule.php',
         updateCustomer: globalFix + '/UpdateCustomer.json',
         delCustomer: globalFix + '/DelCustomer.json',
         GetCustomerRuleByRentId: globalFix + '/GetCustomerRuleByRentId.json',
@@ -102,7 +103,7 @@ GlobalConfig.Controllers = {
         read: globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json'
-    },
+    }, 
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
 
 };
