@@ -94,6 +94,76 @@ WsCall.addStatics({
 			params: param
 		});
 	},
+	pcall: function(url,fname, param, successCall, failureCall, showLoadMask, loadMsg, maskEl,maskDelay,async) {
+		//		 constErrRes = {
+		//			success:false,
+		//			code:-1,
+		//			msg:'response failed'
+		//		};		
+		param.req = 'call';
+		
+		
+		param.callname = fname;
+		var isAsync = async==false?async:true;
+		var doslm = (typeof showLoadMask == 'undefined' || showLoadMask === null) || showLoadMask == true;
+		if (doslm) {
+			var callMask;
+			var taskWait = new Ext.util.DelayedTask( function() {
+
+				if (loadMsg) {
+					callMask = maskEl ? maskEl : Ext.getBody();
+					callMask.mask(loadMsg);
+					// callMask = new Ext.LoadMask(maskEl ? maskEl : Ext.getBody(), {
+					// msg: loadMsg
+					// });
+				} else {
+					callMask = maskEl ? maskEl : Ext.getBody();
+					callMask.mask('请稍候...');
+					// callMask = new Ext.LoadMask(maskEl ? maskEl : Ext.getBody(), {
+					// msg: "请稍候..."
+					// });
+				}
+				//callMask.show();
+			});
+			taskWait.delay(maskDelay?maskDelay:100);
+		}
+		Ext.Ajax.request({
+		    url: url,
+			method: 'POST',
+			timeout:30000,
+			async:isAsync ,			
+			success: function(response, opts) {
+				if (taskWait)
+					taskWait.cancel();
+				if (typeof callMask != 'undefined' && callMask !== null)
+					callMask.unmask();
+				//callMask.hide();
+				if(response.responseText.length>0 && response.responseText != 'null') {
+					var res = Ext.JSON.decode(response.responseText);
+					if(res.success == true)
+						successCall(res, response,opts);
+					else
+						failureCall(res,response, opts);
+				} else {
+					constErrRes.msg = 'response failed (call:' + fname+');' + response.responseText;
+					failureCall(constErrRes,response, opts);
+				}
+			},
+			failure: function(response, opts) {
+				if (taskWait)
+					taskWait.cancel();
+				if (typeof callMask != 'undefined' && callMask !== null)
+					callMask.unmask();
+				//callMask.hide();
+				constErrRes.msg = 'response failed(ajax) (call:' + fname+')';
+				failureCall(constErrRes,response, opts);
+			},
+			headers: {
+				'AJaxCall': 'true'
+			},
+			params: param
+		});
+	},
 	downloadFile: function(url,rcName, param) {
 		var me = this;
 		var sParam = Ext.Object.toQueryString(param);

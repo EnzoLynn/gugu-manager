@@ -20,7 +20,7 @@ Ext.onReady(function() {
             callBack();
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                Ext.Msg.alert('获取用户权限失败', response.msg);
+                Ext.Msg.alert('获取用户失败', response.msg);
             }
         }, false);
     };
