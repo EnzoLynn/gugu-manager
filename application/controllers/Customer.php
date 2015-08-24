@@ -13,7 +13,7 @@ class Customer extends AdminController {
 
     }
 
-    public function addCustomer() {
+    public function add() {
         $this->load->model('customer');
 
         $this->customer_model->addCustomer($this->input()->post());
