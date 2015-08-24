@@ -523,7 +523,7 @@ class CI_DB_result {
 	 * @param	string	$type
 	 * @return	mixed
 	 */
-	public function first_row($type = 'object')
+	public function first_row($type = 'array')//object
 	{
 		$result = $this->result($type);
 		return (count($result) === 0) ? NULL : $result[0];
@@ -537,7 +537,7 @@ class CI_DB_result {
 	 * @param	string	$type
 	 * @return	mixed
 	 */
-	public function last_row($type = 'object')
+	public function last_row($type = 'array')//object
 	{
 		$result = $this->result($type);
 		return (count($result) === 0) ? NULL : $result[count($result) - 1];
@@ -551,7 +551,7 @@ class CI_DB_result {
 	 * @param	string	$type
 	 * @return	mixed
 	 */
-	public function next_row($type = 'object')
+	public function next_row($type = 'array')//object
 	{
 		$result = $this->result($type);
 		if (count($result) === 0)
@@ -572,7 +572,7 @@ class CI_DB_result {
 	 * @param	string	$type
 	 * @return	mixed
 	 */
-	public function previous_row($type = 'object')
+	public function previous_row($type = 'array')//object
 	{
 		$result = $this->result($type);
 		if (count($result) === 0)
@@ -595,7 +595,7 @@ class CI_DB_result {
 	 * @param	string	$type	'array', 'object' or a custom class name
 	 * @return	mixed
 	 */
-	public function unbuffered_row($type = 'object')
+	public function unbuffered_row($type = 'array')//object
 	{
 		if ($type === 'array')
 		{

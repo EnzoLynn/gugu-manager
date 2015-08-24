@@ -12,7 +12,6 @@ class Customer extends AdminController {
         /*
          * filter:{}
 page:1
-start:0
 limit:50
 sort:customer_name
 dir:ASC
