@@ -15,12 +15,12 @@ Ext.onReady(function() {
             sessiontoken: GlobalFun.getSeesionToken()
         };
         // 调用
-        WsCall.call(GlobalConfig.Controllers.User.GetCurrUserInfo, 'GetCurrUserInfo', param, function(response, opts) {
+        WsCall.pcall(GlobalConfig.Controllers.User.GetCurrUserInfo, 'GetCurrUserInfo', param, function(response, opts) {
             GlobalConfig.CurrUserInfo = response.data[0];
             callBack();
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                Ext.Msg.alert('获取用户权限失败', response.msg);
+                Ext.Msg.alert('获取用户失败', response.msg);
             }
         }, false);
     };
