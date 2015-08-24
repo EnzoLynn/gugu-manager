@@ -14,6 +14,7 @@ class Login extends CI_Controller {
         $admin = $this->admin_model->login($admin_name, $admin_pwd);
 
         if($admin) {
+
             $this->input->set_cookie('login_sessiontoken',$admin['admin_id'], 60*60*24);
             $this->input->set_cookie('login_username',$admin['admin_name'], 60*60*24);
 
@@ -31,6 +32,6 @@ class Login extends CI_Controller {
             );
         }
         //echo '<pre>';print_r($json);exit;
-        return urldecode(json_encode($json));
+        echo json_encode($json);
     }
 }
