@@ -20,7 +20,10 @@ Ext.define('chl.Model.CustomerGridModel', {
     }, {
         name: 'customize_number_to', 
         type: 'string'
-    }, {
+    },{
+        name: 'customer_rent_id',
+        type: 'string'
+    },  {
         name: 'rent_area', 
         type: 'string'
     }, {

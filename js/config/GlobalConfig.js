@@ -29,6 +29,8 @@ Ext.namespace('GlobalConfig', 'GlobalConfig');
 
 //全局拖拽控件操作类
 Ext.namespace('DropDragControl', 'DropDragControl');
+//全局模版管理
+Ext.namespace('Template', 'Template');
 
 
 //全局主显示框架Component
@@ -69,16 +71,16 @@ GlobalConfig.Controllers = {
         update: '/data/TestGrid.json',
         destroy: '/data/TestGrid.json',
     },
-  
+
     Heartbeat: '/data/Heartbeat.json', //心跳
-    
+
     User: { //用户登录相关
         GetCurrUserInfo: '/data/login.json',
         CheckUserPassword: '/CheckUserPassword',
         UserLoginOut: '/data/UserLoginOut.json'
     },
     UserGrid: { //用户表
-       
+
     },
     CustomerGrid: { //客户表
         create: globalFix + '/CustomerGrid.json',
@@ -91,6 +93,7 @@ GlobalConfig.Controllers = {
         addCustomerRule: globalFix + '/AddCustomerRule.php',
         updateCustomer: globalFix + '/UpdateCustomer.json',
         delCustomer: globalFix + '/DelCustomer.json',
+        GetCustomerRuleByRentId: globalFix + '/GetCustomerRuleByRentId.json',
         getCustomerRule: globalFix + '/GetCustomerRule.json',
         uploadCustomerExcel: globalFix + '/UploadCustomerExcel.json'
     },
@@ -99,9 +102,9 @@ GlobalConfig.Controllers = {
         read: globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json'
-    }, 
+    },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
-   
+
 };
 //全局正则表达式
 GlobalConfig.RegexController = {
@@ -172,6 +175,9 @@ GlobalConfig.ErrorCode = {
 
     SeesionTimeOut: 0x0F000E33 //登录信息失效
 };
+//全局模版
+
+
 
 //全局省份
 GlobalConfig.Province = {
