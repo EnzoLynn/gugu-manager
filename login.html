@@ -73,7 +73,7 @@
                         // 调用
                         WsCall.pcall(GlobalConfig.Controllers.User.GetCurrUserInfo, 'GetCurrUserInfo', param, function(response, opts) {
                             GlobalConfig.CurrUserInfo = response.data[0];
-                            window.location.href = window.location.host + "index.html";
+                            window.location.href = "http://"+ window.location.host + "/index.html";
                         }, function(response, opts) {
                             if (!GlobalFun.errorProcess(response.code)) {
                                 Ext.Msg.alert('获取用户失败', response.msg);
