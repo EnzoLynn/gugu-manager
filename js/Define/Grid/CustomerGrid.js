@@ -1,8 +1,7 @@
 //创建一个上下文菜单
 var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshCustomer'), '-',
-        ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer')
-        , ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
+        ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
     ]
 });
 
@@ -373,6 +372,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
     layout: 'vbox',
     modal: true,
     resizable: false,
+    bodyPadding: 5,
     items: [{
         xtype: 'form',
         itemId: 'formId',
@@ -396,6 +396,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         },
         items: [{
             name: 'customer_name',
+            xtype: 'displayfield',
             fieldLabel: '客户名',
             itemId: 'customer_nameItemId',
             validateOnBlur: false,
@@ -404,6 +405,8 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }, {
             name: 'mobile',
             fieldLabel: '手机号',
+
+            xtype: 'displayfield',
             itemId: 'mobileItemId',
             validateOnBlur: false,
             allowBlank: false,
@@ -411,6 +414,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }, {
             name: 'customize_number_from',
             fieldLabel: '发放面单号开始',
+            xtype: 'displayfield',
             itemId: 'customize_number_fromItemId',
             validateOnBlur: false,
             allowBlank: false,
@@ -420,6 +424,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }, {
             name: 'customize_number_to',
             fieldLabel: '发放面单号结束',
+            xtype: 'displayfield',
             itemId: 'customize_number_toItemId',
             validateOnBlur: false,
             allowBlank: false,
@@ -455,7 +460,6 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             regexText: '请输入数字'
         }, {
             xtype: 'datefield',
-            minValue: new Date(),
             name: 'date_start',
             format: 'Y-m-d',
             fieldLabel: '开始时间',
@@ -466,7 +470,6 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             endDateField: 'date_end'
         }, {
             xtype: 'datefield',
-            minValue: new Date(),
             name: 'date_end',
             format: 'Y-m-d',
             fieldLabel: '结束时间',
@@ -477,8 +480,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             startDateField: 'date_start'
         }, {
             xtype: 'button',
+            colspan: 2,
             width: 100,
-            margin:'0 0 0 600',
+            margin: '0 0 0 600',
             text: '添加',
             handler: function(com) {
                 var me = this;
@@ -500,7 +504,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
                             sessiontoken: GlobalFun.getSeesionToken()
                         },
                         success: function(form, action) {
-
+                            w.down('CustomerRentGrid').loadGrid();
                             //w.grid.loadGrid();
                             //w.close();
 
@@ -515,9 +519,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             }
         }]
     }, {
-        xtype: 'CustomerRentGrid',  
-        padding:'5 5 5 5',
-        height:400
+        xtype: 'CustomerRentGrid',
+        margin: '5 0 0 0',
+        height: 400
     }],
     buttons: [{
         text: '关闭',
@@ -689,7 +693,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                     Ext.create('Ext.window.Window', {
                                         title: '添加规则' + '(' + GlobalConfig.Province[com.myval] + ')',
                                         pid: com.myval,
-                                        width: 800,
+                                        width: 820,
                                         height: 700,
                                         action: 'create',
                                         modal: true,
@@ -813,10 +817,12 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                     sessiontoken: GlobalFun.getSeesionToken()
                                                                 },
                                                                 success: function(form, action) {
-                                                                    win.add({
-                                                                        xtype: 'fieldset',
-                                                                        title: '规则1'
-                                                                    });
+
+                                                                    // win.add({
+                                                                    //     xtype: 'fieldset',
+                                                                    //     title: '固定价格',
+                                                                    //     html:""
+                                                                    // });
                                                                     //w.grid.loadGrid();
                                                                     //w.close();
 
@@ -983,7 +989,11 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 },
                                                                 success: function(form, action) {
                                                                     var data = action.result.data;
-
+                                                                    //   win.add({
+                                                                    //     xtype: 'fieldset',
+                                                                    //     title: '步进价格',
+                                                                    //     html:""
+                                                                    // });
                                                                     //w.grid.loadGrid();
                                                                     //w.close();
 
@@ -1003,7 +1013,56 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                         }],
                                         items: [{
                                             xtype: 'fieldset',
-                                            title: '规则1'
+                                            title: '固定价格',
+                                            width: 810,
+                                            layout: {
+                                                type: 'table',
+                                                columns: 2
+                                            },
+                                            defaults: {
+                                                xtype: 'displayfield',
+                                                labelAlign: 'right',
+                                                labelPad: 15,
+                                                width: 340,
+                                                labelWidth: 125,
+                                                maxLength: 100,
+                                                maxLengthText: '最大长度为100'
+                                            },
+                                            items: []
+                                        }, {
+                                            xtype: 'fieldset',
+                                            title: '步进价格',
+                                            width: 790,
+                                            layout: {
+                                                type: 'table',
+                                                columns: 2
+                                            },
+                                            defaults: {
+                                                xtype: 'displayfield',
+                                                labelAlign: 'right',
+                                                labelPad: 15,
+                                                width: 340,
+                                                labelWidth: 125,
+                                                maxLength: 100,
+                                                maxLengthText: '最大长度为100'
+                                            },
+                                            items: [{
+                                                fieldLabel: '首重'
+                                            }, {
+                                                fieldLabel: '起始重量'
+                                            }, {
+                                                fieldLabel: '结束重量'
+                                            }, {
+                                                fieldLabel: '价格'
+                                            }, {
+                                                fieldLabel: '续重'
+                                            }, {
+                                                fieldLabel: '重量'
+                                            }, {
+                                                fieldLabel: '价格'
+                                            }, {
+                                                fieldLabel: '记重方式'
+                                            }]
                                         }],
                                         buttons: [{
                                             text: '退出',
