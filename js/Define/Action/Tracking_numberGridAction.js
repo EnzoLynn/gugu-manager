@@ -30,7 +30,8 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                     itemId: 'fileupId',
                     buttonText: '...',
                     listeners: {
-                        change: function() {
+                        change: function(com) {
+                            var me = com;
                             var supType = new Array('xls', 'xlsx');
                             var fNmae = me.getValue();
                             var fType = fNmae.substring(

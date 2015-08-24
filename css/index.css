@@ -10,3 +10,9 @@
 .logout {
   background-image: url(../image/toolbar/logoff.png) !important;
 }
+.export {
+  background-image: url(../image/toolbar/export.png) !important;
+}
+.import {
+  background-image: url(../image/toolbar/import.png) !important;
+}
