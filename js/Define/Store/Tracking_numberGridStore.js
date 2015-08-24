@@ -6,7 +6,7 @@ Ext.create('Ext.data.Store', {
     autoLoad: false,
     remoteSort: true,     //排序通过查询数据库
     sorters: [{
-        property: 'Id',
+        property: 'traking_number',
         direction: 'DESC'
     }],
     autoSync: false,
@@ -21,7 +21,7 @@ Ext.create('Ext.data.Store', {
         simpleSortMode: true,		//单一字段排序
         extraParams: {
             req: 'data',
-            dataname: 'User',             //dataset名称，根据实际情况设置,数据库名
+            dataname: 'traking_number',             //dataset名称，根据实际情况设置,数据库名
             restype: 'json',
             sessiontoken: GlobalFun.getSeesionToken(),
             folderid: -1,

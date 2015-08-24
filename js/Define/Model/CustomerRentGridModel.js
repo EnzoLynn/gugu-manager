@@ -6,6 +6,9 @@ Ext.define('chl.Model.CustomerRentGridModel', {
         name: 'customer_rent_id',
         type: 'string'
     }, {
+        name: 'customer_id',
+        type: 'string'
+    }, {
         name: 'title', 
         type: 'string'
     }, {

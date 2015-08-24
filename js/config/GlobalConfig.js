@@ -75,7 +75,7 @@ GlobalConfig.Controllers = {
     Heartbeat: '/login/heartbeat.json', //心跳
 
     User: { //用户登录相关
-        GetCurrUserInfo: '/login/ajaxLogin',//'/data/login.json',
+        GetCurrUserInfo: '/login/ajaxLogin', //'/data/login.json',
         CheckUserPassword: '/CheckUserPassword111',
         UserLoginOut: '/data/UserLoginOut.json'
     },
@@ -92,7 +92,7 @@ GlobalConfig.Controllers = {
         updateCustomer: globalFix + '/UpdateCustomer.json',
         addCustomerRent: globalFix + '/addCustomerRent.php',
         addCustomerRule: globalFix + '/AddCustomerRule.php',
-        delCustomerRule:globalFix + '/DelCustomerRule.php',       
+        delCustomerRule: globalFix + '/DelCustomerRule.php',
         delCustomer: globalFix + '/DelCustomer.json',
         GetCustomerRuleByRentId: globalFix + '/GetCustomerRuleByRentId.json',
         getCustomerRule: globalFix + '/GetCustomerRule.json',
@@ -103,7 +103,15 @@ GlobalConfig.Controllers = {
         read: globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json'
-    }, 
+    },
+    Tracking_numberGrid: { //票号 票据
+        create: globalFix + '/traking_numberGrid.json',
+        read: globalFix + '/traking_numberGrid.json',
+        update: globalFix + '/traking_numberGrid.json',
+        destroy: globalFix + '/traking_numberGrid.json',
+        uploadExcel: globalFix + '/uploadExcel',
+        outPutExcel:globalFix + '/outPutExcel'
+    },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
 
 };

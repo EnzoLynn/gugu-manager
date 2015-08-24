@@ -1,0 +1,37 @@
+{
+    "success": true,
+    "data": [{
+    	"tracking_number":"1232234",
+    	"weight":"11.1",
+    	"arrive_express_point":"arrive_express_point",
+    	"arrive_express_point_code":"arrive_express_point_code",
+    	"arrive_time":"2015-01-01",
+    	"income":"8000.22",
+        "cost":"6000.22",
+    	"customer_id":"1",
+        "customer_name":"test",
+    	"admin_id":"1",
+        "admin_name":"admin",
+    	"account_status":"0",
+        "account_status_name":"否",
+    	"customer_rent_id":"1" 
+    },{
+        "tracking_number":"23423423",
+        "weight":"11.1",
+        "arrive_express_point":"arrive_express_point",
+        "arrive_express_point_code":"arrive_express_point_code",
+        "arrive_time":"2015-02-01",
+        "income":"8000.22",
+        "cost":"6000.22",
+        "customer_id":"1",
+        "customer_name":"test",
+        "admin_id":"1",
+        "admin_name":"admin",
+        "account_status":"1",
+         "account_status_name":"是",
+        "customer_rent_id":"2" 
+    }],
+    "total": "200",
+    "msg": "成功",
+    "code": "01"
+}

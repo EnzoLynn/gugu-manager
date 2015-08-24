@@ -674,6 +674,7 @@ GlobalFun.TreeSelChangeGrid = function (activeNum, gridPanel, title, isDfGrid) {
     if (!gridPanel.FirstLoad) {
         gridPanel.loadGrid();
         gridPanel.FirstLoad = true;
+        GlobalFun.SetGridTitle(cardPanel, gridPanel.getStore(), title);
     } else {
         GlobalFun.SetGridTitle(cardPanel, gridPanel.getStore(), title);
     }

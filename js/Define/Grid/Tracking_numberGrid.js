@@ -1,3 +1,11 @@
+//创建一个上下文菜单
+var Tracking_numberGrid_RightMenu = Ext.create('Ext.menu.Menu', {
+    items: [ActionBase.getAction('refreshTracking_number'), '-',
+        ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number')
+    ]
+});
+
+
 Ext.define('chl.gird.Tracking_numberGrid', {
     alternateClassName: ['Tracking_numberGrid'],
     alias: 'widget.Tracking_numberGrid',
@@ -14,6 +22,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         },
         itemcontextmenu: function(view, rec, item, index, e, opts) {
             e.stopEvent();
+            Tracking_numberGrid_RightMenu.showAt(e.getXY());
         },
         beforeitemmousedown: function(view, record, item, index, e, options) {
             var me = this;
@@ -32,9 +41,9 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         layout: {
             overflowHandler: 'Menu'
         },
-        items: [ActionBase.getAction('refreshTracking_number'),
-                ActionBase.getAction('addTracking_number')
-            ] //, ActionBase.getAction('editTracking_number')]
+        items: [ActionBase.getAction('refreshTracking_number'), '-',
+            ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number')
+        ]
     }, {
         xtype: 'Pagingtoolbar',
         itemId: 'pagingtoolbarID',
@@ -80,15 +89,55 @@ Ext.define('chl.gird.Tracking_numberGrid', {
 GridManager.CreateTracking_numberGrid = function(param) {
     var tmpArr = [{
         text: '编号',
-        dataIndex: 'Id',
+        dataIndex: 'tracking_number',
         renderer: GlobalFun.UpdateRecord,
         flex: 1
     }, {
-        text: '姓名',
-        dataIndex: 'Name',
+        text: '重量',
+        dataIndex: 'weight',
         renderer: GlobalFun.UpdateRecord,
         flex: 1
-    }];
+    }, {
+        text: '网点',
+        dataIndex: 'arrive_express_point',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }, {
+        text: '网点代码',
+        dataIndex: 'arrive_express_point_code',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }, {
+        text: '收货时间',
+        dataIndex: 'arrive_time',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }, {
+        text: '收入',
+        dataIndex: 'income',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }, {
+        text: '成本',
+        dataIndex: 'cost',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }, {
+        text: '客户名称',
+        dataIndex: 'customer_name',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }, {
+        text: '操作人',
+        dataIndex: 'admin_name',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }, {
+        text: '状态',
+        dataIndex: 'account_status_name',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    } ];
     GridManager.Tracking_numberGrid = Ext.create('chl.gird.Tracking_numberGrid',
         GridManager.BaseGridCfg('Tracking_numberGrid', 'Tracking_numberGridState', tmpArr));
     if (param && param.needLoad) {

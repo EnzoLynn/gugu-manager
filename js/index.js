@@ -59,6 +59,12 @@ Ext.onReady(function() {
             needLoad: false
         });
         GridManager.SetCustomerGridSelectionChangeEvent();
+        //创建票号 票据 表格
+        //Tracking_number
+        GridManager.CreateTracking_numberGrid({
+            needLoad: false
+        });
+        GridManager.SetTracking_numberGridSelectionChangeEvent();
 
         //创建主目录树
         TreeManager.CreateMainItemListTree({
@@ -104,7 +110,9 @@ Ext.onReady(function() {
                 width: 200,
                 listeners: {
                     boxready: function(com, width, height, opts) {
-                        com.add(TreeManager.MainItemListTree);
+                        var treeArr = [];
+                        treeArr.push(TreeManager.MainItemListTree);
+                        com.add(treeArr);
 
                     }
                 },
@@ -133,8 +141,12 @@ Ext.onReady(function() {
                     height: 400,
                     listeners: {
                         boxready: function(com, width, height, opts) {
-                            com.add(GridManager.ManageDfGrid, GridManager.TestGrid);
-                            com.add(GridManager.CustomerGrid);
+                            var gridArr=[]; 
+                            gridArr.push(GridManager.ManageDfGrid);
+                            gridArr.push(GridManager.TestGrid);
+                            gridArr.push(GridManager.CustomerGrid);
+                            gridArr.push(GridManager.Tracking_numberGrid); 
+                            com.add(gridArr);
                         }
                     },
                     items: []
@@ -146,7 +158,7 @@ Ext.onReady(function() {
                     //title: '详情',
                     preventHeader: true,
                     height: 200,
-                    collapsed: false,
+                    collapsed: true,
                     bodyBoder: false,
                     xtype: 'tabpanel',
                     frame: false,
@@ -200,7 +212,7 @@ Ext.onReady(function() {
                                     //跳转页面
                                     Ext.getBody().mask("请稍候...");
                                     (new Ext.util.DelayedTask()).delay(20, function() {
-                                        GlobalFun.ReDirectUrl("");
+                                        GlobalFun.ReDirectUrl("login.html");
                                     });
                                 }, function(response, opts) {
                                     if (!GlobalFun.errorProcess(response.code)) {

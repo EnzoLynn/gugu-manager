@@ -5,36 +5,104 @@ Ext.define('chl.Action.Tracking_numberGridAction', {
 
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'addTracking_number',
-    iconCls: 'add',
-    tooltip: '添加',
-    text: '添加',
+    itemId: 'importTracking_number',
+    iconCls: 'import',
+    tooltip: '导入',
+    text: '导入',
+    handler: function() {
+        var target = this.getTargetView();
+        var win = Ext.create('Ext.window.Window', {
+            height: 400,
+            width: 800,
+            resizeabled: false,
+            title: '上传文件',
+            items: [{
+                xtype: 'form',
+                itemId: 'formId',
+                items: [{
+                    xtype: 'filefield',
+                    name: 'importAddr',
+                    fieldLabel: '请选择导入的文件',
+                    width: 400,
+                    labelWidth: 150,
+                    blankText: '请选择导入的文件',
+                    msgTarget: 'side',
+                    itemId: 'fileupId',
+                    buttonText: '...',
+                    listeners: {
+                        change: function() {
+                            var supType = new Array('xls', 'xlsx');
+                            var fNmae = me.getValue();
+                            var fType = fNmae.substring(
+                                fNmae.lastIndexOf('.') + 1,
+                                fNmae.length).toLowerCase();
+                            var returnFlag = true;
+
+                            Ext.Array.each(supType, function(rec) {
+                                if (rec == fType) {
+                                    returnFlag = false;
+                                    return false;
+                                }
+                            });
+
+                            if (returnFlag) {
+                                Ext.Msg.alert('添加文件', '不支持的文件格式！');
+                                return;
+                            }
+                            var f = me.up('form');
+                            var outWin = me.up('window');
+                            var form = f.getForm();
+                            var urlStr = GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=importcustomerUp&sessiontoken=" + GlobalFun.getSeesionToken();
+                            form.submit({
+                                timeout: 60 * 10,
+                                url: urlStr,
+                                waitMsg: '正在上传...',
+                                waitTitle: '等待文件上传,请稍候...',
+                                success: function(fp, o) {
+                                    var data = action.result.data;
+                                    if (action.result.success) {
+                                        target.loadGrid();
+                                    };
+                                },
+                                failure: function(fp, o) {
+                                    if (!GlobalFun.errorProcess(o.result.code)) {
+                                        Ext.Msg.alert('登录失败', response.msg);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }]
+            }]
+        });
+        win.show();
+    },
+    updateStatus: function(selection) {
+
+    }
+});
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'exportTracking_number',
+    iconCls: 'export',
+    tooltip: '导出',
+    text: '导出',
     handler: function () {
-        var me = this;
-        var target = me.getTargetView();
-        //var record = target.getSelectionModel().getSelection()[0];
-        ActionManager.addTracking_number(target);
+        var target = this.getTargetView();
+        var store = target.getStore();
+        var extraParams = store.getProxy().extraParams;
+        var param = {
+            downType: 'Tracking_number',
+            dir: 'ASC',
+            sort: 'tracking_number',
+            filter: extraParams.filter,
+            sessiontoken: GlobalFun.getSeesionToken()
+        };
+        WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.outPutExcel, 'download', param);
     },
     updateStatus: function (selection) {
-        
     }
 });
 
-Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'editTracking_number',
-    iconCls: 'edit',
-    tooltip: '编辑',
-    text: '编辑',
-    handler: function () {
-        var me = this;
-        var target = me.getTargetView();
-        var record = target.getSelectionModel().getSelection()[0];
-        ActionManager.editTracking_number(target, record);
-    },
-    updateStatus: function (selection) {
-        this.setDisabled(selection.length != 1);
-    }
-});
 
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
@@ -42,46 +110,14 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     iconCls: 'refresh',
     tooltip: '刷新',
     text: '刷新',
-    handler: function () {
+    handler: function() {
         var target = this.getTargetView();
         ActionManager.refreshTracking_number(target);
     },
-    updateStatus: function (selection) {
-    }
+    updateStatus: function(selection) {}
 });
 
 //刷新逝者
-ActionManager.refreshTracking_number = function (traget) {
+ActionManager.refreshTracking_number = function(traget) {
     traget.loadGrid();
-};
-//新增逝者
-ActionManager.addTracking_number = function (traget) {
-    var record = traget.getStore().getAt(0);
-    WindowManager.AddUpdateTracking_numberWin = Ext.create('chl.Grid.AddUpdateTracking_numberWin', {
-        grid: traget,
-        iconCls: 'add',
-        action: 'create',
-        record: record,
-        title: "新增"
-    });
-    WindowManager.AddUpdateTracking_numberWin.show(null, function () {
-        //WindowManager.AddUpdateTracking_numberWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
-       
-        WindowManager.AddUpdateTracking_numberWin.down("#formId").loadRecord(record);
-    });
-};
-//编辑逝者
-ActionManager.editTracking_number = function (traget, record) {
-    WindowManager.AddUpdateTracking_numberWin = Ext.create('chl.Grid.AddUpdateTracking_numberWin', {
-        grid: traget,
-        iconCls: 'edit',
-        record: record,
-        action: 'update',
-        title: "编辑"
-    });
-    WindowManager.AddUpdateTracking_numberWin.show(null, function () {
-        
-        WindowManager.AddUpdateTracking_numberWin.down("#formId").loadRecord(record);
-      
-    });
 };

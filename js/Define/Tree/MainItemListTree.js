@@ -81,7 +81,7 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function (param) {
            return;
         }
         if (seles[0].data.id == "002") {
-           GlobalFun.TreeSelChangeGrid('TestGrid', GridManager.TestGrid, '票据列表');
+           GlobalFun.TreeSelChangeGrid('Tracking_numberGrid', GridManager.Tracking_numberGrid, '票据列表');
            return;
         }
         if (seles[0].data.id == "003") {

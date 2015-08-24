@@ -2,6 +2,7 @@
     "success": true,
     "data": [{
     	"customer_rent_id":"1",
+        "customer_id":"1",
     	"title":"testName",
     	"rent_area":"10",
     	"area_to_order_number":"1.1",
