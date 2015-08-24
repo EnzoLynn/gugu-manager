@@ -21,14 +21,16 @@ class AdminController extends MY_Controller
     {
         parent::__construct();
 
-        if(empty($this->input->set_cookie('login_sessiontoken'))) {
-            echo '必须登录';exit;
-        }
+        $this->admin_id = (int)$_SESSION['admin_id'];
 
-//        $this->admin_id = (int)$_SESSION['admin_id'];
-//
-//        if(empty($_SESSION['admin_name'])) {
+//        if(empty($this->input->set_cookie('login_sessiontoken'))) {
 //            echo '必须登录';exit;
 //        }
+
+        $this->admin_id = (int)$_SESSION['admin_id'];
+
+        if(empty($_SESSION['admin_name'])) {
+            echo '必须登录';exit;
+        }
     }
 }
