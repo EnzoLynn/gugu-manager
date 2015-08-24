@@ -72,7 +72,7 @@ GlobalConfig.Controllers = {
         destroy: '/data/TestGrid.json',
     },
 
-    Heartbeat: '/data/Heartbeat.json', //心跳
+    Heartbeat: '/login/heartbeat.json', //心跳
 
     User: { //用户登录相关
         GetCurrUserInfo: '/login/ajaxLogin',//'/data/login.json',
