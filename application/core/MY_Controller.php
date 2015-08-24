@@ -23,14 +23,31 @@ class AdminController extends MY_Controller
 
         $this->admin_id = (int)$_SESSION['admin_id'];
 
-//        if(empty($this->input->set_cookie('login_sessiontoken'))) {
-//            echo '必须登录';exit;
-//        }
-
-        $this->admin_id = (int)$_SESSION['admin_id'];
-
-        if(empty($_SESSION['admin_name'])) {
-            echo '必须登录';exit;
+        if($_COOKIE['login_sessiontoken'] == session_id() ) {
+            $admin = $this->admin_model->getAdmin($_SESSION['admin_name']);
+            $json = array(
+                'success' => true,
+                'data' => $admin,
+                'total' => 1,
+                'msg' => '登录成功',
+                'code' => '01'
+            );
+            echo json_encode($json);
+            exit;
         }
+
+        $json = array(
+            'success' => false,
+            'msg' => '请重新登录',
+            'code' => 99
+        );
+        echo json_encode($json);
+        exit;
+
+        //$this->admin_id = (int)$_SESSION['admin_id'];
+
+//        if(empty($_SESSION['admin_name'])) {
+//            redirect('/login.html');
+//        }
     }
 }
