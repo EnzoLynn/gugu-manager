@@ -174,7 +174,7 @@ GlobalConfig.ErrorCode = {
     ResInvalidDocID: 0x0F000E31, //无效的归档ID
     ResInvalidDocInfo: 0x0F000E32, //无效的归档信息
 
-    SeesionTimeOut: 0x0F000E33 //登录信息失效
+    SeesionTimeOut: 99 //登录信息失效
 };
 //全局模版
 

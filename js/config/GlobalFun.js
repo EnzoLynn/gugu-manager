@@ -242,7 +242,7 @@ GlobalFun.errorProcess = function (code, swfokfun) {
         Ext.getBody().unmask();
         Ext.Msg.alert('登录信息失效', '登录信息失效！请重新登录', function () {
             Ext.getBody().mask("请稍候...");
-            GlobalFun.ReDirectUrl("UserLogin");
+            GlobalFun.ReDirectUrl("Login.html");
         });
         return true;
     }
