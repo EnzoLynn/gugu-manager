@@ -15,15 +15,16 @@ class MY_Controller extends CI_Controller{
 //后台控制器
 class AdminController extends MY_Controller
 {
-    var $admin_id;
+    var $admin_id = 0;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->admin_id = (int)$_SESSION['admin_id'];
-
         if($this->input->cookie('login_sessiontoken') == session_id() ) {
+
+            $this->admin_id = (int)$_SESSION['admin_id'];
+
             $admin = $this->admin_model->getAdmin($_SESSION['admin_name']);
             $json = array(
                 'success' => true,
