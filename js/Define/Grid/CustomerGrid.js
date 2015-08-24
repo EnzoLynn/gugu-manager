@@ -43,7 +43,29 @@ Ext.define('chl.gird.CustomerGrid', {
             overflowHandler: 'Menu'
         },
         items: [ActionBase.getAction('refreshCustomer'),
-            ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
+            ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule'), '->', {
+                fieldLabel: '按客户名查找',
+                text: '按客户名查找', //用于控制工具栏使用
+                width: 300,
+                labelAlign: 'right',
+                labelWidth: 80,
+                xtype: 'searchfield',
+                paramName: 'customer_name',
+                //paramObject: true,
+                //minLength: 6,
+                //minLengthText: '请输入6位编码',
+                //maxLength: 6,
+                //maxLengthText: '请输入6位编码',
+                //paramNameArr: ['Area', 'Row', 'Column'],
+                //store: searchStore,
+                itemId: 'CustomerGridSearchfieldId',
+                listeners: {
+                    render: function() {
+                        var me = this;
+                        me.store = GridManager.CustomerGrid.getStore();
+                    }
+                }
+            }
         ]
     }, {
         xtype: 'Pagingtoolbar',
@@ -160,11 +182,11 @@ GridManager.SetCustomerGridSelectionChangeEvent = function(param) {
 Ext.define('chl.Grid.AddUpdateCustomerWin', {
     extend: 'Ext.window.Window',
     title: "添加",
-    defaultFocus: 'CustomerItemId',
+    defaultFocus: 'customer_nameItemId',
     iconCls: '',
     record: false,
     //border: false,
-    height: 500,
+    height: 120,
     width: 830,
     layout: 'vbox',
     modal: true,
@@ -176,7 +198,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
         height: 450,
         width: 810,
         border: false,
-        bodyPadding: 5,
+        bodyPadding: 15,
         defaultType: 'textfield',
         layout: {
             type: 'table',
@@ -204,100 +226,6 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
-        }, {
-            name: 'customize_number_from',
-            fieldLabel: '发放面单号开始',
-            itemId: 'customize_number_fromItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
-        }, {
-            name: 'customize_number_to',
-            fieldLabel: '发放面单号结束',
-            itemId: 'customize_number_toItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
-        }, {
-            name: 'rent_area',
-            fieldLabel: '租贷面积（平米）',
-            itemId: 'rent_areaItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
-        }, {
-            name: 'area_to_order_number',
-            fieldLabel: '面积单量比',
-            itemId: 'area_to_order_numberItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexMoney2Fixed,
-            regexText: '请输入数字'
-        }, {
-            name: 'rent_pre_price',
-            fieldLabel: '房租单价',
-            validateOnBlur: false,
-            colspan: 2,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexMoney2Fixed,
-            regexText: '请输入数字'
-        }, {
-            xtype: 'datefield',
-            minValue: new Date(),
-            name: 'date_start',
-            format: 'Y-m-d',
-            fieldLabel: '开始时间',
-            allowBlank: false,
-            blankText: '不能为空',
-            itemId: 'date_start',
-            vtype: 'daterange',
-            endDateField: 'date_end'
-        }, {
-            xtype: 'datefield',
-            minValue: new Date(),
-            name: 'date_end',
-            format: 'Y-m-d',
-            fieldLabel: '结束时间',
-            allowBlank: false,
-            blankText: '不能为空',
-            itemId: 'date_end',
-            vtype: 'daterange',
-            startDateField: 'date_start'
-        }, {
-            xtype: 'fieldset',
-            colspan: 2,
-            title: '规则',
-            itemId: 'fs_rule',
-            collapsible: true,
-            padding: '2 2 2 5',
-            width: 780,
-            defaults: {
-                labelAlign: 'right',
-                labelPad: 15,
-                xtype: 'fieldset',
-                defaults: {
-                    labelAlign: 'right',
-                    labelPad: 15,
-                    width: 340,
-                    labelWidth: 125,
-                    maxLength: 100,
-                    maxLengthText: '最大长度为100'
-                }
-            },
-            items: [],
-            listeners: {
-                boxready: function(com) {
-                    //var w = com.up('window'); 
-                }
-            }
         }]
     }],
     buttons: [{

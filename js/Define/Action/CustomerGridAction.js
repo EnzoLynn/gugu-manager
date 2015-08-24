@@ -27,13 +27,13 @@ Ext.create('chl.Action.CustomerGridAction', {
     handler: function() {
         var me = this;
         var target = me.getTargetView();
-
-        ActionManager.addCustomerRent(target);
+        var record = target.getSelectionModel().getSelection()[0];
+        ActionManager.editCustomer(target,record);
 
 
     },
     updateStatus: function(selection) {
-         this.setDisabled(selection.length != 1);
+        this.setDisabled(selection.length != 1);
     }
 });
 
@@ -46,12 +46,12 @@ Ext.create('chl.Action.CustomerGridAction', {
         var me = this;
         var target = me.getTargetView();
         var record = target.getSelectionModel().getSelection()[0];
-        ActionManager.addCustomerRent(target,record);
+        ActionManager.addCustomerRent(target, record);
 
 
     },
     updateStatus: function(selection) {
-         this.setDisabled(selection.length != 1);
+        this.setDisabled(selection.length != 1);
     }
 });
 
@@ -101,12 +101,26 @@ ActionManager.addCustomer = function(target) {
     WindowManager.AddUpdateCustomerWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
 
-        WindowManager.AddUpdateCustomerWin.down("#fs_rule").setDisabled(true);
+    });
+};
+//编辑 用户
+ActionManager.editCustomer = function(target,record) {
+    //var record = traget.getStore().getAt(0);
+    WindowManager.AddUpdateCustomerWin = Ext.create('chl.Grid.AddUpdateCustomerWin', {
+        grid: target,
+        iconCls: 'edit',
+        action: 'update',
+        record: null,
+        title: "编辑"
+    });
+    WindowManager.AddUpdateCustomerWin.show(null, function() {
+        //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
+         WindowManager.AddUpdateCustomerWin.down("#formId").loadRecord(record);
     });
 };
 
 //新增 添加合同
-ActionManager.addCustomerRent = function(target,record) {
+ActionManager.addCustomerRent = function(target, record) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateCustomerRentWin = Ext.create('chl.Grid.AddUpdateCustomerRentWin', {
         grid: target,
@@ -117,14 +131,16 @@ ActionManager.addCustomerRent = function(target,record) {
     });
     WindowManager.AddUpdateCustomerRentWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
-        WindowManager.AddUpdateCustomerRentWin.down('CustomerRentGrid').loadGrid();
-        WindowManager.AddUpdateCustomerRentWin.down("#formId").loadRecord(record);   
+        var grid = WindowManager.AddUpdateCustomerRentWin.down('CustomerRentGrid');
+        grid.store.getProxy().extraParams.customer_id = record.data.customer_id;
+        grid.loadGrid();
+        WindowManager.AddUpdateCustomerRentWin.down("#formId").loadRecord(record);
     });
 };
 //添加规则
-ActionManager.editCustomerRule = function(target, record) { 
+ActionManager.editCustomerRule = function(target, record) {
     var param = {
-        'customer_rent_id':record.data.customer_rent_id,
+        'customer_rent_id': record.data.customer_rent_id,
         sessiontoken: GlobalFun.getSeesionToken()
     };
     // 调用
@@ -139,11 +155,11 @@ ActionManager.editCustomerRule = function(target, record) {
             title: "编辑"
         });
         WindowManager.AddUpdateCustomerRuleWin.show(null, function() {
-            Ext.Array.each(data,function(item,index,alls){
-                var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl'+item.key);
-                temp.setText('现有规则:'+item.count); 
+            Ext.Array.each(data, function(item, index, alls) {
+                var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.key);
+                temp.setText('现有规则:' + item.count);
             });
-           
+
             WindowManager.AddUpdateCustomerRuleWin.down("#formId").loadRecord(record);
         });
     }, function(response, opts) {
