@@ -21,29 +21,17 @@ class AdminController extends MY_Controller
     {
         parent::__construct();
 
-        if($this->input->cookie('login_sessiontoken') == session_id() ) {
-
-            $this->admin_id = (int)$_SESSION['admin_id'];
-
-            $admin = $this->admin_model->getAdmin($_SESSION['admin_name']);
+        if($this->input->cookie('login_sessiontoken') != session_id() ) {
             $json = array(
-                'success' => true,
-                'data' => $admin,
-                'total' => 1,
-                'msg' => '登录成功',
-                'code' => '01'
+                'success' => false,
+                'msg' => '请重新登录',
+                'code' => 99
             );
             echo json_encode($json);
             exit;
         }
 
-        $json = array(
-            'success' => false,
-            'msg' => '请重新登录',
-            'code' => 99
-        );
-        echo json_encode($json);
-        exit;
+
 
         //$this->admin_id = (int)$_SESSION['admin_id'];
 
