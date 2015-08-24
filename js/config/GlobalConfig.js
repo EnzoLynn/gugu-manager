@@ -69,63 +69,16 @@ GlobalConfig.Controllers = {
         update: '/data/TestGrid.json',
         destroy: '/data/TestGrid.json',
     },
-    BuryManGrid: {
-        read: '/LoadSysLogGrid',
-        addBuryMan: '/BuryTombstone',
-        updateBuryMan: '/UpdateBuryMan'
-    },
-    RenewManageGrid: {
-        read: '/GetTombstoneRenewManangeLog'
-    },
-    JobManage: {
-        OrderTombstone: '/OrderTombstone',
-        //MaintainTombstone: '/MaintainTombstone',
-        BuryTombstone: '/BuryTombstone',
-        ClearTombstone: '/ClearTombstone',
-        GetOrderJobInfoTombstone: '/GetOrderJobInfoTombstone', //获取墓碑相关的预订信息
-        GetTombstoneJobInfoLog: '/GetTombstoneJobInfoLog', //查询 墓碑相关业务信息 日志
-        EditApplicanter: '/EditApplicanter', //落葬后的修改申请人
-        RenewManageLimit: '/RenewManageLimit', //续交管理费
-        GetTombstoneRenewManangeLog: '/GetTombstoneRenewManangeLog' //获取续交管理费记录
-    },
-    CemeteryAreaGrid: { //区域表
-        create: '/LoadCemeteryAreaGrid',
-        read: '/LoadCemeteryAreaGrid',
-        update: '/LoadCemeteryAreaGrid',
-        destroy: '/DelCemeteryArea',
-        addCemeteryArea: '/AddCemeteryArea',
-        updateCemeteryArea: '/UpdateCemeteryArea',
-        delCemeteryArea: '/DelCemeteryArea'
-    },
+  
     Heartbeat: '/data/Heartbeat.json', //心跳
-    RoleGrid: { //角色表
-        create: '/LoadRoleGrid',
-        read: '/LoadRoleGrid',
-        update: '/LoadRoleGrid',
-        destroy: '/DelRole',
-        addRole: '/AddRole',
-        updateRole: '/UpdateRole',
-        delRole: '/DelRole',
-        LoadFunctions: '/LoadFunctions'
-    },
-    SysLogGrid: { //日志表
-        create: '/LoadSysLogGrid',
-        read: '/LoadSysLogGrid',
-        addUser: '/AddSysLog'
-    },
+    
     User: { //用户登录相关
         GetCurrUserInfo: '/data/login.json',
         CheckUserPassword: '/CheckUserPassword',
         UserLoginOut: '/data/UserLoginOut.json'
     },
     UserGrid: { //用户表
-        create: '/LoadUserGrid',
-        read: '/LoadUserGrid',
-        update: '/LoadUserGrid',
-        destroy: '/DelUser',
-        addUser: '/AddUser',
-        updateUser: '/UpdateUser',
-        delUser: '/DelUser'
+       
     },
     CustomerGrid: { //客户表
         create: globalFix + '/CustomerGrid.json',
@@ -146,38 +99,9 @@ GlobalConfig.Controllers = {
         read: globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json'
-    },
-    TombstoneGrid: { //墓碑表
-        create: '/LoadTombstoneGrid',
-        read: '/LoadTombstoneGrid',
-        update: '/LoadTombstoneGrid',
-        destroy: '/DelTombstone',
-        addTombstone: '/AddTombstone',
-        addTombstoneRowList: '/AddTombstoneRowList',
-        updateTombstone: '/UpdateTombstone',
-        delTombstone: '/DelTombstone',
-        outPutExcelTombstone: '/OutPutExcelTombstone',
-        SortTombstonePng: '/SortTombstonePng', //排序
-        UnBuryPeopleTombstone: '/UnBuryPeopleTombstone', //解除落葬
-        BuryPeopleTombstone: '/BuryPeopleTombstone' //落葬
-    },
-    MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树
-    ExReportListTree: '/LoadExReportListTree', //报表统计树
-    BaseEnumListTree: '/LoadBaseEnumListTree', //基础数据维护树
-    ComboStore: {
-        LoadRoleStore: 'LoadRoleStore', //角色
-        DepartmentStore: 'LoadDepartmentStore', //部门
-        PaymentStatusStore: 'LoadPaymentStatusStore', //付款状态
-        TombstoneTypeStore: 'LoadTombstoneTypeStore', //墓碑类别
-        AreaStore: '/LoadAreaStore', //区域
-        RowStore: '/LoadRowStore', //行
-        ColumnStore: '/LoadColumnStore', //列
-        SecurityLevelStore: '/LoadSecurityLevelStore', //保密等级
-        ServiceLevelStore: '/LoadServiceLevelStore', //服务等级
-        CustomerTypeStore: '/LoadCustomerTypeStore', //客户类别
-        NationalityStore: '/LoadNationalityStore', //国籍
-        CustomerStatusStore: '/LoadCustomerStatusStore' //客户状态
-    }
+    }, 
+    MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
+   
 };
 //全局正则表达式
 GlobalConfig.RegexController = {
