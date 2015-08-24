@@ -23,7 +23,7 @@ class AdminController extends MY_Controller
 
         $this->admin_id = (int)$_SESSION['admin_id'];
 
-        if($_COOKIE['login_sessiontoken'] == session_id() ) {
+        if($this->input->cookie('login_sessiontoken') == session_id() ) {
             $admin = $this->admin_model->getAdmin($_SESSION['admin_name']);
             $json = array(
                 'success' => true,

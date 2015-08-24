@@ -9,15 +9,19 @@
 
 class Customer_model extends CI_Model{
     var $CI;
-    function __construct($table=''){
+    function __construct($table = ''){
         parent::__construct();
         $this->CI = &get_instance();
+        $this->CI = $this->load->model('customer_rent');
     }
 
     function getCustomer($customer_id){
         $query = $this->db->select('*')->where('customer_id', $customer_id);
         $customer = $query->first_row();
-        return $customer;
+
+        $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
+
+        return array_merge($customer, $customer_rent);
     }
 
     function getCustomers($data){
@@ -33,7 +37,14 @@ class Customer_model extends CI_Model{
         $this->db->like($data['filter']);
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer');
-        return $query->result_array();
+        //return $query->result_array();
+        $temp = array();
+        foreach($query->result_array() as $key=>$val) {
+            //$temp[$key] = $val;
+            $customer_rent = $this->CI->customer_rent_model->getCustomerRent($val['customer_rent_id']);
+            $temp[$key] = array_merge($val, $customer_rent);
+        }
+        return $temp;
     }
 
     function getCustomersTotal($data){
@@ -45,4 +56,40 @@ class Customer_model extends CI_Model{
         return $this->db->count_all('customer');
     }
 
+    function addCustomer($data) {
+        return $this->db->insert('customer', $data);
+    }
+
+    function addCustomerAndRent($data) {
+        $customer = array(
+            'customer_name'     => $data['customer_name'],
+            'real_name'     => $data['real_name'],
+            'mobile'        => $data['mobile'],
+            'customize_number_from' => $data['customize_number_form'],
+            'customize_number_to' => $data['customize_number_to'],
+            'customer_rent_id' => 0,
+        );
+        $this->db->insert('customer', $customer);
+        $customer_id =  $this->db->insert_id();
+
+        $customer_rent = array(
+            'customer_id' => $customer_id,
+            'title'        => $data['title'],
+            'rent_area'   => $data['rent_area'],
+            'area_to_order_number' => $data['area_to_order_number'],
+            'rent_pre_price'        => $data['rent_pre_price'],
+            'date_start'            => $data['date_start'],
+            'date_end'              => $data['date_end']
+        );
+        $this->db->insert('customer_rent', $customer_rent);
+        $customer_rent_id =  $this->db->insert_id();
+
+
+        $this->db->update('customer', array('customer_rent_id' => $customer_rent_id))->where('customer_id', $customer_id);
+        return $customer_id;
+    }
+
+    function updateCustomer($customer_id, $data) {
+        return $this->db->update('customer', $data)->where('customer_id', $customer_id);
+    }
 }

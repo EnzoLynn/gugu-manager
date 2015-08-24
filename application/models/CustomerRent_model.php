@@ -48,4 +48,8 @@ class CustomerRent_model extends CI_Model{
         return $this->db->count_all('customer_rent');
     }
 
+    function addCustomerRent($data) {
+        $this->db->insert('customer_rent', $data);
+        return  $this->db->insert_id();
+    }
 }
