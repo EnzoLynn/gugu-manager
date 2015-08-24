@@ -9,7 +9,6 @@ class Login extends CI_Controller {
     }
 
     public function ajaxLogin(){
-        $this->load->model('admin_model');
         $admin_name = $this->input->post('admin_name');
         $admin_pwd = $this->input->post('admin_pwd');
         $admin = $this->admin_model->login($admin_name, $admin_pwd);
