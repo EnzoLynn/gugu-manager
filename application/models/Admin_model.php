@@ -13,6 +13,15 @@ class Admin_model extends CI_Model{
         $this->CI = &get_instance();
     }
 
+    function getAdmin($admin_name){
+        $data = array(
+            'admin_name' => $admin_name
+        );
+        $query = $this->db->select('admin_id,admin_name,is_admin')->get_where('admin', $data);
+        $admin = $query->fetch_row();
+        return $admin;
+    }
+
     function login($admin_name, $admin_pwd){
         $data = array(
             'admin_name' => $admin_name,
