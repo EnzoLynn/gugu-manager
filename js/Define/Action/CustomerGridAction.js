@@ -85,14 +85,14 @@ Ext.create('chl.Action.CustomerGridAction', {
 });
 
 //刷新
-ActionManager.refreshCustomer = function(traget) {
-    traget.loadGrid();
+ActionManager.refreshCustomer = function(target) {
+    target.loadGrid();
 };
 //新增 用户
-ActionManager.addCustomer = function(traget) {
+ActionManager.addCustomer = function(target) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateCustomerWin = Ext.create('chl.Grid.AddUpdateCustomerWin', {
-        grid: traget,
+        grid: target,
         iconCls: 'add',
         action: 'create',
         record: null,
@@ -106,10 +106,10 @@ ActionManager.addCustomer = function(traget) {
 };
 
 //新增 添加合同
-ActionManager.addCustomerRent = function(traget,record) {
+ActionManager.addCustomerRent = function(target,record) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateCustomerRentWin = Ext.create('chl.Grid.AddUpdateCustomerRentWin', {
-        grid: traget,
+        grid: target,
         iconCls: 'add',
         action: 'create',
         record: null,
@@ -122,28 +122,26 @@ ActionManager.addCustomerRent = function(traget,record) {
     });
 };
 //添加规则
-ActionManager.editCustomerRule = function(traget, record) {
-
-    //var record = target.getSelectionModel().getSelection()[0];
+ActionManager.editCustomerRule = function(target, record) { 
     var param = {
+        'customer_rent_id':record.data.customer_rent_id,
         sessiontoken: GlobalFun.getSeesionToken()
     };
     // 调用
-    WsCall.call(GlobalConfig.Controllers.CustomerGrid.getCustomerRule, 'GetCustomerRule', param, function(response, opts) {
+    WsCall.call(GlobalConfig.Controllers.CustomerGrid.GetCustomerRuleByRentId, 'GetCustomerRuleByRentId', param, function(response, opts) {
 
         var data = response.data;
         WindowManager.AddUpdateCustomerRuleWin = Ext.create('chl.Grid.AddUpdateCustomerRuleWin', {
-            grid: traget,
+            grid: target,
             iconCls: 'edit',
             record: record,
             action: 'update',
             title: "编辑"
         });
         WindowManager.AddUpdateCustomerRuleWin.show(null, function() {
-            Ext.Array.each(data.data,function(item,index,alls){
-                var temp = WindowManager.AddUpdateCustomerRuleWin.down('lbl'+item.key);
-                temp.setText('现有规则:'+item.count);
-                temp.priceType = item.priceType;
+            Ext.Array.each(data,function(item,index,alls){
+                var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl'+item.key);
+                temp.setText('现有规则:'+item.count); 
             });
            
             WindowManager.AddUpdateCustomerRuleWin.down("#formId").loadRecord(record);

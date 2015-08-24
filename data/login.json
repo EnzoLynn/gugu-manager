@@ -1,8 +1,8 @@
 {
     "success": true,
     "data": [{
-    	"Id":"0",
-    	"Name":"testName"
+    	"admin_id":"0",
+    	"admin_name":"testName"
     }],
     "total": "200",
     "msg": "成功",
