@@ -14,6 +14,7 @@ GridManager.CreateExpressPanel = function() {
         items.push({
             title: GlobalConfig.Province[key],
             code: key,
+            layout:'hbox',
             items: [{
                 xtype: 'label',
                 text: '现有规则:0',
@@ -28,6 +29,7 @@ GridManager.CreateExpressPanel = function() {
     GridManager.ExpressPanel = Ext.create('chl.panel.ExpressPanel', {
         bodyPadding: 15,
         autoScroll: true,
+        layout:'vbox',
         defaults: {
             xtype: 'fieldset',
             width: 100,

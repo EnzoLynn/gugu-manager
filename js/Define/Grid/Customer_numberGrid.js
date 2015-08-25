@@ -64,7 +64,7 @@ Ext.create('Ext.data.Store', {
         },
         actionMethods: {
             create: "POST",
-            read: "GET",
+            read: "POST",
             update: "POST",
             destroy: "POST"
         },
