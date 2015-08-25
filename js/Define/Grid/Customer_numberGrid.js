@@ -140,7 +140,17 @@ Ext.define('chl.gird.Customer_numberGrid', {
         }
     },
     tbar: [{
-        text: '添加客户面单号范围',
+        text: '刷新',
+        tooltip:'刷新',
+        iconCls: 'refresh',
+        handler: function() {
+            
+            Ext.StoreMgr.lookup('Customer_numberStoreId').load();
+
+        }
+    },{
+        text: '添加',
+        tooltip:'添加客户面单号范围',
         iconCls: 'add',
         handler: function() {
             Customer_numberGridRowEditing.cancelEdit();
@@ -164,6 +174,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
     }, {
         itemId: 'removeCustomer_number',
         text: '删除',
+        tooltip:'删除',
         iconCls: 'remove',
         handler: function() {
             var me = this;
