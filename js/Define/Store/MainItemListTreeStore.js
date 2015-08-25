@@ -2,7 +2,7 @@
 
 for (key in GlobalConfig.Province) {
     MainItemListTreeStoreCostChildrenArr.push({
-        id: '003_' + key,
+        id: '0031_' + key,
         text: GlobalConfig.Province[key],
         leaf: true
     });

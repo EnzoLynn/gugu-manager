@@ -90,7 +90,7 @@ GlobalConfig.Controllers = {
         loadRuleCount: globalFix + '/loadRuleCount.json',
         addCustomer: '/customer/add',//globalFix + '/AddCustomer.json',
         updateCustomer: globalFix + '/UpdateCustomer.json',
-        addCustomerRent: globalFix + '/addCustomerRent.php',
+        addCustomerRent: '/customerRent/add',//globalFix + '/addCustomerRent.php',
         addCustomerRule: globalFix + '/AddCustomerRule.php',
         delCustomerRule: globalFix + '/DelCustomerRule.php',
         delCustomer: globalFix + '/DelCustomer.json',
