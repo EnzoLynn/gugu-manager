@@ -25,7 +25,7 @@ Ext.create('Ext.data.Store', {
     filterMap: Ext.create('Ext.util.HashMap'),
     pageSize: GlobalConfig.GridPageSize,
     autoSync: false,
-    autoLoad: true,
+    autoLoad: false,
     remoteSort: true, //排序通过查询数据库
     sorters: [{
         property: 'customer_id',
@@ -327,5 +327,10 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
             Customer_numberGridRowEditing.cancelEdit();
             me.up('window').close();
         }
-    }]
+    }],
+    listeners:{
+        show:function(win){
+            win.down('Customer_numberGrid').loadGrid();
+        }
+    }
 });
