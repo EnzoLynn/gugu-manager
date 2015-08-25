@@ -9,13 +9,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class CustomerNumber extends AdminController {
 
+    public function __construct(){
+        parent::__construct();
+        $this->load->model('customer_number_model');
+    }
+
     public function index(){
 
     }
 
     public function getList(){
-        $this->load->model('customer_number_model');
-
         $data = array(
             'page' => (int)$this->input->post('page'),
             'limit'=> (int)$this->input->post('limit'),
@@ -39,8 +42,6 @@ class CustomerNumber extends AdminController {
     }
 
     public function add() {
-        $this->load->model('customer_number_model');
-
         $data = array(
             'customer_id' => $this->input->post('customer_id'),
             'customize_number_prefix' => $this->input->post('customize_number_prefix'),
@@ -50,5 +51,23 @@ class CustomerNumber extends AdminController {
         );
 
         $this->customer_model->addCustomerNumber($data);
+    }
+
+    public function update() {
+        $number_id = $this->input->post('number_id');
+        $data = array(
+            'customer_id' => $this->input->post('customer_id'),
+            'customize_number_prefix' => $this->input->post('customize_number_prefix'),
+            'customize_number_from' => $this->input->post('customize_number_from'),
+            'customize_number_to' => $this->input->post('customize_number_to'),
+            'customize_number_suffix' => $this->input->post('customize_number_suffix')
+        );
+
+        $this->customer_number_model->updateCustomerNumber($number_id, $data);
+    }
+
+    public function delete() {
+        $number_id = $this->input->post('number_id');
+        $this->customer_number_model->deleteCustomerNumber($number_id);
     }
 }

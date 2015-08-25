@@ -3,12 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class CustomerRent extends AdminController {
 
+    public function __construct(){
+        parent::__construct();
+        $this->load->model('customer_rent_model');
+    }
+
     public function index(){
 
     }
 
     public function getList(){
-        $this->load->model('customer_rent_model');
 
         $data = array(
             'page' => (int)$this->input->post('page'),
@@ -33,8 +37,6 @@ class CustomerRent extends AdminController {
     }
 
     public function add() {
-        $this->load->model('customer_rent_model');
-
         $data = array(
             'customer_id' => $this->input->post('customer_id'),
             'title' => $this->input->post('title'),
@@ -45,6 +47,26 @@ class CustomerRent extends AdminController {
             'date_end' => $this->input->post('date_end')
         );
 
-        $this->customer_model->addCustomer($data);
+        $this->customer_rent_model->addCustomerRent($data);
+    }
+
+    public function update() {
+        $customer_rent_id = $this->input->post('customer_rent_id');
+        $data = array(
+            'customer_id' => $this->input->post('customer_id'),
+            'title' => $this->input->post('title'),
+            'rent_area' => $this->input->post('rent_area'),
+            'area_to_order_number' => $this->input->post('area_to_order_number'),
+            'rent_pre_price' => $this->input->post('rent_pre_price'),
+            'date_start' => $this->input->post('date_start'),
+            'date_end' => $this->input->post('date_end')
+        );
+
+        $this->customer_rent_model->updateCustomer($data);
+    }
+
+    public function delete() {
+        $customer_rent_id = $this->input->post('customer_rent_id');
+        $this->customer_rent_model->deleteCustomerRent($customer_rent_id);
     }
 }
