@@ -301,7 +301,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
     iconCls: '',
     record: false,
     //border: false,
-    height: 700,
+    height: 650,
     width: 830,
     layout: 'vbox',
     modal: true,
@@ -311,7 +311,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         xtype: 'form',
         itemId: 'formId',
         autoScroll: true,
-        height: 210,
+        height: 170,
         width: 810,
         border: false,
         bodyPadding: 5,
@@ -342,22 +342,6 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
 
             xtype: 'displayfield',
             itemId: 'mobileItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空'
-        }, {
-            name: 'customize_number_from',
-            fieldLabel: '发放面单号起始票号',
-            xtype: 'displayfield',
-            itemId: 'customize_number_fromItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空'
-        }, {
-            name: 'customize_number_to',
-            fieldLabel: '发放面单号截止票号',
-            xtype: 'displayfield',
-            itemId: 'customize_number_toItemId',
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'

@@ -99,10 +99,10 @@ GlobalConfig.Controllers = {
         uploadCustomerExcel: globalFix + '/UploadCustomerExcel.json'
     },
     Customer_numberGrid:{
-        create: globalFix + '/Customer_numberGrid.json',
+        create: globalFix + '/Customer_numberGridadd',
         read: globalFix + '/Customer_numberGrid.json',
-        update: globalFix + '/Customer_numberGrid.json',
-        destroy: globalFix + '/Customer_numberGrid.json'
+        update: globalFix + '/Customer_numberGridupdate',
+        destroy: globalFix + '/Customer_numberGriddel'
     },
     CustomerRentGrid: { //合同
         create: globalFix + '/CustomerRentGrid.json',
