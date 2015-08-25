@@ -105,8 +105,8 @@ GlobalConfig.Controllers = {
         destroy: globalFix + '/Customer_numberGriddel'
     },
     CustomerRentGrid: { //合同
-        create: globalFix + '/CustomerRentGrid.json',
-        read: globalFix + '/CustomerRentGrid.json',
+        create: '/customerRent/add',//globalFix + '/CustomerRentGrid.json',
+        read: '/customerRent/getList',//globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json'
     },
