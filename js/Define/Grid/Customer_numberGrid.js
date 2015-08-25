@@ -291,13 +291,14 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                 clicksToMoveEditor: 1,
                 autoCancel: true,
                 listeners: {
-                    edit: function(editor, obj, opts) {
+                    edit: function(editor, e, opts) {
                         //obj.record.commit();
                         //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
                         //Ext.StoreMgr.lookup('Customer_numberGridStore').sort('dispName');
 
                         Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
                             success: function(batch, opts) {
+                            	e.record.commit();
                                 if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
                                     sm.select(0);
                                 }
@@ -307,10 +308,10 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                             }
                         });
                     },
-                    canceledit:function(){
-                    	
+                    canceledit:function(editor, e, opts){
+
                     },
-                    beforeedit: function(editor, obj, opts) {
+                    beforeedit: function(editor, e, opts) {
                         Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';
                         Customer_numberGridRowEditing.getEditor().cancelBtnText = '取消';
                         Customer_numberGridRowEditing.getEditor().errorsText = '错误';
