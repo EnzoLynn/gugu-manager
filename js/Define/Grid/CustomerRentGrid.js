@@ -33,11 +33,6 @@ Ext.define('chl.gird.CustomerRentGrid', {
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }, {
-        text: '合同名',
-        dataIndex: 'title',
-        renderer: GlobalFun.UpdateRecord,
-        width: 100
-    }, {
         text: '租贷面积(平米)',
         dataIndex: 'rent_area',
         renderer: GlobalFun.UpdateRecord,

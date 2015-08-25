@@ -60,7 +60,7 @@ Ext.create('Ext.data.Store', {
             type: 'json',
             writeAllFields: false,
             allowSingle: false
-                //			root: 'dataset'
+                //          root: 'dataset'
         },
         actionMethods: {
             create: "POST",
@@ -298,7 +298,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
 
                         Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
                             success: function(batch, opts) {
-                            	e.record.commit();
+                                e.record.commit();
                                 if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
                                     sm.select(0);
                                 }
@@ -308,7 +308,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                             }
                         });
                     },
-                    canceledit:function(editor, e, opts){
+                    canceledit: function(editor, e, opts) {
 
                     },
                     beforeedit: function(editor, e, opts) {
@@ -328,8 +328,12 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
             me.up('window').close();
         }
     }],
-    listeners:{
-        show:function(win){
+    listeners: {
+        show: function(win) {
+            var grid = win.down('Customer_numberGrid');
+            var store = grid.getStore();
+
+            store.getProxy().extraParams.customer_id = win.record.data.customer_id;
             win.down('Customer_numberGrid').loadGrid();
         }
     }

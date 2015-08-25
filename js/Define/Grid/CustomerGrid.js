@@ -431,6 +431,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
                     });
                 }
             }
+        },{
+            name: 'customer_id',
+            xtype: 'hidden' 
         }]
     }, {
         xtype: 'CustomerRentGrid',
