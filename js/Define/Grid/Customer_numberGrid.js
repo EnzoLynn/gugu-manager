@@ -24,13 +24,13 @@ Ext.create('Ext.data.Store', {
     storeId: 'Customer_numberStoreId',
     filterMap: Ext.create('Ext.util.HashMap'),
     pageSize: GlobalConfig.GridPageSize,
+    autoSync: false,
     autoLoad: false,
     remoteSort: true, //排序通过查询数据库
     sorters: [{
         property: 'customer_id',
         direction: 'DESC'
     }],
-    autoSync: false,
     proxy: {
         type: 'ajax',
         api: GlobalConfig.Controllers.Customer_numberGrid,
@@ -99,7 +99,8 @@ Ext.create('Ext.data.Store', {
 });
 
 
- 
+var Customer_numberGridRowEditing;
+
 
 Ext.define('chl.gird.Customer_numberGrid', {
     extend: 'Ext.grid.Panel',
@@ -132,9 +133,58 @@ Ext.define('chl.gird.Customer_numberGrid', {
         selectionchange: function(view, seles, op) {
             if (!seles[0])
                 return;
+
+            var me = this;
+            me.down('#removeCustomer_number').setDisabled(!seles.length);
             //ActionBase.updateActions('CustomerRentGridAction', seles);
         }
     },
+    tbar: [{
+        text: '添加客户面单号范围',
+        iconCls: 'employee-add',
+        handler: function() {
+            Customer_numberGridRowEditing.cancelEdit();
+
+            // Create a record instance through the ModelManager
+            var r = Ext.ModelManager.create({
+                number_id: '',
+                customer_id: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_id,
+                customer_name: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_name,
+                customize_number_prefix: '',
+                customize_number_from: '',
+                customize_number_to: '',
+                customize_number_suffix: ''
+            }, 'chl.Model.Customer_numberGridModel');
+
+            Ext.StoreMgr.lookup('Customer_numberStoreId').insert(0, r);
+
+            Customer_numberGridRowEditing.startEdit(0, 0);
+
+        }
+    }, {
+        itemId: 'removeCustomer_number',
+        text: '删除',
+        iconCls: 'employee-remove',
+        handler: function() {
+            var me = this;
+            var sm = me.up('Customer_numberGrid').getSelectionModel();
+            Customer_numberGridRowEditing.cancelEdit();
+            var records = sm.getSelection();
+            Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
+            Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
+                success: function(batch, opts) {
+                    if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
+                        sm.select(0);
+                    }
+                },
+                failure: function(batch, opts) {
+                    Ext.Msg.alert('失败', action.result.msg);
+                }
+            });
+
+        },
+        disabled: true
+    }],
     columns: [{
         header: '编号',
         dataIndex: 'number_id',
@@ -220,7 +270,6 @@ Ext.define('chl.gird.Customer_numberGrid', {
     }
 });
 
-var Customer_numberGridRowEditing;
 //添加客户面单号范围编辑
 Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
     extend: 'Ext.window.Window',
@@ -230,7 +279,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
     //border: false,
     height: 700,
     width: 830,
-    bodyPadding:10,
+    bodyPadding: 10,
     layout: 'fit',
     modal: true,
     resizable: false,
@@ -243,8 +292,23 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                 autoCancel: true,
                 listeners: {
                     edit: function(editor, obj, opts) {
+                        //obj.record.commit();
                         //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
                         //Ext.StoreMgr.lookup('Customer_numberGridStore').sort('dispName');
+
+                        Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
+                            success: function(batch, opts) {
+                                if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
+                                    sm.select(0);
+                                }
+                            },
+                            failure: function(batch, opts) {
+                                Ext.Msg.alert('失败', action.result.msg);
+                            }
+                        });
+                    },
+                    canceledit:function(){
+                    	
                     },
                     beforeedit: function(editor, obj, opts) {
                         Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';
@@ -262,5 +326,10 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
             Customer_numberGridRowEditing.cancelEdit();
             me.up('window').close();
         }
-    }]
+    }],
+    listeners: {
+        show: function(com) {
+            com.down('Customer_numberGrid').loadGrid();
+        }
+    }
 });
