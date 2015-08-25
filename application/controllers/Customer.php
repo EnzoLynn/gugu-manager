@@ -37,7 +37,7 @@ class Customer extends CI_Controller {
 
         if($this->customer_model->existCustomerName($this->input->post('customer_name'))) {
             $json = array(
-                'success' => true,
+                'success' => false,
                 'data' => [],
                 'total' => 0,
                 'msg' => '客户名已存在',

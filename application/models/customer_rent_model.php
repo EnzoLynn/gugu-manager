@@ -37,7 +37,7 @@ class Customer_rent_model extends CI_Model{
 
         $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
         $this->db->where('customer_id', $data['customer_id']);
-        $this->db->like($data['filter']);
+        //$this->db->like($data['filter']);
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer_rent');
         return $query->result_array();
@@ -49,7 +49,7 @@ class Customer_rent_model extends CI_Model{
             'filter' => $data['filter']
         );
         $this->db->where('customer_id', $data['customer_id']);
-        $this->db->like($data['filter']);
+        //$this->db->like($data['filter']);
         return $this->db->count_all('customer_rent');
     }
 
