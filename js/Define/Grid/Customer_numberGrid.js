@@ -300,21 +300,11 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                 autoCancel: true,
                 listeners: {
                     edit: function(editor, e, opts) {
-                        //obj.record.commit();
+                        //e.record.commit();
                         //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
                         //Ext.StoreMgr.lookup('Customer_numberGridStore').sort('dispName');
 
-                        Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
-                            success: function(batch, opts) {
-                                e.record.commit();
-                                if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
-                                    sm.select(0);
-                                }
-                            },
-                            failure: function(batch, opts) {
-                                Ext.Msg.alert('失败', action.result.msg);
-                            }
-                        });
+                        e.store.sync();
                     },
                     canceledit: function(editor, e, opts) {
 
