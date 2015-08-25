@@ -34,13 +34,24 @@ class Customer extends CI_Controller {
 
     public function add() {
         $this->load->model('customer_model');
+
+        if($this->customer_model->existCustomerName($this->input->post('customer_name'))) {
+            $json = array(
+                'success' => true,
+                'data' => [],
+                'total' => 0,
+                'msg' => '客户名已存在',
+                'code' => '10'
+            );
+            echo json_encode($json);
+            exit;
+        }
+
         $data = array(
             'customer_name' => $this->input->post('customer_name'),
             'real_name' => $this->input->post('real_name'),
             'mobile' => $this->input->post('mobile')
         );
-
-        print_r($data);exit;
 
         $this->customer_model->addCustomer($data);
     }
