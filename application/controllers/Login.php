@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class Login extends MY_Controller {
 
     public function index()
     {
@@ -9,9 +9,16 @@ class Login extends CI_Controller {
     }
 
     public function ajaxLogin() {
-        if ($this->input->get_post('sessiontoken')) {
+        $admin = array();
+        if($this->input->post('admin_name') && $this->input->post('admin_pwd')) {
+            $admin_name = $this->input->post('admin_name');
+            $admin_pwd = $this->input->post('admin_pwd');
+            $admin = $this->admin_model->login($admin_name, $admin_pwd);
+        }else if($this->input->get_post('sessiontoken')){
             $session = $this->session_token_model->getSession($this->input->get_post('sessiontoken'));
             $admin = $this->admin_model->getAdmin($session['admin_name']);
+        }
+
 //
 //            $json = array(
 //                'success' => false,
@@ -20,21 +27,6 @@ class Login extends CI_Controller {
 //                'code' => 'aaa'
 //            );
 //            echo json_encode($json);exit;
-
-        } else {
-            $admin_name = $this->input->post('admin_name');
-            $admin_pwd = $this->input->post('admin_pwd');
-            $admin = $this->admin_model->login($admin_name, $admin_pwd);
-
-            $json = array(
-                'success' => false,
-                'total' => 1,
-                'msg' => session_id(),
-                'code' => 'aaa'
-            );
-            echo json_encode($json);exit;
-
-        }
 
         if($admin) {
             $data = array(
@@ -45,8 +37,8 @@ class Login extends CI_Controller {
             );
             $this->session_token_model->setSession($data);
 
-            $this->input->cookie('login_sessiontoken', session_id(), 60*60*24);
-            $this->input->cookie('login_username', $admin['admin_name'], 60*60*24);
+            set_cookie('login_sessiontoken', session_id(), 60*60*24);
+            set_cookie('login_username', $admin['admin_name'], 60*60*24);
 
             $json = array(
                 'success' => true,

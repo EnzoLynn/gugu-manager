@@ -17,8 +17,10 @@ class Admin_model extends CI_Model{
         $data = array(
             'admin_name' => $admin_name
         );
-        $query = $this->db->select('admin_id,admin_name,is_admin')->get('admin')->where($data);
-        $admin = $query->fetch_row();
+        $this->db->select('admin_id,admin_name,is_admin');
+        $this->db->where($data);
+        $query = $this->db->get('admin');
+        $admin = $query->first_row();
         return $admin;
     }
 
