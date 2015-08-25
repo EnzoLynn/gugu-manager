@@ -57,10 +57,7 @@ Ext.create('Ext.data.Store', {
             totalProperty: 'total'
         },
         writer: {
-            type: 'json',
-            writeAllFields: false,
-            allowSingle: false
-                //          root: 'dataset'
+            type: 'json' 
         },
         actionMethods: {
             create: "POST",
