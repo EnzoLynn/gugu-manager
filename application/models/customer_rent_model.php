@@ -57,4 +57,14 @@ class Customer_rent_model extends CI_Model{
         $this->db->insert('customer_rent', $data);
         return  $this->db->insert_id();
     }
+
+    function updateCustomerRent($customer_rent_id, $data) {
+        $this->db->where('customer_rent_id', $customer_rent_id);
+        return $this->db->update('customer_rent', $data);
+    }
+
+    function deleteCustomerRent($customer_rent_id) {
+        $this->db->where('customer_rent_id', $customer_rent_id);
+        return $this->db->delete('customer_rent');
+    }
 }
