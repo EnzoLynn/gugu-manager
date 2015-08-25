@@ -103,7 +103,7 @@ var Customer_numberGridRowEditing;
 
 
 Ext.define('chl.gird.Customer_numberGrid', {
-    extend: 'Ext.grid.Panel',
+     extend: 'chl.grid.BaseGrid',
     alternateClassName: ['Customer_numberGrid'],
     alias: 'widget.Customer_numberGrid',
     store: 'Customer_numberStoreId',
