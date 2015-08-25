@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Customer extends AdminController {
+class Customer extends CI_Controller {
 
     public function index()
     {
@@ -9,7 +9,7 @@ class Customer extends AdminController {
     }
 
     public function getList(){
-        $this->load->model('customer');
+        $this->load->model('customer_model');
 
         $data = array(
             'page' => int($this->input->post('page')),
@@ -33,7 +33,7 @@ class Customer extends AdminController {
     }
 
     public function add() {
-        $this->load->model('customer');
+        $this->load->model('customer_model');
 
         $this->customer_model->addCustomer($this->input()->post());
     }

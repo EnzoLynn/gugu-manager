@@ -8,7 +8,7 @@
 
 class Admin_model extends CI_Model{
     var $CI;
-    function __construct($table=''){
+    function __construct(){
         parent::__construct();
         $this->CI = &get_instance();
     }
@@ -17,7 +17,7 @@ class Admin_model extends CI_Model{
         $data = array(
             'admin_name' => $admin_name
         );
-        $query = $this->db->select('admin_id,admin_name,is_admin')->get_where('admin', $data);
+        $query = $this->db->select('admin_id,admin_name,is_admin')->get('admin')->where($data);
         $admin = $query->fetch_row();
         return $admin;
     }

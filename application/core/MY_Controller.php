@@ -21,15 +21,15 @@ class AdminController extends MY_Controller
     {
         parent::__construct();
 
-        if($this->input->cookie('login_sessiontoken') != session_id() ) {
-            $json = array(
-                'success' => false,
-                'msg' => '请重新登录',
-                'code' => 99
-            );
-            echo json_encode($json);
-            exit;
-        }
+//        if($this->input->cookie('login_sessiontoken') != session_id() ) {
+//            $json = array(
+//                'success' => false,
+//                'msg' => '请重新登录',
+//                'code' => 99
+//            );
+//            echo json_encode($json);
+//            exit;
+//        }
 
 
 

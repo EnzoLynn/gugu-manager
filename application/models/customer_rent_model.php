@@ -23,8 +23,8 @@ class Customer_rent_model extends CI_Model{
     function getCustomerRents($data){
         $data = array(
             'customer_id' => (int)$data['customer_id'],
-            'page' => int($data['page']),
-            'limit'=> int($data['limit']),
+            'page' => (int)$data['page'],
+            'limit'=> (int)$data['limit'],
             'sort' => $data['sort'],
             'dir'  => $data['dir'],
             'filter' => $data['filter']

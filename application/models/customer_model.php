@@ -9,10 +9,10 @@
 
 class Customer_model extends CI_Model{
     var $CI;
-    function __construct($table = ''){
+    public function __construct(){
         parent::__construct();
         $this->CI = &get_instance();
-        $this->CI = $this->load->model('customer_rent');
+        $this->CI->load->model('customer_rent_model');
     }
 
     function getCustomer($customer_id){
@@ -26,8 +26,8 @@ class Customer_model extends CI_Model{
 
     function getCustomers($data){
         $data = array(
-            'page' => int($data['page']),
-            'limit'=> int($data['limit']),
+            'page' => (int)$data['page'],
+            'limit'=> (int)$data['limit'],
             'sort' => $data['sort'],
             'dir'  => $data['dir'],
             'filter' => $data['filter']
