@@ -9,29 +9,21 @@ Ext.define('chl.panel.ExpressPanel', {
 //根据传入参数创建客户表，返回自身
 GridManager.CreateExpressPanel = function() {
     var items = [];
-    Ext.Array.each(MainItemListTreeStoreCostChildrenArr, function(item, index) {
+    for (key in GlobalConfig.Province) {
+        
         items.push({
-            text: item.text,
-            myval: item.id,
-            handler: function(com) {
-                var node = TreeManager.MainItemListTree.getStore().getNodeById(com.myval);
-                var parentNode = node.parentNode;
-                if (parentNode.isExpanded()) {
-                    TreeManager.MainItemListTree.getSelectionModel().select(node, true);
-                } else {
-                    parentNode.expand(false, function() {
-                        TreeManager.MainItemListTree.getSelectionModel().select(node, true);
-                    });
-                }
-            }
+            title:GlobalConfig.Province[key],
+            code:key
         });
-    });
+    }
+
     GridManager.ExpressPanel = Ext.create('chl.panel.ExpressPanel', {
         bodyPadding: 15,
+        autoScroll:true,
         defaults: {
-            xtype: 'button',
+            xtype: 'fieldset',
             width: 100,
-            margin:'10 10 10 10'
+            margin: '10 10 10 10'
         },
         items: items
     });
