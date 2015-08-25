@@ -43,12 +43,15 @@ class CustomerNumber extends AdminController {
 
     public function add() {
         $data = array(
-            'customer_id' => $this->input->post('customer_id'),
-            'customize_number_prefix' => $this->input->post('customize_number_prefix'),
-            'customize_number_from' => $this->input->post('customize_number_from'),
-            'customize_number_to' => $this->input->post('customize_number_to'),
-            'customize_number_suffix' => $this->input->post('customize_number_suffix')
+            'customer_id' => $this->input->get_post('customer_id'),
+            'customize_number_prefix' => $this->input->get_post('customize_number_prefix'),
+            'customize_number_from' => $this->input->get_post('customize_number_from'),
+            'customize_number_to' => $this->input->get_post('customize_number_to'),
+            'customize_number_suffix' => $this->input->get_post('customize_number_suffix')
         );
+
+        print_r($_POST);
+        print_r($data);exit;
 
         $this->customer_number_model->addCustomerNumber($data);
         $json = array(
