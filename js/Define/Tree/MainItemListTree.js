@@ -89,13 +89,29 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
             return;
         }
         if (seles[0].data.id == "0031") {
-            GlobalFun.TreeSelChangeGrid('ExpressPanel', GridManager.ExpressPanel, '省份', true);
+            GlobalFun.TreeSelChangeGrid('ExpressPanel', GridManager.ExpressPanel, '各省规则', true);
+            var param = {
+                'customer_rent_id': record.data.customer_rent_id,
+                sessiontoken: GlobalFun.getSeesionToken()
+            };
+            // 调用
+            WsCall.call(GlobalConfig.Controllers.ExpressPanel.GetCustomerRuleByRentId, 'GetCustomerRuleByRentId', param, function(response, opts) {
+
+                var data = response.data;
+
+
+                Ext.Array.each(data, function(item, index, alls) {
+                    var temp = GridManager.ExpressPanel.down('#lbl' + item.key);
+                    temp.setText('现有规则:' + item.count);
+                }); 
+            }, function(response, opts) {
+                if (!GlobalFun.errorProcess(response.code)) {
+                    Ext.Msg.alert('失败', response.msg);
+                }
+            }, true, false, GridManager.ExpressPanel.el);
             return;
         }
 
-        if (seles[0].data.id.indexOf("003_") != -1) {
-
-        }
 
         //业务管理
         // if (seles[0].data.id == 2) {

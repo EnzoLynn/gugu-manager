@@ -13,7 +13,15 @@ GridManager.CreateExpressPanel = function() {
 
         items.push({
             title: GlobalConfig.Province[key],
-            code: key
+            code: key,
+            items: [{
+                xtype: 'label',
+                text: '现有规则:0',
+                itemId: 'lbl' + key
+            }, {
+                xtype:'button',
+                text:'添加规则'
+            }]
         });
     }
 
@@ -705,5 +713,5 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
             var me = this;
             me.up('window').close();
         }
-    }]
+    }] 
 });

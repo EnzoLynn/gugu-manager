@@ -110,6 +110,9 @@ GlobalConfig.Controllers = {
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json'
     },
+    ExpressPanel:{
+        
+    },
     Tracking_numberGrid: { //票号 票据
         create: globalFix + '/traking_numberGrid.json',
         read: globalFix + '/traking_numberGrid.json',
