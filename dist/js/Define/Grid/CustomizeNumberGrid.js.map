@@ -1,0 +1,1 @@
+{"version":3,"file":"CustomizeNumberGrid.js","sources":["../../../../js/Define/Grid/CustomizeNumberGrid.js"],"names":["Ext","define","extend","idProperty","alternateClassName","fields","name"],"mappings":"AAAAA,IAAIC,OAAO,sCACVC,OAAQ,iBACRC,WAAY,YACZC,oBAAqB,4BACrBC,SACCC,KAAM,cAENA,KAAM,gBAENA,KAAM,4BAENA,KAAM,0BAENA,KAAM,wBAENA,KAAM"}

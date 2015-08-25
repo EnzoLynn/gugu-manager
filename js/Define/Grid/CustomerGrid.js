@@ -1,7 +1,10 @@
 //创建一个上下文菜单
 var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshCustomer'), '-',
-        ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
+        ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), 
+        '-', ActionBase.getAction('editCustomer_number'), 
+        ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
+
     ]
 });
 
@@ -42,8 +45,11 @@ Ext.define('chl.gird.CustomerGrid', {
         layout: {
             overflowHandler: 'Menu'
         },
-        items: [ActionBase.getAction('refreshCustomer'),
-            ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule'), '->', {
+        items: [ActionBase.getAction('refreshCustomer'), '-',
+            ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), '-', 
+            ActionBase.getAction('editCustomer_number'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
+
+            , '->', {
                 fieldLabel: '按客户名查找',
                 text: '按客户名查找', //用于控制工具栏使用
                 width: 300,
@@ -126,40 +132,35 @@ GridManager.CreateCustomerGrid = function(param) {
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }, {
-        text: '发放面单号开始',
-        dataIndex: 'customize_number_from',
-        renderer: GlobalFun.UpdateRecord,
-        width: 100
-    }, {
-        text: '发放面单号结束',
-        dataIndex: 'customize_number_to',
-        renderer: GlobalFun.UpdateRecord,
-        width: 100
-    }, {
         text: '房租单价',
         dataIndex: 'rent_area',
         renderer: GlobalFun.UpdateRecord,
-        width: 100
+        width: 100,
+        sortable:false
     }, {
         text: '面积单量比',
         dataIndex: 'area_to_order_number',
         renderer: GlobalFun.UpdateRecord,
-        width: 100
+        width: 100,
+        sortable:false
     }, {
         text: '房租单价',
         dataIndex: 'rent_pre_price',
         renderer: GlobalFun.UpdateRecord,
-        width: 100
+        width: 100,
+        sortable:false
     }, {
         text: '开始日期',
         dataIndex: 'date_start',
         renderer: GlobalFun.UpdateRecord,
-        width: 100
+        width: 100,
+        sortable:false
     }, {
         text: '结束日期',
         dataIndex: 'date_end',
         renderer: GlobalFun.UpdateRecord,
-        width: 100
+        width: 100,
+        sortable:false
     }];
     GridManager.CustomerGrid = Ext.create('chl.gird.CustomerGrid',
         GridManager.BaseGridCfg('CustomerGrid', 'CustomerGridState', tmpArr));
@@ -186,7 +187,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
     iconCls: '',
     record: false,
     //border: false,
-    height: 160,
+    height: 120,
     width: 830,
     layout: 'vbox',
     modal: true,
@@ -226,24 +227,6 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
-        }, {
-            name: 'customize_number_from',
-            fieldLabel: '发放面单号起始票号', 
-            itemId: 'customize_number_fromItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
-        }, {
-            name: 'customize_number_to',
-            fieldLabel: '发放面单号截止票号', 
-            itemId: 'customize_number_toItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
         }]
     }],
     buttons: [{
@@ -305,6 +288,11 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
     }]
 });
 
+
+
+
+
+
 // 添加合同
 Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
     extend: 'Ext.window.Window',
@@ -364,9 +352,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             itemId: 'customize_number_fromItemId',
             validateOnBlur: false,
             allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
+            blankText: '不能为空'
         }, {
             name: 'customize_number_to',
             fieldLabel: '发放面单号截止票号',
@@ -374,9 +360,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             itemId: 'customize_number_toItemId',
             validateOnBlur: false,
             allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
+            blankText: '不能为空'
         }, {
             name: 'rent_area',
             fieldLabel: '租贷面积（平米）',

@@ -1,0 +1,2 @@
+Ext.define("chl.Model.CustomizeNumberGridModel",{extend:"Ext.data.Model",idProperty:"number_id",alternateClassName:["CustomizeNumberGridModel"],fields:[{name:"number_id"},{name:"customer_id"},{name:"customize_number_prefix"},{name:"customize_number_from"},{name:"customize_number_to"},{name:"customize_number_suffix"}]});
+//# sourceMappingURL=CustomizeNumberGrid.js.map

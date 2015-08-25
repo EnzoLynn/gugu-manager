@@ -98,6 +98,12 @@ GlobalConfig.Controllers = {
         getCustomerRule: globalFix + '/GetCustomerRule.json',
         uploadCustomerExcel: globalFix + '/UploadCustomerExcel.json'
     },
+    Customer_numberGrid:{
+        create: globalFix + '/Customer_numberGrid.json',
+        read: globalFix + '/Customer_numberGrid.json',
+        update: globalFix + '/Customer_numberGrid.json',
+        destroy: globalFix + '/Customer_numberGrid.json'
+    },
     CustomerRentGrid: { //合同
         create: globalFix + '/CustomerRentGrid.json',
         read: globalFix + '/CustomerRentGrid.json',
@@ -121,6 +127,8 @@ GlobalConfig.RegexController = {
     regexNumber: /^\d*$/,
     // 数字验证用正则表达式
     regexNumberF: /^([-]\d*|\d*)$/,
+    // 字母及数字验证用
+    regexAlphabetNumber: /^(\d|[A-Za-z])*$/,
     //手机号码验证
     regexTelePhoneNumber: /^\d{11}$/,
     // 传真号码匹配的正则表达式
@@ -129,9 +137,9 @@ GlobalConfig.RegexController = {
     regexFolderName: /^[^\\\/?: *"<>|]+$/,
     //邮箱验证正则表达式
     regexEmail: /^(\w|\.)+\@\w+\.\w+$/,
-    //墓区全编码验证
+    //3,5,7位数字
     regexTombstoneCode: /^(\d{3}|\d{5}|\d{7})$/,
-    //墓区编码验证
+    //3位数字
     regexAreaCode: /^\d{3}$/,
     //金额验证，两位小数
     regexMoney2Fixed: /^[0-9]\d{0,8}((\.)?\d{1,2})?$/,
