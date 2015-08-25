@@ -95,7 +95,7 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
                 sessiontoken: GlobalFun.getSeesionToken()
             };
             // 调用
-            WsCall.call(GlobalConfig.Controllers.ExpressPanel.GetCustomerRuleByRentId, 'GetCustomerRuleByRentId', param, function(response, opts) {
+            WsCall.call(GlobalConfig.Controllers.ExpressPanel.GetCustomer_numberCount, 'GetCustomer_numberCount', param, function(response, opts) {
 
                 var data = response.data;
 
