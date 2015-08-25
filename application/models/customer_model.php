@@ -69,8 +69,6 @@ class Customer_model extends CI_Model{
             'customer_name'     => $data['customer_name'],
             'real_name'     => $data['real_name'],
             'mobile'        => $data['mobile'],
-            'customize_number_from' => $data['customize_number_form'],
-            'customize_number_to' => $data['customize_number_to'],
             'customer_rent_id' => 0,
         );
         $this->db->insert('customer', $customer);
@@ -87,7 +85,6 @@ class Customer_model extends CI_Model{
         );
         $this->db->insert('customer_rent', $customer_rent);
         $customer_rent_id =  $this->db->insert_id();
-
 
         $this->db->update('customer', array('customer_rent_id' => $customer_rent_id))->where('customer_id', $customer_id);
         return $customer_id;

@@ -37,9 +37,7 @@ class Customer extends CI_Controller {
         $data = array(
             'customer_name' => $this->input->post('customer_name'),
             'real_name' => $this->input->post('real_name'),
-            'mobile' => $this->input->post('mobile'),
-            'customize_number_from' => $this->input->post('customize_number_from'),
-            'customize_number_to' => $this->input->post('customize_number_to'),
+            'mobile' => $this->input->post('mobile')
         );
 
         print_r($data);exit;

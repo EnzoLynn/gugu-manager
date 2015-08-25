@@ -9,7 +9,7 @@
 
 class Customer_rent_model extends CI_Model{
     var $CI;
-    function __construct($table=''){
+    function __construct(){
         parent::__construct();
         $this->CI = &get_instance();
     }
