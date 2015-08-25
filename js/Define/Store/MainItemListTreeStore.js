@@ -27,7 +27,12 @@ Ext.create('Ext.data.TreeStore', {
             id: "003",
             text: "成本管理",
             expanded: true,
-            children: MainItemListTreeStoreCostChildrenArr
+            children: [{
+                id:'0031',
+                text:'圆通快递',
+                expanded:false,
+                children:MainItemListTreeStoreCostChildrenArr
+            }]
         }]
     }
 });

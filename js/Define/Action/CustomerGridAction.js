@@ -38,6 +38,24 @@ Ext.create('chl.Action.CustomerGridAction', {
 });
 
 Ext.create('chl.Action.CustomerGridAction', {
+    itemId: 'editCustomer_number',
+    iconCls: 'edit',
+    tooltip: '管理客户面单号范围',
+    text: '管理面单号范围',
+    handler: function() {
+        var me = this;
+        var target = me.getTargetView();
+        var record = target.getSelectionModel().getSelection()[0];
+        ActionManager.editCustomer_number(target,record);
+
+
+    },
+    updateStatus: function(selection) {
+        this.setDisabled(selection.length != 1);
+    }
+});
+
+Ext.create('chl.Action.CustomerGridAction', {
     itemId: 'addCustomerRent',
     iconCls: 'edit',
     tooltip: '添加合同',
@@ -116,6 +134,22 @@ ActionManager.editCustomer = function(target,record) {
     WindowManager.AddUpdateCustomerWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
          WindowManager.AddUpdateCustomerWin.down("#formId").loadRecord(record);
+    });
+};
+
+//管理客户面单号范围
+ActionManager.editCustomer_number = function(target,record) {
+    //var record = traget.getStore().getAt(0);
+    WindowManager.AddUpdateCustomer_numberWin = Ext.create('chl.Grid.AddUpdateCustomer_numberWin', {
+        grid: target,
+        iconCls: 'add',
+        action: 'create',
+        record: record,
+        title: "面单号范围"
+    });
+    WindowManager.AddUpdateCustomer_numberWin.show(null, function() {
+        //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
+
     });
 };
 

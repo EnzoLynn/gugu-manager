@@ -17,12 +17,12 @@ Ext.define('chl.tree.MainItemListTree', {
     frameHeader: false,
     border: false,
     listeners: {
-        itemcontextmenu: function (view, rec, item, index, e, opts) {
+        itemcontextmenu: function(view, rec, item, index, e, opts) {
             //console.log(rec.data.id);
             e.stopEvent();
             //folderTree_RightMenu.showAt(e.getXY());
         },
-        expand: function (tree, opts) {
+        expand: function(tree, opts) {
             if (!tree.getSelectionModel().hasSelection()) {
                 tree.getSelectionModel().select(0, true);
             } else {
@@ -30,8 +30,8 @@ Ext.define('chl.tree.MainItemListTree', {
             }
         },
 
-        boxready: function (com, width, height, opts) {
-            (new Ext.util.DelayedTask()).delay(200, function () {
+        boxready: function(com, width, height, opts) {
+            (new Ext.util.DelayedTask()).delay(200, function() {
                 if (!TreeManager.MainItemListTree.getSelectionModel().hasSelection()) {
                     TreeManager.MainItemListTree.getSelectionModel().select(0, true);
                 }
@@ -39,7 +39,7 @@ Ext.define('chl.tree.MainItemListTree', {
         }
 
     },
-    initComponent: function () {
+    initComponent: function() {
         var me = this;
         me.callParent(arguments);
 
@@ -47,11 +47,11 @@ Ext.define('chl.tree.MainItemListTree', {
 });
 
 //根据传入参数创建客户表，返回自身
-TreeManager.CreateMainItemListTree = function (param) {
+TreeManager.CreateMainItemListTree = function(param) {
     TreeManager.MainItemListTree = Ext.create('chl.tree.MainItemListTree');
     if (param && param.needLoad) {
         TreeManager.MainItemListTree.getStore().load({
-            callback: function () {
+            callback: function() {
                 var rootNode = TreeManager.MainItemListTree.getRootNode();
                 rootNode.expand();
             }
@@ -60,14 +60,14 @@ TreeManager.CreateMainItemListTree = function (param) {
     return TreeManager.MainItemListTree;
 };
 
-TreeManager.SetMainItemListTreeSelectionChangeEvent = function (param) {
-    TreeManager.MainItemListTree.on('selectionchange', function (view, seles, op) {
+TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
+    TreeManager.MainItemListTree.on('selectionchange', function(view, seles, op) {
         if (!seles[0])
             return;
         //自动恢复收缩状态
         //预定、出售、落葬管理
         // if (seles[0].data.id == 201 || seles[0].data.id == 202 || seles[0].data.id == 203) {
-            
+
         // } else {
         //     GlobalFun.RefreshDetailCollapseState();
         // }
@@ -75,30 +75,34 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function (param) {
             GlobalFun.TreeSelChangeGrid('ManageDfGrid', GridManager.ManageDfGrid, '系统', true);
             return;
         }
-        
+
         if (seles[0].data.id == "001") {
-           GlobalFun.TreeSelChangeGrid('CustomerGrid', GridManager.CustomerGrid, '客户列表');
-           return;
+            GlobalFun.TreeSelChangeGrid('CustomerGrid', GridManager.CustomerGrid, '客户列表');
+            return;
         }
         if (seles[0].data.id == "002") {
-           GlobalFun.TreeSelChangeGrid('Tracking_numberGrid', GridManager.Tracking_numberGrid, '票据列表');
-           return;
+            GlobalFun.TreeSelChangeGrid('Tracking_numberGrid', GridManager.Tracking_numberGrid, '票据列表');
+            return;
         }
         if (seles[0].data.id == "003") {
-           GlobalFun.TreeSelChangeGrid('ExpressPanel', GridManager.ExpressPanel, '成本管理', true);
-           return;
+            GlobalFun.TreeSelChangeGrid('CompanyPanel', GridManager.CompanyPanel, '快递公司', true);
+            return;
+        }
+        if (seles[0].data.id == "0031") {
+            GlobalFun.TreeSelChangeGrid('ExpressPanel', GridManager.ExpressPanel, '省份', true);
+            return;
         }
 
         if (seles[0].data.id.indexOf("003_") != -1) {
 
         }
-        
+
         //业务管理
         // if (seles[0].data.id == 2) {
         //     GlobalFun.TreeSelChangeGrid('JobManageDfGrid', GridManager.AreaSetDfGrid, '业务管理', true);
         //     return;
         // }
-        
+
         // //预定、出售、落葬管理
         // if (seles[0].data.id == 201 || seles[0].data.id == 202 || seles[0].data.id == 203) {
         //     var title = "";
@@ -116,7 +120,7 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function (param) {
         //     GridManager.AreaTombstoneImagePanel.down('#tombCode').inputEl.focus(100);
         //     return;
         // }
-        
-         
+
+
     });
 };

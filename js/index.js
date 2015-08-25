@@ -68,6 +68,7 @@ Ext.onReady(function() {
         GridManager.SetTracking_numberGridSelectionChangeEvent();
         //成本默认容器
         GridManager.CreateExpressPanel();
+        GridManager.CreateCompanyPanel();
         //创建主目录树
         TreeManager.CreateMainItemListTree({
             needLoad: false
@@ -137,6 +138,7 @@ Ext.onReady(function() {
                     region: 'center',
                     stateId: 'centercenterStateId',
                     stateful: true,
+                    collapsible: false,
                     itemId: 'centerGridDisplayContainer',
                     title: '信息',
                     layout: 'card',
@@ -149,6 +151,7 @@ Ext.onReady(function() {
                             gridArr.push(GridManager.CustomerGrid);
                             gridArr.push(GridManager.Tracking_numberGrid); 
                             gridArr.push(GridManager.ExpressPanel);
+                            gridArr.push(GridManager.CompanyPanel); 
                             com.add(gridArr);
                         }
                     },

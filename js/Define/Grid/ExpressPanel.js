@@ -15,7 +15,14 @@ GridManager.CreateExpressPanel = function() {
             myval: item.id,
             handler: function(com) {
                 var node = TreeManager.MainItemListTree.getStore().getNodeById(com.myval);
-                TreeManager.MainItemListTree.getSelectionModel().select(node, true);
+                var parentNode = node.parentNode;
+                if (parentNode.isExpanded()) {
+                    TreeManager.MainItemListTree.getSelectionModel().select(node, true);
+                } else {
+                    parentNode.expand(false, function() {
+                        TreeManager.MainItemListTree.getSelectionModel().select(node, true);
+                    });
+                }
             }
         });
     });
