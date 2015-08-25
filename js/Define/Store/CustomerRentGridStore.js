@@ -41,7 +41,7 @@ Ext.create('Ext.data.Store', {
             allowSingle: false
             //			root: 'dataset'
         },
-        actionMethods: {create: "POST", read: "GET", update: "POST", destroy: "POST"},
+        actionMethods: {create: "POST", read: "POST", update: "POST", destroy: "POST"},
         listeners: {
             exception: function (proxy, response, operation) {
                 var json = Ext.JSON.decode(response.responseText);
