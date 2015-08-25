@@ -56,7 +56,6 @@ class Login extends MY_Controller {
                 'code' => 99
             );
         }
-        //echo '<pre>';print_r($json);exit;
         echo json_encode($json);
     }
 
