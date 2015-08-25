@@ -16,7 +16,9 @@ class Login extends MY_Controller {
             $admin = $this->admin_model->login($admin_name, $admin_pwd);
         }else if($this->input->get_post('sessiontoken')){
             $session = $this->session_token_model->getSession($this->input->get_post('sessiontoken'));
-            $admin = $this->admin_model->getAdmin($session['admin_name']);
+            if($session) {
+                $admin = $this->admin_model->getAdmin($session['admin_name']);
+            }
         }
 
 //

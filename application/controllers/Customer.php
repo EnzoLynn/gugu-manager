@@ -34,7 +34,9 @@ class Customer extends CI_Controller {
 
     public function add() {
         $this->load->model('customer_model');
+        $data = array(
 
+        );
         $this->customer_model->addCustomer($this->input()->post());
     }
 }
