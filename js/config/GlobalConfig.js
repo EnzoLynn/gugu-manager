@@ -149,7 +149,7 @@ GlobalConfig.ErrorCode = {
     DontCareFolderID: 0x3FFFFFFF, // 任何目录,在某些函数的调用中,此参数表示忽略目录ID
     // 操作返回错误码
     ResOK: 0x00000000, // 操作成功完成
-    ResFullPrint: 0x00000018, // 没有空闲的传真文档转换队列
+    ResFullPrint: 0x00000018, // 没有空闲的 转换队列
     ResPartialOK: 0x0F000001, // 操作部分成功完成,用于需要查询记录状态以确定操作结果
     ResSessionTokenError: 0x0F000002, // 无效登录事务标识
     ResSessionTimeOut: 0x0F000004, // 此登录事务已超时,请重新登录

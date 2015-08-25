@@ -19,6 +19,7 @@ Ext.onReady(function() {
             GlobalConfig.CurrUserInfo = response.data[0];
             callBack();
         }, function(response, opts) {
+          
             if (!GlobalFun.errorProcess(response.code)) {
                 Ext.Msg.alert('登录失败', response.msg);
             }
@@ -29,7 +30,7 @@ Ext.onReady(function() {
 
         if (GlobalConfig.CurrUserInfo == '') {
             Ext.Msg.alert('登录失败', '登录失败！无效的登录信息', function() {
-                GlobalFun.ReDirectUrl("UserLogin");
+                GlobalFun.ReDirectUrl("Login.html");
             });
             return;
         }
@@ -65,10 +66,11 @@ Ext.onReady(function() {
             needLoad: false
         });
         GridManager.SetTracking_numberGridSelectionChangeEvent();
-
+        //成本默认容器
+        GridManager.CreateExpressPanel();
         //创建主目录树
         TreeManager.CreateMainItemListTree({
-            needLoad: true
+            needLoad: false
         });
         TreeManager.SetMainItemListTreeSelectionChangeEvent();
 
@@ -146,6 +148,7 @@ Ext.onReady(function() {
                             gridArr.push(GridManager.TestGrid);
                             gridArr.push(GridManager.CustomerGrid);
                             gridArr.push(GridManager.Tracking_numberGrid); 
+                            gridArr.push(GridManager.ExpressPanel);
                             com.add(gridArr);
                         }
                     },
@@ -174,7 +177,7 @@ Ext.onReady(function() {
                         items: [{
                             xtype: 'container',
                             width: 800,
-                            html: "test"
+                            html: "留待开发..."
                         }]
                     }, {
                         title: '介绍',
@@ -184,7 +187,7 @@ Ext.onReady(function() {
                         items: [{
                             xtype: 'container',
                             width: 800,
-                            html: "test"
+                            html: "留待开发..."
                         }]
                     }]
                 }]
@@ -239,7 +242,7 @@ Ext.onReady(function() {
                 LoadCurrUserInfo(function() {
                     LoadMainView();
                     GlobalFun.Heartbeat();
-                    (new Ext.util.DelayedTask()).delay(1000, function() {
+                    (new Ext.util.DelayedTask()).delay(200, function() {
                         Ext.getBody().unmask();
                     });
 

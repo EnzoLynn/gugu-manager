@@ -118,7 +118,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     updateStatus: function(selection) {}
 });
 
-//刷新逝者
+//刷新 
 ActionManager.refreshTracking_number = function(traget) {
     traget.loadGrid();
 };

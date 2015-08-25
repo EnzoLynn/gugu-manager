@@ -31,7 +31,7 @@ Ext.define('chl.tree.MainItemListTree', {
         },
 
         boxready: function (com, width, height, opts) {
-            (new Ext.util.DelayedTask()).delay(800, function () {
+            (new Ext.util.DelayedTask()).delay(200, function () {
                 if (!TreeManager.MainItemListTree.getSelectionModel().hasSelection()) {
                     TreeManager.MainItemListTree.getSelectionModel().select(0, true);
                 }
@@ -85,8 +85,12 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function (param) {
            return;
         }
         if (seles[0].data.id == "003") {
-           GlobalFun.TreeSelChangeGrid('TestGrid', GridManager.TestGrid, 'yy管理列表');
+           GlobalFun.TreeSelChangeGrid('ExpressPanel', GridManager.ExpressPanel, '成本管理', true);
            return;
+        }
+
+        if (seles[0].data.id.indexOf("003_") != -1) {
+
         }
         
         //业务管理

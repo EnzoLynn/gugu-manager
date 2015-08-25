@@ -186,7 +186,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
     iconCls: '',
     record: false,
     //border: false,
-    height: 120,
+    height: 160,
     width: 830,
     layout: 'vbox',
     modal: true,
@@ -226,6 +226,24 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
+        }, {
+            name: 'customize_number_from',
+            fieldLabel: '发放面单号起始票号', 
+            itemId: 'customize_number_fromItemId',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空',
+            regex: GlobalConfig.RegexController.regexNumber,
+            regexText: '请输入数字'
+        }, {
+            name: 'customize_number_to',
+            fieldLabel: '发放面单号截止票号', 
+            itemId: 'customize_number_toItemId',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空',
+            regex: GlobalConfig.RegexController.regexNumber,
+            regexText: '请输入数字'
         }]
     }],
     buttons: [{
@@ -341,7 +359,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             blankText: '不能为空'
         }, {
             name: 'customize_number_from',
-            fieldLabel: '发放面单号开始',
+            fieldLabel: '发放面单号起始票号',
             xtype: 'displayfield',
             itemId: 'customize_number_fromItemId',
             validateOnBlur: false,
@@ -351,7 +369,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             regexText: '请输入数字'
         }, {
             name: 'customize_number_to',
-            fieldLabel: '发放面单号结束',
+            fieldLabel: '发放面单号截止票号',
             xtype: 'displayfield',
             itemId: 'customize_number_toItemId',
             validateOnBlur: false,

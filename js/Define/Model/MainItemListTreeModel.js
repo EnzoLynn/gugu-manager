@@ -3,36 +3,27 @@ Ext.define('chl.Model.MainItemListTreeModel', {
     extend: 'Ext.data.Model',
     fields: [{
         name: 'id',
-        type: 'string',
-        mapping: 'Id'
+        type: 'string' 
     }, {
         name: 'text',
-        type: 'string',
-        mapping: 'Text'
+        type: 'string' 
     }, {
         name: 'leaf',
-        type: 'boolean',
-        mapping: 'IsLeaf'
+        type: 'boolean' 
     }, {
         name: 'iconCls',
-        type: 'string',
-        mapping: 'Iconcls'
+        type: 'string' 
     }, {
         name: 'expanded',
-        type: 'boolean',
-        mapping: 'Expanded'
+        type: 'boolean' 
     }, {
         name: 'linksrc',
-        type: 'string',
-        mapping: 'LinkSrc'
+        type: 'string' 
     }, {
-        name: 'parent',
-        mapping: 'Parent'
+        name: 'parent' 
     }, {
-        name: 'children',
-        mapping: 'Children'
+        name: 'children' 
     }, {
-        name: 'cls',
-        mapping: 'Cls'
+        name: 'cls' 
     }]
 });
