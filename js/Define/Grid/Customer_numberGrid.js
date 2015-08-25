@@ -25,7 +25,7 @@ Ext.create('Ext.data.Store', {
     filterMap: Ext.create('Ext.util.HashMap'),
     pageSize: GlobalConfig.GridPageSize,
     autoSync: false,
-    autoLoad: false,
+    autoLoad: true,
     remoteSort: true, //排序通过查询数据库
     sorters: [{
         property: 'customer_id',
@@ -113,7 +113,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
     dockedItems: [{
         xtype: 'Pagingtoolbar',
         itemId: 'pagingtoolbarID',
-        store: 'CustomerRentGridStoreId',
+        store: 'Customer_numberStoreId',
         dock: 'bottom',
         items: []
     }],
@@ -141,7 +141,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
     },
     tbar: [{
         text: '添加客户面单号范围',
-        iconCls: 'employee-add',
+        iconCls: 'add',
         handler: function() {
             Customer_numberGridRowEditing.cancelEdit();
 
@@ -164,7 +164,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
     }, {
         itemId: 'removeCustomer_number',
         text: '删除',
-        iconCls: 'employee-remove',
+        iconCls: 'remove',
         handler: function() {
             var me = this;
             var sm = me.up('Customer_numberGrid').getSelectionModel();
@@ -327,10 +327,5 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
             Customer_numberGridRowEditing.cancelEdit();
             me.up('window').close();
         }
-    }],
-    listeners: {
-        show: function(com) {
-            com.down('Customer_numberGrid').loadGrid();
-        }
-    }
+    }]
 });

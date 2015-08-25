@@ -7,6 +7,9 @@
 .edit {
   background-image: url(../image/icons/fam/user_edit.png) !important;
 }
+.remove {
+  background-image: url(../image/icons/fam/user_delete.png) !important;
+}
 .logout {
   background-image: url(../image/toolbar/logoff.png) !important;
 }
