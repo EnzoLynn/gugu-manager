@@ -35,6 +35,9 @@ class Customer_number_model extends CI_Model
         $this->db->where('customer_id', $data['customer_id']);
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer');
+
+        die($this->db->last_query());
+
 //        $this->db->where('customer_id', $customer_id);
 //        $query = $this->db->get('customer_number');
         $customer_numbers = $query->result_array();
