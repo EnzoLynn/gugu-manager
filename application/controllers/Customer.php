@@ -5,7 +5,7 @@ class Customer extends CI_Controller {
 
     public function index()
     {
-
+        $this->load->view('customer/add');
     }
 
     public function getList(){
@@ -35,12 +35,15 @@ class Customer extends CI_Controller {
     public function add() {
         $this->load->model('customer_model');
         $data = array(
-            'customer_name' => $this->input->post('real_name'),
+            'customer_name' => $this->input->post('customer_name'),
             'real_name' => $this->input->post('real_name'),
             'mobile' => $this->input->post('mobile'),
             'customize_number_from' => $this->input->post('customize_number_from'),
             'customize_number_to' => $this->input->post('customize_number_to'),
         );
+
+        print_r($data);exit;
+
         $this->customer_model->addCustomer($data);
     }
 }
