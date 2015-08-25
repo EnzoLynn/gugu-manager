@@ -33,6 +33,7 @@ Ext.create('Ext.data.Store', {
     }],
     proxy: {
         type: 'ajax',
+        headers: {"Content-Type": 'application/x-www-form-urlencoded' },
         api: GlobalConfig.Controllers.Customer_numberGrid,
         filterParam: 'filter',
         sortParam: 'sort',
