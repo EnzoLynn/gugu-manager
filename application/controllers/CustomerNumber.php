@@ -25,7 +25,7 @@ class CustomerNumber extends AdminController {
             'sort' => $this->input->post('sort'),
             'dir'  => $this->input->post('dir'),
             //'filter' => json_decode($this->input->post('filter')),
-            'customer_id' => (int)$this->input->post(customer_id)
+            'customer_id' => (int)$this->input->post('customer_id')
         );
         $customer_numbers = $this->customer_number_model->getCustomerNumbers($data);
 
