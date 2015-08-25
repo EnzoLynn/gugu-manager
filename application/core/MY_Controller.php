@@ -22,22 +22,23 @@ class AdminController extends MY_Controller
     {
         parent::__construct();
 
-//        if($this->input->cookie('login_sessiontoken') != session_id() ) {
-//            $json = array(
-//                'success' => false,
-//                'msg' => '请重新登录',
-//                'code' => 99
-//            );
-//            echo json_encode($json);
-//            exit;
-//        }
+        $admin = array();
 
+        if($this->input->get_post('sessiontoken')){
+            $session = $this->session_token_model->getSession($this->input->get_post('sessiontoken'));
 
-
-        //$this->admin_id = (int)$_SESSION['admin_id'];
-
-//        if(empty($_SESSION['admin_name'])) {
-//            redirect('/login.html');
-//        }
+            if($session) {
+                $admin = $this->admin_model->getAdmin($session['admin_name']);
+            }
+        }
+        if(!$admin) {
+            $json = array(
+                'success' => false,
+                'msg' => '帐号或者密码错误',
+                'code' => 99
+            );
+            echo json_encode($json);
+            exit;
+        }
     }
 }

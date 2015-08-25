@@ -29,7 +29,7 @@ class CustomerNumber extends AdminController {
         );
         $customer_numbers = $this->customer_number_model->getCustomerNumbers($data);
 
-        $customer_numbers_total = $this->customer_number_model->getCustomerNumbersTotal((int)$this->input->post(customer_id));
+        $customer_numbers_total = $this->customer_number_model->getCustomerNumbersTotal($data['customer_id']);
 
         $json = array(
             'success' => true,
@@ -50,7 +50,16 @@ class CustomerNumber extends AdminController {
             'customize_number_suffix' => $this->input->post('customize_number_suffix')
         );
 
-        $this->customer_model->addCustomerNumber($data);
+        $this->customer_number_model->addCustomerNumber($data);
+        $json = array(
+            'success' => true,
+            'data' => [],
+            'total' => 1,
+            'msg' => '成功',
+            'code' => '01'
+        );
+        //echo json_encode($json);
+        echo 111;exit;
     }
 
     public function update() {
