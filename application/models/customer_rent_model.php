@@ -16,7 +16,8 @@ class Customer_rent_model extends CI_Model{
 
     function getCustomerRent($customer_rent_id){
         if($customer_rent_id) {
-            $query = $this->db->select('*')->where('customer_rent_id', $customer_rent_id)->get();
+            $this->db->where('customer_rent_id', $customer_rent_id);
+            $query = $this->db->select('*')->get();
             $customerRent = $query->fetch_row();
             return $customerRent;
         }else{

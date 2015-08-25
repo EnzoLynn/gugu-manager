@@ -15,21 +15,28 @@ class Customer_number_model extends CI_Model
     }
 
     function getCustomerNumber($number_id){
-        $data = array(
-            'number_id' => $number_id
-        );
-        $this->db->where($data);
+        $this->db->where('number_id', $number_id);
         $query = $this->db->get('customer_number');
         $customer_number = $query->first_row();
         return $customer_number;
     }
 
-    function getCustomerNumbers($customer_id){
+    function getCustomerNumbers($data){
         $data = array(
-            'customer_id' => $customer_id
+            'customer_id' => $data['customer_id'],
+            'page' => (int)$data['page'],
+            'limit'=> (int)$data['limit'],
+            'sort' => $data['sort'],
+            'dir'  => $data['dir']
+            //'filter' => $data['filter']
         );
-        $this->db->where($data);
-        $query = $this->db->get('customer_number');
+
+        $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
+        $this->db->where('customer_id', $data['customer_id']);
+        $this->db->order_by($data['sort'], $data['dir']);
+        $query = $this->db->get('customer');
+//        $this->db->where('customer_id', $customer_id);
+//        $query = $this->db->get('customer_number');
         $customer_numbers = $query->result_array();
         return $customer_numbers;
     }
