@@ -20,6 +20,15 @@ class Customer_express_rule_model extends CI_Model
         return $rule;
     }
 
+    function getOneByRent($customer_rent_id, $province_code)
+    {
+        $this->db->where('customer_rent_id', $customer_rent_id);
+        $this->db->where('province_code', $province_code);
+        $query = $this->db->get('customer_express_rule');
+        $rule = $query->first_row();
+        return $rule;
+    }
+
     function getCustomerExpressRules($data)
     {
         $data = array(

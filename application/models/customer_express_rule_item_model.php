@@ -20,24 +20,14 @@ class Customer_express_rule_item_model extends CI_Model
         return $rule;
     }
 
-    function getItems($data)
+    function getItems($rule_id)
     {
-        $data = array(
-            'rule_id' => $data['rule_id'],
-            'page' => (int)$data['page'],
-            'limit' => (int)$data['limit'],
-            'sort' => $data['sort'],
-            'dir' => $data['dir']
-            //'filter' => $data['filter']
-        );
-
-        $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
-        $this->db->where('rule_id', $data['rule_id']);
-        $this->db->order_by($data['sort'], $data['dir']);
+        $this->db->where('rule_id', $rule_id);
+        $this->db->order_by('sort_order', 'ASC');
         $query = $this->db->get('customer_express_rule_item');
-        $customer_numbers = $query->result_array();
+        $items = $query->result_array();
 
-        return $customer_numbers;
+        return $items;
     }
 
     function getItemsTotal($rule_id)
