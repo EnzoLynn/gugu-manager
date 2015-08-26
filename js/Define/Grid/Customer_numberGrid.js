@@ -33,7 +33,7 @@ Ext.create('Ext.data.Store', {
     }],
     proxy: {
         type: 'ajax',
-        headers: {"Content-Type": 'application/x-www-form-urlencoded' },
+        // headers: {"Content-Type": 'application/x-www-form-urlencoded' },
         api: GlobalConfig.Controllers.Customer_numberGrid,
         filterParam: 'filter',
         sortParam: 'sort',
@@ -305,7 +305,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                         //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
                         //Ext.StoreMgr.lookup('Customer_numberGridStore').sort('dispName');
 
-                        e.store.sync();
+                        //e.store.sync();
                     },
                     canceledit: function(editor, e, opts) {
 
