@@ -537,8 +537,8 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 };
                                                                 // 调用
                                                                 WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
-                                                                    GlobalConfig.CurrUserInfo = response.data[0];
-                                                                    callBack();
+                                                                    
+                                                                    com.up('fieldset').destroy();
                                                                 }, function(response, opts) {
                                                                     if (!GlobalFun.errorProcess(response.code)) {
                                                                         Ext.Msg.alert('失败', response.msg);
@@ -843,11 +843,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                             var w = me.up('window');
 
                                                             var form = w.down('#price_type1').getForm();
-                                                            w.add({
-                                                                xtype: 'fieldset',
-                                                                title: '步进价格',
-                                                                items: []
-                                                            });
+                                                          
                                                             w.down('#rd_price0').setDisabled(true);
                                                             if (form.isValid()) {
 
