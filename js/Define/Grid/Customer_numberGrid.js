@@ -58,7 +58,7 @@ Ext.create('Ext.data.Store', {
             totalProperty: 'total'
         },
         writer: {
-            type: 'json' 
+            type: 'json'
         },
         actionMethods: {
             create: "POST",
@@ -101,7 +101,7 @@ var Customer_numberGridRowEditing;
 
 
 Ext.define('chl.gird.Customer_numberGrid', {
-     extend: 'chl.grid.BaseGrid',
+    extend: 'chl.grid.BaseGrid',
     alternateClassName: ['Customer_numberGrid'],
     alias: 'widget.Customer_numberGrid',
     store: 'Customer_numberStoreId',
@@ -139,16 +139,16 @@ Ext.define('chl.gird.Customer_numberGrid', {
     },
     tbar: [{
         text: '刷新',
-        tooltip:'刷新',
+        tooltip: '刷新',
         iconCls: 'refresh',
         handler: function() {
-            
+
             Ext.StoreMgr.lookup('Customer_numberStoreId').load();
 
         }
-    },{
+    }, {
         text: '添加',
-        tooltip:'添加客户面单号范围',
+        tooltip: '添加客户面单号范围',
         iconCls: 'add',
         handler: function() {
             Customer_numberGridRowEditing.cancelEdit();
@@ -172,16 +172,17 @@ Ext.define('chl.gird.Customer_numberGrid', {
     }, {
         itemId: 'removeCustomer_number',
         text: '删除',
-        tooltip:'删除',
+        tooltip: '删除',
         iconCls: 'remove',
         handler: function() {
             var me = this;
             var sm = me.up('Customer_numberGrid').getSelectionModel();
-            Customer_numberGridRowEditing.cancelEdit();
+
             var records = sm.getSelection();
-            Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
+            //Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
             Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
                 success: function(batch, opts) {
+                    Customer_numberGridRowEditing.cancelEdit();
                     if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
                         sm.select(0);
                     }
@@ -303,9 +304,17 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                     edit: function(editor, e, opts) {
                         //e.record.commit();
                         //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
-                        //Ext.StoreMgr.lookup('Customer_numberGridStore').sort('dispName');
-
-                        //e.store.sync();
+                        //Ext.Store 
+                        
+                        e.store.sync({
+                            success: function(batch, opts) {
+                                e.record.commit();
+                              
+                            },
+                            failure: function(batch, opts) {
+                                Ext.Msg.alert('失败', action.result.msg);
+                            }
+                        });
                     },
                     canceledit: function(editor, e, opts) {
 
