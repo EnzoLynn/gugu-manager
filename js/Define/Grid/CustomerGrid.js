@@ -634,7 +634,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                     // 调用
                                     WsCall.call(GlobalConfig.Controllers.CustomerGrid.getCustomerRule, 'GetCustomerRule', param, function(response, opts) {
 
-                                        var data = response.data; 
+                                        var data = response.data;
                                         // priceType: 1,
                                         // 获取详细的规则信息
                                         //如已有规则，规则类型确定禁用项目
@@ -763,6 +763,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                         price_type: 0,
                                                                         province: w.pid,
                                                                         action: w.action,
+                                                                        'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
                                                                         sessiontoken: GlobalFun.getSeesionToken()
                                                                     },
                                                                     success: function(form, action) {
@@ -934,6 +935,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                         price_type: 1,
                                                                         province: w.pid,
                                                                         action: w.action,
+                                                                        'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
                                                                         sessiontoken: GlobalFun.getSeesionToken()
                                                                     },
                                                                     success: function(form, action) {
@@ -962,7 +964,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                             }],
                                             items: [],
                                             listeners: {
-                                                boxready: function(com) { 
+                                                boxready: function(com) {
                                                     var tempRuleItems = [];
                                                     Ext.Array.each(data, function(item, index, alls) {
                                                         var obj = {};
@@ -1006,7 +1008,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                         };
                                                                         // 调用
                                                                         WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
-                                                                             
+
                                                                             com.up('fieldset').destroy();
                                                                         }, function(response, opts) {
                                                                             if (!GlobalFun.errorProcess(response.code)) {
@@ -1109,7 +1111,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
 
                                                     com.add(tempRuleItems);
                                                 },
-                                                beforehide: function(com) { 
+                                                beforehide: function(com) {
                                                     var param = {
                                                         'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
                                                         sessiontoken: GlobalFun.getSeesionToken()
