@@ -176,13 +176,16 @@ Ext.define('chl.gird.Customer_numberGrid', {
         iconCls: 'remove',
         handler: function() {
             var me = this;
+            var grid = me.up('Customer_numberGrid');
             var sm = me.up('Customer_numberGrid').getSelectionModel();
 
             var records = sm.getSelection();
-            //Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
+            Customer_numberGridRowEditing.cancelEdit();
+            Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
             Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
                 success: function(batch, opts) {
-                    Customer_numberGridRowEditing.cancelEdit();
+
+                    grid.loadGrid();
                     if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
                         sm.select(0);
                     }
@@ -305,11 +308,15 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                         //e.record.commit();
                         //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
                         //Ext.Store 
-                        
+
+                        var sm = e.grid.getSelectionModel();
                         e.store.sync({
                             success: function(batch, opts) {
                                 e.record.commit();
-                              
+                                if (e.store.getCount() > 0) {
+                                    sm.select(0);
+                                }
+                                //e.grid.loadGrid();
                             },
                             failure: function(batch, opts) {
                                 Ext.Msg.alert('失败', action.result.msg);
