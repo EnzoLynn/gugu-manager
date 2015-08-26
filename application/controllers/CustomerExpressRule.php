@@ -84,6 +84,7 @@ class CustomerExpressRule extends AdminController {
         $price_pre = $this->input->get_post('price_pre');
 
         $rule = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code);
+        $customer_id = $rule['customer_id'];
         if(!$rule) {
             $rent = $this->customer_rent_model->getCustomerRent($customer_rent_id);
             $customer_id = $rent['customer_id'];
