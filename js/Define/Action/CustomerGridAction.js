@@ -84,8 +84,9 @@ Ext.create('chl.Action.CustomerGridAction', {
         var record = target.getSelectionModel().getSelection()[0];
         ActionManager.editCustomerRule(target, record);
     },
-    updateStatus: function(selection) {
-        this.setDisabled(selection.length != 1);
+    updateStatus: function(selection) { 
+        var flag =  selection[0] && selection[0].data.customer_rent_id.length>0;
+        this.setDisabled(selection.length != 1 || !flag);
     }
 });
 
@@ -190,7 +191,7 @@ ActionManager.editCustomerRule = function(target, record) {
         });
         WindowManager.AddUpdateCustomerRuleWin.show(null, function() {
             Ext.Array.each(data, function(item, index, alls) {
-                var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.key);
+                var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.province_code);
                 temp.setText('现有规则:' + item.count);
             });
 

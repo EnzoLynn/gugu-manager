@@ -2,7 +2,7 @@
     "success": true,
 
     "data": [{
-        "key": "110000",
+        "province_code": "110000",
         "count": "1"
     }],
     "total": "0",

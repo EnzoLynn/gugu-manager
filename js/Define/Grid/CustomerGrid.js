@@ -601,8 +601,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                     labelPad: 15,
                     width: 340,
                     labelWidth: 125,
-                    maxLength: 100,
-                    maxLengthText: '最大长度为100'
+                    maxLength: 100
                 }
             },
             items: [],
