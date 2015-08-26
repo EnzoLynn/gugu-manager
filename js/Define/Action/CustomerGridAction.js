@@ -163,7 +163,7 @@ ActionManager.addCustomerRent = function(target, record) {
         iconCls: 'add',
         action: 'create',
         record: record,
-        title: "新增"
+        title: "添加合同/规则"
     });
     WindowManager.AddUpdateCustomerRentWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
