@@ -206,10 +206,6 @@ Ext.define('chl.gird.Customer_numberGrid', {
             return value;
         }
     }, {
-        header: '客户',
-        dataIndex: 'customer_name',
-        flex: 1.5
-    }, {
         header: '面单号前缀',
         dataIndex: 'customize_number_prefix',
         flex: 1,
