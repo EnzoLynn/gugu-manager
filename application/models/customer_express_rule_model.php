@@ -36,7 +36,7 @@ class Customer_express_rule_model extends CI_Model {
 
     function getCustomerExpressRulesTotal($customer_rent_id) {
         $this->db->where('customer_rent_id', $customer_rent_id);
-        return $this->db->count_all('customer_express_rule');
+        return $this->db->count_all_results('customer_express_rule');
     }
 
     function add($data) {

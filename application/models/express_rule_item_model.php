@@ -28,7 +28,7 @@ class Express_rule_item_model extends CI_Model {
 
     function getItemsTotal($rule_id) {
         $this->db->where('rule_id', $rule_id);
-        return $this->db->count_all('express_rule_item');
+        return $this->db->count_all_results('express_rule_item');
     }
 
     function add($data) {

@@ -81,7 +81,7 @@ class Customer_model extends CI_Model{
 //            'filter' => $data['filter']
 //        );
 //        $this->db->like($data['filter']);
-        return $this->db->count_all('customer');
+        return $this->db->count_all_results('customer');
     }
 
     function addCustomer($data) {

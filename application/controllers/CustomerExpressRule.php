@@ -53,8 +53,6 @@ class CustomerExpressRule extends AdminController {
         $data = array();
         $rule = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code);
 
-        //echo $rule['rule_id'];exit;
-
         if($rule['price_type'] == 0) {
             $data = $rule;
             $total = 1;
