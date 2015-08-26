@@ -14,7 +14,8 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         var win = Ext.create('Ext.window.Window', {
             height:160,
             width: 800,
-            resizeabled: false,
+            modal:true,
+            resizabled: false,
             iconCls: 'import',
             title: '上传文件',
             bodyPadding:15,
