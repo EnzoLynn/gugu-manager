@@ -74,7 +74,7 @@ GridManager.CreateExpressPanel = function() {
                                         value: item['weight_max']
                                     }, {
                                         fieldLabel: '价格',
-                                        value: item['weight_start_price'],
+                                        value: item['price'],
                                         colspan: 2
                                     }, {
                                         xtype: 'button',
