@@ -12,7 +12,7 @@ class Customer_rent_model extends CI_Model {
         parent::__construct();
     }
 
-    function getCustomerRent($customer_rent_id) {
+    function getOne($customer_rent_id) {
         if($customer_rent_id) {
             $this->db->where('customer_rent_id', $customer_rent_id);
             $query = $this->db->get('customer_rent');
