@@ -92,8 +92,8 @@ class CustomerExpressRule extends AdminController {
                 'customer_rent_id' => $customer_rent_id,
                 'province_code' => $province_code,
                 'price_type' => $price_type,
-//                'price_start' => $price_start,
-//                'price_pre' => $price_pre
+                'price_start' => 0,
+                'price_pre' => 0
             );
             $rule['rule_id'] = $this->customer_express_rule_model->add($rule_add);
         }
