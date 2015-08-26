@@ -415,7 +415,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                     obj = {
                                                         xtype: 'fieldset',
                                                         collapsible: true,
-                                                        title: '固定价格',
+                                                        title: '<font size=3>固定价格</font>',
                                                         width: 770,
                                                         layout: {
                                                             type: 'table',
@@ -464,37 +464,19 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                 } else {
                                                     obj = {
                                                         xtype: 'fieldset',
-                                                        title: '步进价格',
+                                                        title: '<font size=3>步进价格: ' + '(重量(kg):' + item['weight_min'] + '-' + item['weight_max'] + ')</font>',
                                                         width: 770,
                                                         collapsible: true,
-                                                        items: [{
-                                                            xtype: 'fieldset',
-                                                            title: '首重',
-                                                            layout: {
-                                                                type: 'table',
-                                                                columns: 2
-                                                            },
 
-                                                            defaults: {
-                                                                xtype: 'displayfield',
-                                                                labelAlign: 'right',
-                                                                labelPad: 15,
-                                                                width: 340,
-                                                                labelWidth: 125,
-                                                                maxLength: 100,
-                                                                maxLengthText: '最大长度为100'
-                                                            },
-                                                            items: [{
-                                                                fieldLabel: '起始重量(kg)',
-                                                                value: item['weight_min']
-                                                            }, {
-                                                                fieldLabel: '结束重量(kg)',
-                                                                value: item['weight_max']
-                                                            }, {
-                                                                fieldLabel: '价格',
-                                                                value: item['weight_start_price'],
-                                                                colspan: 2
-                                                            }]
+                                                        items: [{
+                                                            xtype: 'displayfield',
+                                                            labelAlign: 'right',
+                                                            labelPad: 15,
+                                                            width: 340,
+                                                            labelWidth: 125, 
+                                                            fieldLabel: '首重价格',
+                                                            value: item['weight_start_price'],
+                                                            colspan: 2
                                                         }, {
                                                             xtype: 'fieldset',
                                                             title: '续重',
@@ -509,8 +491,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 labelPad: 15,
                                                                 width: 340,
                                                                 labelWidth: 125,
-                                                                maxLength: 100,
-                                                                maxLengthText: '最大长度为100'
+                                                                maxLength: 100
                                                             },
                                                             items: [{
                                                                 fieldLabel: '重量(kg)',
@@ -521,7 +502,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                             }, {
                                                                 fieldLabel: '记重方式',
                                                                 colspan: 2,
-                                                                value: item['weight_price_type']
+                                                                value: item['weight_price_type_name']
                                                             }]
                                                         }, {
                                                             xtype: 'button',
@@ -538,7 +519,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 };
                                                                 // 调用
                                                                 WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
-                                                                    
+
                                                                     com.up('fieldset').destroy();
                                                                 }, function(response, opts) {
                                                                     if (!GlobalFun.errorProcess(response.code)) {
@@ -844,7 +825,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                             var w = me.up('window');
 
                                                             var form = w.down('#price_type1').getForm();
-                                                          
+
                                                             //w.down('#rd_price0').setDisabled(true);
                                                             if (form.isValid()) {
 
