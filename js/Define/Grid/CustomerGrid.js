@@ -915,22 +915,10 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                         sessiontoken: GlobalFun.getSeesionToken()
                                                                     },
                                                                     success: function(form, action) {
-
-                                                                        var param = {
-                                                                            sessiontoken: GlobalFun.getSeesionToken()
-                                                                        };
-                                                                        // 调用
-                                                                        WsCall.call(GlobalConfig.Controllers.CustomerGrid.getCustomerRule, 'GetCustomerRule', param, function(response, opts) {
-
-                                                                            var data = response.data;
+                                                                            var data = action.result.data;
                                                                             var arr = createRuleRow(data);
                                                                             w.removeAll();
                                                                             w.add(arr);
-                                                                        }, function(response, opts) {
-                                                                            if (!GlobalFun.errorProcess(response.code)) {
-                                                                                Ext.Msg.alert('失败', response.msg);
-                                                                            }
-                                                                        }, false);
 
                                                                     },
                                                                     failure: function(form, action) {
