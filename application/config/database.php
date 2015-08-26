@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.100.113',
+	'hostname' => '192.168.100.119',
 	'username' => 'test',
 	'password' => '123',
 	'database' => 'tracking_number_system',
