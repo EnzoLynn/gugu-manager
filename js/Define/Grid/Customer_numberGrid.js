@@ -179,13 +179,15 @@ Ext.define('chl.gird.Customer_numberGrid', {
             var sm = me.up('Customer_numberGrid').getSelectionModel();
 
             var records = sm.getSelection();
+            Customer_numberGridRowEditing.cancelEdit();
             //Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
             Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
                 success: function(batch, opts) {
-                    Customer_numberGridRowEditing.cancelEdit();
-                    if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
-                        sm.select(0);
-                    }
+
+                    e.grid.loadGrid();
+                    // if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
+                    //     sm.select(0);
+                    // }
                 },
                 failure: function(batch, opts) {
                     Ext.Msg.alert('失败', action.result.msg);
@@ -305,11 +307,15 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                         //e.record.commit();
                         //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
                         //Ext.Store 
-                        
+
+                        var sm = e.grid.getSelectionModel();
                         e.store.sync({
                             success: function(batch, opts) {
-                                e.record.commit();
-                              
+                                // e.record.commit();
+                                // if (e.store.getCount() > 0) {
+                                //     sm.select(0);
+                                // }
+                                e.grid.loadGrid();
                             },
                             failure: function(batch, opts) {
                                 Ext.Msg.alert('失败', action.result.msg);
