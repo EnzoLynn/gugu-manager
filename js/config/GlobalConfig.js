@@ -113,7 +113,8 @@ GlobalConfig.Controllers = {
     ExpressPanel:{
         GetCustomer_numberCount: globalFix + '/GetCustomer_numberCount.json',
         GetExpressRule:globalFix + '/GetExpressRule.json',
-        delExpressRule:'delExpressRule'
+        delExpressRule:'delExpressRule',
+        addExpressRule:'addExpressRule'
     },
     Tracking_numberGrid: { //票号 票据
         create: globalFix + '/traking_numberGrid.json',
