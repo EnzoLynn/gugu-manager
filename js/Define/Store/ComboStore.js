@@ -12,7 +12,7 @@ StoreManager.ComboStore.Tracking_numberGridTypeStore = Ext.create('Ext.data.Stor
         Name: '未结算'
     }, {
         Id: 1,
-        name: '已结算'
+        Name: '已结算'
     }]
 });
 

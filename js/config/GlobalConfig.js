@@ -111,10 +111,10 @@ GlobalConfig.Controllers = {
         destroy: globalFix + '/CustomerRentGrid.json'
     },
     ExpressPanel:{
-        GetCustomer_numberCount: globalFix + '/GetCustomer_numberCount.json',
-        GetExpressRule:globalFix + '/GetExpressRule.json',
-        delExpressRule:'delExpressRule',
-        addExpressRule:'addExpressRule'
+        GetCustomer_numberCount: 'expressRule/countProvinceRule',//globalFix + '/GetCustomer_numberCount.json',
+        GetExpressRule:'expressRule/show',//globalFix + '/GetExpressRule.json',
+        delExpressRule:'expressRule/deleteRule',//'delExpressRule',
+        addExpressRule:'expressRule/addRule'//'addExpressRule'
     },
     Tracking_numberGrid: { //票号 票据
         create: globalFix + '/traking_numberGrid.json',

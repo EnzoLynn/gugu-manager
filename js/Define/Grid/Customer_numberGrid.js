@@ -166,7 +166,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
 
             Ext.StoreMgr.lookup('Customer_numberStoreId').insert(0, r);
 
-            Customer_numberGridRowEditing.startEdit(0, 0);
+            Customer_numberGridRowEditing.startEdit(0, 1);
 
         }
     }, {
@@ -320,7 +320,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                         });
                     },
                     canceledit: function(editor, e, opts) {
-
+                         e.grid.loadGrid();
                     },
                     beforeedit: function(editor, e, opts) {
                         Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';

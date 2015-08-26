@@ -1,2 +1,2 @@
-StoreManager.ComboStore.ProvinceStore=Ext.create("Ext.data.Store",{storeId:"ProvinceStoreId",fields:["Id","Name"],data:GlobalFun.JsonToArray(GlobalConfig.Province)}),StoreManager.ComboStore.Tracking_numberGridTypeStore=Ext.create("Ext.data.Store",{storeId:"Tracking_numberGridTypeStoreId",fields:["Id","Name"],data:[{Id:0,Name:"未结算"},{Id:1,name:"已结算"}]});
+StoreManager.ComboStore.ProvinceStore=Ext.create("Ext.data.Store",{storeId:"ProvinceStoreId",fields:["Id","Name"],data:GlobalFun.JsonToArray(GlobalConfig.Province)}),StoreManager.ComboStore.Tracking_numberGridTypeStore=Ext.create("Ext.data.Store",{storeId:"Tracking_numberGridTypeStoreId",fields:["Id","Name"],data:[{Id:0,Name:"未结算"},{Id:1,Name:"已结算"}]});
 //# sourceMappingURL=ComboStore.js.map

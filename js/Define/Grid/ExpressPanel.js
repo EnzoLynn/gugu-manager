@@ -22,6 +22,9 @@ GridManager.CreateExpressPanel = function() {
             }, {
                 xtype: 'button',
                 text: '添加规则',
+                margin: '0 0 0 20',
+                width: 100,
+                iconCls: 'btnAdd',
                 myval: key,
                 handler: function(com) {
                     var sel = TreeManager.MainItemListTree.getSelectionModel().getSelection()[0];
@@ -111,6 +114,7 @@ GridManager.CreateExpressPanel = function() {
                             pid: com.myval,
                             width: 820,
                             height: 700,
+                            iconCls:'editCustomerRule',
                             resizable: false,
                             action: 'create',
                             modal: true,
