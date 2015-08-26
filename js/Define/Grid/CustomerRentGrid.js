@@ -464,14 +464,20 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                 } else {
                                                     obj = {
                                                         xtype: 'fieldset',
-                                                        title: '<font size=3>步进价格: '+'(重量(kg):'+item['weight_min']+'-'+item['weight_max']+')</font>',
+                                                        title: '<font size=3>步进价格: ' + '(重量(kg):' + item['weight_min'] + '-' + item['weight_max'] + ')</font>',
                                                         width: 770,
                                                         collapsible: true,
+
                                                         items: [{
-                                                                fieldLabel: '首重价格',
-                                                                value: item['weight_start_price'],
-                                                                colspan: 2
-                                                            }, {
+                                                            xtype: 'displayfield',
+                                                            labelAlign: 'right',
+                                                            labelPad: 15,
+                                                            width: 340,
+                                                            labelWidth: 125, 
+                                                            fieldLabel: '首重价格',
+                                                            value: item['weight_start_price'],
+                                                            colspan: 2
+                                                        }, {
                                                             xtype: 'fieldset',
                                                             title: '续重',
                                                             layout: {
@@ -485,8 +491,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 labelPad: 15,
                                                                 width: 340,
                                                                 labelWidth: 125,
-                                                                maxLength: 100,
-                                                                maxLengthText: '最大长度为100'
+                                                                maxLength: 100
                                                             },
                                                             items: [{
                                                                 fieldLabel: '重量(kg)',
@@ -514,7 +519,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 };
                                                                 // 调用
                                                                 WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
-                                                                    
+
                                                                     com.up('fieldset').destroy();
                                                                 }, function(response, opts) {
                                                                     if (!GlobalFun.errorProcess(response.code)) {
@@ -820,7 +825,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                             var w = me.up('window');
 
                                                             var form = w.down('#price_type1').getForm();
-                                                          
+
                                                             //w.down('#rd_price0').setDisabled(true);
                                                             if (form.isValid()) {
 
