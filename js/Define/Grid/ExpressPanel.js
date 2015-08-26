@@ -115,7 +115,7 @@ GridManager.CreateExpressPanel = function() {
                                         blankText: '不能为空'
                                     }, {
                                         xtype: 'numberfield',
-                                        name: 'weight_min_price',
+                                        name: 'weight_max',
                                         fieldLabel: '结束重量(kg)',
                                         minValue: 0,
                                         value: 1,
@@ -125,7 +125,7 @@ GridManager.CreateExpressPanel = function() {
                                         blankText: '不能为空'
                                     }, {
                                         xtype: 'numberfield',
-                                        name: 'weight_min_price',
+                                        name: 'price',
                                         fieldLabel: '价格',
                                         decimalPrecision: 2,
                                         minValue: 0,
@@ -156,7 +156,7 @@ GridManager.CreateExpressPanel = function() {
 
                                             if (form.isValid()) {
 
-                                                var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
+                                                var url = GlobalConfig.Controllers.ExpressPanel.addExpressRule;
                                                 form.submit({
                                                     url: url,
                                                     params: {
@@ -248,7 +248,7 @@ GridManager.CreateExpressPanel = function() {
                                                     };
                                                     // 调用
                                                     WsCall.call(GlobalConfig.Controllers.ExpressPanel.delExpressRule, 'delExpressRule', param, function(response, opts) {
-                                                        
+
                                                         com.up('fieldset').destroy();
                                                     }, function(response, opts) {
                                                         if (!GlobalFun.errorProcess(response.code)) {

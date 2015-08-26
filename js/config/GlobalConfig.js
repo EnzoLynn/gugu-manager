@@ -91,7 +91,7 @@ GlobalConfig.Controllers = {
         addCustomer: '/customer/add',//globalFix + '/AddCustomer.json',
         updateCustomer: globalFix + '/UpdateCustomer.json',
         addCustomerRent: '/customerRent/add',//globalFix + '/addCustomerRent.php',
-        addCustomerRule: globalFix + '/AddCustomerRule.php',
+        addCustomerRule: 'customerExpressRule/addRule',//globalFix + '/AddCustomerRule.php',
         delCustomerRule: globalFix + '/DelCustomerRule.php',
         delCustomer: globalFix + '/DelCustomer.json',
         GetCustomerRuleByRentId: 'customerExpressRule/countProvinceRule',//globalFix + '/GetCustomerRuleByRentId.json',
@@ -113,7 +113,8 @@ GlobalConfig.Controllers = {
     ExpressPanel:{
         GetCustomer_numberCount: globalFix + '/GetCustomer_numberCount.json',
         GetExpressRule:globalFix + '/GetExpressRule.json',
-        delExpressRule:'delExpressRule'
+        delExpressRule:'delExpressRule',
+        addExpressRule:'addExpressRule'
     },
     Tracking_numberGrid: { //票号 票据
         create: globalFix + '/traking_numberGrid.json',

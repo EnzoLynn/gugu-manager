@@ -635,6 +635,154 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                     WsCall.call(GlobalConfig.Controllers.CustomerGrid.getCustomerRule, 'GetCustomerRule', param, function(response, opts) {
 
                                         var data = response.data;
+                                        // 生成Rule row items
+                                        function createRuleRow(rowData) {
+                                            var tempRuleItems = [];
+                                            Ext.Array.each(rowData, function(item, index, alls) {
+                                                var obj = {};
+                                                if (item['price_type'] == "0") {
+                                                    obj = {
+                                                        xtype: 'fieldset',
+                                                        collapsible: true,
+                                                        title: '固定价格',
+                                                        width: 770,
+                                                        layout: {
+                                                            type: 'table',
+                                                            columns: 2
+                                                        },
+                                                        defaults: {
+                                                            xtype: 'displayfield',
+                                                            labelAlign: 'right',
+                                                            labelPad: 15,
+                                                            width: 340,
+                                                            labelWidth: 125,
+                                                            maxLength: 100,
+                                                            maxLengthText: '最大长度为100'
+                                                        },
+                                                        items: [{
+                                                            fieldLabel: '起价',
+                                                            value: item['price_start']
+                                                        }, {
+                                                            fieldLabel: '后续单价',
+                                                            value: item['price_pre']
+                                                        }, {
+                                                            xtype: 'button',
+                                                            rule_id: item['rule_id'],
+                                                            colspan: 2,
+                                                            width: 100,
+                                                            margin: '0 0 0 630',
+                                                            text: '删除',
+                                                            handler: function(com) {
+                                                                var rule_id = com.rule_id;
+                                                                var param = {
+                                                                    'rule_id': rule_id,
+                                                                    sessiontoken: GlobalFun.getSeesionToken()
+                                                                };
+                                                                // 调用
+                                                                WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
+
+                                                                    com.up('fieldset').destroy();
+                                                                }, function(response, opts) {
+                                                                    if (!GlobalFun.errorProcess(response.code)) {
+                                                                        Ext.Msg.alert('失败', response.msg);
+                                                                    }
+                                                                }, true, false, com.up('window').getEl());
+                                                            }
+                                                        }]
+                                                    };
+                                                } else {
+                                                    obj = {
+                                                        xtype: 'fieldset',
+                                                        title: '步进价格',
+                                                        width: 770,
+                                                        collapsible: true,
+                                                        items: [{
+                                                            xtype: 'fieldset',
+                                                            title: '首重',
+                                                            layout: {
+                                                                type: 'table',
+                                                                columns: 2
+                                                            },
+
+                                                            defaults: {
+                                                                xtype: 'displayfield',
+                                                                labelAlign: 'right',
+                                                                labelPad: 15,
+                                                                width: 340,
+                                                                labelWidth: 125,
+                                                                maxLength: 100,
+                                                                maxLengthText: '最大长度为100'
+                                                            },
+                                                            items: [{
+                                                                fieldLabel: '起始重量(kg)',
+                                                                value: item['weight_min']
+                                                            }, {
+                                                                fieldLabel: '结束重量(kg)',
+                                                                value: item['weight_max']
+                                                            }, {
+                                                                fieldLabel: '价格',
+                                                                value: item['weight_start_price'],
+                                                                colspan: 2
+                                                            }]
+                                                        }, {
+                                                            xtype: 'fieldset',
+                                                            title: '续重',
+                                                            layout: {
+                                                                type: 'table',
+                                                                columns: 2
+                                                            },
+
+                                                            defaults: {
+                                                                xtype: 'displayfield',
+                                                                labelAlign: 'right',
+                                                                labelPad: 15,
+                                                                width: 340,
+                                                                labelWidth: 125,
+                                                                maxLength: 100,
+                                                                maxLengthText: '最大长度为100'
+                                                            },
+                                                            items: [{
+                                                                fieldLabel: '重量(kg)',
+                                                                value: item['weight_pre']
+                                                            }, {
+                                                                fieldLabel: '价格',
+                                                                value: item['weight_pre_price']
+                                                            }, {
+                                                                fieldLabel: '记重方式',
+                                                                colspan: 2,
+                                                                value: item['weight_price_type']
+                                                            }]
+                                                        }, {
+                                                            xtype: 'button',
+                                                            colspan: 2,
+                                                            rule_id: item['rule_id'],
+                                                            width: 100,
+                                                            margin: '0 0 0 630',
+                                                            text: '删除',
+                                                            handler: function(com) {
+                                                                var rule_id = com.rule_id;
+                                                                var param = {
+                                                                    'rule_id': rule_id,
+                                                                    sessiontoken: GlobalFun.getSeesionToken()
+                                                                };
+                                                                // 调用
+                                                                WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
+                                                                    GlobalConfig.CurrUserInfo = response.data[0];
+                                                                    callBack();
+                                                                }, function(response, opts) {
+                                                                    if (!GlobalFun.errorProcess(response.code)) {
+                                                                        Ext.Msg.alert('失败', response.msg);
+                                                                    }
+                                                                }, true, false, com.up('window').getEl());
+                                                            }
+                                                        }]
+                                                    };
+                                                }
+                                                tempRuleItems.push(obj);
+                                            });
+
+                                            return tempRuleItems;
+                                        }
                                         // priceType: 1,
                                         // 获取详细的规则信息
                                         //如已有规则，规则类型确定禁用项目
@@ -768,13 +916,21 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                     },
                                                                     success: function(form, action) {
 
-                                                                        // win.add({
-                                                                        //     xtype: 'fieldset',
-                                                                        //     title: '固定价格',
-                                                                        //     html:""
-                                                                        // });
-                                                                        //w.grid.loadGrid();
-                                                                        //w.close();
+                                                                        var param = {
+                                                                            sessiontoken: GlobalFun.getSeesionToken()
+                                                                        };
+                                                                        // 调用
+                                                                        WsCall.call(GlobalConfig.Controllers.CustomerGrid.getCustomerRule, 'GetCustomerRule', param, function(response, opts) {
+
+                                                                            var data = response.data;
+                                                                            var arr = createRuleRow(data);
+                                                                            w.removeAll();
+                                                                            w.add(arr);
+                                                                        }, function(response, opts) {
+                                                                            if (!GlobalFun.errorProcess(response.code)) {
+                                                                                Ext.Msg.alert('失败', response.msg);
+                                                                            }
+                                                                        }, false);
 
                                                                     },
                                                                     failure: function(form, action) {
@@ -965,150 +1121,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                             items: [],
                                             listeners: {
                                                 boxready: function(com) {
-                                                    var tempRuleItems = [];
-                                                    Ext.Array.each(data, function(item, index, alls) {
-                                                        var obj = {};
-                                                        if (item['price_type'] == "0") {
-                                                            obj = {
-                                                                xtype: 'fieldset',
-                                                                collapsible: true,
-                                                                title: '固定价格',
-                                                                width: 770,
-                                                                layout: {
-                                                                    type: 'table',
-                                                                    columns: 2
-                                                                },
-                                                                defaults: {
-                                                                    xtype: 'displayfield',
-                                                                    labelAlign: 'right',
-                                                                    labelPad: 15,
-                                                                    width: 340,
-                                                                    labelWidth: 125,
-                                                                    maxLength: 100,
-                                                                    maxLengthText: '最大长度为100'
-                                                                },
-                                                                items: [{
-                                                                    fieldLabel: '起价',
-                                                                    value: item['price_start']
-                                                                }, {
-                                                                    fieldLabel: '后续单价',
-                                                                    value: item['price_pre']
-                                                                }, {
-                                                                    xtype: 'button',
-                                                                    rule_id: item['rule_id'],
-                                                                    colspan: 2,
-                                                                    width: 100,
-                                                                    margin: '0 0 0 630',
-                                                                    text: '删除',
-                                                                    handler: function(com) {
-                                                                        var rule_id = com.rule_id;
-                                                                        var param = {
-                                                                            'rule_id': rule_id,
-                                                                            sessiontoken: GlobalFun.getSeesionToken()
-                                                                        };
-                                                                        // 调用
-                                                                        WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
-
-                                                                            com.up('fieldset').destroy();
-                                                                        }, function(response, opts) {
-                                                                            if (!GlobalFun.errorProcess(response.code)) {
-                                                                                Ext.Msg.alert('失败', response.msg);
-                                                                            }
-                                                                        }, true, false, com.up('window').getEl());
-                                                                    }
-                                                                }]
-                                                            };
-                                                        } else {
-                                                            obj = {
-                                                                xtype: 'fieldset',
-                                                                title: '步进价格',
-                                                                width: 770,
-                                                                collapsible: true,
-                                                                items: [{
-                                                                    xtype: 'fieldset',
-                                                                    title: '首重',
-                                                                    layout: {
-                                                                        type: 'table',
-                                                                        columns: 2
-                                                                    },
-
-                                                                    defaults: {
-                                                                        xtype: 'displayfield',
-                                                                        labelAlign: 'right',
-                                                                        labelPad: 15,
-                                                                        width: 340,
-                                                                        labelWidth: 125,
-                                                                        maxLength: 100,
-                                                                        maxLengthText: '最大长度为100'
-                                                                    },
-                                                                    items: [{
-                                                                        fieldLabel: '起始重量(kg)',
-                                                                        value: item['weight_min']
-                                                                    }, {
-                                                                        fieldLabel: '结束重量(kg)',
-                                                                        value: item['weight_max']
-                                                                    }, {
-                                                                        fieldLabel: '价格',
-                                                                        value: item['weight_start_price'],
-                                                                        colspan: 2
-                                                                    }]
-                                                                }, {
-                                                                    xtype: 'fieldset',
-                                                                    title: '续重',
-                                                                    layout: {
-                                                                        type: 'table',
-                                                                        columns: 2
-                                                                    },
-
-                                                                    defaults: {
-                                                                        xtype: 'displayfield',
-                                                                        labelAlign: 'right',
-                                                                        labelPad: 15,
-                                                                        width: 340,
-                                                                        labelWidth: 125,
-                                                                        maxLength: 100,
-                                                                        maxLengthText: '最大长度为100'
-                                                                    },
-                                                                    items: [{
-                                                                        fieldLabel: '重量(kg)',
-                                                                        value: item['weight_pre']
-                                                                    }, {
-                                                                        fieldLabel: '价格',
-                                                                        value: item['weight_pre_price']
-                                                                    }, {
-                                                                        fieldLabel: '记重方式',
-                                                                        colspan: 2,
-                                                                        value: item['weight_price_type']
-                                                                    }]
-                                                                }, {
-                                                                    xtype: 'button',
-                                                                    colspan: 2,
-                                                                    rule_id: item['rule_id'],
-                                                                    width: 100,
-                                                                    margin: '0 0 0 630',
-                                                                    text: '删除',
-                                                                    handler: function(com) {
-                                                                        var rule_id = com.rule_id;
-                                                                        var param = {
-                                                                            'rule_id': rule_id,
-                                                                            sessiontoken: GlobalFun.getSeesionToken()
-                                                                        };
-                                                                        // 调用
-                                                                        WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
-                                                                            GlobalConfig.CurrUserInfo = response.data[0];
-                                                                            callBack();
-                                                                        }, function(response, opts) {
-                                                                            if (!GlobalFun.errorProcess(response.code)) {
-                                                                                Ext.Msg.alert('失败', response.msg);
-                                                                            }
-                                                                        }, true, false, com.up('window').getEl());
-                                                                    }
-                                                                }]
-                                                            };
-                                                        }
-                                                        tempRuleItems.push(obj);
-                                                    });
-
+                                                    var tempRuleItems = createRuleRow(data);
                                                     com.add(tempRuleItems);
                                                 },
                                                 beforehide: function(com) {
