@@ -308,7 +308,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                         var sm = e.grid.getSelectionModel();
                         e.store.sync({
                             success: function(batch, opts) {
-                                e.record.commit();
+                                e.grid.loadGrid();
                                 if (e.store.getCount() > 0) {
                                     sm.select(0);
                                 }
