@@ -5,6 +5,7 @@ class CustomerRent extends AdminController {
 
     public function __construct(){
         parent::__construct();
+        $this->load->model('customer_model');
         $this->load->model('customer_rent_model');
     }
 
@@ -47,7 +48,12 @@ class CustomerRent extends AdminController {
             'date_end' => $this->input->post('date_end')
         );
 
-        $this->customer_rent_model->addCustomerRent($data);
+        $customer_rent_id = $this->customer_rent_model->addCustomerRent($data);
+
+        $data = array(
+            'customer_rent_id' => $customer_rent_id
+        );
+        $this->customer_model->updateCustomer($this->input->post('customer_id'), $data);
     }
 
     public function update() {
