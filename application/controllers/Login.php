@@ -18,6 +18,8 @@ class Login extends MY_Controller {
             $session = $this->session_token_model->getSession($this->input->get_post('sessiontoken'));
             if($session) {
                 $admin = $this->admin_model->getAdmin($session['admin_name']);
+            }else{
+                delete_cookie('login_sessiontoken');
             }
         }
 

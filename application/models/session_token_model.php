@@ -29,7 +29,10 @@ class Session_token_model extends CI_Model
         return $data['session_token'];
     }
 
-    function getSession($session_token){
+    function getSession($session_token)
+    {
+        $this->clearSession();
+
         $data = array(
             'session_token' => $session_token
         );
@@ -41,7 +44,8 @@ class Session_token_model extends CI_Model
         return $session;
     }
 
-    function updateExpires($session_token){
+    function updateExpires($session_token)
+    {
         $this->clearSession();
 
         $data = array(
@@ -61,7 +65,8 @@ class Session_token_model extends CI_Model
         }
     }
 
-    function destroySession($session_token){
+    function destroySession($session_token)
+    {
         $data = array(
             'session_token' => $session_token
         );
@@ -69,7 +74,8 @@ class Session_token_model extends CI_Model
         return $this->db->delete('session_token');
     }
 
-    function clearSession() {
+    function clearSession()
+    {
         $timer = strtotime('now');
         $timer = $timer - 60*60*24*2;//两天以前
         $new_time = date('Y-m-d H:i:s', $timer);
