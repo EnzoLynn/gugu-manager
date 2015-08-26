@@ -49,7 +49,26 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         itemId: 'pagingtoolbarID',
         store: 'Tracking_numberGridStoreId',
         dock: 'bottom',
-        items: []
+        items: [{
+            xtype: 'tbtext',
+            text: '过滤:'
+        }, {
+            xtype: 'GridFilterMenuButton',
+            itemId: 'menuID',
+            text: '全部类别',
+            filterParam: {
+                group: 'customerTypeGroup',
+                text: '全部类别',
+                filterKey: 'CustomerTypeId',
+                GridTypeName: 'CustomerGrid',
+                store: StoreManager.ComboStore.CustomerTypeStore
+            }
+        }, '-', {
+            xtype: 'GridSelectCancelMenuButton',
+            itemId: 'selectRecId',
+            text: '选择',
+            targetName: 'CustomerGrid'
+        }]
     }],
     initComponent: function() {
         var me = this;

@@ -86,7 +86,7 @@ Ext.create('chl.Action.CustomerGridAction', {
     },
     updateStatus: function(selection) { 
         var flag =  selection[0] && selection[0].data.customer_rent_id.length>0;
-        this.setDisabled(selection.length != 1 && !flag);
+        this.setDisabled(selection.length != 1 || !flag);
     }
 });
 
