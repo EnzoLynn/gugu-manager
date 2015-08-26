@@ -42,18 +42,20 @@ class CustomerNumber extends AdminController {
     }
 
     public function add() {
-        $data = array(
-            'customer_id' => $this->input->get_post('customer_id'),
-            'customize_number_prefix' => $this->input->get_post('customize_number_prefix'),
-            'customize_number_from' => $this->input->get_post('customize_number_from'),
-            'customize_number_to' => $this->input->get_post('customize_number_to'),
-            'customize_number_suffix' => $this->input->get_post('customize_number_suffix')
-        );
+        $str = file_get_contents("php://input");
+        $post = json_decode($str);
+        foreach($post as $key => $val) {
+            $post = objectToArray($post);
+            $data = array(
+                'customer_id' => $post['customer_id'],
+                'customize_number_prefix' => $post['customize_number_prefix'],
+                'customize_number_from' => $post['customize_number_from'],
+                'customize_number_to' => $post['customize_number_to'],
+                'customize_number_suffix' => $post['customize_number_suffix']
+            );
 
-        print_r($_POST);
-        print_r($data);exit;
-
-        $this->customer_number_model->addCustomerNumber($data);
+            $this->customer_number_model->addCustomerNumber($data);
+        }
         $json = array(
             'success' => true,
             'data' => [],
@@ -61,25 +63,50 @@ class CustomerNumber extends AdminController {
             'msg' => '成功',
             'code' => '01'
         );
-        //echo json_encode($json);
-        echo 111;exit;
+        echo json_encode($json);
     }
 
     public function update() {
-        $number_id = $this->input->post('number_id');
-        $data = array(
-            'customer_id' => $this->input->post('customer_id'),
-            'customize_number_prefix' => $this->input->post('customize_number_prefix'),
-            'customize_number_from' => $this->input->post('customize_number_from'),
-            'customize_number_to' => $this->input->post('customize_number_to'),
-            'customize_number_suffix' => $this->input->post('customize_number_suffix')
-        );
+        $str = file_get_contents("php://input");
+        $post = json_decode($str);
+        foreach($post as $key => $val) {
+            $post = objectToArray($post);
+            $number_id = $post['number_id'];
+            $data = array(
+                'customer_id' => $post['customer_id'],
+                'customize_number_prefix' => $post['customize_number_prefix'],
+                'customize_number_from' => $post['customize_number_from'],
+                'customize_number_to' => $post['customize_number_to'],
+                'customize_number_suffix' => $post['customize_number_suffix']
+            );
+            $this->customer_number_model->updateCustomerNumber($number_id, $data);
+        }
 
-        $this->customer_number_model->updateCustomerNumber($number_id, $data);
+        $json = array(
+            'success' => true,
+            'data' => [],
+            'total' => 1,
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
     }
 
     public function delete() {
+
+        $str = file_get_contents("php://input");
+        $post = json_decode($str);
+        print_r($post);exit;
+
         $number_id = $this->input->post('number_id');
         $this->customer_number_model->deleteCustomerNumber($number_id);
+        $json = array(
+            'success' => true,
+            'data' => [],
+            'total' => 1,
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
     }
 }
