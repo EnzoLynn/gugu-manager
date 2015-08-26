@@ -5,23 +5,19 @@
  * Date: 2015/8/26
  * Time: 10:41
  */
-class Customer_express_rule_model extends CI_Model
-{
-    function __construct()
-    {
+class Customer_express_rule_model extends CI_Model {
+    function __construct() {
         parent::__construct();
     }
 
-    function getOne($rule_id)
-    {
+    function getOne($rule_id) {
         $this->db->where('rule_id', $rule_id);
         $query = $this->db->get('customer_express_rule');
         $rule = $query->first_row();
         return $rule;
     }
 
-    function getOneByRent($customer_rent_id, $province_code)
-    {
+    function getOneByRent($customer_rent_id, $province_code) {
         $this->db->where('customer_rent_id', $customer_rent_id);
         $this->db->where('province_code', $province_code);
         $query = $this->db->get('customer_express_rule');
@@ -29,8 +25,7 @@ class Customer_express_rule_model extends CI_Model
         return $rule;
     }
 
-    function getCustomerExpressRules($data)
-    {
+    function getCustomerExpressRules($data) {
         $data = array(
             'customer_rent_id' => $data['customer_rent_id'],
             'page' => (int)$data['page'],
@@ -49,14 +44,12 @@ class Customer_express_rule_model extends CI_Model
         return $customer_numbers;
     }
 
-    function getCustomerExpressRulesTotal($customer_rent_id)
-    {
+    function getCustomerExpressRulesTotal($customer_rent_id) {
         $this->db->where('customer_rent_id', $customer_rent_id);
         return $this->db->count_all('customer_express_rule');
     }
 
-    function add($data)
-    {
+    function add($data) {
         $rule = array(
             'customer_id' => $data['customer_id'],
             'customer_rent_id' => $data['customer_rent_id'],
@@ -70,8 +63,7 @@ class Customer_express_rule_model extends CI_Model
         return $rule_id;
     }
 
-    function update($rule_id, $data)
-    {
+    function update($rule_id, $data) {
         $rule = array(
             'customer_id' => $data['customer_id'],
             'customer_rent_id' => $data['customer_rent_id'],
@@ -84,8 +76,7 @@ class Customer_express_rule_model extends CI_Model
         return $this->db->update('customer_express_rule', $rule);
     }
 
-    function delete($rule_id)
-    {
+    function delete($rule_id) {
         $this->db->where('rule_id', $rule_id);
         return $this->db->delete('customer_express_rule');
     }

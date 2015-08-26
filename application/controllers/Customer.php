@@ -3,12 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Customer extends CI_Controller {
 
-    public function index()
-    {
-        $this->load->view('customer/add');
+    public function index() {
+
     }
 
-    public function getList(){
+    public function getList() {
         $this->load->model('customer_model');
 
         $data = array(

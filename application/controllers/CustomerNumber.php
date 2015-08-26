@@ -9,16 +9,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class CustomerNumber extends AdminController {
 
-    public function __construct(){
+    public function __construct() {
         parent::__construct();
         $this->load->model('customer_number_model');
     }
 
-    public function index(){
+    public function index() {
 
     }
 
-    public function getList(){
+    public function getList() {
         $data = array(
             'page' => (int)$this->input->post('page'),
             'limit'=> (int)$this->input->post('limit'),

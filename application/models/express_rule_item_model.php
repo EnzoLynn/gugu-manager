@@ -5,23 +5,19 @@
  * Date: 2015/8/26
  * Time: 10:50
  */
-class Express_rule_item_model extends CI_Model
-{
-    function __construct()
-    {
+class Express_rule_item_model extends CI_Model {
+    function __construct() {
         parent::__construct();
     }
 
-    function getOne($item_id)
-    {
+    function getOne($item_id) {
         $this->db->where('item_id', $item_id);
         $query = $this->db->get('express_rule_item');
         $rule = $query->first_row();
         return $rule;
     }
 
-    function getItems($rule_id)
-    {
+    function getItems($rule_id) {
         $this->db->where('rule_id', $rule_id);
         $this->db->order_by('sort_order', 'ASC');
         $query = $this->db->get('express_rule_item');
@@ -30,14 +26,12 @@ class Express_rule_item_model extends CI_Model
         return $items;
     }
 
-    function getItemsTotal($rule_id)
-    {
+    function getItemsTotal($rule_id) {
         $this->db->where('rule_id', $rule_id);
         return $this->db->count_all('express_rule_item');
     }
 
-    function add($data)
-    {
+    function add($data) {
         $item = array(
             'rule_id'           => $data['rule_id'],
             'express_id'        => $data['express_id'],
@@ -52,8 +46,7 @@ class Express_rule_item_model extends CI_Model
         return $rule_id;
     }
 
-    function update($item_id, $data)
-    {
+    function update($item_id, $data) {
         $item = array(
             'rule_id'           => $data['rule_id'],
             'express_id'        => $data['express_id'],
@@ -67,8 +60,7 @@ class Express_rule_item_model extends CI_Model
         return $this->db->update('express_rule_item', $item);
     }
 
-    function delete($item_id)
-    {
+    function delete($item_id) {
         $this->db->where('item_id', $item_id);
         return $this->db->delete('express_rule_item');
     }

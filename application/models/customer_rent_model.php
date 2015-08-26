@@ -7,14 +7,12 @@
  */
 
 
-class Customer_rent_model extends CI_Model{
-    var $CI;
-    function __construct(){
+class Customer_rent_model extends CI_Model {
+    function __construct() {
         parent::__construct();
-        $this->CI = &get_instance();
     }
 
-    function getCustomerRent($customer_rent_id){
+    function getCustomerRent($customer_rent_id) {
         if($customer_rent_id) {
             $this->db->where('customer_rent_id', $customer_rent_id);
             $query = $this->db->get('customer_rent');
@@ -26,7 +24,7 @@ class Customer_rent_model extends CI_Model{
 
     }
 
-    function getCustomerRents($data){
+    function getCustomerRents($data) {
         $data = array(
             'customer_id' => (int)$data['customer_id'],
             'page' => (int)$data['page'],
@@ -44,7 +42,7 @@ class Customer_rent_model extends CI_Model{
         return $query->result_array();
     }
 
-    function getCustomerRentsTotal($data){
+    function getCustomerRentsTotal($data) {
         $data = array(
             'customer_id' => (int)$data['customer_id'],
             'filter' => $data['filter']
