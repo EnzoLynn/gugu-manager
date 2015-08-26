@@ -55,13 +55,13 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         }, {
             xtype: 'GridFilterMenuButton',
             itemId: 'menuID',
-            text: '全部类别',
+            text: '全部状态',
             filterParam: {
                 group: 'customerTypeGroup',
                 text: '全部类别',
                 filterKey: 'CustomerTypeId',
-                GridTypeName: 'CustomerGrid',
-                store: StoreManager.ComboStore.CustomerTypeStore
+                GridTypeName: 'Tracking_numberGrid',
+                store: StoreManager.ComboStore.Tracking_numberGridTypeStore
             }
         }, '-', {
             xtype: 'GridSelectCancelMenuButton',

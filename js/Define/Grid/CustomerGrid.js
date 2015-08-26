@@ -628,6 +628,8 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                 handler: function(com) {
 
                                     var param = {
+                                         'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
+                                        province_code: com.myval,
                                         sessiontoken: GlobalFun.getSeesionToken()
                                     };
                                     // 调用
@@ -1123,7 +1125,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
 
 
                                                         Ext.Array.each(data, function(item, index, alls) {
-                                                            var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.key);
+                                                            var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.province_code);
                                                             temp.setText('现有规则:' + item.count);
                                                         });
                                                     }, function(response, opts) {
