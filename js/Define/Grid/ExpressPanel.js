@@ -74,8 +74,10 @@ GridManager.CreateExpressPanel = function() {
                                         value: item['weight_max']
                                     }, {
                                         fieldLabel: '价格',
-                                        value: item['price'],
-                                        colspan: 2
+                                        value: item['price'] 
+                                    }, {
+                                        fieldLabel: '排序',
+                                        value: item['sort_order'] 
                                     }, {
                                         xtype: 'button',
                                         colspan: 2,

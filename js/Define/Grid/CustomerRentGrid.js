@@ -376,9 +376,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                 itemId: 'lbl' + key
                             }, {
                                 xtype: 'button',
-                                margin:'0 0 0 20',
+                                margin: '0 0 0 20',
                                 width: 100,
-                                iconCls:'btnAdd',
+                                iconCls: 'btnAdd',
                                 text: '添加规则',
                                 myval: key,
                                 handler: function(com) {
@@ -450,11 +450,11 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                     } else {
                                                         obj = {
                                                             xtype: 'fieldset',
-                                                            legend:{
-                                                                xtype:'component',
+                                                            legend: {
+                                                                xtype: 'component',
                                                                 style: {
-                                                                   height:40,
-                                                                   'background-color':'red'
+                                                                    height: 40,
+                                                                    'background-color': 'red'
                                                                 }
                                                             },
                                                             title: '<font style="font-size:14px;">步进价格' + '  [ 首重区间(kg): <font style="color:red;">' + item['weight_min'] + '-' + item['weight_max'] + '</font> ]</font>',
@@ -484,9 +484,11 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 fieldLabel: '续重价格',
                                                                 value: item['weight_pre_price']
                                                             }, {
-                                                                fieldLabel: '记重方式',
-                                                                colspan: 2,
+                                                                fieldLabel: '记重方式', 
                                                                 value: item['weight_price_type_name']
+                                                            }, {
+                                                                fieldLabel: '排序',
+                                                                value: item['sort_order']
                                                             }, {
                                                                 xtype: 'button',
                                                                 colspan: 2,
@@ -526,7 +528,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                 pid: com.myval,
                                                 width: 820,
                                                 height: 700,
-                                                iconCls:'editCustomerRule',
+                                                iconCls: 'editCustomerRule',
                                                 resizable: false,
                                                 action: 'create',
                                                 modal: true,
