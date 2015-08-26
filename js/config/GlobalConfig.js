@@ -92,7 +92,7 @@ GlobalConfig.Controllers = {
         updateCustomer: globalFix + '/UpdateCustomer.json',
         addCustomerRent: '/customerRent/add',//globalFix + '/addCustomerRent.php',
         addCustomerRule: 'customerExpressRule/addRule',//globalFix + '/AddCustomerRule.php',
-        delCustomerRule: globalFix + '/DelCustomerRule.php',
+        delCustomerRule: 'customerExpressRule/deleteRule',//globalFix + '/DelCustomerRule.php',
         delCustomer: globalFix + '/DelCustomer.json',
         GetCustomerRuleByRentId: 'customerExpressRule/countProvinceRule',//globalFix + '/GetCustomerRuleByRentId.json',
         getCustomerRule: 'customerExpressRule/show',//globalFix + '/GetCustomerRule.json',

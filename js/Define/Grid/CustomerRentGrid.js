@@ -1,8 +1,47 @@
-Ext.define('chl.Action.CustomerGridAction', {
+Ext.define('chl.Action.CustomerRentGridAction', {
     extend: 'WS.action.Base',
-    category: 'CustomerGridAction'
+    category: 'CustomerRentGridAction'
 });
- 
+
+Ext.create('chl.Action.CustomerRentGridAction', {
+    itemId: 'editCustomerRule',
+    iconCls: 'edit',
+    tooltip: '添加规则',
+    text: '添加规则',
+    handler: function() {
+        var me = this;
+        var target = me.getTargetView();
+        var record = target.getSelectionModel().getSelection()[0];
+        ActionManager.editCustomerRule(target, record);
+    },
+    updateStatus: function(selection) {
+        // var flag =  selection[0] && selection[0].data.customer_rent_id != 0; 
+        // this.setDisabled(selection.length != 1 || !flag);
+        this.setDisabled(selection.length != 1);
+    }
+});
+
+
+Ext.create('chl.Action.CustomerRentGridAction', {
+    itemId: 'refreshCustomerRent',
+    iconCls: 'refresh',
+    tooltip: '刷新',
+    text: '刷新',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.refreshCustomerRent(target);
+    },
+    updateStatus: function(selection) {}
+});
+//刷新
+ActionManager.refreshCustomerRent = function(target) {
+    target.loadGrid();
+};
+
+//创建一个上下文菜单
+var CustomerRentGrid_RightMenu = Ext.create('Ext.menu.Menu', {
+    items: [ActionBase.getAction('refreshCustomerRent'), '-', ActionBase.getAction('editCustomerRule')]
+});
 
 Ext.define('chl.gird.CustomerRentGrid', {
     alternateClassName: ['CustomerRentGrid'],
@@ -15,8 +54,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
         itemclick: function(grid, record, hitem, index, e, opts) {
             var me = this;
         },
-        itemdblclick: function(grid, record, hitem, index, e, opts) { 
-        },
+        itemdblclick: function(grid, record, hitem, index, e, opts) {},
         itemcontextmenu: function(view, rec, item, index, e, opts) {
             e.stopEvent();
 
@@ -69,9 +107,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
         layout: {
             overflowHandler: 'Menu'
         },
-        items: [ActionBase.getAction('refreshCustomerRent'),
-            ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRent'), ActionBase.getAction('addCustomerRentRent'), ActionBase.getAction('editCustomerRentRule')
-        ]
+        items: [ActionBase.getAction('refreshCustomerRent'), '-', ActionBase.getAction('editCustomerRule')]
     }, {
         xtype: 'Pagingtoolbar',
         itemId: 'pagingtoolbarID',
@@ -167,4 +203,38 @@ GridManager.SetCustomerRentGridSelectionChangeEvent = function(param) {
             return;
 
     });
+};
+
+
+//添加规则
+ActionManager.editCustomerRule = function(target, record) {
+    var param = {
+        'customer_rent_id': record.data.customer_rent_id,
+        sessiontoken: GlobalFun.getSeesionToken()
+    };
+    // 调用
+    WsCall.call(GlobalConfig.Controllers.CustomerGrid.GetCustomerRuleByRentId, 'GetCustomerRuleByRentId', param, function(response, opts) {
+
+        var data = response.data;
+        WindowManager.AddUpdateCustomerRuleWin = Ext.create('chl.Grid.AddUpdateCustomerRuleWin', {
+            grid: target,
+            iconCls: 'edit',
+            record: record,
+            action: 'update',
+            title: "编辑"
+        });
+        WindowManager.AddUpdateCustomerRuleWin.show(null, function() {
+            Ext.Array.each(data, function(item, index, alls) {
+                var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.province_code);
+                temp.setText('现有规则:' + item.count);
+            });
+
+            WindowManager.AddUpdateCustomerRuleWin.down("#formId").loadRecord(record);
+        });
+    }, function(response, opts) {
+        if (!GlobalFun.errorProcess(response.code)) {
+            Ext.Msg.alert('失败', response.msg);
+        }
+    }, true);
+
 };
