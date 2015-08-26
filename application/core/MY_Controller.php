@@ -28,12 +28,14 @@ class AdminController extends MY_Controller
 
             if($session) {
                 $admin = $this->admin_model->getAdmin($session['admin_name']);
+            }else{
+                delete_cookie('login_sessiontoken');
             }
         }
         if(!$admin) {
             $json = array(
                 'success' => false,
-                'msg' => '帐号或者密码错误',
+                'msg' => '请重新登录',
                 'code' => 99
             );
             echo json_encode($json);
