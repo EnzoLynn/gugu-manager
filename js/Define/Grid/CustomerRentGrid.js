@@ -47,8 +47,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
     alternateClassName: ['CustomerRentGrid'],
     alias: 'widget.CustomerRentGrid',
     extend: 'chl.grid.BaseGrid',
-    store: 'CustomerRentGridStoreId',
-    stateful: false,
+    store: 'CustomerRentGridStoreId', 
     actionBaseName: 'CustomerRentGridAction',
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {
@@ -742,7 +741,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                             blankText: '不能为空'
                                                         }, {
                                                             xtype: 'numberfield',
-                                                            name: 'weight_min_price',
+                                                            name: 'weight_max',
                                                             fieldLabel: '结束重量(kg)',
                                                             minValue: 0,
                                                             value: 1,
@@ -753,7 +752,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                         }, {
                                                             xtype: 'numberfield',
                                                             span: 2,
-                                                            name: 'weight_min_price',
+                                                            name: 'weight_start_price',
                                                             fieldLabel: '价格',
                                                             decimalPrecision: 2,
                                                             minValue: 0,

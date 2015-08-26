@@ -2,8 +2,7 @@
     alternateClassName: ['TestGrid'],
     alias: 'widget.TestGrid',
     extend: 'chl.grid.BaseGrid',
-    store: 'TestGridStoreId',
-    stateful: false,
+    store: 'TestGridStoreId', 
     actionBaseName: 'TestGridAction',
     listeners: {
         itemclick: function (grid, record, hitem, index, e, opts) {
