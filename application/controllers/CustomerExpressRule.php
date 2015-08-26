@@ -87,6 +87,7 @@ class CustomerExpressRule extends AdminController {
         if(!$rule) {
             $rent = $this->customer_rent_model->getCustomerRent($customer_rent_id);
             $customer_id = $rent['customer_id'];
+
             $rule_add = array(
                 'customer_id' => $customer_id,
                 'customer_rent_id' => $customer_rent_id,
@@ -99,13 +100,32 @@ class CustomerExpressRule extends AdminController {
         }
         if($price_type == 0) {
             $rule_update = array(
-                'price_type' => $price_type,
+                'price_type' => 0,
                 'price_start' => $price_start,
                 'price_pre' => $price_pre
             );
             $this->customer_express_rule_model->update($rule['rule_id'], $rule_update);
         }else{
+            $rule_update = array(
+                'price_type' => 1,
+                'price_start' => 0,
+                'price_pre' => 0
+            );
+            $this->customer_express_rule_model->update($rule['rule_id'], $rule_update);
 
+            $item = array(
+                'rule_id'            => $rule['rule_id'],
+                'customer_id'       => $customer_id,
+                'customer_rent_id' => $customer_rent_id,
+                'weight_price_type'=> $this->input->get_post('weight_price_type'),
+                'weight_min'        => $this->input->get_post('weight_min'),
+                'weight_max'        => $this->input->get_post('weight_max'),
+                'weight_start_price'=> $this->input->get_post('weight_start_price'),
+                'weight_pre'            => $this->input->get_post('weight_pre'),
+                'weight_pre_price'     => $this->input->get_post('weight_pre_price'),
+                'sort_order'            => $this->input->get_post('sort_order')
+            );
+            $this->customer_express_rule_item_model->add($item);
         }
         $this->show();
     }
