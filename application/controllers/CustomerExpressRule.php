@@ -52,12 +52,15 @@ class CustomerExpressRule extends AdminController {
         $province_code = $this->input->get_post('province_code');
         $data = array();
         $rule = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code);
+
+        //echo $rule['rule_id'];exit;
+
         if($rule['price_type'] == 0) {
             $data = $rule;
             $total = 1;
         }else{
             $items = $this->customer_express_rule_item_model->getItems($rule['rule_id']);
-            $total = count($items);
+            $total = $this->customer_express_rule_item_model->getItemsTotal($rule['rule_id']);
             foreach($items as $item) {
                 $temp = $item;
                 $temp['price_type'] = 1;
