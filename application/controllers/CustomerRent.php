@@ -38,8 +38,9 @@ class CustomerRent extends AdminController {
     }
 
     public function add() {
+        $customer_id = $this->input->post('customer_id');
         $data = array(
-            'customer_id' => $this->input->post('customer_id'),
+            'customer_id' => $customer_id,
             'title' => $this->input->post('title'),
             'rent_area' => $this->input->post('rent_area'),
             'area_to_order_number' => $this->input->post('area_to_order_number'),
@@ -53,7 +54,8 @@ class CustomerRent extends AdminController {
         $data = array(
             'customer_rent_id' => $customer_rent_id
         );
-        $this->customer_model->updateCustomer($this->input->post('customer_id'), $data);
+
+        $this->customer_model->updateCustomer($customer_id, $data);
     }
 
     public function update() {

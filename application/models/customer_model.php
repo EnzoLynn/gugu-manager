@@ -98,7 +98,8 @@ class Customer_model extends CI_Model{
     }
 
     function updateCustomer($customer_id, $data) {
-        return $this->db->update('customer', $data)->where('customer_id', $customer_id);
+        $this->db->where('customer_id', $customer_id);
+        return $this->db->update('customer', $data);
     }
 
     function existCustomerName($customer_name) {
