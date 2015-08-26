@@ -100,7 +100,7 @@ Ext.onReady(function() {
                 region: 'west',
                 stateId: 'westStateId',
                 stateful: true,
-                iconCls: 'viewportMainWestTitle',
+                iconCls: 'home',
                 preventHeader: true,
                 title: '管理菜单',
                 layout: {

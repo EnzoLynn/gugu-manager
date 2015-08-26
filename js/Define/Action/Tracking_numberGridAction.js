@@ -12,22 +12,30 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     handler: function() {
         var target = this.getTargetView();
         var win = Ext.create('Ext.window.Window', {
-            height: 400,
+            height:160,
             width: 800,
             resizeabled: false,
+            iconCls: 'import',
             title: '上传文件',
+            bodyPadding:15,
             items: [{
                 xtype: 'form',
                 itemId: 'formId',
+                bodyPadding:15,
                 items: [{
                     xtype: 'filefield',
                     name: 'importAddr',
                     fieldLabel: '请选择导入的文件',
-                    width: 400,
+                    width: 600,
                     labelWidth: 150,
+                   
                     blankText: '请选择导入的文件',
                     msgTarget: 'side',
                     itemId: 'fileupId',
+                    buttonConfig:{
+                         iconCls: 'import',
+                         width:100
+                    },
                     buttonText: '...',
                     listeners: {
                         change: function(com) {
@@ -74,6 +82,12 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                         }
                     }
                 }]
+            }],
+            buttons:[{
+                text:'关闭',
+                handler:function(){
+                     win.close();
+                }
             }]
         });
         win.show();
