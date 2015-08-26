@@ -35,6 +35,74 @@ GridManager.CreateExpressPanel = function() {
 
                         var data = response.data;
 
+                        function createRuleRow(rowData) {
+                            var tempRuleItems = [];
+                            Ext.Array.each(rowData, function(item, index, alls) {
+                                var obj = {},
+                                    title = '';
+                                if (item['price_type'] == "1") {
+                                    title = '固定价格';
+                                } else {
+                                    title = '称重价格';
+                                }
+                                obj = {
+                                    xtype: 'fieldset',
+                                    title: title,
+                                    width: 770,
+                                    collapsible: true,
+                                    layout: {
+                                        type: 'table',
+                                        columns: 2
+                                    },
+                                    defaults: {
+                                        xtype: 'displayfield',
+                                        labelAlign: 'right',
+                                        labelPad: 15,
+                                        width: 340,
+                                        labelWidth: 125,
+                                        maxLength: 100,
+                                        maxLengthText: '最大长度为100'
+                                    },
+                                    items: [{
+                                        fieldLabel: '起始重量(kg)',
+                                        value: item['weight_min']
+                                    }, {
+                                        fieldLabel: '结束重量(kg)',
+                                        value: item['weight_max']
+                                    }, {
+                                        fieldLabel: '价格',
+                                        value: item['weight_start_price'],
+                                        colspan: 2
+                                    }, {
+                                        xtype: 'button',
+                                        colspan: 2,
+                                        rule_id: item['rule_id'],
+                                        width: 100,
+                                        margin: '0 0 0 630',
+                                        text: '删除',
+                                        handler: function(com) {
+
+                                            var rule_id = com.rule_id;
+                                            var param = {
+                                                'rule_id': rule_id,
+                                                sessiontoken: GlobalFun.getSeesionToken()
+                                            };
+                                            // 调用
+                                            WsCall.call(GlobalConfig.Controllers.ExpressPanel.delExpressRule, 'delExpressRule', param, function(response, opts) {
+
+                                                com.up('fieldset').destroy();
+                                            }, function(response, opts) {
+                                                if (!GlobalFun.errorProcess(response.code)) {
+                                                    Ext.Msg.alert('失败', response.msg);
+                                                }
+                                            }, true, false, com.up('window').getEl());
+                                        }
+                                    }]
+                                };
+                                tempRuleItems.push(obj);
+                            });
+                            return tempRuleItems;
+                        }
                         // priceType: 1,
                         // 获取详细的规则信息
                         //如已有规则，规则类型确定禁用项目
@@ -169,14 +237,10 @@ GridManager.CreateExpressPanel = function() {
                                                         sessiontoken: GlobalFun.getSeesionToken()
                                                     },
                                                     success: function(form, action) {
-
-                                                        // win.add({
-                                                        //     xtype: 'fieldset',
-                                                        //     title: '固定价格',
-                                                        //     html:""
-                                                        // });
-                                                        //w.grid.loadGrid();
-                                                        //w.close();
+                                                        var data = action.result.data;
+                                                        var arr = createRuleRow(data);
+                                                        w.removeAll();
+                                                        w.add(arr);
 
                                                     },
                                                     failure: function(form, action) {
@@ -195,71 +259,7 @@ GridManager.CreateExpressPanel = function() {
                             items: [],
                             listeners: {
                                 boxready: function(com) {
-                                    var tempRuleItems = [];
-                                    Ext.Array.each(data, function(item, index, alls) {
-                                        var obj = {},
-                                            title = '';
-                                        if (item['price_type'] == "1") {
-                                            title = '固定价格';
-                                        } else {
-                                            title = '称重价格';
-                                        }
-                                        obj = {
-                                            xtype: 'fieldset',
-                                            title: title,
-                                            width: 770,
-                                            collapsible: true,
-                                            layout: {
-                                                type: 'table',
-                                                columns: 2
-                                            },
-                                            defaults: {
-                                                xtype: 'displayfield',
-                                                labelAlign: 'right',
-                                                labelPad: 15,
-                                                width: 340,
-                                                labelWidth: 125,
-                                                maxLength: 100,
-                                                maxLengthText: '最大长度为100'
-                                            },
-                                            items: [{
-                                                fieldLabel: '起始重量(kg)',
-                                                value: item['weight_min']
-                                            }, {
-                                                fieldLabel: '结束重量(kg)',
-                                                value: item['weight_max']
-                                            }, {
-                                                fieldLabel: '价格',
-                                                value: item['weight_start_price'],
-                                                colspan: 2
-                                            }, {
-                                                xtype: 'button',
-                                                colspan: 2,
-                                                rule_id: item['rule_id'],
-                                                width: 100,
-                                                margin: '0 0 0 630',
-                                                text: '删除',
-                                                handler: function(com) {
-
-                                                    var rule_id = com.rule_id;
-                                                    var param = {
-                                                        'rule_id': rule_id,
-                                                        sessiontoken: GlobalFun.getSeesionToken()
-                                                    };
-                                                    // 调用
-                                                    WsCall.call(GlobalConfig.Controllers.ExpressPanel.delExpressRule, 'delExpressRule', param, function(response, opts) {
-
-                                                        com.up('fieldset').destroy();
-                                                    }, function(response, opts) {
-                                                        if (!GlobalFun.errorProcess(response.code)) {
-                                                            Ext.Msg.alert('失败', response.msg);
-                                                        }
-                                                    }, true, false, com.up('window').getEl());
-                                                }
-                                            }]
-                                        };
-                                        tempRuleItems.push(obj);
-                                    });
+                                    var tempRuleItems = createRuleRow(data);
 
                                     com.add(tempRuleItems);
                                 },
