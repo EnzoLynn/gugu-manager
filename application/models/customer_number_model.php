@@ -38,7 +38,7 @@ class Customer_number_model extends CI_Model {
 
     function getCustomerNumbersTotal($customer_id) {
         $this->db->where('customer_id', $customer_id);
-        return $this->db->count_all('customer_number');
+        return $this->db->count_all_results('customer_number');
     }
 
     function addCustomerNumber($data) {

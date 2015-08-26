@@ -49,7 +49,7 @@ class Customer_rent_model extends CI_Model {
         );
         $this->db->where('customer_id', $data['customer_id']);
         //$this->db->like($data['filter']);
-        return $this->db->count_all('customer_rent');
+        return $this->db->count_all_results('customer_rent');
     }
 
     function addCustomerRent($data) {
