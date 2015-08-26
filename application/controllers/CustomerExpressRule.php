@@ -63,9 +63,9 @@ class CustomerExpressRule extends AdminController {
                 $temp = $item;
                 $temp['price_type'] = 1;
                 if($item['weight_price_type'] == 0 ) {
-                    $item['weight_price_type_name'] = '进位';
+                    $temp['weight_price_type_name'] = '进位';
                 }else{
-                    $item['weight_price_type_name'] = '实重';
+                    $temp['weight_price_type_name'] = '实重';
                 }
                 $data[] = $temp;
             }
