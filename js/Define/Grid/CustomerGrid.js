@@ -3,7 +3,7 @@ var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshCustomer'), '-',
         ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'),
         '-', ActionBase.getAction('editCustomer_number'),
-        ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
+        ActionBase.getAction('addCustomerRent')
 
     ]
 });
@@ -47,7 +47,7 @@ Ext.define('chl.gird.CustomerGrid', {
         },
         items: [ActionBase.getAction('refreshCustomer'), '-',
             ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), '-',
-            ActionBase.getAction('editCustomer_number'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
+            ActionBase.getAction('editCustomer_number'), ActionBase.getAction('addCustomerRent')
 
             , '->', {
                 fieldLabel: '按客户名查找',
@@ -756,14 +756,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                         }, {
                                                             xtype: 'button',
                                                             colspan: 2,
-                                                            rule_id: item['rule_id'],
+                                                            rule_id: item['item_id'],
                                                             width: 100,
                                                             margin: '0 0 0 630',
                                                             text: '删除',
                                                             handler: function(com) {
                                                                 var rule_id = com.rule_id;
                                                                 var param = {
-                                                                    'rule_id': rule_id,
+                                                                    'item_id': rule_id,
                                                                     sessiontoken: GlobalFun.getSeesionToken()
                                                                 };
                                                                 // 调用
