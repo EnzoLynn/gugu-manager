@@ -58,8 +58,8 @@ Ext.create('chl.Action.CustomerGridAction', {
 Ext.create('chl.Action.CustomerGridAction', {
     itemId: 'addCustomerRent',
     iconCls: 'edit',
-    tooltip: '添加合同',
-    text: '添加合同',
+    tooltip: '添加合同/规则',
+    text: '添加合同/规则',
     handler: function() {
         var me = this;
         var target = me.getTargetView();

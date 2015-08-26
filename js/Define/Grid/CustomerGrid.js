@@ -756,14 +756,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                         }, {
                                                             xtype: 'button',
                                                             colspan: 2,
-                                                            rule_id: item['rule_id'],
+                                                            rule_id: item['item_id'],
                                                             width: 100,
                                                             margin: '0 0 0 630',
                                                             text: '删除',
                                                             handler: function(com) {
                                                                 var rule_id = com.rule_id;
                                                                 var param = {
-                                                                    'rule_id': rule_id,
+                                                                    'item_id': rule_id,
                                                                     sessiontoken: GlobalFun.getSeesionToken()
                                                                 };
                                                                 // 调用

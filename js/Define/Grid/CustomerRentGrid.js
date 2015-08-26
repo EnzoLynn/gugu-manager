@@ -1,3 +1,7 @@
+Ext.define('chl.Action.CustomerGridAction', {
+    extend: 'WS.action.Base',
+    category: 'CustomerGridAction'
+});
  
 
 Ext.define('chl.gird.CustomerRentGrid', {
@@ -24,7 +28,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
         selectionchange: function(view, seles, op) {
             if (!seles[0])
                 return;
-            //ActionBase.updateActions('CustomerRentGridAction', seles);
+            ActionBase.updateActions('CustomerRentGridAction', seles);
         }
     },
     columns: [{
@@ -104,7 +108,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
         store.loadPage(1);
         store.getProxy().extraParams.refresh = null;
 
-        //ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
+        ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
     }
 });
 
