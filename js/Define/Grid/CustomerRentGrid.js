@@ -415,7 +415,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                         obj = {
                                                             xtype: 'fieldset',
                                                             collapsible: true,
-                                                            title: '<font size=3>固定价格</font>',
+                                                            title: '<font style="font-size:14px;">固定价格</font>',
                                                             width: 770,
                                                             layout: {
                                                                 type: 'table',
@@ -464,7 +464,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                     } else {
                                                         obj = {
                                                             xtype: 'fieldset',
-                                                            title: '<font size=3>步进价格: ' + '(首重区间(kg):' + item['weight_min'] + '-' + item['weight_max'] + ')</font>',
+                                                            legend:{
+                                                                xtype:'component',
+                                                                style: {
+                                                                   height:40,
+                                                                   'background-color':'red'
+                                                                }
+                                                            },
+                                                            title: '<font style="font-size:14px;">步进价格' + '  [ 首重区间(kg): <font style="color:red;">' + item['weight_min'] + '-' + item['weight_max'] + '</font> ]</font>',
                                                             width: 770,
                                                             collapsible: true,
                                                             layout: {

@@ -56,9 +56,9 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             itemId: 'menuID',
             text: '全部状态',
             filterParam: {
-                group: 'customerTypeGroup',
+                group: 'account_statusGroup',
                 text: '全部类别',
-                filterKey: 'CustomerTypeId',
+                filterKey: 'account_status',
                 GridTypeName: 'Tracking_numberGrid',
                 store: StoreManager.ComboStore.Tracking_numberGridTypeStore
             }
@@ -66,7 +66,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             xtype: 'GridSelectCancelMenuButton',
             itemId: 'selectRecId',
             text: '选择',
-            targetName: 'CustomerGrid'
+            targetName: 'Tracking_numberGrid'
         }]
     }],
     initComponent: function() {
@@ -151,7 +151,7 @@ GridManager.CreateTracking_numberGrid = function(param) {
         renderer: GlobalFun.UpdateRecord,
         flex: 1
     }, {
-        text: '状态',
+        text: '结算状态',
         dataIndex: 'account_status_name',
         renderer: GlobalFun.UpdateRecord,
         flex: 1
