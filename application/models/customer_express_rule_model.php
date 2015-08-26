@@ -54,16 +54,16 @@ class Customer_express_rule_model extends CI_Model {
     }
 
     function update($rule_id, $data) {
-        $rule = array(
-            'customer_id' => $data['customer_id'],
-            'customer_rent_id' => $data['customer_rent_id'],
-            'province_code' => $data['province_code'],
-            'price_type' => $data['price_type'],
-            'price_start' => $data['price_start'],
-            'price_pre' => $data['price_pre']
-        );
+//        $rule = array(
+//            'customer_id' => $data['customer_id'],
+//            'customer_rent_id' => $data['customer_rent_id'],
+//            'province_code' => $data['province_code'],
+//            'price_type' => $data['price_type'],
+//            'price_start' => $data['price_start'],
+//            'price_pre' => $data['price_pre']
+//        );
         $this->db->where('rule_id', $rule_id);
-        return $this->db->update('customer_express_rule', $rule);
+        return $this->db->update('customer_express_rule', $data);
     }
 
     function delete($rule_id) {
