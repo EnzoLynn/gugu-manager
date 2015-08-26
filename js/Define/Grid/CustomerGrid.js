@@ -909,7 +909,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                         dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
                                                                         restype: 'json',
                                                                         price_type: 0,
-                                                                        province: w.pid,
+                                                                        province_code: w.pid,
                                                                         action: w.action,
                                                                         'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
                                                                         sessiontoken: GlobalFun.getSeesionToken()
@@ -1077,7 +1077,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                         dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
                                                                         restype: 'json',
                                                                         price_type: 1,
-                                                                        province: w.pid,
+                                                                        province_code: w.pid,
                                                                         action: w.action,
                                                                         'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
                                                                         sessiontoken: GlobalFun.getSeesionToken()
