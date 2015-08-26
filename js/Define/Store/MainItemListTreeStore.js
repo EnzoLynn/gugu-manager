@@ -7,10 +7,12 @@
          children: [{
              id: "001",
              text: "客户管理",
+             iconCls:'customerGrid',
              leaf: true
          }, {
              id: "002",
              text: "票据管理",
+             iconCls:'tracking_numberGrid',
              leaf: true
          }, {
              id: "003",
@@ -19,6 +21,7 @@
              children: [{
                  id: '0031',
                  express_id:1,
+                 iconCls:'expressGrid',
                  text: '圆通快递',
                  leaf: true
              }]

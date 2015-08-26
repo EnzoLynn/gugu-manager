@@ -5,7 +5,7 @@ Ext.define('chl.Action.CustomerRentGridAction', {
 
 Ext.create('chl.Action.CustomerRentGridAction', {
     itemId: 'editCustomerRule',
-    iconCls: 'edit',
+    iconCls: 'editCustomerRule',
     tooltip: '添加规则',
     text: '添加规则',
     handler: function() {
@@ -53,7 +53,9 @@ Ext.define('chl.gird.CustomerRentGrid', {
         itemclick: function(grid, record, hitem, index, e, opts) {
             var me = this;
         },
-        itemdblclick: function(grid, record, hitem, index, e, opts) {},
+        itemdblclick: function(grid, record, hitem, index, e, opts) {
+            ActionBase.getAction('editCustomerRule').execute();
+        },
         itemcontextmenu: function(view, rec, item, index, e, opts) {
             e.stopEvent();
 
@@ -217,10 +219,10 @@ ActionManager.editCustomerRule = function(target, record) {
         var data = response.data;
         WindowManager.AddUpdateCustomerRuleWin = Ext.create('chl.Grid.AddUpdateCustomerRuleWin', {
             grid: target,
-            iconCls: 'edit',
+            iconCls: 'editCustomerRule',
             record: record,
             action: 'update',
-            title: "编辑"
+            title: "添加规则"
         });
         WindowManager.AddUpdateCustomerRuleWin.show(null, function() {
             Ext.Array.each(data, function(item, index, alls) {
@@ -289,24 +291,6 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
-        }, {
-            name: 'customize_number_from',
-            fieldLabel: '发放面单号开始',
-            itemId: 'customize_number_fromItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
-        }, {
-            name: 'customize_number_to',
-            fieldLabel: '发放面单号结束',
-            itemId: 'customize_number_toItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
         }, {
             name: 'rent_area',
             fieldLabel: '租贷面积（平米）',
@@ -392,7 +376,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                 itemId: 'lbl' + key
                             }, {
                                 xtype: 'button',
+                                margin:'0 0 0 20',
                                 width: 100,
+                                iconCls:'btnAdd',
                                 text: '添加规则',
                                 myval: key,
                                 handler: function(com) {
@@ -540,6 +526,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                 pid: com.myval,
                                                 width: 820,
                                                 height: 700,
+                                                iconCls:'editCustomerRule',
                                                 resizable: false,
                                                 action: 'create',
                                                 modal: true,

@@ -39,7 +39,7 @@ Ext.create('chl.Action.CustomerGridAction', {
 
 Ext.create('chl.Action.CustomerGridAction', {
     itemId: 'editCustomer_number',
-    iconCls: 'edit',
+    iconCls: 'eidtCustomer_number',
     tooltip: '管理客户面单号范围',
     text: '管理面单号范围',
     handler: function() {
@@ -57,7 +57,7 @@ Ext.create('chl.Action.CustomerGridAction', {
 
 Ext.create('chl.Action.CustomerGridAction', {
     itemId: 'addCustomerRent',
-    iconCls: 'edit',
+    iconCls: 'addCustomerRent',
     tooltip: '添加合同/规则',
     text: '添加合同/规则',
     handler: function() {
@@ -144,7 +144,7 @@ ActionManager.editCustomer_number = function(target,record) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateCustomer_numberWin = Ext.create('chl.Grid.AddUpdateCustomer_numberWin', {
         grid: target,
-        iconCls: 'add',
+        iconCls: 'eidtCustomer_number',
         action: 'create',
         record: record,
         title: "面单号范围(当前客户:"+record.data.customer_name+")"
@@ -160,7 +160,7 @@ ActionManager.addCustomerRent = function(target, record) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateCustomerRentWin = Ext.create('chl.Grid.AddUpdateCustomerRentWin', {
         grid: target,
-        iconCls: 'add',
+        iconCls: 'addCustomerRent',
         action: 'create',
         record: record,
         title: "添加合同/规则"
