@@ -276,7 +276,7 @@ GridManager.CreateExpressPanel = function() {
 
 
                                         Ext.Array.each(data, function(item, index, alls) {
-                                            var temp = GridManager.ExpressPanel.down('#lbl' + item.key);
+                                            var temp = GridManager.ExpressPanel.down('#lbl' + item.province_code);
                                             temp.setText('现有规则:' + item.count);
                                         });
                                     }, function(response, opts) {

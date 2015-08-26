@@ -190,7 +190,7 @@ ActionManager.editCustomerRule = function(target, record) {
         });
         WindowManager.AddUpdateCustomerRuleWin.show(null, function() {
             Ext.Array.each(data, function(item, index, alls) {
-                var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.key);
+                var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.province_code);
                 temp.setText('现有规则:' + item.count);
             });
 
