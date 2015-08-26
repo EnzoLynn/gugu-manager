@@ -94,8 +94,8 @@ GlobalConfig.Controllers = {
         addCustomerRule: globalFix + '/AddCustomerRule.php',
         delCustomerRule: globalFix + '/DelCustomerRule.php',
         delCustomer: globalFix + '/DelCustomer.json',
-        GetCustomerRuleByRentId: customerExpressRule/countProvinceRule,//globalFix + '/GetCustomerRuleByRentId.json',
-        getCustomerRule: customerExpressRule/show,//globalFix + '/GetCustomerRule.json',
+        GetCustomerRuleByRentId: 'customerExpressRule/countProvinceRule',//globalFix + '/GetCustomerRuleByRentId.json',
+        getCustomerRule: 'customerExpressRule/show',//globalFix + '/GetCustomerRule.json',
         uploadCustomerExcel: globalFix + '/UploadCustomerExcel.json'
     },
     Customer_numberGrid:{
