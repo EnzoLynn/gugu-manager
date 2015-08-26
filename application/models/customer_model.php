@@ -46,9 +46,9 @@ class Customer_model extends CI_Model{
         );
 
         $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
-//        if($data['filter']){
-//            $this->db->or_like($data['filter']);
-//        }
+        if($data['filter']){
+            $this->db->or_like($data['filter']);
+        }
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer');
         $customers = array();
@@ -77,10 +77,10 @@ class Customer_model extends CI_Model{
     }
 
     function getCustomersTotal($data){
-//        $data = array(
-//            'filter' => $data['filter']
-//        );
-//        $this->db->like($data['filter']);
+        $data = array(
+            'filter' => $data['filter']
+        );
+        $this->db->or_like($data['filter']);
         return $this->db->count_all_results('customer');
     }
 

@@ -15,8 +15,9 @@ class Customer extends CI_Controller {
             'limit'=> (int)$this->input->post('limit'),
             'sort' => $this->input->post('sort'),
             'dir'  => $this->input->post('dir'),
-            'filter' => json_decode($this->input->post('filter'))
+            'filter' => objectToArray(json_decode($this->input->post('filter')))
         );
+
         $customers = $this->customer_model->getCustomers($data);
 
         $customer_total = $this->customer_model->getCustomersTotal($data);
