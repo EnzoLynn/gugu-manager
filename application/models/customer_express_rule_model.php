@@ -25,19 +25,9 @@ class Customer_express_rule_model extends CI_Model {
         return $rule;
     }
 
-    function getCustomerExpressRules($data) {
-        $data = array(
-            'customer_rent_id' => $data['customer_rent_id'],
-            'page' => (int)$data['page'],
-            'limit' => (int)$data['limit'],
-            'sort' => $data['sort'],
-            'dir' => $data['dir']
-            //'filter' => $data['filter']
-        );
-
-        $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
-        $this->db->where('customer_rent_id', $data['customer_rent_id']);
-        $this->db->order_by($data['sort'], $data['dir']);
+    function getCustomerExpressRules($customer_rent_id) {
+        $this->db->where('customer_rent_id', $customer_rent_id);
+        //$this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer_express_rule');
         $customer_numbers = $query->result_array();
 
