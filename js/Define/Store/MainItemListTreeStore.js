@@ -18,6 +18,7 @@
              expanded: true,
              children: [{
                  id: '0031',
+                 express_id:1,
                  text: '圆通快递',
                  leaf: true
              }]

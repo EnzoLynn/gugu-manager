@@ -325,8 +325,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             labelPad: 15,
             width: 340,
             labelWidth: 125,
-            maxLength: 100,
-            maxLengthText: '最大长度为100'
+            maxLength: 100
         },
         items: [{
             name: 'customer_name',
@@ -353,7 +352,8 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
+            regexText: '请输入数字',
+            maxLength: 6
         }, {
             name: 'area_to_order_number',
             fieldLabel: '面积单量比',
@@ -634,8 +634,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                     // 调用
                                     WsCall.call(GlobalConfig.Controllers.CustomerGrid.getCustomerRule, 'GetCustomerRule', param, function(response, opts) {
 
-                                        var data = response.data;
-
+                                        var data = response.data; 
                                         // priceType: 1,
                                         // 获取详细的规则信息
                                         //如已有规则，规则类型确定禁用项目
@@ -963,7 +962,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                             }],
                                             items: [],
                                             listeners: {
-                                                boxready: function(com) {
+                                                boxready: function(com) { 
                                                     var tempRuleItems = [];
                                                     Ext.Array.each(data, function(item, index, alls) {
                                                         var obj = {};
@@ -1109,6 +1108,27 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                     });
 
                                                     com.add(tempRuleItems);
+                                                },
+                                                beforehide: function(com) { 
+                                                    var param = {
+                                                        'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
+                                                        sessiontoken: GlobalFun.getSeesionToken()
+                                                    };
+                                                    // 调用
+                                                    WsCall.call(GlobalConfig.Controllers.CustomerGrid.GetCustomerRuleByRentId, 'GetCustomerRuleByRentId', param, function(response, opts) {
+
+                                                        var data = response.data;
+
+
+                                                        Ext.Array.each(data, function(item, index, alls) {
+                                                            var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.key);
+                                                            temp.setText('现有规则:' + item.count);
+                                                        });
+                                                    }, function(response, opts) {
+                                                        if (!GlobalFun.errorProcess(response.code)) {
+                                                            Ext.Msg.alert('失败', response.msg);
+                                                        }
+                                                    }, false);
                                                 }
                                             },
                                             buttons: [{

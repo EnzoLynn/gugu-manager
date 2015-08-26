@@ -25,5 +25,7 @@ Ext.define('chl.Model.MainItemListTreeModel', {
         name: 'children' 
     }, {
         name: 'cls' 
+    },{
+        name:'express_id'
     }]
 });

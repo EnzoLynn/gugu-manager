@@ -111,7 +111,8 @@ GlobalConfig.Controllers = {
         destroy: globalFix + '/CustomerRentGrid.json'
     },
     ExpressPanel:{
-        GetCustomer_numberCount: globalFix + '/GetCustomer_numberCount.json'
+        GetCustomer_numberCount: globalFix + '/GetCustomer_numberCount.json',
+        GetExpressRule:globalFix + '/GetExpressRule.json'
     },
     Tracking_numberGrid: { //票号 票据
         create: globalFix + '/traking_numberGrid.json',
@@ -144,8 +145,8 @@ GlobalConfig.RegexController = {
     regexTombstoneCode: /^(\d{3}|\d{5}|\d{7})$/,
     //3位数字
     regexAreaCode: /^\d{3}$/,
-    //金额验证，两位小数
-    regexMoney2Fixed: /^[0-9]\d{0,8}((\.)?\d{1,2})?$/,
+    //金额验证，两位小数 8:2
+    regexMoney2Fixed: /^[0-9]\d{0,7}((\.)?\d{1,2})?$/, 
     //重量验证，3位小数
     regexMoney3Fixed: /^[0-9]\d{0,8}((\.)?\d{1,3})?$/
 };
