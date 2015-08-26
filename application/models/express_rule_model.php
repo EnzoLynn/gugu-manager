@@ -20,9 +20,22 @@ class Express_rule_model extends CI_Model {
     function getOneByProvince($express_id, $province_code) {
         $this->db->where('express_id', $express_id);
         $this->db->where('province_code', $province_code);
-        $query = $this->db->get('express_rule');;
+        $query = $this->db->get('express_rule');
         $express_rule = $query->first_row();
         return $express_rule;
+    }
+
+    function getExpressRules($express_id) {
+        $this->db->where('express_id', $express_id);
+        //$this->db->order_by($data['sort'], $data['dir']);
+        $query = $this->db->get('express_rule');
+        $customer_numbers = $query->result_array();
+        return $customer_numbers;
+    }
+
+    function getExpressRulesTotal($express_id) {
+        $this->db->where('express_id', $express_id);
+        return $this->db->count_all_results('express_rule');
     }
 
     function add($data) {

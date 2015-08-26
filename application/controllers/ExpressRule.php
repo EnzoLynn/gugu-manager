@@ -7,12 +7,11 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CustomerExpressRule extends AdminController {
+class ExpressRule extends AdminController {
     public function __construct() {
         parent::__construct();
-        $this->load->model('customer_rent_model');
-        $this->load->model('customer_express_rule_model');
-        $this->load->model('customer_express_rule_item_model');
+        $this->load->model('express_rule_model');
+        $this->load->model('express_rule_item_model');
     }
 
     public function index() {
@@ -20,22 +19,22 @@ class CustomerExpressRule extends AdminController {
     }
 
     public function countProvinceRule() {
-        $customer_rent_id = $this->input->get_post('customer_rent_id');
+        $express_id = $this->input->get_post('express_id');
 
         $data = array();
-        $rules = $this->customer_express_rule_model->getCustomerExpressRules($customer_rent_id);
+        $rules = $this->express_rule_model->getExpressRules($express_id);
         foreach($rules as $rule) {
-            $temp = array(
-                'province_code' => $rule['province_code'],
-                'count' => 1,
-            );
-            if($rule['price_type'] ==  1) {//汇总区间
-                $temp['count'] = $this->customer_express_rule_item_model->getItemsTotal($rule['rule_id']);
+            //汇总区间
+            $temp_count = $this->express_rule_item_model->getItemsTotal($rule['rule_id']);
+            if($temp_count > 0) {
+                $data[] = array(
+                    'province_code' => $rule['province_code'],
+                    'count' => $temp_count
+                );
             }
-            $data[] = $temp;
         }
 
-        $rules_total = $this->customer_express_rule_model->getCustomerExpressRules($customer_rent_id);
+        $rules_total = $this->express_rule_model->getOneByProvince($express_id);
 
         $json = array(
             'success' => true,
@@ -48,28 +47,23 @@ class CustomerExpressRule extends AdminController {
     }
 
     public function show() {
-        $customer_rent_id = $this->input->get_post('customer_rent_id');
+        $express_id = $this->input->get_post('express_id');
         $province_code = $this->input->get_post('province_code');
         $data = array();
-        $rule = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code);
+        $rule = $this->express_rule_model->getOneByRent($express_id, $province_code);
 
-        if($rule['price_type'] == 0) {
-            $data = $rule;
-            $total = 1;
-        }else{
-            $items = $this->customer_express_rule_item_model->getItems($rule['rule_id']);
-            $total = $this->customer_express_rule_item_model->getItemsTotal($rule['rule_id']);
-            foreach($items as $item) {
-                $temp = $item;
-                $temp['price_type'] = 1;
-                if($item['weight_price_type'] == 0 ) {
-                    $temp['weight_price_type_name'] = '进位';
-                }else{
-                    $temp['weight_price_type_name'] = '实重';
-                }
-                $data[] = $temp;
+        $items = $this->express_rule_item_model->getItems($rule['rule_id']);
+        $total = $this->express_rule_item_model->getItemsTotal($rule['rule_id']);
+        foreach($items as $item) {
+            $temp = $item;
+            if($item['price_type'] == 1 ) {
+                $temp['price_type_name'] = '固定价格';
+            }else{
+                $temp['price_type_name'] = '称重价格';
             }
+            $data[] = $temp;
         }
+
         $json = array(
             'success' => true,
             'data' => $data,
@@ -89,7 +83,7 @@ class CustomerExpressRule extends AdminController {
         $price_start = $this->input->get_post('price_start');
         $price_pre = $this->input->get_post('price_pre');
 
-        $rule = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code);
+        $rule = $this->customer_express_rule_model->getOneByProvince($customer_rent_id, $province_code);
         $customer_id = $rule['customer_id'];
         if(!$rule) {
             $rent = $this->customer_rent_model->getCustomerRent($customer_rent_id);
@@ -138,21 +132,8 @@ class CustomerExpressRule extends AdminController {
     }
 
     public function deleteRule() {
-        $price_type = $this->input->get_post('price_type');
-        if($price_type == 0) {
-            $rule_id = $this->input->get_post('rule_id');
-            $this->customer_express_rule_item_model->deleteByRuleID($rule_id);
-
-            $rule_update = array(
-                'price_type' => 0,
-                'price_start' => 0,
-                'price_pre' => 0
-            );
-            $this->customer_express_rule_model->update($rule_id, $rule_update);
-        }else{
-            $item_id = $this->input->get_post('item_id');
-            $this->customer_express_rule_item_model->delete($item_id);
-        }
+        $item_id = $this->input->get_post('item_id');
+        $this->customer_express_rule_item_model->delete($item_id);
 
         $this->show();
     }
