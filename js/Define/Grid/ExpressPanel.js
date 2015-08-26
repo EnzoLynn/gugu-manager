@@ -64,7 +64,7 @@ GridManager.CreateExpressPanel = function() {
                                     labelPad: 15,
                                     width: 340,
                                     labelWidth: 125,
-                                    maxLength: 100 
+                                    maxLength: 100
                                 },
                                 items: [{
                                     xtype: 'fieldcontainer',
@@ -121,22 +121,43 @@ GridManager.CreateExpressPanel = function() {
                                     },
                                     items: [{
                                         xtype: 'numberfield',
-                                        fieldLabel: '起价',
-                                        name: 'price_start',
+                                        name: 'weight_min',
+                                        fieldLabel: '起始重量(kg)',
                                         minValue: 0,
+                                        value: 0,
                                         decimalPrecision: 3,
                                         maxValue: GlobalConfig.MaxLimit,
                                         allowBlank: false,
                                         blankText: '不能为空'
                                     }, {
                                         xtype: 'numberfield',
-                                        fieldLabel: '后续单价',
-                                        name: 'price_pre',
+                                        name: 'weight_min_price',
+                                        fieldLabel: '结束重量(kg)',
                                         minValue: 0,
-                                        decimalPrecision: 3,
+                                        value: 1,
                                         maxValue: GlobalConfig.MaxLimit,
+                                        decimalPrecision: 3,
                                         allowBlank: false,
                                         blankText: '不能为空'
+                                    }, {
+                                        xtype: 'numberfield',
+                                        span: 2,
+                                        name: 'weight_min_price',
+                                        fieldLabel: '价格',
+                                        decimalPrecision: 2,
+                                        minValue: 0,
+                                        maxValue: GlobalConfig.MaxLimit,
+                                        regex: GlobalConfig.RegexController.regexMoney2Fixed,
+                                        regexText: '请填写两位小数的数字',
+                                        allowBlank: false,
+                                        blankText: '不能为空'
+                                    }, {
+                                        fieldLabel: '排序',
+                                        xtype: 'numberfield',
+                                        name: 'sort_order',
+                                        decimalPrecision: 0,
+                                        minValue: 1,
+                                        value: 1
                                     }, {
                                         xtype: 'button',
                                         itemId: 'btn_add',
@@ -169,177 +190,6 @@ GridManager.CreateExpressPanel = function() {
                                                         // win.add({
                                                         //     xtype: 'fieldset',
                                                         //     title: '固定价格',
-                                                        //     html:""
-                                                        // });
-                                                        //w.grid.loadGrid();
-                                                        //w.close();
-
-                                                    },
-                                                    failure: function(form, action) {
-                                                        if (!GlobalFun.errorProcess(action.result.code)) {
-                                                            Ext.Msg.alert('失败', action.result.msg);
-                                                        }
-                                                    }
-                                                });
-                                            }
-
-
-                                        }
-                                    }]
-                                }, {
-                                    xtype: 'form',
-                                    colspan: 2,
-                                    bodyPadding: 15,
-                                    itemId: 'price_type1',
-                                    height: 280,
-                                    width: 810,
-                                    layout: {
-                                        type: 'table',
-                                        columns: 2
-                                    },
-                                    hidden: true,
-                                    items: [{
-                                        xtype: 'fieldset',
-                                        title: '首重',
-                                        width: 780,
-                                        colspan: 2,
-                                        layout: {
-                                            type: 'table',
-                                            columns: 2
-                                        },
-                                        defaults: {
-                                            labelAlign: 'right',
-                                            labelPad: 15,
-                                            width: 340,
-                                            labelWidth: 125
-                                        },
-                                        items: [{
-                                            xtype: 'numberfield',
-                                            name: 'weight_min',
-                                            fieldLabel: '起始重量(kg)',
-                                            minValue: 0,
-                                            value: 0,
-                                            decimalPrecision: 3,
-                                            maxValue: GlobalConfig.MaxLimit,
-                                            allowBlank: false,
-                                            blankText: '不能为空'
-                                        }, {
-                                            xtype: 'numberfield',
-                                            name: 'weight_min_price',
-                                            fieldLabel: '结束重量(kg)',
-                                            minValue: 0,
-                                            value: 1,
-                                            maxValue: GlobalConfig.MaxLimit,
-                                            decimalPrecision: 3,
-                                            allowBlank: false,
-                                            blankText: '不能为空'
-                                        }, {
-                                            xtype: 'numberfield',
-                                            span: 2,
-                                            name: 'weight_min_price',
-                                            fieldLabel: '价格',
-                                            decimalPrecision: 2,
-                                            minValue: 0,
-                                            maxValue: GlobalConfig.MaxLimit,
-                                            regex: GlobalConfig.RegexController.regexMoney2Fixed,
-                                            regexText: '请填写两位小数的数字',
-                                            allowBlank: false,
-                                            blankText: '不能为空'
-                                        }]
-                                    }, {
-                                        xtype: 'fieldset',
-                                        title: '续重',
-                                        width: 780,
-                                        layout: {
-                                            type: 'table',
-                                            columns: 2
-                                        },
-                                        defaults: {
-                                            labelAlign: 'right',
-                                            labelPad: 15,
-                                            width: 340,
-                                            labelWidth: 125
-                                        },
-                                        colspan: 2,
-                                        items: [{
-                                            xtype: 'numberfield',
-                                            name: 'weight_pre',
-                                            fieldLabel: '重量(kg)',
-                                            minValue: 0,
-                                            maxValue: GlobalConfig.MaxLimit,
-                                            decimalPrecision: 3,
-                                            allowBlank: false,
-                                            blankText: '不能为空'
-                                        }, {
-                                            xtype: 'numberfield',
-                                            name: 'weight_pre_price',
-                                            fieldLabel: '价格',
-                                            decimalPrecision: 2,
-                                            minValue: 0,
-                                            maxValue: GlobalConfig.MaxLimit,
-                                            allowBlank: false,
-                                            blankText: '不能为空'
-                                        }, {
-                                            xtype: 'fieldcontainer',
-                                            colspan: 2,
-                                            fieldLabel: '记重方式',
-                                            defaultType: 'radiofield',
-                                            layout: 'hbox',
-                                            defaults: {
-                                                flex: 1
-                                            },
-                                            items: [{
-                                                boxLabel: '进位',
-                                                checked: true,
-                                                name: 'weight_price_type',
-                                                inputValue: '0'
-                                            }, {
-                                                boxLabel: '实重',
-                                                name: 'weight_price_type',
-                                                inputValue: '1'
-                                            }]
-                                        }]
-                                    }, {
-                                        fieldLabel: '排序',
-                                        xtype: 'numberfield',
-                                        name: 'sort_order',
-                                        decimalPrecision: 0,
-                                        minValue: 1,
-                                        value: 1
-                                    }, {
-                                        xtype: 'button',
-                                        width: 100,
-                                        text: '添加',
-                                        handler: function(com) {
-                                            var me = this;
-                                            var w = me.up('window');
-
-                                            var form = w.down('#price_type1').getForm();
-                                            w.add({
-                                                xtype: 'fieldset',
-                                                title: '步进价格',
-                                                items: []
-                                            });
-                                            w.down('#rd_price0').setDisabled(true);
-                                            if (form.isValid()) {
-
-                                                var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
-                                                form.submit({
-                                                    url: url,
-                                                    params: {
-                                                        req: 'dataset',
-                                                        dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
-                                                        restype: 'json',
-                                                        price_type: 1,
-                                                        province: w.pid,
-                                                        action: w.action,
-                                                        sessiontoken: GlobalFun.getSeesionToken()
-                                                    },
-                                                    success: function(form, action) {
-                                                        var data = action.result.data;
-                                                        //   win.add({
-                                                        //     xtype: 'fieldset',
-                                                        //     title: '步进价格',
                                                         //     html:""
                                                         // });
                                                         //w.grid.loadGrid();
