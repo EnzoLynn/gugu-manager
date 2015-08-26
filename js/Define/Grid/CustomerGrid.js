@@ -437,6 +437,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
     }, {
         xtype: 'CustomerRentGrid',
         margin: '5 0 0 0',
+        width:810,
         height: 400
     }],
     buttons: [{

@@ -47,7 +47,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
     alternateClassName: ['CustomerRentGrid'],
     alias: 'widget.CustomerRentGrid',
     extend: 'chl.grid.BaseGrid',
-    store: 'CustomerRentGridStoreId', 
+    store: 'CustomerRentGridStoreId',
     actionBaseName: 'CustomerRentGridAction',
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {
@@ -670,33 +670,45 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                             var form = w.down('#price_type0').getForm();
 
                                                             if (form.isValid()) {
+                                                                GlobalConfig.newMessageBox.show({
+                                                                    title: '提示',
+                                                                    msg: '添加固定价格将覆盖已有的所有价格设置，是否继续?',
+                                                                    buttons: Ext.MessageBox.YESNO,
+                                                                    closable: false,
+                                                                    fn: function(btn) {
+                                                                        if (btn == 'yes') {
+                                                                            var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
+                                                                            form.submit({
+                                                                                url: url,
+                                                                                params: {
+                                                                                    req: 'dataset',
+                                                                                    dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
+                                                                                    restype: 'json',
+                                                                                    price_type: 0,
+                                                                                    province_code: w.pid,
+                                                                                    action: w.action,
+                                                                                    'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
+                                                                                    sessiontoken: GlobalFun.getSeesionToken()
+                                                                                },
+                                                                                success: function(form, action) {
+                                                                                    var data = action.result.data;
+                                                                                    var arr = createRuleRow(data);
+                                                                                    w.removeAll();
+                                                                                    w.add(arr);
 
-                                                                var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
-                                                                form.submit({
-                                                                    url: url,
-                                                                    params: {
-                                                                        req: 'dataset',
-                                                                        dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
-                                                                        restype: 'json',
-                                                                        price_type: 0,
-                                                                        province_code: w.pid,
-                                                                        action: w.action,
-                                                                        'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
-                                                                        sessiontoken: GlobalFun.getSeesionToken()
-                                                                    },
-                                                                    success: function(form, action) {
-                                                                        var data = action.result.data;
-                                                                        var arr = createRuleRow(data);
-                                                                        w.removeAll();
-                                                                        w.add(arr);
-
-                                                                    },
-                                                                    failure: function(form, action) {
-                                                                        if (!GlobalFun.errorProcess(action.result.code)) {
-                                                                            Ext.Msg.alert('失败', action.result.msg);
+                                                                                },
+                                                                                failure: function(form, action) {
+                                                                                    if (!GlobalFun.errorProcess(action.result.code)) {
+                                                                                        Ext.Msg.alert('失败', action.result.msg);
+                                                                                    }
+                                                                                }
+                                                                            });
                                                                         }
-                                                                    }
+                                                                    },
+                                                                    icon: Ext.MessageBox.QUESTION
                                                                 });
+
+
                                                             }
 
 
@@ -854,13 +866,10 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                     },
                                                                     success: function(form, action) {
                                                                         var data = action.result.data;
-                                                                        //   win.add({
-                                                                        //     xtype: 'fieldset',
-                                                                        //     title: '步进价格',
-                                                                        //     html:""
-                                                                        // });
-                                                                        //w.grid.loadGrid();
-                                                                        //w.close();
+                                                                        var arr = createRuleRow(data);
+                                                                        w.removeAll();
+                                                                        w.add(arr);
+
 
                                                                     },
                                                                     failure: function(form, action) {
@@ -917,7 +926,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                         if (!GlobalFun.errorProcess(response.code)) {
                                             Ext.Msg.alert('失败', response.msg);
                                         }
-                                    }, true);
+                                    }, false);
 
                                 }
                             }]
