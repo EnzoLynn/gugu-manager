@@ -226,6 +226,7 @@ ActionManager.editCustomerRule = function(target, record) {
             Ext.Array.each(data, function(item, index, alls) {
                 var temp = WindowManager.AddUpdateCustomerRuleWin.down('#lbl' + item.province_code);
                 temp.setText('现有规则:' + item.count);
+
             });
 
             WindowManager.AddUpdateCustomerRuleWin.down("#formId").loadRecord(record);
@@ -844,7 +845,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
 
                                                             var form = w.down('#price_type1').getForm();
                                                           
-                                                            w.down('#rd_price0').setDisabled(true);
+                                                            //w.down('#rd_price0').setDisabled(true);
                                                             if (form.isValid()) {
 
                                                                 var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
