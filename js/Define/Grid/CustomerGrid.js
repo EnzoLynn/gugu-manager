@@ -1,8 +1,8 @@
 //创建一个上下文菜单
 var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshCustomer'), '-',
-        ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), 
-        '-', ActionBase.getAction('editCustomer_number'), 
+        ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'),
+        '-', ActionBase.getAction('editCustomer_number'),
         ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
 
     ]
@@ -46,7 +46,7 @@ Ext.define('chl.gird.CustomerGrid', {
             overflowHandler: 'Menu'
         },
         items: [ActionBase.getAction('refreshCustomer'), '-',
-            ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), '-', 
+            ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), '-',
             ActionBase.getAction('editCustomer_number'), ActionBase.getAction('addCustomerRent'), ActionBase.getAction('editCustomerRule')
 
             , '->', {
@@ -92,7 +92,7 @@ Ext.define('chl.gird.CustomerGrid', {
         var me = this;
         var store = me.getStore();
 
-        store.pageSize = GlobalConfig.GridPageSize;
+
         var sessiontoken = store.getProxy().extraParams.sessiontoken;
         if (!sessiontoken || sessiontoken.length == 0) {
             //return;
@@ -136,31 +136,31 @@ GridManager.CreateCustomerGrid = function(param) {
         dataIndex: 'rent_area',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        sortable:false
+        sortable: false
     }, {
         text: '面积单量比',
         dataIndex: 'area_to_order_number',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        sortable:false
+        sortable: false
     }, {
         text: '房租单价',
         dataIndex: 'rent_pre_price',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        sortable:false
+        sortable: false
     }, {
         text: '开始日期',
         dataIndex: 'date_start',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        sortable:false
+        sortable: false
     }, {
         text: '结束日期',
         dataIndex: 'date_end',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        sortable:false
+        sortable: false
     }];
     GridManager.CustomerGrid = Ext.create('chl.gird.CustomerGrid',
         GridManager.BaseGridCfg('CustomerGrid', 'CustomerGridState', tmpArr));
@@ -431,9 +431,9 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
                     });
                 }
             }
-        },{
+        }, {
             name: 'customer_id',
-            xtype: 'hidden' 
+            xtype: 'hidden'
         }]
     }, {
         xtype: 'CustomerRentGrid',
@@ -446,7 +446,29 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             var me = this;
             me.up('window').close();
         }
-    }]
+    }],
+    listeners: {
+        beforehide: function(com) {
+            WindowManager.AddUpdateCustomerRentWin.grid.store.load({
+                scope: this,
+                callback: function(records, operation, success) {
+                    var record = WindowManager.AddUpdateCustomerRentWin.record;
+                    Ext.Array.each(records, function(item, index) {
+                        if (record.data.customer_id == item.data.customer_id) {
+                            record = item;
+                            return false;
+                        };
+                    });
+
+                    var sm = WindowManager.AddUpdateCustomerRentWin.grid.getSelectionModel();
+                    sm.select(record);
+
+                }
+            });
+
+
+        }
+    }
 });
 
 //添加编辑窗口  规则

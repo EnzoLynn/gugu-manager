@@ -91,7 +91,7 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
         if (seles[0].data.id == "0031") {
             GlobalFun.TreeSelChangeGrid('ExpressPanel', GridManager.ExpressPanel, '各省规则', true);
             var param = {
-                'comp': seles[0].data.customer_rent_id,
+                'express_id': 1,
                 sessiontoken: GlobalFun.getSeesionToken()
             };
             // 调用

@@ -2,7 +2,7 @@ Ext.create('Ext.data.Store', {
     model: 'chl.Model.CustomerGridModel',
     storeId: 'CustomerGridStoreId',
     filterMap: Ext.create('Ext.util.HashMap'),
-    pageSize: GlobalConfig.GridPageSize,
+    pageSize:  GlobalConfig.GridPageSize,
     autoLoad: false,
     remoteSort: true,     //排序通过查询数据库
     sorters: [{
