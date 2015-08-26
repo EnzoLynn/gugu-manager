@@ -1006,8 +1006,8 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                         };
                                                                         // 调用
                                                                         WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
-                                                                            GlobalConfig.CurrUserInfo = response.data[0];
-                                                                            callBack();
+                                                                             
+                                                                            com.up('fieldset').destroy();
                                                                         }, function(response, opts) {
                                                                             if (!GlobalFun.errorProcess(response.code)) {
                                                                                 Ext.Msg.alert('失败', response.msg);
