@@ -5,23 +5,19 @@
  * Date: 2015/8/25
  * Time: 14:44
  */
-class Customer_number_model extends CI_Model
-{
-    var $CI;
-
-    function __construct(){
+class Customer_number_model extends CI_Model {
+    function __construct() {
         parent::__construct();
-        $this->CI = &get_instance();
     }
 
-    function getCustomerNumber($number_id){
+    function getCustomerNumber($number_id) {
         $this->db->where('number_id', $number_id);
         $query = $this->db->get('customer_number');
         $customer_number = $query->first_row();
         return $customer_number;
     }
 
-    function getCustomerNumbers($data){
+    function getCustomerNumbers($data) {
         $data = array(
             'customer_id' => $data['customer_id'],
             'page' => (int)$data['page'],
@@ -40,7 +36,7 @@ class Customer_number_model extends CI_Model
         return $customer_numbers;
     }
 
-    function getCustomerNumbersTotal($customer_id){
+    function getCustomerNumbersTotal($customer_id) {
         $this->db->where('customer_id', $customer_id);
         return $this->db->count_all('customer_number');
     }

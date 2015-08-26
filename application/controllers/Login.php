@@ -3,8 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends MY_Controller {
 
-    public function index()
-    {
+    public function index() {
         $this->load->view('login');
     }
 
@@ -62,7 +61,6 @@ class Login extends MY_Controller {
     }
 
     public function heartbeat() {
-
         $sessionToken = $this->input->get_post('sessiontoken');
         if ($sessionToken) {
             $session = $this->session_token_model->getSession($sessionToken);
@@ -88,5 +86,18 @@ class Login extends MY_Controller {
             'code' => 99
         );
         echo json_encode($json);
+    }
+
+    public function logout() {
+        $sessionToken = $this->input->get_post('sessiontoken');
+        $this->session_token_model->updateExpires($sessionToken);
+        $json = array(
+            'success' => true,
+            'data' => [],
+            'total' => 1,
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);exit;
     }
 }

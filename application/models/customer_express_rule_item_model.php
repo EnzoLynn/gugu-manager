@@ -5,49 +5,33 @@
  * Date: 2015/8/26
  * Time: 10:50
  */
-class Customer_express_rule_item_model extends CI_Model
-{
-    function __construct()
-    {
+class Customer_express_rule_item_model extends CI_Model {
+    function __construct() {
         parent::__construct();
     }
 
-    function getOne($item_id)
-    {
+    function getOne($item_id) {
         $this->db->where('item_id', $item_id);
         $query = $this->db->get('customer_express_rule_item');
         $rule = $query->first_row();
         return $rule;
     }
 
-    function getItems($data)
-    {
-        $data = array(
-            'rule_id' => $data['rule_id'],
-            'page' => (int)$data['page'],
-            'limit' => (int)$data['limit'],
-            'sort' => $data['sort'],
-            'dir' => $data['dir']
-            //'filter' => $data['filter']
-        );
-
-        $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
-        $this->db->where('rule_id', $data['rule_id']);
-        $this->db->order_by($data['sort'], $data['dir']);
+    function getItems($rule_id) {
+        $this->db->where('rule_id', $rule_id);
+        $this->db->order_by('sort_order', 'ASC');
         $query = $this->db->get('customer_express_rule_item');
-        $customer_numbers = $query->result_array();
+        $items = $query->result_array();
 
-        return $customer_numbers;
+        return $items;
     }
 
-    function getItemsTotal($rule_id)
-    {
+    function getItemsTotal($rule_id) {
         $this->db->where('rule_id', $rule_id);
         return $this->db->count_all('customer_express_rule_item');
     }
 
-    function add($data)
-    {
+    function add($data) {
         $item = array(
             'rule_id'            => $data['rule_id'],
             'customer_id'       => $data['customer_id'],
@@ -65,8 +49,7 @@ class Customer_express_rule_item_model extends CI_Model
         return $rule_id;
     }
 
-    function update($item_id, $data)
-    {
+    function update($item_id, $data) {
         $item = array(
             'rule_id'            => $data['rule_id'],
             'customer_id'       => $data['customer_id'],
@@ -83,8 +66,7 @@ class Customer_express_rule_item_model extends CI_Model
         return $this->db->update('customer_express_rule_item', $item);
     }
 
-    function delete($item_id)
-    {
+    function delete($item_id) {
         $this->db->where('item_id', $item_id);
         return $this->db->delete('customer_express_rule_item');
     }

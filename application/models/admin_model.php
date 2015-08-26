@@ -8,7 +8,7 @@
 
 class Admin_model extends CI_Model{
     var $CI;
-    function __construct(){
+    function __construct() {
         parent::__construct();
         $this->CI = &get_instance();
     }
@@ -24,7 +24,7 @@ class Admin_model extends CI_Model{
         return $admin;
     }
 
-    function login($admin_name, $admin_pwd){
+    function login($admin_name, $admin_pwd) {
         $data = array(
             'admin_name' => $admin_name,
             'admin_pwd'  => $admin_pwd
@@ -37,7 +37,7 @@ class Admin_model extends CI_Model{
         return $admin;
     }
 
-    function setLogin($admin_name){
+    function setLogin($admin_name) {
         $data = array(
             'admin_name' => $admin_name
         );
@@ -45,14 +45,5 @@ class Admin_model extends CI_Model{
         $admin = $query->fetch_row();
 
         $this->CI->session->set_userdata($admin);
-    }
-
-    function logout(){
-        $data = array(
-            'admin_id' => '',
-            'admin_name' => ''
-        );
-        $this->CI->session->unset_userdata($data);
-        //redirect('/login');
     }
 }
