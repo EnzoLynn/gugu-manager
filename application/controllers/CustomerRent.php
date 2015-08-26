@@ -13,6 +13,10 @@ class CustomerRent extends AdminController {
 
     }
 
+    public function getOne() {
+
+    }
+
     public function getList() {
 
         $data = array(

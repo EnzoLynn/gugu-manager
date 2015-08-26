@@ -10,6 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class CustomerExpressRule extends AdminController {
     public function __construct() {
         parent::__construct();
+        $this->load->model('customer_rent_model');
         $this->load->model('customer_express_rule_model');
         $this->load->model('customer_express_rule_item_model');
     }
@@ -74,6 +75,7 @@ class CustomerExpressRule extends AdminController {
     }
 
     public function addRule() {
+        $customer_id = 0;
         $customer_rent_id = $this->input->get_post('customer_rent_id');
         $province_code = $this->input->get_post('province_code');
         $price_type = $this->input->get_post('price_type');
@@ -81,9 +83,28 @@ class CustomerExpressRule extends AdminController {
         $price_start = $this->input->get_post('price_start');
         $price_pre = $this->input->get_post('price_pre');
 
-
-
+        $rule = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code);
+        if(!$rule) {
+            $rent = $this->customer_rent_model->getOne($customer_rent_id);
+            $customer_id = $rent['customer_id'];
+            $rule_add = array(
+                'customer_id' => $customer_id,
+                'customer_rent_id' => $customer_rent_id,
+                'province_code' => $province_code,
+                'price_type' => $price_type,
+//                'price_start' => $price_start,
+//                'price_pre' => $price_pre
+            );
+            $rule['rule_id'] = $this->customer_express_rule_model->add($rule_add);
+        }
         if($price_type == 0) {
+            $rule_update = array(
+                'price_type' => $price_type,
+                'price_start' => $price_start,
+                'price_pre' => $price_pre
+            );
+            $this->customer_express_rule_model->update($rule['rule_id'], $rule_add);
+        }else{
 
         }
     }
