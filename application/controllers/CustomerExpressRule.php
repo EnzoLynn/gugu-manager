@@ -107,10 +107,12 @@ class CustomerExpressRule extends AdminController {
         }else{
 
         }
+        $this->show();
     }
 
     public function deleteRule() {
         $item_id = $this->input->get_post('item_id');
         $this->customer_express_rule_item_model->delete($item_id);
+        $this->show();
     }
 }
