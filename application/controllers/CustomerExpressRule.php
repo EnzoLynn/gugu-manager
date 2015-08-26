@@ -7,7 +7,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CustomerNumber extends AdminController
+class CustomerExpressRule extends AdminController
 {
     public function __construct()
     {
