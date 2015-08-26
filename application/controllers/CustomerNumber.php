@@ -93,13 +93,14 @@ class CustomerNumber extends AdminController {
     }
 
     public function delete() {
-
         $str = file_get_contents("php://input");
         $post = json_decode($str);
-        print_r($post);exit;
+        foreach($post as $key => $val) {
+            $post = objectToArray($post);
+            $number_id = $post['number_id'];
+            $this->customer_number_model->deleteCustomerNumber($number_id);
+        }
 
-        $number_id = $this->input->post('number_id');
-        $this->customer_number_model->deleteCustomerNumber($number_id);
         $json = array(
             'success' => true,
             'data' => [],
