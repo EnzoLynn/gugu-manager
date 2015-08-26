@@ -43,9 +43,10 @@ class CustomerNumber extends AdminController {
 
     public function add() {
         $str = file_get_contents("php://input");
-        $post = json_decode($str);
-        foreach($post as $key => $val) {
-            $post = objectToArray($val);
+        $temp = json_decode($str);
+
+        //foreach($temp as $key => $val) {
+            $post = objectToArray($temp);
             $data = array(
                 'customer_id' => $post['customer_id'],
                 'customize_number_prefix' => $post['customize_number_prefix'],
@@ -55,7 +56,7 @@ class CustomerNumber extends AdminController {
             );
 
             $this->customer_number_model->addCustomerNumber($data);
-        }
+        //}
         $json = array(
             'success' => true,
             'data' => [],
@@ -68,9 +69,9 @@ class CustomerNumber extends AdminController {
 
     public function update() {
         $str = file_get_contents("php://input");
-        $post = json_decode($str);
-        foreach($post as $key => $val) {
-            $post = objectToArray($val);
+        $temp = json_decode($str);
+        $post = objectToArray($temp);
+        //foreach($temp as $key => $val) {
             $number_id = $post['number_id'];
             $data = array(
                 'customer_id' => $post['customer_id'],
@@ -80,7 +81,7 @@ class CustomerNumber extends AdminController {
                 'customize_number_suffix' => $post['customize_number_suffix']
             );
             $this->customer_number_model->updateCustomerNumber($number_id, $data);
-        }
+        //}
 
         $json = array(
             'success' => true,
@@ -94,9 +95,9 @@ class CustomerNumber extends AdminController {
 
     public function delete() {
         $str = file_get_contents("php://input");
-        $post = json_decode($str);
+        $temp = json_decode($str);
 
-        foreach($post as $key => $val) {
+        foreach($temp as $key => $val) {
             $post = objectToArray($val);
             $number_id = $post['number_id'];
             $this->customer_number_model->deleteCustomerNumber($number_id);
