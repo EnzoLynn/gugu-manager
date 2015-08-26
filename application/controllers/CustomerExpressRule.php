@@ -103,7 +103,7 @@ class CustomerExpressRule extends AdminController {
                 'price_start' => $price_start,
                 'price_pre' => $price_pre
             );
-            $this->customer_express_rule_model->update($rule['rule_id'], $rule_add);
+            $this->customer_express_rule_model->update($rule['rule_id'], $rule_update);
         }else{
 
         }
@@ -111,8 +111,23 @@ class CustomerExpressRule extends AdminController {
     }
 
     public function deleteRule() {
-        $item_id = $this->input->get_post('item_id');
-        $this->customer_express_rule_item_model->delete($item_id);
+        $price_type = $this->input->get_post('price_type');
+        if($price_type == 0) {
+            $rule_id = $this->input->get_post('rule_id');
+            $this->customer_express_rule_item_model->deleteByRuleID($rule_id);
+
+            $rule_update = array(
+                'price_type' => 0,
+                'price_start' => 0,
+                'price_pre' => 0
+            );
+            $this->customer_express_rule_model->update($rule_id, $rule_update);
+        }else{
+            $item_id = $this->input->get_post('item_id');
+            $item_id = $this->input->get_post('item_id');
+            $this->customer_express_rule_item_model->delete($item_id);
+        }
+
         $this->show();
     }
 }
