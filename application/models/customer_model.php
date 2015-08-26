@@ -41,21 +41,30 @@ class Customer_model extends CI_Model{
 //        }
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer');
-        //return $query->result_array();
-        $temp = array();
+        $customers = array();
         foreach($query->result_array() as $key=>$val) {
-            //$temp[$key] = $val;
-            $customer_rent = $this->CI->customer_rent_model->getCustomerRent($val['customer_rent_id']);
-            $temp[$key] = array_merge($val, $customer_rent);
+            $customer_rent = array();
+            $temp = $this->CI->customer_rent_model->getCustomerRent($val['customer_rent_id']);
+            if($temp) {
+                $customer_rent = array(
+                    'title' => $temp['title'],
+                    'rent_area' => $temp['rent_area'],
+                    'area_to_order_number' => $temp['area_to_order_number'],
+                    'rent_pre_price' => $temp['rent_pre_price'],
+                    'date_start' => $temp['date_start'],
+                    'date_end' => $temp['date_end'],
+                    'updated_at' => $temp['updated_at']
+                );
+                $customers[$key] = array_merge($val, $customer_rent);
+            }
         }
-        return $temp;
+        return $customers;
     }
 
     function getCustomersTotal($data){
-        $data = array(
-            'filter' => $data['filter']
-        );
-
+//        $data = array(
+//            'filter' => $data['filter']
+//        );
 //        $this->db->like($data['filter']);
         return $this->db->count_all('customer');
     }
