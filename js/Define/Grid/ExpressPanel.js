@@ -114,7 +114,7 @@ GridManager.CreateExpressPanel = function() {
                             pid: com.myval,
                             width: 820,
                             height: 700,
-                            iconCls:'editCustomerRule',
+                            iconCls: 'editCustomerRule',
                             resizable: false,
                             action: 'create',
                             modal: true,
@@ -236,6 +236,7 @@ GridManager.CreateExpressPanel = function() {
                                                         dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
                                                         restype: 'json',
                                                         price_type: 0,
+                                                        express_id: sel.data.express_id,
                                                         province_code: w.pid,
                                                         action: w.action,
                                                         sessiontoken: GlobalFun.getSeesionToken()

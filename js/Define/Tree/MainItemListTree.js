@@ -3,7 +3,7 @@ Ext.define('chl.tree.MainItemListTree', {
     alias: 'widget.MainItemListTree',
     itemId: 'MainItemListTree',
     title: '系统',
-    iconCls: 'faxTitle',
+    iconCls: 'home',
     extend: 'chl.tree.BaseTree',
     clearOnLoad: false,
     alternateClassName: ['MainItemListTree'],
