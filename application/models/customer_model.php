@@ -20,7 +20,18 @@ class Customer_model extends CI_Model{
         $query = $this->db->get('customer');;
         $customer = $query->first_row();
 
-        $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
+        $this->db->where('customer_rent_id', $customer['customer_rent_id']);
+        $query = $this->db->get('customer_rent');
+        $customerRent = $query->fetch_row();
+
+        $customer_rent = array(
+            'title' => $customerRent['title'],
+            'rent_area' => $customerRent['rent_area'],
+            'area_to_order_number' => $customerRent['area_to_order_number'],
+            'rent_pre_price' => $customerRent['rent_pre_price'],
+            'date_start' => $customerRent['date_start'],
+            'date_end' => $customerRent['date_end']
+        );
 
         return array_merge($customer, $customer_rent);
     }
@@ -43,18 +54,23 @@ class Customer_model extends CI_Model{
         $customers = array();
         foreach($query->result_array() as $key=>$val) {
             $customer_rent = array();
-            $temp = $this->CI->customer_rent_model->getCustomerRent($val['customer_rent_id']);
-            if($temp) {
+
+            $this->db->where('customer_rent_id', $val['customer_rent_id']);
+            $query2 = $this->db->get('customer_rent');
+            $customerRent = $query2->fetch_row();
+
+            if($customerRent) {
                 $customer_rent = array(
-                    'title' => $temp['title'],
-                    'rent_area' => $temp['rent_area'],
-                    'area_to_order_number' => $temp['area_to_order_number'],
-                    'rent_pre_price' => $temp['rent_pre_price'],
-                    'date_start' => $temp['date_start'],
-                    'date_end' => $temp['date_end'],
-                    'updated_at' => $temp['updated_at']
+                    'title' => $customerRent['title'],
+                    'rent_area' => $customerRent['rent_area'],
+                    'area_to_order_number' => $customerRent['area_to_order_number'],
+                    'rent_pre_price' => $customerRent['rent_pre_price'],
+                    'date_start' => $customerRent['date_start'],
+                    'date_end' => $customerRent['date_end']
                 );
                 $customers[$key] = array_merge($val, $customer_rent);
+            }else {
+                $customers[$key] = $val;
             }
         }
         return $customers;
