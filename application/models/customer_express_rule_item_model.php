@@ -70,4 +70,9 @@ class Customer_express_rule_item_model extends CI_Model {
         $this->db->where('item_id', $item_id);
         return $this->db->delete('customer_express_rule_item');
     }
+
+    function deleteByRuleID($rule_id) {
+        $this->db->where('rule_id', $rule_id);
+        return $this->db->delete('customer_express_rule_item');
+    }
 }
