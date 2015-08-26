@@ -34,7 +34,7 @@ class ExpressRule extends AdminController {
             }
         }
 
-        $rules_total = $this->express_rule_model->getOneByProvince($express_id);
+        $rules_total = $this->express_rule_model->getExpressRulesTotal($express_id);
 
         $json = array(
             'success' => true,
@@ -50,7 +50,7 @@ class ExpressRule extends AdminController {
         $express_id = $this->input->get_post('express_id');
         $province_code = $this->input->get_post('province_code');
         $data = array();
-        $rule = $this->express_rule_model->getOneByRent($express_id, $province_code);
+        $rule = $this->express_rule_model->getOneByProvince($express_id, $province_code);
 
         $items = $this->express_rule_item_model->getItems($rule['rule_id']);
         $total = $this->express_rule_item_model->getItemsTotal($rule['rule_id']);
@@ -75,59 +75,29 @@ class ExpressRule extends AdminController {
     }
 
     public function addRule() {
-        $customer_id = 0;
-        $customer_rent_id = $this->input->get_post('customer_rent_id');
+        $express_id = $this->input->get_post('express_id');
         $province_code = $this->input->get_post('province_code');
-        $price_type = $this->input->get_post('price_type');
 
-        $price_start = $this->input->get_post('price_start');
-        $price_pre = $this->input->get_post('price_pre');
-
-        $rule = $this->customer_express_rule_model->getOneByProvince($customer_rent_id, $province_code);
-        $customer_id = $rule['customer_id'];
+        $rule = $this->express_rule_model->getOneByProvince($express_id, $province_code);
         if(!$rule) {
-            $rent = $this->customer_rent_model->getCustomerRent($customer_rent_id);
-            $customer_id = $rent['customer_id'];
-
             $rule_add = array(
-                'customer_id' => $customer_id,
-                'customer_rent_id' => $customer_rent_id,
-                'province_code' => $province_code,
-                'price_type' => $price_type,
-                'price_start' => 0,
-                'price_pre' => 0
+                'express_id' => $express_id,
+                'province_code' => $province_code
             );
-            $rule['rule_id'] = $this->customer_express_rule_model->add($rule_add);
+            $rule['rule_id'] = $this->express_rule_model->add($rule_add);
         }
-        if($price_type == 0) {
-            $rule_update = array(
-                'price_type' => 0,
-                'price_start' => $price_start,
-                'price_pre' => $price_pre
-            );
-            $this->customer_express_rule_model->update($rule['rule_id'], $rule_update);
-        }else{
-            $rule_update = array(
-                'price_type' => 1,
-                'price_start' => 0,
-                'price_pre' => 0
-            );
-            $this->customer_express_rule_model->update($rule['rule_id'], $rule_update);
 
-            $item = array(
-                'rule_id'            => $rule['rule_id'],
-                'customer_id'       => $customer_id,
-                'customer_rent_id' => $customer_rent_id,
-                'weight_price_type'=> $this->input->get_post('weight_price_type'),
-                'weight_min'        => $this->input->get_post('weight_min'),
-                'weight_max'        => $this->input->get_post('weight_max'),
-                'weight_start_price'=> $this->input->get_post('weight_start_price'),
-                'weight_pre'            => $this->input->get_post('weight_pre'),
-                'weight_pre_price'     => $this->input->get_post('weight_pre_price'),
-                'sort_order'            => $this->input->get_post('sort_order')
-            );
-            $this->express_rule_item_model->add($item);
-        }
+        $item = array(
+            'rule_id'            => $rule['rule_id'],
+            'express_id'        => $express_id,
+            'price_type'        => $this->input->get_post('price_type'),
+            'price'              => $this->input->get_post('price'),
+            'weight_min'        => $this->input->get_post('weight_min'),
+            'weight_max'        => $this->input->get_post('weight_max'),
+            'sort_order'            => $this->input->get_post('sort_order')
+        );
+        $this->express_rule_item_model->add($item);
+
         $this->show();
     }
 
