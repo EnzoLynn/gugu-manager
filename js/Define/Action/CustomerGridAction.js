@@ -145,7 +145,7 @@ ActionManager.editCustomer_number = function(target,record) {
         iconCls: 'add',
         action: 'create',
         record: record,
-        title: "面单号范围"
+        title: "面单号范围(当前客户:"+record.data.customer_name+")"
     });
     WindowManager.AddUpdateCustomer_numberWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
