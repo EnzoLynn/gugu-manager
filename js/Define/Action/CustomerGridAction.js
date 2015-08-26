@@ -160,7 +160,7 @@ ActionManager.addCustomerRent = function(target, record) {
         grid: target,
         iconCls: 'add',
         action: 'create',
-        record: null,
+        record: record,
         title: "新增"
     });
     WindowManager.AddUpdateCustomerRentWin.show(null, function() {

@@ -63,7 +63,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         var me = this;
         var store = me.getStore();
 
-        store.pageSize = GlobalConfig.GridPageSize;
+        // store.pageSize = GlobalConfig.GridPageSize;
         var sessiontoken = store.getProxy().extraParams.sessiontoken;
         if (!sessiontoken || sessiontoken.length == 0) {
             //return;
