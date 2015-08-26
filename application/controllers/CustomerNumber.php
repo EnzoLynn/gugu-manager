@@ -45,7 +45,7 @@ class CustomerNumber extends AdminController {
         $str = file_get_contents("php://input");
         $post = json_decode($str);
         foreach($post as $key => $val) {
-            $post = objectToArray($post);
+            $post = objectToArray($val);
             $data = array(
                 'customer_id' => $post['customer_id'],
                 'customize_number_prefix' => $post['customize_number_prefix'],
@@ -70,7 +70,7 @@ class CustomerNumber extends AdminController {
         $str = file_get_contents("php://input");
         $post = json_decode($str);
         foreach($post as $key => $val) {
-            $post = objectToArray($post);
+            $post = objectToArray($val);
             $number_id = $post['number_id'];
             $data = array(
                 'customer_id' => $post['customer_id'],
@@ -95,8 +95,9 @@ class CustomerNumber extends AdminController {
     public function delete() {
         $str = file_get_contents("php://input");
         $post = json_decode($str);
+
         foreach($post as $key => $val) {
-            $post = objectToArray($post);
+            $post = objectToArray($val);
             $number_id = $post['number_id'];
             $this->customer_number_model->deleteCustomerNumber($number_id);
         }
