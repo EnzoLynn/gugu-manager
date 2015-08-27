@@ -31,8 +31,8 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             iconCls: 'import',
             title: '上传文件',
             bodyPadding: 15,
-            defaults:{
-                margin:'0 0 20 0'
+            defaults: {
+                margin: '0 0 20 0'
             },
             items: [{
                 xtype: 'form',
@@ -52,7 +52,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                         iconCls: 'import',
                         width: 100
                     },
-                    buttonText: '...',
+                    buttonText: '添加文件',
                     listeners: {
                         change: function(com) {
                             var me = com;
@@ -77,21 +77,21 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                             var f = me.up('form');
                             var outWin = me.up('window');
                             var form = f.getForm();
-                            var urlStr = GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=importcustomerUp&sessiontoken=" + GlobalFun.getSeesionToken();
+                            var urlStr = GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken();
                             form.submit({
                                 timeout: 60 * 10,
                                 url: urlStr,
                                 waitMsg: '正在上传...',
                                 waitTitle: '等待文件上传,请稍候...',
-                                success: function(fp, o) {
+                                success: function(fp, action) {
                                     var data = action.result.data;
                                     if (action.result.success) {
                                         target.loadGrid();
                                     };
                                 },
-                                failure: function(fp, o) {
-                                    if (!GlobalFun.errorProcess(o.result.code)) {
-                                        Ext.Msg.alert('登录失败', response.msg);
+                                failure: function(fp, action) {
+                                    if (!GlobalFun.errorProcess(action.result.code)) {
+                                        Ext.Msg.alert('失败', action.result.msg);
                                     }
                                 }
                             });
@@ -101,54 +101,51 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             }, {
                 xtype: 'form',
                 itemId: 'h5formId',
-                layout:'vbox',
+                layout: 'vbox',
                 bodyPadding: 15,
                 items: [{
                     xtype: 'label',
+                    style: {
+                        'font-weight': 'bold'
+                    },
                     text: '如果您使用的是高级的支持Html5的浏览器，请使用的这里的上传'
-                },{
+                }, {
                     xtype: 'label',
-                    text: '多文件批量，更快捷，可拖拽文件，可视化的真实上传进度显示'
-                },  {
+                    style: {
+                        color: 'red',
+                        'font-weight': 'bold'
+                    },
+                    text: '多文件批量，更快捷，可拖拽文件，可视化的真实上传进度显示,更大的文件'
+                }, {
                     xtype: 'Html5FileUpload',
                     name: 'importAddr',
-                    fieldLabel: '请选择导入的文件',
+                    fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
                     width: 600,
-                    labelWidth: 150, 
+                    height:100,
+                    buttonOnly:true,
+                    labelWidth: 150,
                     msgTarget: 'side',
                     itemId: 'fileupId',
                     buttonConfig: {
                         iconCls: 'import',
-                        width: 100
+                        width: 300
                     },
+                    uploadUrl: GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
                     accept: "*.*",
-                    buttonText: '...',
+                    buttonText: '添加文件',
                     listeners: {
                         change: function(com) {
                             var me = com;
-                             console.log('upload');
-                            return;
-                            var f = me.up('form');
-                            var outWin = me.up('window');
-                            var form = f.getForm();
-                            var urlStr = GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=importcustomerUp&sessiontoken=" + GlobalFun.getSeesionToken();
-                            form.submit({
-                                timeout: 60 * 10,
-                                url: urlStr,
-                                waitMsg: '正在上传...',
-                                waitTitle: '等待文件上传,请稍候...',
-                                success: function(fp, o) {
-                                    var data = action.result.data;
-                                    if (action.result.success) {
-                                        target.loadGrid();
-                                    };
-                                },
-                                failure: function(fp, o) {
-                                    if (!GlobalFun.errorProcess(o.result.code)) {
-                                        Ext.Msg.alert('登录失败', response.msg);
-                                    }
-                                }
-                            });
+
+                            if(Ext.isIe
+                                ||(Ext.isGecko && Ext.firefoxVersion <30)  
+                                || (Ext.isWebKit && Ext.chromeVersion < 30)){
+                                Ext.Msg.alert('消息','您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
+                                return;
+                            }
+
+                            me.sendFiles(me.fileInputEl.dom.files);
+
                         }
                     }
                 }]

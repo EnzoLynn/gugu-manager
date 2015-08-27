@@ -121,7 +121,7 @@ GlobalConfig.Controllers = {
         read: globalFix + '/traking_numberGrid.json',
         update: globalFix + '/traking_numberGrid.json',
         destroy: globalFix + '/traking_numberGrid.json',
-        uploadExcel: globalFix + '/uploadExcel',
+        uploadExcel: '/uploadTrackingNumber/upload',//globalFix + '/uploadExcel',
         outPutExcel:globalFix + '/outPutExcel'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
