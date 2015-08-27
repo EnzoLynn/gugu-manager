@@ -137,30 +137,35 @@ GridManager.CreateCustomerGrid = function(param) {
         dataIndex: 'rent_area',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        groupable:false,
         sortable: false
     }, {
         text: '面积单量比',
         dataIndex: 'area_to_order_number',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        groupable:false,
         sortable: false
     }, {
         text: '房租单价',
         dataIndex: 'rent_pre_price',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        groupable:false,
         sortable: false
     }, {
         text: '开始日期',
         dataIndex: 'date_start',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        groupable:false,
         sortable: false
     }, {
         text: '结束日期',
         dataIndex: 'date_end',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        groupable:false,
         sortable: false
     }];
     GridManager.CustomerGrid = Ext.create('chl.gird.CustomerGrid',
