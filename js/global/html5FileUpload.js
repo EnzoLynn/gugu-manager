@@ -148,7 +148,7 @@
 
 
 
-
+             var files = event.dataTransfer.files;
 
              var str = "";
              for (var i = 0; i < files.length; i++) {
@@ -168,7 +168,7 @@
                  Ext.Msg.alert('添加文件', '不支持的文件格式！');
                  return;
              }
-             var files = event.dataTransfer.files;
+
              me.progressEl.dom.value = 0;
              me.countEl.dom.innerHTML = "文件: 1" + '/' + files.length;
              me.totalFile = Ext.clone(files.length);
