@@ -131,7 +131,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                         width: 300
                     },
                     uploadUrl: GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
-                    accept: "*.*",
+                    accept: "*.xlsx,*.xls",
                     buttonText: '添加文件',
                     listeners: {
                         change: function(com) {
