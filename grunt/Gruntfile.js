@@ -23,9 +23,15 @@ module.exports = function(grunt) {
                 ,'<%= jsdest %>**/MyPasswordfield.js','<%= jsdest %>**/MyStateProvider.js'
                 ,'<%= jsdest %>**/exUnit.js','<%= jsdest %>**/MainItemListTreeModel.js'
                 ,'<%= jsdest %>**/MainItemListTreeStore.js','<%= jsdest %>**/MainItemListTree.js'
-                ,'<%= jsdest %>**/ManageDfGrid.js','<%= jsdest %>**/TestGridAction.js'
-                ,'<%= jsdest %>**/TestGridModel.js','<%= jsdest %>**/TestGridStore.js'
-                ,'<%= jsdest %>**/TestGrid.js','<%= jsdest %>**/index.js' 
+                ,'<%= jsdest %>**/ManageDfGrid.js','<%= jsdest %>**/ComboStore.js'
+                ,'<%= jsdest %>**/Customer_numberGrid.js','<%= jsdest %>**/CustomerRentGridModel.js'
+                ,'<%= jsdest %>**/CustomerRentGridStore.js','<%= jsdest %>**/CustomerRentGrid.js' 
+                ,'<%= jsdest %>**/CustomerGridAction.js' ,'<%= jsdest %>**/CustomerGridModel.js' 
+                ,'<%= jsdest %>**/CustomerGridStore.js' ,'<%= jsdest %>**/CustomerGrid.js' 
+                ,'<%= jsdest %>**/Tracking_numberGridAction.js' ,'<%= jsdest %>**/Tracking_numberGridModel.js' 
+                ,'<%= jsdest %>**/Tracking_numberGridStore.js' ,'<%= jsdest %>**/Tracking_numberGrid.js' 
+                ,'<%= jsdest %>**/ExpressPanel.js' ,'<%= jsdest %>**/CompanyPanel.js' 
+                ,'<%= jsdest %>**/index.js' 
                 , '<%= jsdest %>!ext4/**/*.js'],
                 // 合并后的JS文件的存放位置
                 dest: '../dist/minjs/<%= pkg.name %>.js'
