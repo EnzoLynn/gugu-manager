@@ -28,13 +28,25 @@ Ext.create('chl.Action.CustomerGridAction', {
         var me = this;
         var target = me.getTargetView();
         var record = target.getSelectionModel().getSelection()[0];
-        ActionManager.editCustomer(target,record);
+        ActionManager.editCustomer(target, record);
 
 
     },
     updateStatus: function(selection) {
         this.setDisabled(selection.length != 1);
     }
+});
+
+Ext.create('chl.Action.CustomerGridAction', {
+    itemId: 'searchCustomer',
+    iconCls: 'search',
+    tooltip: '查询',
+    text: '查询',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.searchCustomer(target);
+    },
+    updateStatus: function(selection) {}
 });
 
 Ext.create('chl.Action.CustomerGridAction', {
@@ -46,7 +58,7 @@ Ext.create('chl.Action.CustomerGridAction', {
         var me = this;
         var target = me.getTargetView();
         var record = target.getSelectionModel().getSelection()[0];
-        ActionManager.editCustomer_number(target,record);
+        ActionManager.editCustomer_number(target, record);
 
 
     },
@@ -124,7 +136,7 @@ ActionManager.addCustomer = function(target) {
     });
 };
 //编辑 用户
-ActionManager.editCustomer = function(target,record) {
+ActionManager.editCustomer = function(target, record) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateCustomerWin = Ext.create('chl.Grid.AddUpdateCustomerWin', {
         grid: target,
@@ -135,19 +147,19 @@ ActionManager.editCustomer = function(target,record) {
     });
     WindowManager.AddUpdateCustomerWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
-         WindowManager.AddUpdateCustomerWin.down("#formId").loadRecord(record);
+        WindowManager.AddUpdateCustomerWin.down("#formId").loadRecord(record);
     });
 };
 
 //管理客户面单号范围
-ActionManager.editCustomer_number = function(target,record) {
+ActionManager.editCustomer_number = function(target, record) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateCustomer_numberWin = Ext.create('chl.Grid.AddUpdateCustomer_numberWin', {
         grid: target,
         iconCls: 'eidtCustomer_number',
         action: 'create',
         record: record,
-        title: "面单号范围(当前客户:"+record.data.customer_name+")"
+        title: "面单号范围(当前客户:" + record.data.customer_name + ")"
     });
     WindowManager.AddUpdateCustomer_numberWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
@@ -174,3 +186,115 @@ ActionManager.addCustomerRent = function(target, record) {
     });
 };
 
+//查询
+ActionManager.searchCustomer = function(traget) {
+    if (WindowManager.searchCustomerWin && WindowManager.searchCustomerWin != '') {
+        WindowManager.searchCustomerWin.show();
+    } else {
+        WindowManager.searchCustomerWin = Ext.create('Ext.window.Window', {
+            modal: true,
+            resizable: false,
+            closeAction: 'hide',
+            title: "查询",
+            defaultFocus: 'customer_nameItemId',
+            iconCls: '',
+            record: false,
+            height: 500,
+            width: 500,
+            layout: 'vbox',
+            items: [{
+                xtype: 'form',
+                itemId: 'formId',
+                autoScroll: true,
+                height: 490,
+                width: 500,
+                border: false,
+                bodyPadding: 15,
+                defaultType: 'textfield',
+                layout: {
+                    type: 'table',
+                    columns: 1
+                },
+                defaults: {
+                    labelAlign: 'right',
+                    labelPad: 15,
+                    width: 340,
+                    labelWidth: 125,
+                    maxLength: 100,
+                    maxLengthText: '最大长度为100'
+                },
+                items: [{
+                    name: 'customer_name',
+                    fieldLabel: '客户名',
+                    itemId: 'customer_nameItemId' 
+                }, {
+                    name: 'mobile',
+                    fieldLabel: '手机号',
+                    itemId: 'mobileItemId' 
+                }]
+            }],
+            buttons: [{
+                text: '重置',
+                handler: function() {
+                    var me = this;
+                    var w = me.up('window');
+                    var f = w.down('#formId');
+                    f.getForm().reset();
+                }
+            }, {
+                text: '确定',
+                itemId: 'submit',
+                handler: function() {
+                    var me = this;
+                    var win = me.up('window');
+
+
+
+                    var searchFlag = false;
+                    var store = traget.getStore();
+                    var extraParams = store.getProxy().extraParams;
+
+                    var form = win.down('#formId').getForm();
+                    if (!form.isValid()) {
+                        return;
+                    }
+                    //名称
+                    var customer_name = win.down('#customer_nameItemId').getValue();
+                    if (name != '') {
+                        //加入filterMap
+                        GlobalFun.GridSearchInitFun('customer_name', false, store, name);
+                        searchFlag = true;
+                    } else {
+                        GlobalFun.GridSearchInitFun('customer_name', true, store, false);
+                    }
+                    //手机号
+                    var mobile = win.down('#mobileItemId').getValue();
+                    if (mobile != '') {
+                        //加入filterMap
+                        GlobalFun.GridSearchInitFun('mobile', false, store, alias);
+                        searchFlag = true;
+                    } else {
+                        GlobalFun.GridSearchInitFun('mobile', true, store, false);
+                    }
+
+
+                    if (searchFlag) {
+                        win.close();
+                        traget.loadGrid(true);
+                    } else {
+                        win.close();
+                        traget.loadGrid();
+                    }
+
+                }
+            }, {
+                text: '取消',
+                handler: function() {
+                    var me = this;
+                    me.up('window').close();
+                }
+            }]
+        }).show();
+    }
+
+};

@@ -1,6 +1,7 @@
 //创建一个上下文菜单
 var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshCustomer'), '-',
+    ActionBase.getAction('searchCustomer'),
         ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'),
         '-', ActionBase.getAction('editCustomer_number'),
         ActionBase.getAction('addCustomerRent')
@@ -45,6 +46,7 @@ Ext.define('chl.gird.CustomerGrid', {
             overflowHandler: 'Menu'
         },
         items: [ActionBase.getAction('refreshCustomer'), '-',
+             ActionBase.getAction('searchCustomer'),
             ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), '-',
             ActionBase.getAction('editCustomer_number'), ActionBase.getAction('addCustomerRent')
 
@@ -260,6 +262,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
                         req: 'dataset',
                         dataname: 'AddUpdateCustomer', // dataset名称，根据实际情况设置,数据库名
                         restype: 'json',
+                        customer_id:w.record ? w.record.data.customer_id : 0,
                         Id: w.record ? w.record.data.ControllTid : 0,
                         logId: w.record ? w.record.data.Id : 0,
                         action: w.action,
