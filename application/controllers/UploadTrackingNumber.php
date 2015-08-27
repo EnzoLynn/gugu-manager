@@ -10,6 +10,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class UploadTrackingNumber extends AdminController {
     public function __construct() {
         parent::__construct();
+        $this->load->model('file_upload_model');
+
         $this->load->model('customer_model');
 
         $this->load->model('customer_rent_model');
@@ -25,15 +27,11 @@ class UploadTrackingNumber extends AdminController {
     }
 
     public function upload() {
-
-        $config['upload_path']      = './upload/';
+        $config['upload_path']      = './upload/excel/'.date('Ym');
         $config['allowed_types']    = 'xlsx|xls|cvs';
         $config['file_name']        = 'upload_'.date('YmdHis').rand(0,9).rand(0,9).rand(0,9);
         $config['max_size']          = 20480;
         $config['file_ext_tolower'] = TRUE;
-
-//        $config['max_width']        = 1024;
-//        $config['max_height']       = 768;
 
         $this->load->library('upload', $config);
 
@@ -45,9 +43,20 @@ class UploadTrackingNumber extends AdminController {
         }
         else
         {
-            $data = array('upload_data' => $this->upload->data());
+            $fileInfo = array('upload_data' => $this->upload->data());
 
-            print_r($data);
+            //print_r($fileInfo);
+
+            $fileData = array(
+                'file_name' => $fileInfo['client_name'],
+                'file_save_name' => $fileInfo['file_name'],
+                'file_size' => $fileInfo['file_size'],
+                'admin_id' => $this->admin_id
+            );
+
+            $this->file_upload_model->addFile($fileData);
+
+
         }
         exit;
 
