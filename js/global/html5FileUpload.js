@@ -141,7 +141,7 @@
          dropzone.ondrop = function(event) {
              event.stopPropagation();
              event.preventDefault();
-             if ((Ext.isIe && Ext.ieVersion < 10) || (Ext.isGecko && Ext.firefoxVersion < 30) || (Ext.isWebKit && Ext.chromeVersion < 30)) {
+             if (Ext.isIE) {
                  Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
                  return;
              }
