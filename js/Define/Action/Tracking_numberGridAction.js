@@ -52,7 +52,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                         iconCls: 'import',
                         width: 100
                     },
-                    buttonText: '...',
+                    buttonText: '添加文件',
                     listeners: {
                         change: function(com) {
                             var me = com;
@@ -119,22 +119,24 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                 }, {
                     xtype: 'Html5FileUpload',
                     name: 'importAddr',
-                    fieldLabel: '请选择导入的文件',
+                    fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
                     width: 600,
+                    height:100,
+                    buttonOnly:true,
                     labelWidth: 150,
                     msgTarget: 'side',
                     itemId: 'fileupId',
                     buttonConfig: {
                         iconCls: 'import',
-                        width: 100
+                        width: 300
                     },
                     uploadUrl: GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
                     accept: "*.*",
-                    buttonText: '...',
+                    buttonText: '添加文件',
                     listeners: {
                         change: function(com) {
                             var me = com;
-                            console.log('upload');
+                            
 
                             me.sendFiles(me.fileInputEl.dom.files);
 
