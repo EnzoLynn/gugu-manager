@@ -197,16 +197,16 @@ ActionManager.searchCustomer = function(traget) {
             closeAction: 'hide',
             title: "查询",
             defaultFocus: 'customer_nameItemId',
-            iconCls: '',
+            iconCls: 'search',
             record: false,
-            height: 500,
+            height: 200,
             width: 500,
             layout: 'vbox',
             items: [{
                 xtype: 'form',
                 itemId: 'formId',
                 autoScroll: true,
-                height: 490,
+                height: 190,
                 width: 500,
                 border: false,
                 bodyPadding: 15,
@@ -220,8 +220,7 @@ ActionManager.searchCustomer = function(traget) {
                     labelPad: 15,
                     width: 340,
                     labelWidth: 125,
-                    maxLength: 100,
-                    maxLengthText: '最大长度为100'
+                    maxLength: 36 
                 },
                 items: [{
                     name: 'customer_name',
@@ -260,9 +259,9 @@ ActionManager.searchCustomer = function(traget) {
                     }
                     //名称
                     var customer_name = win.down('#customer_nameItemId').getValue();
-                    if (name != '') {
+                    if (customer_name != '') {
                         //加入filterMap
-                        GlobalFun.GridSearchInitFun('customer_name', false, store, name);
+                        GlobalFun.GridSearchInitFun('customer_name', false, store, customer_name);
                         searchFlag = true;
                     } else {
                         GlobalFun.GridSearchInitFun('customer_name', true, store, false);
@@ -271,7 +270,7 @@ ActionManager.searchCustomer = function(traget) {
                     var mobile = win.down('#mobileItemId').getValue();
                     if (mobile != '') {
                         //加入filterMap
-                        GlobalFun.GridSearchInitFun('mobile', false, store, alias);
+                        GlobalFun.GridSearchInitFun('mobile', false, store, mobile);
                         searchFlag = true;
                     } else {
                         GlobalFun.GridSearchInitFun('mobile', true, store, false);

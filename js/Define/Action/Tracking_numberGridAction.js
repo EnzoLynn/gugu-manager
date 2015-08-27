@@ -3,6 +3,18 @@ Ext.define('chl.Action.Tracking_numberGridAction', {
     category: 'Tracking_numberGridAction'
 });
 
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'searchTracking_number',
+    iconCls: 'search',
+    tooltip: '查询',
+    text: '查询',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.searchTracking_number(target);
+    },
+    updateStatus: function(selection) {}
+});
+
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'importTracking_number',
@@ -12,30 +24,30 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     handler: function() {
         var target = this.getTargetView();
         var win = Ext.create('Ext.window.Window', {
-            height:160,
+            height: 160,
             width: 800,
-            modal:true,
+            modal: true,
             resizabled: false,
             iconCls: 'import',
             title: '上传文件',
-            bodyPadding:15,
+            bodyPadding: 15,
             items: [{
                 xtype: 'form',
                 itemId: 'formId',
-                bodyPadding:15,
+                bodyPadding: 15,
                 items: [{
                     xtype: 'filefield',
                     name: 'importAddr',
                     fieldLabel: '请选择导入的文件',
                     width: 600,
                     labelWidth: 150,
-                   
+
                     blankText: '请选择导入的文件',
                     msgTarget: 'side',
                     itemId: 'fileupId',
-                    buttonConfig:{
-                         iconCls: 'import',
-                         width:100
+                    buttonConfig: {
+                        iconCls: 'import',
+                        width: 100
                     },
                     buttonText: '...',
                     listeners: {
@@ -84,10 +96,10 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                     }
                 }]
             }],
-            buttons:[{
-                text:'关闭',
-                handler:function(){
-                     win.close();
+            buttons: [{
+                text: '关闭',
+                handler: function() {
+                    win.close();
                 }
             }]
         });
@@ -102,7 +114,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     iconCls: 'export',
     tooltip: '导出',
     text: '导出',
-    handler: function () {
+    handler: function() {
         var target = this.getTargetView();
         var store = target.getStore();
         var extraParams = store.getProxy().extraParams;
@@ -115,8 +127,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         };
         WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.outPutExcel, 'download', param);
     },
-    updateStatus: function (selection) {
-    }
+    updateStatus: function(selection) {}
 });
 
 
@@ -136,4 +147,169 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
 //刷新 
 ActionManager.refreshTracking_number = function(traget) {
     traget.loadGrid();
+};
+
+//查询
+ActionManager.searchTracking_number = function(traget) {
+    if (WindowManager.Tracking_numberWin && WindowManager.Tracking_numberWin != '') {
+        WindowManager.Tracking_numberWin.show();
+    } else {
+        WindowManager.Tracking_numberWin = Ext.create('Ext.window.Window', {
+            modal: true,
+            resizable: false,
+            closeAction: 'hide',
+            title: "查询",
+            defaultFocus: 'tracking_number',
+            iconCls: 'search',
+            record: false,
+            height: 300,
+            width: 500,
+            layout: 'vbox',
+            items: [{
+                xtype: 'form',
+                itemId: 'formId',
+                autoScroll: true,
+                height: 290,
+                width: 500,
+                border: false,
+                bodyPadding: 15,
+                defaultType: 'textfield',
+                layout: {
+                    type: 'table',
+                    columns: 1
+                },
+                defaults: {
+                    labelAlign: 'right',
+                    labelPad: 15,
+                    width: 340,
+                    labelWidth: 125,
+                    maxLength: 100 
+                },
+                items: [{                    
+                    fieldLabel: '票据号',
+                    itemId: 'tracking_number',
+                    maxLength: 64 
+                }, {                   
+                    fieldLabel: '网点',
+                    itemId: 'arrive_express_point',
+                    maxLength: 64 
+                }, { 
+                    fieldLabel: '网点代码',
+                    itemId: 'arrive_express_point_code',
+                    maxLength: 16 
+                } , {
+                    xtype: 'fieldcontainer',
+                    colspan: 2,
+                    width: 490,
+                    fieldLabel: '收货时间',
+                    defaultType: 'datetimefield',
+                    layout: {
+                        type: 'hbox'
+                    },
+                    defaults: {
+                        labelAlign: 'right',
+                        width: 100
+                    },
+                    items: [{
+                        xtype: 'datefield',
+                        format: 'Y-m-d',
+                        itemId: 'dateStar',
+                        vtype: 'daterange',
+                        endDateField: 'dateEnd',
+                        editable: false
+                    }, {
+                        xtype: 'label',
+                        margin: '0 0 0 5',
+                        width: 20,
+                        text: '至'
+                    }, {
+                        xtype: 'datefield',
+                        format: 'Y-m-d',
+                        itemId: 'dateEnd',
+                        vtype: 'daterange',
+                        startDateField: 'dateStar',
+                        editable: false
+                    }]
+                }]
+            }],
+            buttons: [{
+                text: '重置',
+                handler: function() {
+                    var me = this;
+                    var w = me.up('window');
+                    var f = w.down('#formId');
+                    f.getForm().reset();
+                }
+            }, {
+                text: '确定',
+                itemId: 'submit',
+                handler: function() {
+                    var me = this;
+                    var win = me.up('window');
+
+
+
+                    var searchFlag = false;
+                    var store = traget.getStore();
+                    var extraParams = store.getProxy().extraParams;
+
+                      //时间
+                    var dateStarField = win.down('#dateStar');
+                    var dateEndField = win.down('#dateEnd');
+                    var dateStar = dateStarField.getValue();
+                    var dateEnd = dateEndField.getValue();
+                    GlobalFun.ValidDateStartEnd(dateStarField, dateEndField);
+                    var form = win.down('#formId').getForm();
+                    if (!form.isValid()) {
+                        return;
+                    }
+                    //名称
+                    var tracking_number = win.down('#tracking_number').getValue();
+                    if (tracking_number != '') {
+                        //加入filterMap
+                        GlobalFun.GridSearchInitFun('tracking_number', false, store, tracking_number);
+                        searchFlag = true;
+                    } else {
+                        GlobalFun.GridSearchInitFun('customer_name', true, store, false);
+                    }
+                    //手机号
+                    var arrive_express_point = win.down('#arrive_express_point').getValue();
+                    if (arrive_express_point != '') {
+                        //加入filterMap
+                        GlobalFun.GridSearchInitFun('arrive_express_point', false, store, arrive_express_point);
+                        searchFlag = true;
+                    } else {
+                        GlobalFun.GridSearchInitFun('arrive_express_point', true, store, false);
+                    }
+                   
+                    //时间
+                    if (dateStar && dateEnd) {
+                        //加入.getProxy().extraParams
+                        extraParams.DateFilter = true;
+                        extraParams.arrive_time = Ext.Date.format(dateStar, 'Y-m-d') + ',' + Ext.Date.format(dateEnd, 'Y-m-d');
+                        searchFlag = true;
+                    } else {
+                        extraParams.DateFilter = false;
+                        extraParams.arrive_time = '';
+                    }
+
+                    if (searchFlag) {
+                        win.close();
+                        traget.loadGrid(true);
+                    } else {
+                        win.close();
+                        traget.loadGrid();
+                    }
+
+                }
+            }, {
+                text: '取消',
+                handler: function() {
+                    var me = this;
+                    me.up('window').close();
+                }
+            }]
+        }).show();
+    }
+
 };
