@@ -6,7 +6,7 @@ Ext.create('Ext.data.Store', {
     autoLoad: false,
     remoteSort: true,     //排序通过查询数据库
     sorters: [{
-        property: 'tracking_number',
+        property: 'tracking_number_id',
         direction: 'DESC'
     }],
     autoSync: false,

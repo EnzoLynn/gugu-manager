@@ -109,6 +109,11 @@ Ext.define('chl.gird.Tracking_numberGrid', {
 //根据传入参数创建客户表，返回自身
 GridManager.CreateTracking_numberGrid = function(param) {
     var tmpArr = [{
+        text: '编号',
+        dataIndex: 'tracking_number_id',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }, {
         text: '票据号',
         dataIndex: 'tracking_number',
         renderer: GlobalFun.UpdateRecord,

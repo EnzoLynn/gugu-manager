@@ -3,6 +3,9 @@ Ext.define('chl.Model.Tracking_numberGridModel', {
     idProperty: 'Id',
     alternateClassName: ['Tracking_numberGridModel'],
     fields: [{
+        name: 'tracking_number_id',
+        type: 'string'
+    },{
         name: 'tracking_number',
         type: 'string'
     }, {
