@@ -3,6 +3,7 @@
      alias: 'widget.Html5FileUpload',
      accept: '*/*',
      style: '',
+     progressContainerEl:'',
      progressEl: '',
      countEl:'',
      onRender: function() {
@@ -60,7 +61,14 @@
              }
          }
 
-         me.progressEl = me.triggerWrap.createChild({
+         me.progressContainerEl = me.triggerWrap.up('#' + me.id).createChild({
+             name: me.getName(),
+             width: me.getWidth(), 
+             id: me.id + '-fileInputProgressContainerEl',
+             cls: Ext.baseCSSPrefix + 'form-file-input-progressContainer',
+             tag: 'div'
+         }); 
+         me.progressEl = me.progressContainerEl.createChild({
              name: me.getName(),
              width: me.getWidth(),
              value: 0,
@@ -68,13 +76,13 @@
              cls: Ext.baseCSSPrefix + 'form-file-input-progress',
              tag: 'progress'
          }); 
-         me.countEl = me.triggerWrap.createChild({
+         me.countEl = me.progressContainerEl.createChild({
              name: me.getName(),
-             width: me.getWidth(),
-             innerHtml: 0,
+             width: me.getWidth(), 
              id: me.id + '-fileInputCountEl',
              cls: Ext.baseCSSPrefix + 'form-file-input-count',
              tag: 'label'
          }); 
+         me.countEl.dom.innerHTML="0";
      }
  });
