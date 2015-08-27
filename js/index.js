@@ -30,7 +30,7 @@ Ext.onReady(function() {
 
         if (GlobalConfig.CurrUserInfo == '') {
             Ext.Msg.alert('登录失败', '登录失败！无效的登录信息', function() {
-                GlobalFun.ReDirectUrl("Login.html");
+                GlobalFun.ReDirectUrl("login.html");
             });
             return;
         }

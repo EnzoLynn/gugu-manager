@@ -24,13 +24,16 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     handler: function() {
         var target = this.getTargetView();
         var win = Ext.create('Ext.window.Window', {
-            height: 160,
+            height: 360,
             width: 800,
             modal: true,
             resizabled: false,
             iconCls: 'import',
             title: '上传文件',
             bodyPadding: 15,
+            defaults:{
+                margin:'0 0 20 0'
+            },
             items: [{
                 xtype: 'form',
                 itemId: 'formId',
@@ -71,6 +74,60 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                 Ext.Msg.alert('添加文件', '不支持的文件格式！');
                                 return;
                             }
+                            var f = me.up('form');
+                            var outWin = me.up('window');
+                            var form = f.getForm();
+                            var urlStr = GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=importcustomerUp&sessiontoken=" + GlobalFun.getSeesionToken();
+                            form.submit({
+                                timeout: 60 * 10,
+                                url: urlStr,
+                                waitMsg: '正在上传...',
+                                waitTitle: '等待文件上传,请稍候...',
+                                success: function(fp, o) {
+                                    var data = action.result.data;
+                                    if (action.result.success) {
+                                        target.loadGrid();
+                                    };
+                                },
+                                failure: function(fp, o) {
+                                    if (!GlobalFun.errorProcess(o.result.code)) {
+                                        Ext.Msg.alert('登录失败', response.msg);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }]
+            }, {
+                xtype: 'form',
+                itemId: 'h5formId',
+                layout:'vbox',
+                bodyPadding: 15,
+                items: [{
+                    xtype: 'label',
+                    text: '如果您使用的是高级的支持Html5的浏览器，请使用的这里的上传'
+                },{
+                    xtype: 'label',
+                    text: '多文件批量，更快捷，可拖拽文件，可视化的真实上传进度显示'
+                },  {
+                    xtype: 'Html5FileUpload',
+                    name: 'importAddr',
+                    fieldLabel: '请选择导入的文件',
+                    width: 600,
+                    labelWidth: 150, 
+                    msgTarget: 'side',
+                    itemId: 'fileupId',
+                    buttonConfig: {
+                        iconCls: 'import',
+                        width: 100
+                    },
+                    accept: "*.*",
+                    buttonText: '...',
+                    listeners: {
+                        change: function(com) {
+                            var me = com;
+                             console.log('upload');
+                            return;
                             var f = me.up('form');
                             var outWin = me.up('window');
                             var form = f.getForm();
@@ -183,21 +240,21 @@ ActionManager.searchTracking_number = function(traget) {
                     labelPad: 15,
                     width: 340,
                     labelWidth: 125,
-                    maxLength: 100 
+                    maxLength: 100
                 },
-                items: [{                    
+                items: [{
                     fieldLabel: '票据号',
                     itemId: 'tracking_number',
-                    maxLength: 64 
-                }, {                   
+                    maxLength: 64
+                }, {
                     fieldLabel: '网点',
                     itemId: 'arrive_express_point',
-                    maxLength: 64 
-                }, { 
+                    maxLength: 64
+                }, {
                     fieldLabel: '网点代码',
                     itemId: 'arrive_express_point_code',
-                    maxLength: 16 
-                } , {
+                    maxLength: 16
+                }, {
                     xtype: 'fieldcontainer',
                     colspan: 2,
                     width: 490,
@@ -253,7 +310,7 @@ ActionManager.searchTracking_number = function(traget) {
                     var store = traget.getStore();
                     var extraParams = store.getProxy().extraParams;
 
-                      //时间
+                    //时间
                     var dateStarField = win.down('#dateStar');
                     var dateEndField = win.down('#dateEnd');
                     var dateStar = dateStarField.getValue();
@@ -281,7 +338,7 @@ ActionManager.searchTracking_number = function(traget) {
                     } else {
                         GlobalFun.GridSearchInitFun('arrive_express_point', true, store, false);
                     }
-                   
+
                     //时间
                     if (dateStar && dateEnd) {
                         //加入.getProxy().extraParams
