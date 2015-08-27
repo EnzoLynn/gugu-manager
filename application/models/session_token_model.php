@@ -70,7 +70,7 @@ class Session_token_model extends CI_Model {
 
     function clearSession() {
         $timer = strtotime('now');
-        $timer = $timer - 60*60*24*2;//两天以前
+        $timer = $timer - 60*60*2;//2小时以前
         $new_time = date('Y-m-d H:i:s', $timer);
         $this->db->where('expires_time <=', $new_time);
         return $this->db->delete('session_token');
