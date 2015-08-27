@@ -28,7 +28,10 @@ class UploadTrackingNumber extends AdminController {
 
         $config['upload_path']      = './upload/';
         $config['allowed_types']    = 'xlsx|xls|cvs';
-        $config['max_size']     = 20480;
+        $config['file_name']        = 'upload_'.date('YmdHis').rand(0,9).rand(0,9).rand(0,9);
+        $config['max_size']          = 20480;
+        $config['file_ext_tolower'] = TRUE;
+
 //        $config['max_width']        = 1024;
 //        $config['max_height']       = 768;
 
