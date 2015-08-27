@@ -27,7 +27,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             height: 360,
             width: 800,
             modal: true,
-            resizabled: false,
+            resizable: false,
             iconCls: 'import',
             title: '上传文件',
             bodyPadding: 15,
