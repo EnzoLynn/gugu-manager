@@ -45,26 +45,30 @@
              }
          };
 
-         fd.append('myFile', file);
+         fd.append('fileUpload', file);
          // Initiate a multipart/form-data upload
          xhr.send(fd);
      },
      FileUpload: function(file, scope) {
 
-         var reader = new FileReader();
+         //var reader = new FileReader();
+         var xhr = new XMLHttpRequest();
+         var fd = new FormData();
 
          var xhr = new XMLHttpRequest();
 
 
          scope.updatePropress(xhr, scope);
 
-         xhr.open("POST", scope.uploadUrl);
-         xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-         reader.onload = function(evt) {
-             xhr.send(evt.target.result);
-         };
-         reader.readAsBinaryString(file);
-
+         xhr.open("POST", scope.uploadUrl,true);
+         //xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
+         // reader.onload = function(evt) {
+         //     xhr.send(evt.target.result);
+         // };
+         // reader.readAsBinaryString(file);
+         fd.append('fileUpload', file);
+         // Initiate a multipart/form-data upload
+         xhr.send(fd);
 
      },
 
