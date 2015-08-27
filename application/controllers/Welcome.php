@@ -19,8 +19,9 @@ class Welcome extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index() {
-        delete_cookie('login_sessiontoken');
-        delete_cookie('login_username');
-		$this->load->view('welcome_message');
+//        delete_cookie('login_sessiontoken');
+//        delete_cookie('login_username');
+//		$this->load->view('welcome_message');
+        return 'zhouhui';
 	}
 }

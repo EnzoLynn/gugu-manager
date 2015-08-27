@@ -177,6 +177,13 @@ if ( ! function_exists('load_class'))
 				require_once(APPPATH.$directory.'/'.$name.'.php');
 			}
 		}
+//
+//        if ($name === FALSE) {
+//            //echo BASEPATH.$directory.'/'. ucfirst($class) .'/'.$class.'.php';exit;
+//
+//            require_once(BASEPATH.$directory.'/'. ucfirst($class) .'/'.$class.'.php');
+//            $name = $class;
+//        }
 
 		// Did we find the class?
 		if ($name === FALSE)

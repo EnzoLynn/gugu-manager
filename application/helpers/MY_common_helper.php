@@ -5,6 +5,27 @@
  * Date: 2015/8/26
  * Time: 9:30
  */
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+if (!function_exists('load_controller'))
+{
+    function load_controller($controller, $method = 'index')
+    {
+        $dirs = explode('/', $controller);
+        if(count($dirs) ==  1) {
+            require_once(APPPATH . 'controllers/' . $controller . '.php');
+            $controller = new $dirs[0]();
+        }else if(count($dirs) ==  2) {
+            require_once(APPPATH . 'controllers/' . $dirs[0] . '/' . $controller . '.php');
+            $controller = new $dirs[1]();
+        }else {
+            set_status_header(503);
+            echo 'Unable to locate the specified class: '.$controller.'.php';
+            exit(5); // EXIT_UNK_CLASS
+        }
+        return $controller->$method();
+    }
+}
 //数组转对象
 function arrayToObject($e){
     if( gettype($e)!='array' ) return;
