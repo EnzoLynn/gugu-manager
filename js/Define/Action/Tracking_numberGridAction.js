@@ -40,7 +40,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                 bodyPadding: 15,
                 items: [{
                     xtype: 'filefield',
-                    name: 'importAddr',
+                    name: 'fileUpload',
                     fieldLabel: '请选择导入的文件',
                     width: 600,
                     labelWidth: 150,
@@ -118,7 +118,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                     text: '多文件批量，更快捷，可拖拽文件，可视化的真实上传进度显示,更大的文件'
                 }, {
                     xtype: 'Html5FileUpload',
-                    name: 'importAddr',
+                    name: 'fileUpload',
                     fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
                     width: 600,
                     height:100,
