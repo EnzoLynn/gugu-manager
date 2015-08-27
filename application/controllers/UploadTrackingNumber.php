@@ -38,14 +38,15 @@ class UploadTrackingNumber extends AdminController {
         {
             $error = array('error' => $this->upload->display_errors());
 
-            $this->load->view('upload_form', $error);
+            print_r($error);
         }
         else
         {
             $data = array('upload_data' => $this->upload->data());
 
-            $this->load->view('upload_success', $data);
+            print_r($data);
         }
+        exit;
 
 
 
