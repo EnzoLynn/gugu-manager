@@ -3,13 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Customer extends CI_Controller {
 
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('customer_model');
+    }
+
     public function index() {
 
     }
 
     public function getList() {
-        $this->load->model('customer_model');
-
         $data = array(
             'page' => (int)$this->input->post('page'),
             'limit'=> (int)$this->input->post('limit'),
@@ -33,8 +36,6 @@ class Customer extends CI_Controller {
     }
 
     public function add() {
-        $this->load->model('customer_model');
-
         if($this->customer_model->existCustomerName($this->input->post('customer_name'))) {
             $json = array(
                 'success' => false,
@@ -48,12 +49,24 @@ class Customer extends CI_Controller {
         }
 
         $data = array(
-            'customer_name' => $this->input->post('customer_name'),
-            'real_name' => $this->input->post('real_name'),
-            'mobile' => $this->input->post('mobile')
+            'customer_name' => $this->input->get_post('customer_name'),
+            'real_name' => $this->input->get_post('real_name'),
+            'mobile' => $this->input->get_post('mobile')
         );
 
         $this->customer_model->addCustomer($data);
+    }
+
+    public function update() {
+        $customer_id = $this->input->get_post('customer_name');
+
+        $data = array(
+            'customer_name' => $this->input->get_post('customer_name'),
+            'real_name' => $this->input->get_post('real_name'),
+            'mobile' => $this->input->get_post('mobile')
+        );
+
+        $this->customer_model->updateCustomer($customer_id, $data);
     }
 }
 
