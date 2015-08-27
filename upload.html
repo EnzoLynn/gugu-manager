@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>dnd binary upload</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript">
+    var uri = "/uploadTrackingNumber/upload";
+    var progress;
+
+    function sendFile(file) {
+
+        var xhr = new XMLHttpRequest();
+        var fd = new FormData();
+
+        xhr.open("POST", uri, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Handle response.
+                alert(xhr.responseText); // handle response.
+            }
+        };
+
+        fd.append('myFile', file);
+        // Initiate a multipart/form-data upload
+        xhr.send(fd);
+    }
+
+
+    function FileUpload(file) {
+        var reader = new FileReader();
+
+        //this.ctrl = createThrobber(img);
+        var xhr = new XMLHttpRequest();
+        //var fd = new FormData();
+        this.xhr = xhr;
+
+        var self = this;
+        this.xhr.upload.addEventListener("progress", function(e) {
+
+            if (e.lengthComputable) {
+                var percentage = Math.round((e.loaded * 100) / e.total);
+                //self.ctrl.update(percentage);
+                console.log(percentage);
+                progress.innerHTML = percentage + "%";
+                progress.value = percentage;
+            }
+        }, false);
+
+        xhr.upload.addEventListener("load", function(e) {
+            //self.ctrl.update(100);
+            console.log(100);
+            progress.innerHTML = "100%";
+            progress.value = 100;
+            //var canvas = self.ctrl.ctx.canvas;
+            //canvas.parentNode.removeChild(canvas);
+        }, false);
+        xhr.open("POST", uri);
+        xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
+        reader.onload = function(evt) {
+            xhr.send(evt.target.result);
+        };
+        reader.readAsBinaryString(file);
+
+        // xhr.open("POST", uri, true);
+        // xhr.onreadystatechange = function() {
+        //     if (xhr.readyState == 4 && xhr.status == 200) {
+        //         // Handle response.
+        //         alert(xhr.responseText); // handle response.
+        //     }
+        // };
+
+        // fd.append('myFile', file);
+        // Initiate a multipart/form-data upload
+        //xhr.send(fd);
+    }
+
+    function sendFiles(files) {
+
+        for (var i = 0; i < files.length; i++) {
+            new FileUpload(files[i]);
+        }
+    }
+    window.onload = function() {
+        var dropzone = document.getElementById("dropzone");
+        dropzone.ondragover = dropzone.ondragenter = function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        dropzone.ondrop = function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            var filesArray = event.dataTransfer.files;
+            for (var i = 0; i < filesArray.length; i++) {
+                sendFile(filesArray[i]);
+            }
+        }
+        progress = document.getElementById('progress');
+    }
+    </script>
+</head>
+
+<body>
+    <progress id='progress' value="0" max="100">0%</progress>
+    <div>
+        <input type="file" id="dropzone" multiple accept="image/*" style="margin:30px; width:500px; height:300px; border:1px dotted grey;" onchange="sendFiles(this.files)">
+    </div>
+</body>
+
+</html>
