@@ -1,6 +1,7 @@
 //创建一个上下文菜单
 var Tracking_numberGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshTracking_number'), '-',
+            ActionBase.getAction('searchTracking_number'),'-',
         ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number')
     ]
 });
@@ -32,6 +33,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             ActionBase.updateActions('Tracking_numberGridAction', seles);
         }
     },
+    
     columns: [],
     dockedItems: [{
         xtype: 'toolbar',
@@ -41,6 +43,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             overflowHandler: 'Menu'
         },
         items: [ActionBase.getAction('refreshTracking_number'), '-',
+            ActionBase.getAction('searchTracking_number'),'-',
             ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number')
         ]
     }, {
@@ -97,7 +100,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
 
         store.loadPage(1);
         store.getProxy().extraParams.refresh = null;
-
+        GlobalFun.SetGridTitle(me.up('#centerGridDisplayContainer'), store, "票据列表");
         ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
     }
 });
@@ -106,7 +109,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
 //根据传入参数创建客户表，返回自身
 GridManager.CreateTracking_numberGrid = function(param) {
     var tmpArr = [{
-        text: '编号',
+        text: '票据号',
         dataIndex: 'tracking_number',
         renderer: GlobalFun.UpdateRecord,
         flex: 1
@@ -176,229 +179,229 @@ GridManager.SetTracking_numberGridSelectionChangeEvent = function(param) {
 
 
 //添加编辑窗口
-Ext.define('chl.Grid.AddUpdateTracking_numberWin', {
-    extend: 'Ext.window.Window',
-    title: "添加",
-    defaultFocus: 'Tracking_numberItemId',
-    iconCls: '',
-    record: false,
-    //border: false,
-    height: 500,
-    width: 830,
-    layout: 'vbox',
-    modal: true,
-    resizable: false,
-    items: [{
-        xtype: 'form',
-        itemId: 'formId',
-        autoScroll: true,
-        height: 450,
-        width: 810,
-        border: false,
-        bodyPadding: 5,
-        defaultType: 'textfield',
-        layout: {
-            type: 'table',
-            columns: 2
-        },
-        defaults: {
-            labelAlign: 'right',
-            labelPad: 15,
-            width: 340,
-            labelWidth: 125,
-            maxLength: 100,
-            maxLengthText: '最大长度为100'
-        },
-        items: [{
-            name: 'Name',
-            fieldLabel: '姓名',
-            itemId: 'NameItemId',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空'
-        }, {
-            name: 'Name',
-            fieldLabel: '姓名',
-            itemId: 'NameItemId1',
-            validateOnBlur: false,
-            allowBlank: false,
-            blankText: '不能为空'
-        }, {
-            xtype: 'fieldset',
-            colspan: 2,
-            title: '规则',
-            itemId: 'ReNewManageHistory',
-            collapsible: true,
-            padding: '2 2 2 5',
-            width: 780,
-            defaults: {
-                labelAlign: 'right',
-                labelPad: 15,
-                xtype: 'fieldset',
-                defaults: {
-                    labelAlign: 'right',
-                    labelPad: 15,
-                    width: 340,
-                    labelWidth: 125,
-                    maxLength: 100,
-                    maxLengthText: '最大长度为100'
-                }
-            },
-            items: [],
-            listeners: {
-                boxready: function(com) {
-                    for (key in GlobalConfig.Province) {
-                        com.add({
-                            title: GlobalConfig.Province[key],
-                            items: [{
-                                xtype: 'label',
-                                text: '现有规则:1'
-                            }, {
-                                xtype: 'button',
-                                width: 100,
-                                text: '添加规则',
-                                myval: key,
-                                handler: function(com) {
-                                    var ruleWin = Ext.create('Ext.window.Window', {
-                                        title: com.myval,
-                                        width: 800,
-                                        height: 600,
-                                        modal: true,
-                                        autoScroll: true,
-                                        layout: 'vbox',
-                                        dockedItems: [{
-                                            xtype: 'form',
-                                            dock: 'top',
-                                            bodyStyle: {
-                                                padding: '10 5 5 5'
-                                            },
+// Ext.define('chl.Grid.AddUpdateTracking_numberWin', {
+//     extend: 'Ext.window.Window',
+//     title: "添加",
+//     defaultFocus: 'Tracking_numberItemId',
+//     iconCls: '',
+//     record: false,
+//     //border: false,
+//     height: 500,
+//     width: 830,
+//     layout: 'vbox',
+//     modal: true,
+//     resizable: false,
+//     items: [{
+//         xtype: 'form',
+//         itemId: 'formId',
+//         autoScroll: true,
+//         height: 450,
+//         width: 810,
+//         border: false,
+//         bodyPadding: 5,
+//         defaultType: 'textfield',
+//         layout: {
+//             type: 'table',
+//             columns: 2
+//         },
+//         defaults: {
+//             labelAlign: 'right',
+//             labelPad: 15,
+//             width: 340,
+//             labelWidth: 125,
+//             maxLength: 100,
+//             maxLengthText: '最大长度为100'
+//         },
+//         items: [{
+//             name: 'Name',
+//             fieldLabel: '姓名',
+//             itemId: 'NameItemId',
+//             validateOnBlur: false,
+//             allowBlank: false,
+//             blankText: '不能为空'
+//         }, {
+//             name: 'Name',
+//             fieldLabel: '姓名',
+//             itemId: 'NameItemId1',
+//             validateOnBlur: false,
+//             allowBlank: false,
+//             blankText: '不能为空'
+//         }, {
+//             xtype: 'fieldset',
+//             colspan: 2,
+//             title: '规则',
+//             itemId: 'ReNewManageHistory',
+//             collapsible: true,
+//             padding: '2 2 2 5',
+//             width: 780,
+//             defaults: {
+//                 labelAlign: 'right',
+//                 labelPad: 15,
+//                 xtype: 'fieldset',
+//                 defaults: {
+//                     labelAlign: 'right',
+//                     labelPad: 15,
+//                     width: 340,
+//                     labelWidth: 125,
+//                     maxLength: 100,
+//                     maxLengthText: '最大长度为100'
+//                 }
+//             },
+//             items: [],
+//             listeners: {
+//                 boxready: function(com) {
+//                     for (key in GlobalConfig.Province) {
+//                         com.add({
+//                             title: GlobalConfig.Province[key],
+//                             items: [{
+//                                 xtype: 'label',
+//                                 text: '现有规则:1'
+//                             }, {
+//                                 xtype: 'button',
+//                                 width: 100,
+//                                 text: '添加规则',
+//                                 myval: key,
+//                                 handler: function(com) {
+//                                     var ruleWin = Ext.create('Ext.window.Window', {
+//                                         title: com.myval,
+//                                         width: 800,
+//                                         height: 600,
+//                                         modal: true,
+//                                         autoScroll: true,
+//                                         layout: 'vbox',
+//                                         dockedItems: [{
+//                                             xtype: 'form',
+//                                             dock: 'top',
+//                                             bodyStyle: {
+//                                                 padding: '10 5 5 5'
+//                                             },
 
-                                            height: 130,
-                                            width: 810,
-                                            layout: {
-                                                type: 'table',
-                                                columns: 2
-                                            },
-                                            defaultType: 'textfield',
-                                            defaults: {
-                                                labelAlign: 'right',
-                                                labelPad: 15,
-                                                width: 340,
-                                                labelWidth: 125,
-                                                maxLength: 100,
-                                                maxLengthText: '最大长度为100'
-                                            },
-                                            items: [{
-                                                xtype: 'fieldcontainer',
-                                                fieldLabel: '区间',
-                                                labelWidth: 100,
+//                                             height: 130,
+//                                             width: 810,
+//                                             layout: {
+//                                                 type: 'table',
+//                                                 columns: 2
+//                                             },
+//                                             defaultType: 'textfield',
+//                                             defaults: {
+//                                                 labelAlign: 'right',
+//                                                 labelPad: 15,
+//                                                 width: 340,
+//                                                 labelWidth: 125,
+//                                                 maxLength: 100,
+//                                                 maxLengthText: '最大长度为100'
+//                                             },
+//                                             items: [{
+//                                                 xtype: 'fieldcontainer',
+//                                                 fieldLabel: '区间',
+//                                                 labelWidth: 100,
 
-                                                width: 800,
-                                                colspan: 2,
-                                                layout: 'hbox',
-                                                items: [{
-                                                    xtype: 'numberfield',
-                                                    validateOnChange: true,
-                                                    minValue: 0,
-                                                    maxValue: 9999 //,
-                                                        //regex:GlobalConfig.RegexController.regexNumber,
-                                                        //regexText:'请填写两位小数的数字'
-                                                }, {
-                                                    xtype: 'splitter'
-                                                }, {
-                                                    xtype: 'numberfield',
-                                                    regex: GlobalConfig.RegexController.regexMoney2Fixed,
-                                                    regexText: '请填写两位小数的数字'
-                                                }]
-                                            }, {
-                                                fieldLabel: '价格'
-                                            }, {
-                                                xtype: 'button',
-                                                colspan: 2,
-                                                text: '添加',
-                                                handler: function(com) {
-                                                    var win = com.up('window');
-                                                    win.add({
-                                                        xtype: 'fieldset',
-                                                        title: '规则1'
-                                                    });
+//                                                 width: 800,
+//                                                 colspan: 2,
+//                                                 layout: 'hbox',
+//                                                 items: [{
+//                                                     xtype: 'numberfield',
+//                                                     validateOnChange: true,
+//                                                     minValue: 0,
+//                                                     maxValue: 9999 //,
+//                                                         //regex:GlobalConfig.RegexController.regexNumber,
+//                                                         //regexText:'请填写两位小数的数字'
+//                                                 }, {
+//                                                     xtype: 'splitter'
+//                                                 }, {
+//                                                     xtype: 'numberfield',
+//                                                     regex: GlobalConfig.RegexController.regexMoney2Fixed,
+//                                                     regexText: '请填写两位小数的数字'
+//                                                 }]
+//                                             }, {
+//                                                 fieldLabel: '价格'
+//                                             }, {
+//                                                 xtype: 'button',
+//                                                 colspan: 2,
+//                                                 text: '添加',
+//                                                 handler: function(com) {
+//                                                     var win = com.up('window');
+//                                                     win.add({
+//                                                         xtype: 'fieldset',
+//                                                         title: '规则1'
+//                                                     });
 
-                                                }
-                                            }]
-                                        }],
-                                        items: [{
-                                            xtype: 'fieldset',
-                                            title: '规则1'
-                                        }],
-                                        buttons: [{
-                                            text: '确定'
-                                        }, {
-                                            text: '取消'
-                                        }]
-                                    }).show();
-                                }
-                            }]
-                        });
-                    }
-                }
-            }
-        }]
-    }],
-    buttons: [{
-        text: '重置',
-        handler: function() {
-            var me = this;
-            var w = me.up('window');
-            var f = w.down('#formId');
-            f.getForm().reset();
-            if (w.action == 'update') {
-                var sm = w.grid.getSelectionModel();
-                if (sm.hasSelection()) {
-                    f.getForm().loadRecord(sm.getSelection()[0]);
-                }
-            }
-        }
-    }, {
-        text: '确定',
-        itemId: 'submit',
-        handler: function() {
-            var me = this;
-            var w = me.up('window');
+//                                                 }
+//                                             }]
+//                                         }],
+//                                         items: [{
+//                                             xtype: 'fieldset',
+//                                             title: '规则1'
+//                                         }],
+//                                         buttons: [{
+//                                             text: '确定'
+//                                         }, {
+//                                             text: '取消'
+//                                         }]
+//                                     }).show();
+//                                 }
+//                             }]
+//                         });
+//                     }
+//                 }
+//             }
+//         }]
+//     }],
+//     buttons: [{
+//         text: '重置',
+//         handler: function() {
+//             var me = this;
+//             var w = me.up('window');
+//             var f = w.down('#formId');
+//             f.getForm().reset();
+//             if (w.action == 'update') {
+//                 var sm = w.grid.getSelectionModel();
+//                 if (sm.hasSelection()) {
+//                     f.getForm().loadRecord(sm.getSelection()[0]);
+//                 }
+//             }
+//         }
+//     }, {
+//         text: '确定',
+//         itemId: 'submit',
+//         handler: function() {
+//             var me = this;
+//             var w = me.up('window');
 
-            var form = w.down('#formId').getForm();
+//             var form = w.down('#formId').getForm();
 
-            if (form.isValid()) {
+//             if (form.isValid()) {
 
-                var url = w.action == "create" ? GlobalConfig.Controllers.Tracking_numberGrid.addTracking_number : GlobalConfig.Controllers.Tracking_numberGrid.updateTracking_number;
-                form.submit({
-                    url: url,
-                    params: {
-                        req: 'dataset',
-                        dataname: 'AddUpdateTracking_number', // dataset名称，根据实际情况设置,数据库名
-                        restype: 'json',
-                        Id: w.record ? w.record.data.ControllTid : 0,
-                        logId: w.record ? w.record.data.Id : 0,
-                        action: w.action,
-                        sessiontoken: GlobalFun.getSeesionToken()
-                    },
-                    success: function(form, action) {
-                        w.grid.loadGrid();
-                        w.close();
+//                 var url = w.action == "create" ? GlobalConfig.Controllers.Tracking_numberGrid.addTracking_number : GlobalConfig.Controllers.Tracking_numberGrid.updateTracking_number;
+//                 form.submit({
+//                     url: url,
+//                     params: {
+//                         req: 'dataset',
+//                         dataname: 'AddUpdateTracking_number', // dataset名称，根据实际情况设置,数据库名
+//                         restype: 'json',
+//                         Id: w.record ? w.record.data.ControllTid : 0,
+//                         logId: w.record ? w.record.data.Id : 0,
+//                         action: w.action,
+//                         sessiontoken: GlobalFun.getSeesionToken()
+//                     },
+//                     success: function(form, action) {
+//                         w.grid.loadGrid();
+//                         w.close();
 
-                    },
-                    failure: function(form, action) {
-                        if (!GlobalFun.errorProcess(action.result.code)) {
-                            Ext.Msg.alert('失败', action.result.msg);
-                        }
-                    }
-                });
-            }
-        }
-    }, {
-        text: '取消',
-        handler: function() {
-            var me = this;
-            me.up('window').close();
-        }
-    }]
-});
+//                     },
+//                     failure: function(form, action) {
+//                         if (!GlobalFun.errorProcess(action.result.code)) {
+//                             Ext.Msg.alert('失败', action.result.msg);
+//                         }
+//                     }
+//                 });
+//             }
+//         }
+//     }, {
+//         text: '取消',
+//         handler: function() {
+//             var me = this;
+//             me.up('window').close();
+//         }
+//     }]
+// });

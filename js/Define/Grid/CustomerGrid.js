@@ -109,7 +109,7 @@ Ext.define('chl.gird.CustomerGrid', {
 
         store.loadPage(1);
         store.getProxy().extraParams.refresh = null;
-
+        GlobalFun.SetGridTitle(me.up('#centerGridDisplayContainer'), store, "客户列表");
         ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
     }
 });
