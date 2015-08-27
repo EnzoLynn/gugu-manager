@@ -7,9 +7,78 @@
  */
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-if (!function_exists('load_controller'))
+function loadExcel($filename, $pars) {
+    $pars_default = array(
+        'sheetIndex' => 0,
+        'headerKey' => FALSE,       //是否用第一列的列名作为键，True则自动从第二行开始读取
+        'readColumn' => array()     //只读取哪些列
+    );
+    $pars = array_merge($pars_default, $pars);
+
+//    error_reporting(E_ALL);
+//    ini_set('display_errors', TRUE);
+//    ini_set('display_startup_errors', TRUE);
+
+    require_once(APPPATH . 'libraries/PHPExcel.php');
+    $objPHPExcel = new PHPExcel();
+
+    $objReader = PHPExcel_IOFactory::createReaderForFile($filename);
+    $objPHPExcel = $objReader->load($filename);
+    $objPHPExcel->setActiveSheetIndex($pars['sheetIndex']);
+    $objWorksheet = $objPHPExcel->getActiveSheet();
+    $i = 0;
+    $temp_rows = array();
+    $temp_header = array();
+    foreach( $objWorksheet->getRowIterator() as $row ){
+        $cellIterator = $row->getCellIterator();
+        $cellIterator->setIterateOnlyExistingCells(false);
+
+        if($pars['headerKey'] == FALSE) {//不用读取表头
+//            if( $i == 0 && $pars['includeHeader'] == FALSE ){
+//                $i++;
+//                continue;
+//            }
+            $temp_row = array();
+            foreach($cellIterator as $cell){
+                $temp_row[] = trim($cell->getValue());
+            }
+            $temp_rows[] = $temp_row;
+            $i++;
+        } else {//以表头为键
+            if( $i == 0){
+                foreach($cellIterator as $cell){
+                    $temp_header[] = $cell->getValue();
+                }
+                $i++;
+            } else {
+                $temp_row = array();
+                foreach($cellIterator as $cell){
+                    $temp_row[] = $cell->getValue();
+                }
+                //$temp_rows[] = array_combine($temp_header, $temp_row);
+                $all_row = array_combine($temp_header, $temp_row);
+                if($pars['readColumn']) {
+                    $temp = array();
+                    foreach ($all_row as $key => $val) {
+                        if (in_array($key, $pars['readColumn'])) {
+                            $temp[$key] = $val;
+                        }
+                    }
+                    $temp_rows[] = $temp;
+                }else{
+                    $temp_rows[] = $all_row;
+                }
+
+                $i++;
+            }
+        }
+    }
+    return $temp_rows;
+}
+
+if (!function_exists('loadController'))
 {
-    function load_controller($controller, $method = 'index')
+    function loadController($controller, $method = 'index')
     {
         $dirs = explode('/', $controller);
         if(count($dirs) ==  1) {

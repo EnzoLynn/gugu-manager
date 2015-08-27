@@ -22,15 +22,6 @@ class Login extends MY_Controller {
             }
         }
 
-//
-//            $json = array(
-//                'success' => false,
-//                'total' => 1,
-//                'msg' => $_SESSION['admin_name'],
-//                'code' => 'aaa'
-//            );
-//            echo json_encode($json);exit;
-
         if($admin) {
             $data = array(
                 'session_token' => session_id(),

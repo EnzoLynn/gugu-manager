@@ -21,7 +21,16 @@ class Welcome extends CI_Controller {
 	public function index() {
 //        delete_cookie('login_sessiontoken');
 //        delete_cookie('login_username');
-//		$this->load->view('welcome_message');
-        return 'zhouhui';
+
+        $arr1 = array(
+            'a' => 'a1',
+            'b' => 'b1',
+        );
+        $arr2 = array(
+            'a' => 'a2'
+        );
+        print_r(array_merge($arr1, $arr2));
+
+		$this->load->view('welcome_message');
 	}
 }
