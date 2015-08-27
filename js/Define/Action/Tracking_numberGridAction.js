@@ -121,8 +121,8 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                     name: 'fileUpload',
                     fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
                     width: 600,
-                    height:100,
-                    buttonOnly:true,
+                    height: 100,
+                    buttonOnly: true,
                     labelWidth: 150,
                     msgTarget: 'side',
                     itemId: 'fileupId',
@@ -136,14 +136,28 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                     listeners: {
                         change: function(com) {
                             var me = com;
-
-                            if((Ext.isIe && Ext.ieVersion <10)
-                                ||(Ext.isGecko && Ext.firefoxVersion <30)  
-                                || (Ext.isWebKit && Ext.chromeVersion < 30)){
-                                Ext.Msg.alert('消息','您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
+                            if (Ext.isIE) {
+                                Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
                                 return;
                             }
+                            var supType = new Array('xls', 'xlsx');
+                            var fNmae = me.getValue();
+                            var fType = fNmae.substring(
+                                fNmae.lastIndexOf('.') + 1,
+                                fNmae.length).toLowerCase();
+                            var returnFlag = true;
 
+                            Ext.Array.each(supType, function(rec) {
+                                if (rec == fType) {
+                                    returnFlag = false;
+                                    return false;
+                                }
+                            });
+
+                            if (returnFlag) {
+                                Ext.Msg.alert('添加文件', '不支持的文件格式！');
+                                return;
+                            }
                             me.sendFiles(me.fileInputEl.dom.files);
 
                         }
