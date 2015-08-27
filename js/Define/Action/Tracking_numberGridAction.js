@@ -137,7 +137,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                         change: function(com) {
                             var me = com;
 
-                            if(Ext.isIe
+                            if((Ext.isIe && Ext.ieVersion <10)
                                 ||(Ext.isGecko && Ext.firefoxVersion <30)  
                                 || (Ext.isWebKit && Ext.chromeVersion < 30)){
                                 Ext.Msg.alert('消息','您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
