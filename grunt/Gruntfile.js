@@ -20,7 +20,7 @@ module.exports = function(grunt) {
                 ,'<%= jsdest %>**/Base.js','<%= jsdest %>**/WsCall_base.js'
                 ,'<%= jsdest %>**/SearchField.js','<%= jsdest %>**/DateTimeField.js'
                 ,'<%= jsdest %>**/checkcol.js','<%= jsdest %>**/GridPreviewPlugin.js'
-                ,'<%= jsdest %>**/MyPasswordfield.js','<%= jsdest %>**/MyStateProvider.js'
+                ,'<%= jsdest %>**/MyPasswordfield.js','<%= jsdest %>**/html5FileUpload.js','<%= jsdest %>**/MyStateProvider.js'
                 ,'<%= jsdest %>**/exUnit.js','<%= jsdest %>**/MainItemListTreeModel.js'
                 ,'<%= jsdest %>**/MainItemListTreeStore.js','<%= jsdest %>**/MainItemListTree.js'
                 ,'<%= jsdest %>**/ManageDfGrid.js','<%= jsdest %>**/ComboStore.js'
