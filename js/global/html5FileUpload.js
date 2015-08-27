@@ -40,7 +40,7 @@
          xhr.onreadystatechange = function() {
              if (xhr.readyState == 4 && xhr.status == 200) {
                  // Handle response.
-                 console.log(xhr.responseText); // handle response.
+                 //console.log(xhr.responseText); // handle response.
              }
          };
 
@@ -89,13 +89,13 @@
 
              if (e.lengthComputable) {
                  var percentage = Math.round((e.loaded * 100) / e.total);
-                 console.log(percentage);
+                 //console.log(percentage);
                  scope.progressEl.dom.value = percentage;
              }
          }, false);
 
          xhr.upload.addEventListener("load", function(e) {
-             console.log(100 + '--' + scope.currentFile + '--' + scope.totalFile);
+             //console.log(100 + '--' + scope.currentFile + '--' + scope.totalFile);
 
              scope.progressEl.dom.value = 100;
              scope.currentFile++;
@@ -103,7 +103,7 @@
              if (scope.currentFile == scope.totalFile) {
                  scope.currentFile = 0;
                  scope.totalFile = 0;
-                 console.log("last");
+                 //console.log("last");
 
              };
          }, false);
