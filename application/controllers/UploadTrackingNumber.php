@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class UploadTrackingNumber extends AdminController {
     public function __construct() {
         parent::__construct();
-        $this->load->model('customer');
+        $this->load->model('customer_model');
 
         $this->load->model('customer_rent_model');
         $this->load->model('customer_express_rule_model');
@@ -34,7 +34,7 @@ class UploadTrackingNumber extends AdminController {
 
         $this->load->library('upload', $config);
 
-        if ( ! $this->upload->do_upload('userfile'))
+        if ( ! $this->upload->do_upload('fileUpload'))
         {
             $error = array('error' => $this->upload->display_errors());
 
