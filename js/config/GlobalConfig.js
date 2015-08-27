@@ -118,7 +118,7 @@ GlobalConfig.Controllers = {
     },
     Tracking_numberGrid: { //票号 票据
         create: globalFix + '/traking_numberGrid.json',
-        read: globalFix + '/traking_numberGrid.json',
+        read: 'trackingNumber/getList',//globalFix + '/traking_numberGrid.json',
         update: globalFix + '/traking_numberGrid.json',
         destroy: globalFix + '/traking_numberGrid.json',
         uploadExcel: '/uploadTrackingNumber/upload',//globalFix + '/uploadExcel',
