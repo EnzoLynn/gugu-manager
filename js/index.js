@@ -46,10 +46,10 @@ Ext.onReady(function() {
 
 
         //创建测试表格
-        GridManager.CreateTestGrid({
-            needLoad: false
-        });
-        GridManager.SetTestGridSelectionChangeEvent();
+        // GridManager.CreateTestGrid({
+        //     needLoad: false
+        // });
+        // GridManager.SetTestGridSelectionChangeEvent();
 
         //创建客户管理表格
         // GridManager.CreateCustomerRentGrid({
@@ -147,7 +147,7 @@ Ext.onReady(function() {
                         boxready: function(com, width, height, opts) {
                             var gridArr=[]; 
                             gridArr.push(GridManager.ManageDfGrid);
-                            gridArr.push(GridManager.TestGrid);
+                            //gridArr.push(GridManager.TestGrid);
                             gridArr.push(GridManager.CustomerGrid);
                             gridArr.push(GridManager.Tracking_numberGrid); 
                             gridArr.push(GridManager.ExpressPanel);
