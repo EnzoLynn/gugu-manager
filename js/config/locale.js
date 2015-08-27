@@ -6,21 +6,21 @@ var underIE8 = false;
 	if(lang_type) {
 		if(lang_type =='0') {
 			//document.write('<script type="text/javascript" src="local/rc_zh_cn.js"></script>');
-			document.write('<script type="text/javascript" src="/js/ext4/locale/ext-lang-zh_CN.js"></script>');
+			document.write('<script type="text/javascript" src="/dist/ext4/locale/ext-lang-zh_CN.js"></script>');
 			return;
 		}
 		if(lang_type =='1') {
 			//document.write('<script type="text/javascript" src="local/rc_en.js"></script>');
-		    document.write('<script type="text/javascript" src="/js/ext4/locale/ext-lang-en.js"></script>');
+		    document.write('<script type="text/javascript" src="/dist/ext4/locale/ext-lang-en.js"></script>');
 			return;
 		}
 		lang_type = '0';
 		//document.write('<script type="text/javascript" src="local/rc_zh_cn.js"></script>');
-		document.write('<script type="text/javascript" src="/js/ext4/locale/ext-lang-zh_CN.js"></script>');
+		document.write('<script type="text/javascript" src="/dist/ext4/locale/ext-lang-zh_CN.js"></script>');
 	} else {
 		lang_type = '0';
 		//document.write('<script type="text/javascript" src="local/rc_zh_cn.js"></script>');
-		document.write('<script type="text/javascript" src="/js/ext4/locale/ext-lang-zh_CN.js"></script>');
+		document.write('<script type="text/javascript" src="/dist/ext4/locale/ext-lang-zh_CN.js"></script>');
 	}
 
 })();
