@@ -69,7 +69,7 @@
 
      sendFiles: function(files) {
          var me = this;
-         me.progressEl.dom.value=0;
+         me.progressEl.dom.value = 0;
          me.countEl.dom.innerHTML = "文件: 1" + '/' + files.length;
          me.totalFile = Ext.clone(files.length);
          var str = "";
@@ -136,9 +136,12 @@
          dropzone.ondrop = function(event) {
              event.stopPropagation();
              event.preventDefault();
-
+             if (Ext.isIe || (Ext.isGecko && Ext.firefoxVersion < 30) || (Ext.isWebKit && Ext.chromeVersion < 30)) {
+                 Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
+                 return;
+             }
              var files = event.dataTransfer.files;
-             me.progressEl.dom.value=0;
+             me.progressEl.dom.value = 0;
              me.countEl.dom.innerHTML = "文件: 1" + '/' + files.length;
              me.totalFile = Ext.clone(files.length);
              var str = "";
