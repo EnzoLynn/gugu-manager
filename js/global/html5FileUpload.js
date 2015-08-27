@@ -2,6 +2,7 @@
      extend: 'Ext.form.field.File',
      alias: 'widget.Html5FileUpload',
      accept: '*/*',
+     supType: ['xls', 'xlsx'],
      style: '',
      uploadUrl: '',
      progressContainerEl: '',
@@ -140,14 +141,37 @@
                  Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
                  return;
              }
+
+             var supType = me.supType;
+
+             var returnFlag = true;
+
+
+
+
+
+             var str = "";
+             for (var i = 0; i < files.length; i++) {
+                 str += files[i].name + ";";
+                 var fNmae = files[i].name;
+                 var fType = fNmae.substring(
+                     fNmae.lastIndexOf('.') + 1,
+                     fNmae.length).toLowerCase();
+                 Ext.Array.each(me.supType, function(rec) {
+                     if (rec == fType) {
+                         returnFlag = false;
+                         return false;
+                     }
+                 });
+             };
+             if (returnFlag) {
+                 Ext.Msg.alert('添加文件', '不支持的文件格式！');
+                 return;
+             }
              var files = event.dataTransfer.files;
              me.progressEl.dom.value = 0;
              me.countEl.dom.innerHTML = "文件: 1" + '/' + files.length;
              me.totalFile = Ext.clone(files.length);
-             var str = "";
-             for (var i = 0; i < files.length; i++) {
-                 str += files[i].name + ";";
-             };
              me.fileNameLabelEl.dom.innerHTML = str;
              for (var i = 0; i < files.length; i++) {
                  me.sendFile(files[i], me);
