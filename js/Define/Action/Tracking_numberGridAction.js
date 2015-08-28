@@ -32,7 +32,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             title: '上传文件',
             bodyPadding: 15,
             defaults: {
-                margin: '0 0 20 0'
+                margin: '0 0 20 0' 
             },
             items: [{
                 xtype: 'form',
@@ -44,7 +44,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                     fieldLabel: '请选择导入的文件',
                     width: 600,
                     labelWidth: 150,
-
+                    labelAlign:'right',
                     blankText: '请选择导入的文件',
                     msgTarget: 'side',
                     itemId: 'fileupId',
@@ -119,9 +119,14 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                 }, {
                     xtype: 'Html5FileUpload',
                     name: 'fileUpload',
+                     labelAlign:'right',
+
                     fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
                     width: 600,
-                    height: 100,
+                    height: 100, 
+                    style:{
+                        border:'1px solid green'  
+                    }, 
                     buttonOnly: true,
                     labelWidth: 150,
                     msgTarget: 'side',

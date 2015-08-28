@@ -183,14 +183,14 @@
          }
          me.fileNameLabelEl = me.triggerWrap.up('#' + me.id).createChild({
              name: me.getName(),
-             style: "width:" + me.getWidth() + "px;",
+             style: "width:" + me.getWidth() + "px;padding:5px 5px 5px 5px;",
              id: me.id + '-fileInputFileNameLabelEl',
              cls: Ext.baseCSSPrefix + 'form-file-input-fileNameLabel',
              tag: 'div'
          });
          me.progressContainerEl = me.triggerWrap.up('#' + me.id).createChild({
              name: me.getName(),
-             style: "width:" + me.getWidth() + "px;",
+             style: "width:" + me.getWidth() + "px;padding:5px 5px 5px 5px;",
              id: me.id + '-fileInputProgressContainerEl',
              cls: Ext.baseCSSPrefix + 'form-file-input-progressContainer',
              tag: 'div'
