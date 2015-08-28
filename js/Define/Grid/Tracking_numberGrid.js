@@ -3,6 +3,8 @@ var Tracking_numberGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshTracking_number'), '-',
             ActionBase.getAction('searchTracking_number'),'-',
         ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number')
+        ,'-',
+         ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number')
     ]
 });
 
@@ -45,6 +47,8 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         items: [ActionBase.getAction('refreshTracking_number'), '-',
             ActionBase.getAction('searchTracking_number'),'-',
             ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number')
+            ,'-',
+         ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number')
         ]
     }, {
         xtype: 'Pagingtoolbar',

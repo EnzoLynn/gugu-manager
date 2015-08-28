@@ -92,7 +92,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                     //}
                                 },
                                 failure: function(fp, action) {
-                                    if (!GlobalFun.errorProcess(action.result.code)) { 
+                                    if (!GlobalFun.errorProcess(action.result.code)) {
                                         var obj = {};
                                         obj[fNmae] = action.result.data;
                                         ActionManager.showUpLoadExcelError(obj);
@@ -218,6 +218,51 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     handler: function() {
         var target = this.getTargetView();
         ActionManager.refreshTracking_number(target);
+    },
+    updateStatus: function(selection) {}
+});
+
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'translateExpressTracking_number',
+    iconCls: 'refresh',
+    tooltip: '计算收入',
+    text: '计算收入',
+    handler: function() {
+        var target = this.getTargetView();
+        var param = {
+            sessiontoken: GlobalFun.getSeesionToken(),
+            type: 'income'
+        };
+        // 调用
+        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
+            target.loadGrid();
+        }, function(response, opts) {
+            if (!GlobalFun.errorProcess(response.code)) {
+                Ext.Msg.alert('登录失败', response.msg);
+            }
+        }, true);
+    },
+    updateStatus: function(selection) {}
+});
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'translateCostTracking_number',
+    iconCls: 'refresh',
+    tooltip: '计算成本',
+    text: '计算成本',
+    handler: function() {
+        var target = this.getTargetView();
+        var param = {
+            sessiontoken: GlobalFun.getSeesionToken(),
+            type: 'cost'
+        };
+        // 调用
+        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
+            target.loadGrid();
+        }, function(response, opts) {
+            if (!GlobalFun.errorProcess(response.code)) {
+                Ext.Msg.alert('登录失败', response.msg);
+            }
+        }, true);
     },
     updateStatus: function(selection) {}
 });
