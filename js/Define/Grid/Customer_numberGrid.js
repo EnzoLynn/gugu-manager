@@ -19,6 +19,7 @@ Ext.define('chl.Model.Customer_numberGridModel', {
     }]
 });
 
+
 Ext.create('Ext.data.Store', {
     model: 'chl.Model.Customer_numberGridModel',
     storeId: 'Customer_numberStoreId',
@@ -99,7 +100,47 @@ Ext.create('Ext.data.Store', {
 
 var Customer_numberGridRowEditing;
 
+function createPlugin() {
+    Customer_numberGridRowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        clicksToMoveEditor: 1,
+        autoCancel: true,
+        listeners: {
+            edit: function(editor, e, opts) {
+                //e.record.commit();
+                //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
+                //Ext.Store 
 
+                var sm = e.grid.getSelectionModel();
+                //console.log('23');
+                e.store.sync({
+                    success: function(batch, opts) {
+                        //e.record.commit();
+                        //console.log('222');
+                        //store.load
+                        if (e.store.getCount() > 0) {
+                            sm.select(0);
+                        }
+                        //e.grid.loadGrid();
+                    },
+                    failure: function(batch, opts) {
+                        Ext.Msg.alert('失败', action.result.msg);
+                    }
+                });
+            },
+            canceledit: function(editor, e, opts) {
+                //e.grid.loadGrid();
+                e.store.load();
+            },
+            beforeedit: function(editor, e, opts) {
+                // console.log(Customer_numberGridRowEditing.getEditor());
+                // Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';
+                // Customer_numberGridRowEditing.getEditor().cancelBtnText = '取消';
+                // Customer_numberGridRowEditing.getEditor().errorsText = '错误';
+            }
+        }
+    });
+}
+createPlugin();
 Ext.define('chl.gird.Customer_numberGrid', {
     extend: 'chl.grid.BaseGrid',
     alternateClassName: ['Customer_numberGrid'],
@@ -292,46 +333,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
     layout: 'fit',
     modal: true,
     resizable: false,
-    items: [{
-        xtype: 'Customer_numberGrid',
-        itemId: 'Customer_numberGrid',
-        plugins: [
-            Customer_numberGridRowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
-                clicksToMoveEditor: 1,
-                autoCancel: true,
-                listeners: {
-                    edit: function(editor, e, opts) {
-                        //e.record.commit();
-                        //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
-                        //Ext.Store 
-
-                        var sm = e.grid.getSelectionModel();
-                        e.store.sync({
-                            success: function(batch, opts) {
-                                e.grid.loadGrid();
-                                if (e.store.getCount() > 0) {
-                                    sm.select(0);
-                                }
-                                //e.grid.loadGrid();
-                            },
-                            failure: function(batch, opts) {
-                                Ext.Msg.alert('失败', action.result.msg);
-                            }
-                        });
-                    },
-                    canceledit: function(editor, e, opts) {
-                         e.grid.loadGrid();
-                    },
-                    beforeedit: function(editor, e, opts) {
-                        console.log(Customer_numberGridRowEditing.getEditor());
-                        // Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';
-                        // Customer_numberGridRowEditing.getEditor().cancelBtnText = '取消';
-                        // Customer_numberGridRowEditing.getEditor().errorsText = '错误';
-                    }
-                }
-            })
-        ]
-    }],
+    items: [],
     buttons: [{
         text: '关闭',
         handler: function() {
@@ -341,8 +343,15 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
         }
     }],
     listeners: {
-        show: function(win) {
+        boxready: function(win) { 
+            createPlugin();
+            win.add({
+                xtype: 'Customer_numberGrid',
+                itemId: 'Customer_numberGrid',
+                plugins: [Customer_numberGridRowEditing]
+            });
             var grid = win.down('Customer_numberGrid');
+
             var store = grid.getStore();
 
             store.getProxy().extraParams.customer_id = win.record.data.customer_id;
