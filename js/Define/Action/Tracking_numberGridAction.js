@@ -93,8 +93,15 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                 },
                                 failure: function(fp, action) {
                                     if (!GlobalFun.errorProcess(action.result.code)) {
-                                        //Ext.Msg.alert('失败', action.result.msg);
-                                        ActionManager.showUpLoadExcelError(action.result.data);
+
+                                        if (action.result.code == "89") {
+                                            Ext.Msg.alert('失败', action.result.msg);
+                                        } else {
+                                            var obj = {};
+                                            obj[fNmae] = action.result.data;
+                                            ActionManager.showUpLoadExcelError(obj);
+                                        }
+
                                     }
                                 }
                             });
@@ -225,12 +232,28 @@ ActionManager.refreshTracking_number = function(traget) {
     traget.loadGrid();
 };
 
-ActionManager.showUpLoadExcelError = function(data) {
-    var html = "";
+ActionManager.showUpLoadExcelError = function(obj) {
+    var items = [];
+    
+    for (key in obj) {
+        var textItems = [];
+        Ext.Array.each(obj[key], function(item, index) {
+            textItems.push({
+                xtype: 'label',
+                text:item.msg
+            });
 
-    Ext.Array.each(data, function(item, index) {
-        html += item.msg+"<br>";
-    });
+        });
+        items.push({
+            xtype: 'fieldset',
+            title: key,
+            layout:'vbox',
+            collapsible: true,
+            items:textItems
+        });
+    }
+
+
 
     Ext.create('Ext.window.Window', {
         title: '数据格式错误',
@@ -257,8 +280,7 @@ ActionManager.showUpLoadExcelError = function(data) {
             autoScroll: true,
             height: 470,
             width: 660,
-            name: 'message',
-            html: html
+            items: items
         }],
         buttons: [{
             text: '确定',

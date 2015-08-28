@@ -11,7 +11,7 @@
      currentFile: 0,
      totalFile: 0,
      fileNameLabelEl: '',
-     multipleDataArr:[],
+     multipleDataObj: {},
      onRender: function() {
          var me = this,
              inputEl;
@@ -34,21 +34,22 @@
      },
      sendFile: function(file, scope) {
          var me = this;
-         var xhr = new XMLHttpRequest();
-         var fd = new FormData();
+         // var xhr = new XMLHttpRequest();
+         // var fd = new FormData();
 
-         scope.updatePropress(xhr, scope);
-         xhr.open("POST", me.uploadUrl, true);
-         xhr.onreadystatechange = function() {
-             if (xhr.readyState == 4 && xhr.status == 200) {
-                 // Handle response.
-                 //console.log(xhr.responseText); // handle response.
-             }
-         };
+         // scope.updatePropress(xhr, scope);
+         // xhr.open("POST", me.uploadUrl, true);
+         // xhr.onreadystatechange = function() {
+         //     if (xhr.readyState == 4 && xhr.status == 200) {
+         //         // Handle response.
+         //         //console.log(xhr.responseText); // handle response.
+         //     }
+         // };
 
-         fd.append('fileUpload', file);
-         // Initiate a multipart/form-data upload
-         xhr.send(fd);
+         // fd.append('fileUpload', file);
+         // // Initiate a multipart/form-data upload
+         // xhr.send(fd);
+         me.FileUpload(file, scope);
      },
      FileUpload: function(file, scope) {
 
@@ -68,11 +69,27 @@
          // };
          // reader.readAsBinaryString(file);
          xhr.onreadystatechange = function() {
-
              if (xhr.readyState == 4 && xhr.status == 200) {
-                 // Handle response.
-                 console.log(xhr.responseText);
-                 scope.multipleDataArr.push(file.name); // handle response.
+                 // Handle response. 
+                 var data = Ext.JSON.decode(xhr.responseText);
+                 if (data.code == "89") {
+                     Ext.Msg.alert('失败', data.msg);
+                 } else {                     
+                     scope.multipleDataObj[file.name] = data.data; 
+                 }
+                 
+                 if (scope.currentFile == scope.totalFile) {
+                     scope.currentFile = 0;
+                     scope.totalFile = 0;
+                     
+                     if (scope.multipleDataObj != {}) {
+                         ActionManager.showUpLoadExcelError(scope.multipleDataObj);
+                     };
+
+                     scope.multipleDataObj = {};
+
+                 };
+                 // handle response.
              }
          };
 
@@ -115,14 +132,7 @@
              scope.progressEl.dom.value = 100;
              scope.currentFile++;
              scope.countEl.dom.innerHTML = "文件: " + scope.currentFile + '/' + scope.totalFile;
-             if (scope.currentFile == scope.totalFile) {
-                 scope.currentFile = 0;
-                 scope.totalFile = 0;
-                 //console.log("last");
-                 ActionManager.showUpLoadExcelError(scope.multipleDataArr);
-                 scope.multipleDataArr = [];
 
-             };
          }, false);
      },
      createFileInput: function() {
