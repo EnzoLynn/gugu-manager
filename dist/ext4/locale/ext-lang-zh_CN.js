@@ -51,9 +51,7 @@ Ext.onReady(function() {
 
         parseCodes = {
             g: 1,
-            c: "if (/(上午)/i.test(results[{0}])) {\n"
-                + "if (!h || h == 12) { h = 0; }\n"
-                + "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
+            c: "if (/(上午)/i.test(results[{0}])) {\n" + "if (!h || h == 12) { h = 0; }\n" + "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
             s: "(上午|下午)",
             calcAtEnd: true
         };
@@ -101,7 +99,7 @@ Ext.onReady(function() {
         ariaTitleDateFormat: 'Y\u5e74m\u6708d\u65e5',
         longDayFormat: 'Y\u5e74m\u6708d\u65e5',
         monthYearFormat: 'Y\u5e74m\u6708',
-        getDayInitial: function (value) {
+        getDayInitial: function(value) {
             return value.substr(-1, 1);
         }
     });
@@ -273,5 +271,10 @@ Ext.onReady(function() {
         valueText: "值",
         dateFormat: "y年m月d日"
     });
-
+    Ext.define('Ext.locale.zh_CN.grid.RowEditor', {
+        override: "Ext.grid.RowEditor",
+        saveBtnText: "确定",
+        cancelBtnText: "取消",
+        errorsText: "错误"
+    }); 
 });

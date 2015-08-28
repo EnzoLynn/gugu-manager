@@ -220,8 +220,8 @@ Ext.define('chl.gird.Customer_numberGrid', {
         editor: {
             allowBlank: false,
             blankText: '不能为空',
-            maxLength: 9,
-            maxLengthText: '长度最大为9字节',
+            maxLength: 20,
+            maxLengthText: '长度最大为20字节',
             regex: GlobalConfig.RegexController.regexNumber,
             regexText: '请输入数字'
         }
@@ -232,8 +232,8 @@ Ext.define('chl.gird.Customer_numberGrid', {
         editor: {
             allowBlank: false,
             blankText: '不能为空',
-            maxLength: 9,
-            maxLengthText: '长度最大为9字节',
+            maxLength: 20,
+            maxLengthText: '长度最大为20字节',
             regex: GlobalConfig.RegexController.regexNumber,
             regexText: '请输入数字'
         }
@@ -323,9 +323,10 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
                          e.grid.loadGrid();
                     },
                     beforeedit: function(editor, e, opts) {
-                        Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';
-                        Customer_numberGridRowEditing.getEditor().cancelBtnText = '取消';
-                        Customer_numberGridRowEditing.getEditor().errorsText = '错误';
+                        console.log(Customer_numberGridRowEditing.getEditor());
+                        // Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';
+                        // Customer_numberGridRowEditing.getEditor().cancelBtnText = '取消';
+                        // Customer_numberGridRowEditing.getEditor().errorsText = '错误';
                     }
                 }
             })

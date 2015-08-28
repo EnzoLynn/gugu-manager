@@ -46,6 +46,7 @@ GlobalFun.fixedBugs = function () {
 
 
     }
+    
     //修正IE拖拽无效
     if (Ext.isIE) {
         Ext.override(Ext.dd.DragDropManager, {

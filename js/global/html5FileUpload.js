@@ -11,6 +11,7 @@
      currentFile: 0,
      totalFile: 0,
      fileNameLabelEl: '',
+     multipleDataArr:[],
      onRender: function() {
          var me = this,
              inputEl;
@@ -66,6 +67,14 @@
          //     xhr.send(evt.target.result);
          // };
          // reader.readAsBinaryString(file);
+         xhr.onreadystatechange = function() {
+             if (xhr.readyState == 4 && xhr.status == 200) {
+                 // Handle response.
+                 //console.log(xhr.responseText);
+                 scope.multipleDataArr.push(file.name); // handle response.
+             }
+         };
+
          fd.append('fileUpload', file);
          // Initiate a multipart/form-data upload
          xhr.send(fd);
@@ -109,6 +118,8 @@
                  scope.currentFile = 0;
                  scope.totalFile = 0;
                  //console.log("last");
+                 ActionManager.showUpLoadExcelError(me.multipleDataArr);
+                 me.multipleDataArr = [];
 
              };
          }, false);

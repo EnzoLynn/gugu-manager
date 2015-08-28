@@ -87,42 +87,8 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                     var data = action.result.data;
                                     if (action.result.success) {
                                         target.loadGrid();
-                                    } else {
-                                        Ext.create('Ext.window.Window', {
-                                            title: '数据格式错误',
-                                            modal: true,
-                                            width: 700,
-                                            height: 600,
-                                            bodyPadding: 15,
-                                            layout: {
-                                                type: 'table',
-                                                columns: 2
-                                            },
-                                            items: [{
-                                                xtype: 'container',
-                                                cls: 'x-message-box-error ',
-                                                height: 34,
-                                                width: 34,
-                                            }, {
-                                                xtype: 'label',
-                                                text: '数据格式错误，请修改下列数据后重新上传'
-                                            }, {
-                                                xtype: 'container',
-                                                margin: '15 0 0 0',
-                                                colspan: 2,
-                                                autoScroll: true,
-                                                height: 470,
-                                                width: 660,
-                                                name: 'message',
-                                                html: 'container<br/>/r/ncontainer/rc<br/>ontainercont<br/>ainercontai<br/>nerconta<br/>inercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainer'
-                                            }],
-                                            buttons: [{
-                                                text: '确定',
-                                                handler: function(com) {
-                                                    com.up('window').close();
-                                                }
-                                            }]
-                                        }).show();
+                                    } else {                                        
+                                        ActionManager.showUpLoadExcelError(action.result.data);
                                     }
                                 },
                                 failure: function(fp, action) {
@@ -256,6 +222,45 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
 //刷新 
 ActionManager.refreshTracking_number = function(traget) {
     traget.loadGrid();
+};
+
+ActionManager.showUpLoadExcelError = function(data) {
+    var html = '';
+    Ext.create('Ext.window.Window', {
+        title: '数据格式错误',
+        modal: true,
+        width: 700,
+        height: 600,
+        bodyPadding: 15,
+        layout: {
+            type: 'table',
+            columns: 2
+        },
+        items: [{
+            xtype: 'container',
+            cls: 'x-message-box-error ',
+            height: 34,
+            width: 34,
+        }, {
+            xtype: 'label',
+            text: '数据格式错误，请修改下列数据后重新上传'
+        }, {
+            xtype: 'container',
+            margin: '15 0 0 0',
+            colspan: 2,
+            autoScroll: true,
+            height: 470,
+            width: 660,
+            name: 'message',
+            html: html
+        }],
+        buttons: [{
+            text: '确定',
+            handler: function(com) {
+                com.up('window').close();
+            }
+        }]
+    }).show();
 };
 
 //查询
