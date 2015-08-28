@@ -49,6 +49,11 @@ function loadExcel($filename, $pars) {
                 foreach($cellIterator as $cell){
                     $temp_header[] = $cell->getValue();
                 }
+                //指定列头必须在excel中
+                if(array_intersect($temp_header, $pars['readColumn']) != $pars['readColumn']) {
+                    return array();
+                }
+
                 $i++;
             } else {
                 $temp_row = array();
