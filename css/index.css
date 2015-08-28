@@ -49,3 +49,6 @@
 .search {
   background-image: url(../image/pub/search.png) !important;
 }
+.translate {
+  background-image: url(../image/workFlow/task-loading.png) !important;
+}

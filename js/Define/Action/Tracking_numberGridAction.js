@@ -224,7 +224,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'translateExpressTracking_number',
-    iconCls: 'refresh',
+    iconCls: 'translate',
     tooltip: '计算收入',
     text: '计算收入',
     handler: function() {
@@ -246,7 +246,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
 });
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'translateCostTracking_number',
-    iconCls: 'refresh',
+    iconCls: 'translate',
     tooltip: '计算成本',
     text: '计算成本',
     handler: function() {
