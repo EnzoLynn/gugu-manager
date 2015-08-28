@@ -6,8 +6,11 @@
  * Time: 14:44
  */
 class Customer_number_model extends CI_Model {
-    function __construct() {
+    var $CI;
+    public function __construct(){
         parent::__construct();
+        $this->CI = &get_instance();
+        $this->CI->load->model('customer_model');
     }
 
     function getCustomerNumber($number_id) {
@@ -76,12 +79,16 @@ class Customer_number_model extends CI_Model {
         $arr = array();
         $num = preg_match('/[A-Za-z]+/i', $tracking_number, $arr);
         if($num == 0){
-            $query = $this->db->query("SELECT * FROM customer_number WHERE $tracking_number BETWEEN CAST(customize_number_from AS UNSIGNED) AND CAST(customize_number_to AS UNSIGNED) ");
-            return $query->first_row();
+            $query = $this->db->query("SELECT customer_id FROM customer_number WHERE $tracking_number BETWEEN CAST(customize_number_from AS UNSIGNED) AND CAST(customize_number_to AS UNSIGNED) ");
+            $row = $query->first_row();
+            $customer_id = (int)$row['customer_id'];
+            return $this->CI->customer_model->getCustomer($customer_id);
         }else if($num == 1){
             $tracking_number = str_replace($arr[0], '', $tracking_number);//去掉字母
-            $query = $this->db->query("SELECT * FROM customer_number WHERE customize_number_prefix='$arr[0]' AND $tracking_number BETWEEN CAST(customize_number_from AS UNSIGNED) AND CAST(customize_number_to AS UNSIGNED)  ");
-            return $query->first_row();
+            $query = $this->db->query("SELECT customer_id FROM customer_number WHERE customize_number_prefix='$arr[0]' AND $tracking_number BETWEEN CAST(customize_number_from AS UNSIGNED) AND CAST(customize_number_to AS UNSIGNED)  ");
+            $row = $query->first_row();
+            $customer_id = (int)$row['customer_id'];
+            return $this->CI->customer_model->getCustomer($customer_id);
         }else{
             return 0;
         }
