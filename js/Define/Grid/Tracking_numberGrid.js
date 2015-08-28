@@ -160,22 +160,30 @@ GridManager.CreateTracking_numberGrid = function(param) {
         text: '客户名称',
         dataIndex: 'customer_name',
         renderer: GlobalFun.UpdateRecord,
-        flex: 1
+        flex: 1,
+        groupable:false,
+        sortable: false
     }, {
         text: '操作人',
         dataIndex: 'admin_name',
         renderer: GlobalFun.UpdateRecord,
-        flex: 1
+        flex: 1,
+        groupable:false,
+        sortable: false
     }, {
         text: '结算状态',
         dataIndex: 'account_status_name',
         renderer: GlobalFun.UpdateRecord,
-        flex: 1
+        flex: 1,
+        groupable:false,
+        sortable: false
     },{
         text: '快递公司',
         dataIndex: 'express_name',
         renderer: GlobalFun.UpdateRecord,
-        flex: 1
+        flex: 1,
+        groupable:false,
+        sortable: false
     }];
     GridManager.Tracking_numberGrid = Ext.create('chl.gird.Tracking_numberGrid',
         GridManager.BaseGridCfg('Tracking_numberGrid', 'Tracking_numberGridState', tmpArr));
