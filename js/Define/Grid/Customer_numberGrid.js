@@ -121,15 +121,15 @@ function createPlugin() {
                             sm.select(0);
                         }
                         //e.grid.loadGrid();
-                         
+
                     },
                     failure: function(batch, action) {
                         if (batch.hasException) {
                             Ext.Msg.alert('失败', batch.exceptions[0].error);
-                        }else{
-                            Ext.Msg.alert('失败',"同步失败");
+                        } else {
+                            Ext.Msg.alert('失败', "同步失败");
                         }
-                        
+
                     }
                 });
             },
@@ -181,6 +181,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
 
             var me = this;
             me.down('#removeCustomer_number').setDisabled(!seles.length);
+            me.down('#editCustomer_number').setDisabled(seles.length != 1);
             //ActionBase.updateActions('CustomerRentGridAction', seles);
         }
     },
@@ -189,8 +190,11 @@ Ext.define('chl.gird.Customer_numberGrid', {
         tooltip: '刷新',
         iconCls: 'refresh',
         handler: function() {
-
+            var me = this;
+            var grid = me.up('Customer_numberGrid');
             Ext.StoreMgr.lookup('Customer_numberStoreId').load();
+            grid.down('#removeCustomer_number').setDisabled(true);
+            grid.down('#editCustomer_number').setDisabled(true);
 
         }
     }, {
@@ -216,6 +220,20 @@ Ext.define('chl.gird.Customer_numberGrid', {
             Customer_numberGridRowEditing.startEdit(0, 1);
 
         }
+    }, {
+        text: '编辑',
+        tooltip: '编辑客户面单号范围',
+        itemId: 'editCustomer_number',
+        iconCls: 'edit',
+        handler: function() {
+            var me = this;
+            var grid = me.up('Customer_numberGrid');
+            var sm = me.up('Customer_numberGrid').getSelectionModel();
+            var record = sm.getSelection()[0];
+            Customer_numberGridRowEditing.startEdit(record, 1);
+
+        },
+        disabled: true
     }, {
         itemId: 'removeCustomer_number',
         text: '删除',
@@ -349,7 +367,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
         }
     }],
     listeners: {
-        boxready: function(win) { 
+        boxready: function(win) {
             createPlugin();
             win.add({
                 xtype: 'Customer_numberGrid',
