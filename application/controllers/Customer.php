@@ -6,6 +6,7 @@ class Customer extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('customer_model');
+        $this->load->model('customer_rent_model');
     }
 
     public function index() {
@@ -20,11 +21,25 @@ class Customer extends CI_Controller {
             'dir'  => $this->input->post('dir'),
             'filter' => objectToArray(json_decode($this->input->post('filter')))
         );
-
-        $customers = $this->customer_model->getCustomers($data);
-
+        $rows = $this->customer_model->getCustomers($data);
+        $customers = array();
+        foreach ($rows as $key=>$val) {
+            $customerRent = $this->customer_rent_model->getCustomerRent($val['customer_rent_id']);
+            if($customerRent) {
+                $customer_rent = array(
+                    'title' => $customerRent['title'],
+                    'rent_area' => $customerRent['rent_area'],
+                    'area_to_order_number' => $customerRent['area_to_order_number'],
+                    'rent_pre_price' => $customerRent['rent_pre_price'],
+                    'date_start' => $customerRent['date_start'],
+                    'date_end' => $customerRent['date_end']
+                );
+                $customers[$key] = array_merge($val, $customer_rent);
+            }else {
+                $customers[$key] = $val;
+            }
+        }
         $customer_total = $this->customer_model->getCustomersTotal($data);
-
         $json = array(
             'success' => true,
             'data' => $customers,

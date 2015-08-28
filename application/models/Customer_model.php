@@ -36,29 +36,7 @@ class Customer_model extends CI_Model{
         }
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer');
-        $customers = array();
-        foreach($query->result_array() as $key=>$val) {
-            $customer_rent = array();
-
-            $this->db->where('customer_rent_id', $val['customer_rent_id']);
-            $query2 = $this->db->get('customer_rent');
-            $customerRent = $query2->fetch_row();
-
-            if($customerRent) {
-                $customer_rent = array(
-                    'title' => $customerRent['title'],
-                    'rent_area' => $customerRent['rent_area'],
-                    'area_to_order_number' => $customerRent['area_to_order_number'],
-                    'rent_pre_price' => $customerRent['rent_pre_price'],
-                    'date_start' => $customerRent['date_start'],
-                    'date_end' => $customerRent['date_end']
-                );
-                $customers[$key] = array_merge($val, $customer_rent);
-            }else {
-                $customers[$key] = $val;
-            }
-        }
-        return $customers;
+        return $query->result_array();
     }
 
     function getCustomersTotal($data){

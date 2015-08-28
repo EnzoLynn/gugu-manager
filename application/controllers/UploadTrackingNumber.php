@@ -75,8 +75,6 @@ class UploadTrackingNumber extends AdminController {
 
             $data = $this->validateExcel($this->file_save_path);
 
-            print_r($data);exit;
-
             if ($data) {
                 $this->tracking_number_model->importData($data);
                 $json = array(
