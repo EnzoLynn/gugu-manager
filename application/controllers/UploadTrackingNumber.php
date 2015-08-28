@@ -86,7 +86,7 @@ class UploadTrackingNumber extends AdminController {
 
         $data = loadExcel($file_path, $pars_default);
 
-        $msg = validateData($data);
+        $msg = $this->tracking_number_model->validateData($data);
 
         if ($msg) {
             $json = array(
