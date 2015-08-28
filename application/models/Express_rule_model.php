@@ -59,7 +59,7 @@ class Express_rule_model extends CI_Model {
         $this->db->where('express_point_code', $express_point_code);
         $query = $this->db->get('express_point');
         $express_point = $query->first_row();
-        $province_code = $express_point['province'];
+        $province_code = $express_point['province_code'];
 
         $rule = $this->getOneByProvince($express_id, $province_code);
         $rule_id = $rule['rule_id'];

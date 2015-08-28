@@ -68,9 +68,6 @@ class TrackingNumber extends AdminController {
     public function countPrice() {
         //type = income 收入计算，cost 成本计算， income_cost 收入成本计算
         $type = $this->input->get_post('type');
-
-        $tracking_numbers = $this->tracking_number_model->getTrackingNumberIds($type);
-
         //计算成本
         if ($type == 'cost') {
             $msg = $this->tracking_number_model->validateCost('cost');
