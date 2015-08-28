@@ -13,16 +13,16 @@ class Express_point_model extends CI_Model {
     function getOne($point_id) {
         $this->db->where('point_id', $point_id);
         $query = $this->db->get('express_point');
-        $rule = $query->first_row();
-        return $rule;
+        $point = $query->first_row();
+        return $point;
     }
 
     function getOneByNameAndCode($point_name, $point_code) {
         $this->db->where('express_point_name', $point_name);
         $this->db->where('express_point_code', $point_code);
         $query = $this->db->get('express_point');
-        $rule = $query->first_row();
-        return $rule;
+        $point = $query->first_row();
+        return $point;
     }
 
     function getPoints($express_id) {
@@ -48,8 +48,8 @@ class Express_point_model extends CI_Model {
             'area_code'                   => $data['area_code']
         );
         $this->db->insert('express_point', $point);
-        $rule_id = $this->db->insert_id();
-        return $rule_id;
+        $point_id = $this->db->insert_id();
+        return $point_id;
     }
 
     function update($point_id, $data) {

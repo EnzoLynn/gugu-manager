@@ -155,7 +155,7 @@ class Tracking_number_model extends CI_Model {
                 $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer_id, $row['揽收时间']);
                 if (!$customer_rent) {
                     $msg[] = array(
-                        'msg' => '第'.$i.'行，揽件网点找不到对应快递公司'
+                        'msg' => '第'.$i.'行，根据揽件时间没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
                     );
                 }
             }
