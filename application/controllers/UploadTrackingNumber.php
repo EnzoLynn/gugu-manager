@@ -113,7 +113,7 @@ class UploadTrackingNumber extends AdminController {
                 'data' => [],
                 'total' => 0,
                 'msg' => $e->getMessage(),
-                'code' => ''
+                'code' => '89'
             );
             echo json_encode($json);
         }
