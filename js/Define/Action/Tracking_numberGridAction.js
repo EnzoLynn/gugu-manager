@@ -407,7 +407,7 @@ ActionManager.searchTracking_number = function(traget) {
                         GlobalFun.GridSearchInitFun('tracking_number', false, store, tracking_number);
                         searchFlag = true;
                     } else {
-                        GlobalFun.GridSearchInitFun('customer_name', true, store, false);
+                        GlobalFun.GridSearchInitFun('tracking_number', true, store, false);
                     }
                     //手机号
                     var arrive_express_point_name = win.down('#arrive_express_point_name').getValue();
