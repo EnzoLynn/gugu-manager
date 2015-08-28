@@ -76,12 +76,14 @@ class Customer_number_model extends CI_Model {
         $arr = array();
         $num = preg_match('/[A-Za-z]+/i', $tracking_number, $arr);
         if($num == 0){
-            $query = $this->db->query("SELECT customer_id FROM customer_number WHERE CAST(customize_number_from AS UNSIGNED) >= $tracking_number  AND $tracking_number <= CAST(customize_number_to AS UNSIGNED) ");
-            return (int)$query->fetchOne();
+            $query = $this->db->query("SELECT customer_id FROM customer_number WHERE $tracking_number BETWEEN CAST(customize_number_from AS UNSIGNED) AND CAST(customize_number_to AS UNSIGNED) ");
+            $row = $query->first_row();
+            return (int)$row['customer_id'];
         }else if($num == 1){
             $tracking_number = str_replace($arr[0], '', $tracking_number);//去掉字母
-            $query = $this->db->query("SELECT customer_id FROM customer_number WHERE customize_number_prefix='$arr[0]' AND  CAST(customize_number_from AS UNSIGNED) >= $tracking_number  AND $tracking_number <= CAST(customize_number_to AS UNSIGNED) ");
-            return (int)$query->fetchOne();
+            $query = $this->db->query("SELECT customer_id FROM customer_number WHERE customize_number_prefix='$arr[0]' AND $tracking_number BETWEEN CAST(customize_number_from AS UNSIGNED) AND CAST(customize_number_to AS UNSIGNED)  ");
+            $row = $query->first_row();
+            return (int)$row['customer_id'];
         }else{
             return 0;
         }
