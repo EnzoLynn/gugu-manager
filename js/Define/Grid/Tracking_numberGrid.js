@@ -16,6 +16,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
     store: 'Tracking_numberGridStoreId', 
     actionBaseName: 'Tracking_numberGridAction',
      viewConfig: {
+        loadingText: '<b>' + '正在加载数据...' + '</b>',
         enableTextSelection:true
     },
     listeners: {
