@@ -79,7 +79,7 @@
                      scope.currentFile = 0;
                      scope.totalFile = 0;
 
-                     if (scope.multipleDataObj != {}) {
+                     if (!GlobalFun.isEmptyObject(scope.multipleDataObj)) {
                          ActionManager.showUpLoadExcelError(scope.multipleDataObj);
                      };
 
