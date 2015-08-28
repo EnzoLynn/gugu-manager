@@ -241,3 +241,6 @@ GlobalConfig.Province = {
 
 
 };
+
+//全局缓存记忆状态
+GlobalConfig.globalStatus={};

@@ -33,7 +33,25 @@ Ext.define('chl.tree.MainItemListTree', {
         boxready: function(com, width, height, opts) {
             (new Ext.util.DelayedTask()).delay(200, function() {
                 if (!TreeManager.MainItemListTree.getSelectionModel().hasSelection()) {
-                    TreeManager.MainItemListTree.getSelectionModel().select(0, true);
+                    var cookie = Ext.util.Cookies.get("GlobalConfig.globalStatus");
+                    if (cookie) {
+                        var obj = Ext.JSON.decode(cookie);
+                        if (obj.tree_sel_id) {
+                            var node = TreeManager.MainItemListTree.getStore().getNodeById(obj.tree_sel_id);
+                            if (node) {
+                                TreeManager.MainItemListTree.getSelectionModel().select(node, true);
+                            } else {
+                                TreeManager.MainItemListTree.getSelectionModel().select(0, true);
+                            }
+
+                        } else {
+                            TreeManager.MainItemListTree.getSelectionModel().select(0, true);
+                        }
+
+                    } else {
+                        TreeManager.MainItemListTree.getSelectionModel().select(0, true);
+                    }
+
                 }
             });
         }
@@ -64,6 +82,9 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
     TreeManager.MainItemListTree.on('selectionchange', function(view, seles, op) {
         if (!seles[0])
             return;
+        GlobalConfig.globalStatus.tree_sel_id = seles[0].data.id;
+        Ext.util.Cookies.set("GlobalConfig.globalStatus", Ext.JSON.encode(GlobalConfig.globalStatus),
+            new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 365)));
         //自动恢复收缩状态
         //预定、出售、落葬管理
         // if (seles[0].data.id == 201 || seles[0].data.id == 202 || seles[0].data.id == 203) {
@@ -103,7 +124,7 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
                 Ext.Array.each(data, function(item, index, alls) {
                     var temp = GridManager.ExpressPanel.down('#lbl' + item.province_code);
                     temp.setText('现有规则:' + item.count);
-                }); 
+                });
             }, function(response, opts) {
                 if (!GlobalFun.errorProcess(response.code)) {
                     Ext.Msg.alert('失败', response.msg);
