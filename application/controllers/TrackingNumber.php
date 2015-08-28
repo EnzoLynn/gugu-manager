@@ -18,8 +18,8 @@ class TrackingNumber extends AdminController {
 
         $this->load->model('express_company_model');
 
-        //$this->load->model('express_rule_model');
-        //$this->load->model('express_rule_item_model');
+        $this->load->model('express_rule_model');
+        $this->load->model('express_rule_item_model');
     }
 
     public function index() {
@@ -66,13 +66,38 @@ class TrackingNumber extends AdminController {
     }
 
     public function countPrice() {
+        //type = income 收入计算，cost 成本计算， income_cost 收入成本计算
         $type = $this->input->get_post('type');
+
+        $tracking_numbers = $this->tracking_number_model->getTrackingNumberIds($type);
+
+        //计算成本
         if ($type == 'cost') {
-
+            $msg = $this->tracking_number_model->validateCost('cost');
+            if ($msg) {
+                $json = array(
+                    'success' => false,
+                    'data' => $msg,
+                    'total' => count($msg),
+                    'msg' => '有错误',
+                    'code' => '89'
+                );
+                echo json_encode($json);
+                exit;
+            }
+        } else if ($type == 'income') {
+            $msg = $this->tracking_number_model->validateCost('income');
+            if ($msg) {
+                $json = array(
+                    'success' => false,
+                    'data' => $msg,
+                    'total' => count($msg),
+                    'msg' => '有错误',
+                    'code' => '89'
+                );
+                echo json_encode($json);
+                exit;
+            }
         }
-    }
-
-    public function validateCountPrice() {
-
     }
 }

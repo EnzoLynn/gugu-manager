@@ -94,7 +94,7 @@ class UploadTrackingNumber extends AdminController {
         $pars_default = array(
             'sheetIndex' => 0,
             'headerKey' => TRUE,
-            'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间')
+            'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间', '快递公司')
         );
 
         $data = loadExcel($file_path, $pars_default);

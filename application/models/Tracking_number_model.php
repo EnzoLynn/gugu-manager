@@ -14,6 +14,7 @@ class Tracking_number_model extends CI_Model {
         $this->CI->load->model('customer_number_model');
         $this->CI->load->model('customer_rent_model');
 
+        $this->CI->load->model('express_company_model');
         $this->CI->load->model('express_point_model');
     }
 
@@ -50,6 +51,20 @@ class Tracking_number_model extends CI_Model {
         return $this->db->count_all_results('tracking_number');
     }
 
+    function getTrackingNumbersByType($type = 'income_cost') {
+        if($type == 'income') {
+            $this->db->where('income', 0);
+        } else if ($type == 'cost') {
+            $this->db->where('cost', 0);
+        } else {
+            $this->db->where('income', 0);
+            $this->db->where('cost', 0);
+        }
+        $this->db->order_by('tracking_number_id', 'DESC');
+        $query = $this->db->get('tracking_number');
+        return $query->result_array();
+    }
+
     function add($data) {
         $tracking_number = array(
             'tracking_number' => $data['tracking_number'],
@@ -82,7 +97,8 @@ class Tracking_number_model extends CI_Model {
         }
         foreach ($data as $row) {
             $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
-            $express = $this->CI->express_point_model->getOneByNameAndCode($row['计费目的网点名称'], $row['计费目的网点代码']);
+            //$express = $this->CI->express_point_model->getExpressByNameAndCode($row['计费目的网点名称'], $row['计费目的网点代码']);
+            $express = $this->CI->express_company_model->getExpressByName($row['快递公司']);
             $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);
 
             $number = $this->getTrackingNumber($row['运单号']);
@@ -115,6 +131,7 @@ class Tracking_number_model extends CI_Model {
 [计费目的网点名称] => 青海省西宁市
 [计费目的网点代码] => 971001
 [揽收时间] => 2015-06-01 17:05:54.96
+[快递公司] => 圆通快递
  * */
         $msg = array();//错误信息，一行一个
         $i = 2;//对应excel中的行
@@ -124,6 +141,13 @@ class Tracking_number_model extends CI_Model {
             if (!$customer) {
                 $msg[] = array(
                     'msg' => '第'.$i.'行，运单号找不到对应的客户'
+                );
+            }
+            //查找快递公司
+            $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
+            if (!$express) {
+                $msg[] = array(
+                    'msg' => '第'.$i.'行，快递公司还未录入或者名字有误'
                 );
             }
             //验证重量
@@ -139,11 +163,13 @@ class Tracking_number_model extends CI_Model {
                 }
             }
             //查找快递网点
-            $express = $this->CI->express_point_model->getOneByNameAndCode($row['计费目的网点名称'], $row['计费目的网点代码']);
-            if ( !$express ) {
-                $msg[] = array(
-                    'msg' => '第'.$i.'行，揽件网点找不到对应快递公司'
-                );
+            if ($express) {
+                $express_point = $this->CI->express_point_model->getPointByExpressIDAndCode($express['express_id'], $row['计费目的网点代码']);
+                if ( !$express_point ) {
+                    $msg[] = array(
+                        'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点'
+                    );
+                }
             }
             //验证客户的合同时间
             if ($customer) {
@@ -155,6 +181,34 @@ class Tracking_number_model extends CI_Model {
                 }
             }
             $i++;
+        }
+        return $msg;
+    }
+
+    function validateIncome() {
+        $msg = array();
+        $tracking_numbers = $this->getTrackingNumbersByType('cost');
+        foreach($tracking_numbers as $row) {
+//            $rule_item = $this->express_rule_model->getItemByWeight($row['express_id'], $row['arrive_express_point_code'], $row['weight']);
+//            if (!$rule_item) {
+//                $msg[] = array(
+//                    'msg' =>  $row['tracking_number'] . '没有匹配的运算成本规则（揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+//                );
+//            }
+        }
+        return $msg;
+    }
+
+    function validateCost() {
+        $msg = array();
+        $tracking_numbers = $this->getTrackingNumbersByType('cost');
+        foreach($tracking_numbers as $row) {
+            $rule_item = $this->express_rule_model->getItemByWeight($row['express_id'], $row['arrive_express_point_code'], $row['weight']);
+            if (!$rule_item) {
+                $msg[] = array(
+                    'msg' =>  $row['tracking_number'] . '没有匹配的运算成本规则（揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+                );
+            }
         }
         return $msg;
     }
