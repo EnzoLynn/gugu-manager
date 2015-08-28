@@ -32,7 +32,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             title: '上传文件',
             bodyPadding: 15,
             defaults: {
-                margin: '0 0 20 0' 
+                margin: '0 0 20 0'
             },
             items: [{
                 xtype: 'form',
@@ -44,7 +44,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                     fieldLabel: '请选择导入的文件',
                     width: 600,
                     labelWidth: 150,
-                    labelAlign:'right',
+                    labelAlign: 'right',
                     blankText: '请选择导入的文件',
                     msgTarget: 'side',
                     itemId: 'fileupId',
@@ -87,7 +87,43 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                     var data = action.result.data;
                                     if (action.result.success) {
                                         target.loadGrid();
-                                    };
+                                    } else {
+                                        Ext.create('Ext.window.Window', {
+                                            title: '数据格式错误',
+                                            modal: true,
+                                            width: 700,
+                                            height: 600,
+                                            bodyPadding: 15,
+                                            layout: {
+                                                type: 'table',
+                                                columns: 2
+                                            },
+                                            items: [{
+                                                xtype: 'container',
+                                                cls: 'x-message-box-error ',
+                                                height: 34,
+                                                width: 34,
+                                            }, {
+                                                xtype: 'label',
+                                                text: '数据格式错误，请修改下列数据后重新上传'
+                                            }, {
+                                                xtype: 'container',
+                                                margin: '15 0 0 0',
+                                                colspan: 2,
+                                                autoScroll: true,
+                                                height: 470,
+                                                width: 660,
+                                                name: 'message',
+                                                html: 'container<br/>/r/ncontainer/rc<br/>ontainercont<br/>ainercontai<br/>nerconta<br/>inercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainer'
+                                            }],
+                                            buttons: [{
+                                                text: '确定',
+                                                handler: function(com) {
+                                                    com.up('window').close();
+                                                }
+                                            }]
+                                        }).show();
+                                    }
                                 },
                                 failure: function(fp, action) {
                                     if (!GlobalFun.errorProcess(action.result.code)) {
@@ -119,14 +155,14 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                 }, {
                     xtype: 'Html5FileUpload',
                     name: 'fileUpload',
-                     labelAlign:'right',
+                    labelAlign: 'right',
 
                     fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
                     width: 600,
-                    height: 100, 
-                    style:{
-                        border:'1px solid green'  
-                    }, 
+                    height: 100,
+                    style: {
+                        border: '1px solid green'
+                    },
                     buttonOnly: true,
                     labelWidth: 150,
                     msgTarget: 'side',
@@ -264,7 +300,7 @@ ActionManager.searchTracking_number = function(traget) {
                     maxLength: 64
                 }, {
                     fieldLabel: '网点',
-                    itemId: 'arrive_express_point',
+                    itemId: 'arrive_express_point_name',
                     maxLength: 64
                 }, {
                     fieldLabel: '网点代码',
@@ -346,13 +382,13 @@ ActionManager.searchTracking_number = function(traget) {
                         GlobalFun.GridSearchInitFun('customer_name', true, store, false);
                     }
                     //手机号
-                    var arrive_express_point = win.down('#arrive_express_point').getValue();
-                    if (arrive_express_point != '') {
+                    var arrive_express_point_name = win.down('#arrive_express_point_name').getValue();
+                    if (arrive_express_point_name != '') {
                         //加入filterMap
-                        GlobalFun.GridSearchInitFun('arrive_express_point', false, store, arrive_express_point);
+                        GlobalFun.GridSearchInitFun('arrive_express_point_name', false, store, arrive_express_point);
                         searchFlag = true;
                     } else {
-                        GlobalFun.GridSearchInitFun('arrive_express_point', true, store, false);
+                        GlobalFun.GridSearchInitFun('arrive_express_point_name', true, store, false);
                     }
 
                     //时间

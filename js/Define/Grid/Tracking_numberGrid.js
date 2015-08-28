@@ -125,7 +125,7 @@ GridManager.CreateTracking_numberGrid = function(param) {
         flex: 1
     }, {
         text: '网点',
-        dataIndex: 'arrive_express_point',
+        dataIndex: 'arrive_express_point_name',
         renderer: GlobalFun.UpdateRecord,
         flex: 1
     }, {
@@ -163,7 +163,12 @@ GridManager.CreateTracking_numberGrid = function(param) {
         dataIndex: 'account_status_name',
         renderer: GlobalFun.UpdateRecord,
         flex: 1
-    } ];
+    },{
+        text: '快递公司',
+        dataIndex: 'express_name',
+        renderer: GlobalFun.UpdateRecord,
+        flex: 1
+    }];
     GridManager.Tracking_numberGrid = Ext.create('chl.gird.Tracking_numberGrid',
         GridManager.BaseGridCfg('Tracking_numberGrid', 'Tracking_numberGridState', tmpArr));
     if (param && param.needLoad) {
