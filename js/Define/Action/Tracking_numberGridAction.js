@@ -122,56 +122,59 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                     },
                     text: '多文件批量，更快捷，可拖拽文件，可视化的真实上传进度显示,更大的文件'
                 }, {
-                    xtype: 'Html5FileUpload',
-                    name: 'fileUpload',
-                    labelAlign: 'right',
-
-                    fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
-                    width: 600,
-                    height: 100,
+                    xtype: 'container',
                     style: {
-                        border: '1px solid green'
+                        border: '1px dotted  green'
                     },
-                    buttonOnly: true,
-                    labelWidth: 150,
-                    msgTarget: 'side',
-                    itemId: 'fileupId',
-                    buttonConfig: {
-                        iconCls: 'import',
-                        width: 300
-                    },
-                    uploadUrl: GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
-                    accept: ".xls*",
-                    buttonText: '添加文件',
-                    listeners: {
-                        change: function(com) {
-                            var me = com;
-                            if (Ext.isIE) {
-                                Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
-                                return;
-                            }
-                            var supType = new Array('xls', 'xlsx');
-                            var fNmae = me.getValue();
-                            var fType = fNmae.substring(
-                                fNmae.lastIndexOf('.') + 1,
-                                fNmae.length).toLowerCase();
-                            var returnFlag = true;
+                    items: [{
+                        xtype: 'Html5FileUpload',
+                        name: 'fileUpload',
+                        labelAlign: 'right',
 
-                            Ext.Array.each(supType, function(rec) {
-                                if (rec == fType) {
-                                    returnFlag = false;
-                                    return false;
+                        fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
+                        width: 600,
+                        height: 100,
+                        buttonOnly: true,
+                        labelWidth: 150,
+                        msgTarget: 'side',
+                        itemId: 'fileupId',
+                        buttonConfig: {
+                            iconCls: 'import',
+                            width: 300
+                        },
+                        uploadUrl: GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
+                        accept: ".xls*",
+                        buttonText: '添加文件',
+                        listeners: {
+                            change: function(com) {
+                                var me = com;
+                                if (Ext.isIE) {
+                                    Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
+                                    return;
                                 }
-                            });
+                                var supType = new Array('xls', 'xlsx');
+                                var fNmae = me.getValue();
+                                var fType = fNmae.substring(
+                                    fNmae.lastIndexOf('.') + 1,
+                                    fNmae.length).toLowerCase();
+                                var returnFlag = true;
 
-                            if (returnFlag) {
-                                Ext.Msg.alert('添加文件', '不支持的文件格式！');
-                                return;
+                                Ext.Array.each(supType, function(rec) {
+                                    if (rec == fType) {
+                                        returnFlag = false;
+                                        return false;
+                                    }
+                                });
+
+                                if (returnFlag) {
+                                    Ext.Msg.alert('添加文件', '不支持的文件格式！');
+                                    return;
+                                }
+                                me.sendFiles(me.fileInputEl.dom.files);
+
                             }
-                            me.sendFiles(me.fileInputEl.dom.files);
-
                         }
-                    }
+                    }]
                 }]
             }],
             buttons: [{

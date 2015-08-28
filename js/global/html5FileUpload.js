@@ -12,6 +12,7 @@
      totalFile: 0,
      fileNameLabelEl: '',
      multipleDataObj: {},
+     delayTask: new Ext.util.DelayedTask(),
      onRender: function() {
          var me = this,
              inputEl;
@@ -68,22 +69,32 @@
          //     xhr.send(evt.target.result);
          // };
          // reader.readAsBinaryString(file);
+
          xhr.onreadystatechange = function() {
+
              if (xhr.readyState == 4 && xhr.status == 200) {
                  // Handle response. 
                  var data = Ext.JSON.decode(xhr.responseText);
 
                  scope.multipleDataObj[file.name] = data.data;
-
+                 scope.progressEl.dom.value = 100;
+                 scope.currentFile++;
+                 scope.countEl.dom.innerHTML = "文件: " + scope.currentFile + '/' + scope.totalFile;
+               
                  if (scope.currentFile == scope.totalFile) {
                      scope.currentFile = 0;
                      scope.totalFile = 0;
 
                      if (!GlobalFun.isEmptyObject(scope.multipleDataObj)) {
-                         ActionManager.showUpLoadExcelError(scope.multipleDataObj);
+                         scope.delayTask.cancel();
+                         scope.delayTask.delay(100, function() {
+                             ActionManager.showUpLoadExcelError(scope.multipleDataObj);
+                             scope.multipleDataObj = {};
+                         });
+
                      };
 
-                     scope.multipleDataObj = {};
+
 
                  };
                  // handle response.
@@ -126,9 +137,7 @@
          xhr.upload.addEventListener("load", function(e) {
              //console.log(100 + '--' + scope.currentFile + '--' + scope.totalFile);
 
-             scope.progressEl.dom.value = 100;
-             scope.currentFile++;
-             scope.countEl.dom.innerHTML = "文件: " + scope.currentFile + '/' + scope.totalFile;
+
 
          }, false);
      },
