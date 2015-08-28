@@ -83,27 +83,37 @@ class UploadTrackingNumber extends AdminController {
             'headerKey' => TRUE,
             'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间')
         );
+        try {
+            $data = loadExcel($file_path, $pars_default);
 
-        $data = loadExcel($file_path, $pars_default);
+            $msg = $this->tracking_number_model->validateData($data);
 
-        $msg = $this->tracking_number_model->validateData($data);
-
-        if ($msg) {
+            if ($msg) {
+                $json = array(
+                    'success' => false,
+                    'data' => $msg,
+                    'total' => count($msg),
+                    'msg' => '有错误',
+                    'code' => ''
+                );
+                echo json_encode($json);
+            } else {
+                $json = array(
+                    'success' => true,
+                    'data' => [],
+                    'total' => count($data),
+                    'msg' => '成功',
+                    'code' => '01'
+                );
+                echo json_encode($json);
+            }
+        } catch (Exception $e) {
             $json = array(
                 'success' => false,
-                'data' => $msg,
-                'total' => count($msg),
-                'msg' => '有错误',
-                'code' => ''
-            );
-            echo json_encode($json);
-        }else{
-            $json = array(
-                'success' => true,
                 'data' => [],
-                'total' => count($data),
-                'msg' => '成功',
-                'code' => '01'
+                'total' => 0,
+                'msg' => $e->getMessage(),
+                'code' => ''
             );
             echo json_encode($json);
         }
