@@ -72,16 +72,13 @@
              if (xhr.readyState == 4 && xhr.status == 200) {
                  // Handle response. 
                  var data = Ext.JSON.decode(xhr.responseText);
-                 if (data.code == "89") {
-                     Ext.Msg.alert('失败', data.msg);
-                 } else {                     
-                     scope.multipleDataObj[file.name] = data.data; 
-                 }
-                 
+
+                 scope.multipleDataObj[file.name] = data.data;
+
                  if (scope.currentFile == scope.totalFile) {
                      scope.currentFile = 0;
                      scope.totalFile = 0;
-                     
+
                      if (scope.multipleDataObj != {}) {
                          ActionManager.showUpLoadExcelError(scope.multipleDataObj);
                      };
