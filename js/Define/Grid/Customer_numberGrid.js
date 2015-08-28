@@ -113,7 +113,7 @@ function createPlugin() {
                 var sm = e.grid.getSelectionModel();
                 //console.log('23');
                 e.store.sync({
-                    success: function(batch, opts) {
+                    success: function(batch, action) {
                         //e.record.commit();
                         //console.log('222');
                         //store.load
@@ -121,9 +121,15 @@ function createPlugin() {
                             sm.select(0);
                         }
                         //e.grid.loadGrid();
+                         
                     },
-                    failure: function(batch, opts) {
-                        Ext.Msg.alert('失败', action.result.msg);
+                    failure: function(batch, action) {
+                        if (batch.hasException) {
+                            Ext.Msg.alert('失败', batch.exceptions[0].error);
+                        }else{
+                            Ext.Msg.alert('失败',"同步失败");
+                        }
+                        
                     }
                 });
             },

@@ -1,6 +1,9 @@
 Ext.onReady(function() {
 
-
+var dd = {};
+console.log(dd=={});
+dd.name = "22";
+console.log(dd=={});
 
     Ext.getBody().mask('正在加载...');
     //修正Bug
