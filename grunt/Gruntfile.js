@@ -115,6 +115,14 @@ module.exports = function(grunt) {
                     src: ['*.*'],
                     dest: '<%=cssdest %>img'
                 }]
+            },
+            copyfile1: {
+                files: [{
+                    expand: true,
+                    cwd: '../image/',
+                    src: ['**/*.*','!**/*.db'],
+                    dest: '../dist/image'
+                }]
             }
         },
         watch: {
@@ -137,6 +145,14 @@ module.exports = function(grunt) {
             copy: {
                 files: ['<%= csssrc %>img/*.*'],
                 tasks: ['copy:copyfile']
+            },
+            copyImage: {
+                files: ['../image/**/*.*'],
+                tasks: ['copy:copyfile1']
+            },
+            concat: {
+                files: ['<%= jsdest %>**/*.js'],
+                tasks: ['concat:dist']
             }
         }
         // watch: {

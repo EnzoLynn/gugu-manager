@@ -12,7 +12,7 @@ Ext.define('chl.Model.Tracking_numberGridModel', {
         name: 'weight', 
         type: 'string'
     }, {
-        name: 'arrive_express_point', 
+        name: 'arrive_express_point_name', 
         type: 'string'
     }, {
         name: 'arrive_express_point_code', 
@@ -47,5 +47,9 @@ Ext.define('chl.Model.Tracking_numberGridModel', {
     }, {
         name: 'customer_rent_id', 
         type: 'string'
+    },{
+        name:'express_id'
+    },{
+        name:'express_name'
     }]
 });

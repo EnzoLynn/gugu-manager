@@ -1,8 +1,13 @@
-Ext.onReady(function() { 
+Ext.onReady(function() {
+
+
 
     Ext.getBody().mask('正在加载...');
     //修正Bug
     GlobalFun.fixedBugs();
+
+   
+
     //创建Cookie状态保存  
     Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider', {
         expires: new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30))
@@ -20,7 +25,7 @@ Ext.onReady(function() {
             GlobalConfig.CurrUserInfo = response.data[0];
             callBack();
         }, function(response, opts) {
-          
+
             if (!GlobalFun.errorProcess(response.code)) {
                 Ext.Msg.alert('登录失败', response.msg);
             }
@@ -146,13 +151,13 @@ Ext.onReady(function() {
                     height: 400,
                     listeners: {
                         boxready: function(com, width, height, opts) {
-                            var gridArr=[]; 
+                            var gridArr = [];
                             gridArr.push(GridManager.ManageDfGrid);
                             //gridArr.push(GridManager.TestGrid);
                             gridArr.push(GridManager.CustomerGrid);
-                            gridArr.push(GridManager.Tracking_numberGrid); 
+                            gridArr.push(GridManager.Tracking_numberGrid);
                             gridArr.push(GridManager.ExpressPanel);
-                            gridArr.push(GridManager.CompanyPanel); 
+                            gridArr.push(GridManager.CompanyPanel);
                             com.add(gridArr);
                         }
                     },
