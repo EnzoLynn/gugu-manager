@@ -225,7 +225,12 @@ ActionManager.refreshTracking_number = function(traget) {
 };
 
 ActionManager.showUpLoadExcelError = function(data) {
-    var html = '';
+    var html = data;
+    console.log(html);
+      Ext.Array.each(data,function(){
+
+      });
+    
     Ext.create('Ext.window.Window', {
         title: '数据格式错误',
         modal: true,

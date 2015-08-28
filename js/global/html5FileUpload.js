@@ -68,9 +68,10 @@
          // };
          // reader.readAsBinaryString(file);
          xhr.onreadystatechange = function() {
+
              if (xhr.readyState == 4 && xhr.status == 200) {
                  // Handle response.
-                 //console.log(xhr.responseText);
+                 console.log(xhr.responseText);
                  scope.multipleDataArr.push(file.name); // handle response.
              }
          };
@@ -118,8 +119,8 @@
                  scope.currentFile = 0;
                  scope.totalFile = 0;
                  //console.log("last");
-                 ActionManager.showUpLoadExcelError(me.multipleDataArr);
-                 me.multipleDataArr = [];
+                 ActionManager.showUpLoadExcelError(scope.multipleDataArr);
+                 scope.multipleDataArr = [];
 
              };
          }, false);
