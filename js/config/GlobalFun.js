@@ -840,6 +840,13 @@ GlobalFun.JsonToArray = function(json){
     return arr;
 }
 
+//判断是否空对象
+GlobalFun.isEmptyObject = function(obj){
+    for(var n in obj){return false} 
+    return true; 
+} 
+
+
 
 
 
