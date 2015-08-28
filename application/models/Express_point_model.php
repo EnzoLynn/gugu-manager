@@ -48,8 +48,8 @@ class Express_point_model extends CI_Model {
             'area_code'                   => $data['area_code']
         );
         $this->db->insert('express_point', $point);
-        $rule_id = $this->db->insert_id();
-        return $rule_id;
+        $point_id = $this->db->insert_id();
+        return $point_id;
     }
 
     function update($point_id, $data) {
