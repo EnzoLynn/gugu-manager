@@ -747,7 +747,7 @@ GlobalFun.Heartbeat = function () {
                     //Ext.Msg.alert('失败', response.msg);
                 }, false);
             },
-            interval: 60 * 10 * 1000 //10分钟
+            interval: 60 * 1000 * 10  //10分钟
         });
     })).delay(50);
 };

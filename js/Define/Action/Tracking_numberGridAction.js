@@ -92,15 +92,10 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                     //}
                                 },
                                 failure: function(fp, action) {
-                                    if (!GlobalFun.errorProcess(action.result.code)) {
-
-                                        if (action.result.code == "89") {
-                                            Ext.Msg.alert('失败', action.result.msg);
-                                        } else {
-                                            var obj = {};
-                                            obj[fNmae] = action.result.data;
-                                            ActionManager.showUpLoadExcelError(obj);
-                                        }
+                                    if (!GlobalFun.errorProcess(action.result.code)) { 
+                                        var obj = {};
+                                        obj[fNmae] = action.result.data;
+                                        ActionManager.showUpLoadExcelError(obj);
 
                                     }
                                 }
@@ -234,22 +229,22 @@ ActionManager.refreshTracking_number = function(traget) {
 
 ActionManager.showUpLoadExcelError = function(obj) {
     var items = [];
-    
+
     for (key in obj) {
         var textItems = [];
         Ext.Array.each(obj[key], function(item, index) {
             textItems.push({
                 xtype: 'label',
-                text:item.msg
+                text: item.msg
             });
 
         });
         items.push({
             xtype: 'fieldset',
             title: key,
-            layout:'vbox',
+            layout: 'vbox',
             collapsible: true,
-            items:textItems
+            items: textItems
         });
     }
 
