@@ -45,18 +45,28 @@ class CustomerNumber extends AdminController {
         $str = file_get_contents("php://input");
         $temp = json_decode($str);
 
-        //foreach($temp as $key => $val) {
-            $post = objectToArray($temp);
-            $data = array(
-                'customer_id' => $post['customer_id'],
-                'customize_number_prefix' => $post['customize_number_prefix'],
-                'customize_number_from' => $post['customize_number_from'],
-                'customize_number_to' => $post['customize_number_to'],
-                'customize_number_suffix' => $post['customize_number_suffix']
-            );
+        $post = objectToArray($temp);
+        $data = array(
+            'customer_id' => $post['customer_id'],
+            'customize_number_prefix' => $post['customize_number_prefix'],
+            'customize_number_from' => $post['customize_number_from'],
+            'customize_number_to' => $post['customize_number_to'],
+            'customize_number_suffix' => $post['customize_number_suffix']
+        );
 
-            $this->customer_number_model->addCustomerNumber($data);
-        //}
+        $customer1 = $this->customer_number_model->getCustomerByTrackingNumber($data['customize_number_prefix'].$data['customize_number_from']);
+        $customer2 = $this->customer_number_model->getCustomerByTrackingNumber($data['customize_number_prefix'].$data['customize_number_to']);
+
+        if ($customer1) {
+            output_error('该区间已被'.$customer1['customer_name'].'使用');
+        }
+
+        if ($customer2) {
+            output_error('该区间已被'.$customer2['customer_name'].'使用');
+        }
+
+        $this->customer_number_model->addCustomerNumber($data);
+
         $json = array(
             'success' => true,
             'data' => [],
