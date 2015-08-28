@@ -85,15 +85,16 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                 waitTitle: '等待文件上传,请稍候...',
                                 success: function(fp, action) {
                                     var data = action.result.data;
-                                    if (action.result.success) {
-                                        target.loadGrid();
-                                    } else {                                        
-                                        ActionManager.showUpLoadExcelError(action.result.data);
-                                    }
+                                    //if (action.result.success) {
+                                    target.loadGrid();
+                                    //} else {                                        
+                                    //ActionManager.showUpLoadExcelError(action.result.data);
+                                    //}
                                 },
                                 failure: function(fp, action) {
                                     if (!GlobalFun.errorProcess(action.result.code)) {
-                                        Ext.Msg.alert('失败', action.result.msg);
+                                        //Ext.Msg.alert('失败', action.result.msg);
+                                        ActionManager.showUpLoadExcelError(action.result.data);
                                     }
                                 }
                             });
@@ -225,12 +226,12 @@ ActionManager.refreshTracking_number = function(traget) {
 };
 
 ActionManager.showUpLoadExcelError = function(data) {
-    var html = data;
-    console.log(html);
-      Ext.Array.each(data,function(){
+    var html = "";
 
-      });
-    
+    Ext.Array.each(data, function(item, index) {
+        html += item.msg+"<br>";
+    });
+
     Ext.create('Ext.window.Window', {
         title: '数据格式错误',
         modal: true,
