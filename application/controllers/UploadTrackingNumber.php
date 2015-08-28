@@ -31,7 +31,13 @@ class UploadTrackingNumber extends AdminController {
 //        $express = $this->express_point_model->getOneByNameAndCode('深圳转运中心', '755901');
 //        print_r($express);
 
-        echo $this->tracking_number_model->importData(array());
+//        echo $this->tracking_number_model->importData(array());
+        $arr1 = array('aaa', 'bbbb', '订单号', '日期');
+        $arr2 = array('订单号', '客户名', '日期');
+//        print_r(array_intersect($arr1, $arr2));
+        if(array_in_array($arr1, $arr2)) {
+            echo 'OK';
+        }
     }
 
     public function upload() {

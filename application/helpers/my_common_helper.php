@@ -50,7 +50,7 @@ function loadExcel($filename, $pars) {
                     $temp_header[] = $cell->getValue();
                 }
                 //指定列头必须在excel中
-                if(array_intersect($temp_header, $pars['readColumn']) != $pars['readColumn']) {
+                if(!array_in_array($temp_header, $pars['readColumn'])) {
                     return array();
                 }
 
@@ -120,18 +120,31 @@ function objectToArray($e){
     return $e;
 }
 // any_in_array() is not in the Array Helper, so it defines a new function
-function any_in_array($needle, $haystack)
-{
+function any_in_array($needle, $haystack) {
     $needle = is_array($needle) ? $needle : array($needle);
-
-    foreach ($needle as $item)
-    {
-        if (in_array($item, $haystack))
-        {
+    foreach ($needle as $item) {
+        if (in_array($item, $haystack)) {
             return TRUE;
         }
     }
-
+    return FALSE;
+}
+// 前一个数组（可以更多项目）必须全部在后一个数组里面
+function array_in_array($needle, $haystack) {
+    $num = count($haystack);
+    if ($num == 0) {
+        return FALSE;
+    }
+    $i = 0;
+    $needle = is_array($needle) ? $needle : array($needle);
+    foreach ($needle as $item) {
+        if (in_array($item, $haystack)) {
+            $i++;
+        }
+    }
+    if( $num == $i) {
+        return TRUE;
+    }
     return FALSE;
 }
 
