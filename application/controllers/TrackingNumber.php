@@ -15,11 +15,11 @@ class TrackingNumber extends AdminController {
         $this->load->model('customer_model');
 
         $this->load->model('customer_rent_model');
-        $this->load->model('customer_express_rule_model');
-        $this->load->model('customer_express_rule_item_model');
 
-        $this->load->model('express_rule_model');
-        $this->load->model('express_rule_item_model');
+        $this->load->model('express_company_model');
+
+        //$this->load->model('express_rule_model');
+        //$this->load->model('express_rule_item_model');
     }
 
     public function index() {
@@ -37,6 +37,22 @@ class TrackingNumber extends AdminController {
 
         $tracking_numbers = $this->tracking_number_model->getTrackingNumbers($data);
 
+        foreach ($tracking_numbers as $key => $val) {
+            if($val['account_status'] == 0) {
+                $tracking_numbers[$key]['account_status_name'] = '未结算';
+            }else{
+                $tracking_numbers[$key]['account_status_name'] = '已结算';
+            }
+            //客户名字
+            $customer = $this->customer_model->getCustomer($val['customer_id']);
+            $tracking_numbers[$key]['customer_name'] = $customer['customer_name'];
+            //操作人名字
+            $tracking_numbers[$key]['admin_name'] = $this->admin_name;
+            //快递公司名字
+            $express = $this->express_company_model->getOne($val['express_id']);
+            $tracking_numbers[$key]['express_name'] = $express['express_name'];
+        }
+
         $tracking_numbers_total = $this->tracking_number_model->getTrackingNumbersTotal($data);
 
         $json = array(
@@ -49,4 +65,7 @@ class TrackingNumber extends AdminController {
         echo json_encode($json);
     }
 
+    public function countPrice() {
+        $type = '';
+    }
 }

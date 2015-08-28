@@ -39,15 +39,7 @@ class Tracking_number_model extends CI_Model {
         }
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('tracking_number');
-        $rows = $query->result_array();
-        foreach ($rows as $key => $val) {
-            if($val['account_status'] == 0) {
-                $rows[$key]['account_status'] = '未结算';
-            }else{
-                $rows[$key]['account_status'] = '已结算';
-            }
-        }
-        return $rows;
+        return $query->result_array();
     }
 
     function getTrackingNumbersTotal($data){

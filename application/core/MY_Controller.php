@@ -16,6 +16,7 @@ class MY_Controller extends CI_Controller{
 class AdminController extends MY_Controller
 {
     var $admin_id = 0;
+    var $admin_name = '';
 
     public function __construct()
     {
@@ -28,6 +29,7 @@ class AdminController extends MY_Controller
 
             if($session) {
                 $this->admin_id = $session['admin_id'];
+                $this->admin_name = $session['admin_name'];
                 $admin = $this->admin_model->getAdmin($session['admin_name']);
             }else{
                 delete_cookie('login_sessiontoken');

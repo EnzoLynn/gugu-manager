@@ -19,22 +19,6 @@ class Customer_model extends CI_Model{
         $this->db->where('customer_id', $customer_id);
         $query = $this->db->get('customer');
         return $query->first_row();
-//        $customer = $query->first_row();
-
-//        $this->db->where('customer_rent_id', $customer['customer_rent_id']);
-//        $query = $this->db->get('customer_rent');
-//        $customerRent = $query->fetch_row();
-//
-//        $customer_rent = array(
-//            'title' => $customerRent['title'],
-//            'rent_area' => $customerRent['rent_area'],
-//            'area_to_order_number' => $customerRent['area_to_order_number'],
-//            'rent_pre_price' => $customerRent['rent_pre_price'],
-//            'date_start' => $customerRent['date_start'],
-//            'date_end' => $customerRent['date_end']
-//        );
-//
-//        return array_merge($customer, $customer_rent);
     }
 
     function getCustomers($data){
