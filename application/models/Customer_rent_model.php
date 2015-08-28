@@ -25,6 +25,7 @@ class Customer_rent_model extends CI_Model {
 
     function getCustomerRentByCustomerIDAndDate($customer_id, $date) {
         $this->db->where('customer_id', $customer_id);
+        $date = date('Y-m-d', strtotime($date));
         $this->db->where("'$date' between date_start and date_end");
         $query = $this->db->get('customer_rent');
         $customerRent = $query->fetch_row();
