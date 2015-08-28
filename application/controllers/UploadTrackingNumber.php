@@ -73,10 +73,21 @@ class UploadTrackingNumber extends AdminController {
 
             $this->file_save_path = FCPATH . $config['upload_path'] .$fileData['file_save_name'] ;
 
-            $this->validateExcel($this->file_save_path);
+            $data = $this->validateExcel($this->file_save_path);
+
+            if ($data) {
+                $this->tracking_number_model->importData($data);
+                $json = array(
+                    'success' => true,
+                    'data' => [],
+                    'total' => count($data),
+                    'msg' => '成功',
+                    'code' => '01'
+                );
+                echo json_encode($json);
+            }
         }
         exit;
-
     }
 
     public function validateExcel($file_path) {
@@ -89,7 +100,15 @@ class UploadTrackingNumber extends AdminController {
         $data = loadExcel($file_path, $pars_default);
 
         if (!$data) {
-            output_error('excel没有数据匹配');
+            $json = array(
+                'success' => false,
+                'data' => array('msg' => 'excel没有数据匹配'),
+                'total' => 0,
+                'msg' => 'excel没有数据匹配',
+                'code' => '89'
+            );
+            echo json_encode($json);
+            exit;
         }
 
         $msg = $this->tracking_number_model->validateData($data);
@@ -103,15 +122,17 @@ class UploadTrackingNumber extends AdminController {
                 'code' => '89'
             );
             echo json_encode($json);
+            exit;
         } else {
-            $json = array(
-                'success' => true,
-                'data' => [],
-                'total' => count($data),
-                'msg' => '成功',
-                'code' => '01'
-            );
-            echo json_encode($json);
+            return $data;
+//            $json = array(
+//                'success' => true,
+//                'data' => [],
+//                'total' => count($data),
+//                'msg' => '成功',
+//                'code' => '01'
+//            );
+//            echo json_encode($json);
         }
     }
 }
