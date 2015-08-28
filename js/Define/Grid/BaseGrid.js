@@ -12,26 +12,26 @@
         showGroupsText: '显示分组'
     }],
     viewConfig: {
-        loadingText: '<b>' + '正在加载数据...' + '</b>'//,
-        // plugins: {
-        //     ddGroup: 'FileDDGp',
-        //     ptype: 'gridviewdragdrop',
-        //     dragText: '选中了 {0} 条记录',
-        //     enableDrop: false
-        // }
+        loadingText: '<b>' + '正在加载数据...' + '</b>' //,
+            // plugins: {
+            //     ddGroup: 'FileDDGp',
+            //     ptype: 'gridviewdragdrop',
+            //     dragText: '选中了 {0} 条记录',
+            //     enableDrop: false
+            // }
     },
-    initComponent: function () {
+    initComponent: function() {
         var me = this;
         //改良选择方式
         me.on({
-            itemclick: function (grid, record, hitem, index, e, opts) {
+            itemclick: function(grid, record, hitem, index, e, opts) {
                 if (!e.ctrlKey && !e.shiftKey) {
                     var sm = grid.getSelectionModel();
                     sm.deselectAll(true);
                     sm.select(record, true, false);
                 }
             },
-            beforeitemmousedown: function (view, record, item, index, e, options) {
+            beforeitemmousedown: function(view, record, item, index, e, options) {
                 if (e.button == 2) {
                     var sm = view.getSelectionModel();
                     if (!sm.hasSelection()) {
@@ -46,8 +46,14 @@
                     return false;
                 }
                 return true;
+            },
+            itemmouseenter: function(me, record, item) {
+                item.style.cursor = 'pointer';
+            },
+            itemmouseleave: function(me, record, item) {
+                item.style.cursor = 'auto';
             }
         });
-        me.callParent(arguments);	// 调用父类方法
+        me.callParent(arguments); // 调用父类方法
     }
 });

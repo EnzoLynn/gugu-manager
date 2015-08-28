@@ -15,6 +15,9 @@ Ext.define('chl.gird.Tracking_numberGrid', {
     extend: 'chl.grid.BaseGrid',
     store: 'Tracking_numberGridStoreId', 
     actionBaseName: 'Tracking_numberGridAction',
+     viewConfig: {
+        enableTextSelection:true
+    },
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {
             var me = this;
