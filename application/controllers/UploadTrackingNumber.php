@@ -23,7 +23,6 @@ class UploadTrackingNumber extends AdminController {
 
     public function index() {
         //$this->load->view('upload_test');
-        //echo $this->customer_number_model->getCustomerID($this->input->get('id'));
 
 //        if( preg_match('/^[0-9]+(\.[0-9]{1,3})?$/', '0.1234')) {
 //            echo 'OK';

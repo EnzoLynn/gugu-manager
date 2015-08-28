@@ -93,9 +93,9 @@ class Tracking_number_model extends CI_Model {
             return false;
         }
         foreach ($data as $row) {
-            $customer_id = $this->CI->customer_number_model->getCustomerID($row['运单号']);
+            $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
             $express = $this->CI->express_point_model->getOneByNameAndCode($row['计费目的网点名称'], $row['计费目的网点代码']);
-            $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer_id, $row['揽收时间']);
+            $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);
             $tracking_number = array(
                 'tracking_number' => $data['运单号'],
                 'weight'  => (float)$data['重量'],
@@ -104,7 +104,7 @@ class Tracking_number_model extends CI_Model {
                 'arrive_time'    => $data['揽收时间'],
                 'income'    => 0,
                 'cost'    => 0,
-                'customer_id'    => $customer_id,
+                'customer_id'    => $customer['customer_id'],
                 'admin_id'    => $this->CI->admin_id,
                 'customer_rent_id'    => $customer_rent['customer_rent_id'],
                 'express_id' => $express['express_id']
@@ -125,8 +125,8 @@ class Tracking_number_model extends CI_Model {
         $i = 2;//对应excel中的行
         foreach($data as $row) {
             //通过运单号查找客户ID
-            $customer_id = $this->CI->customer_number_model->getCustomerID($row['运单号']);
-            if ($customer_id == 0) {
+            $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
+            if (!$customer) {
                 $msg[] = array(
                     'msg' => '第'.$i.'行，运单号找不到对应的客户'
                 );
@@ -151,8 +151,8 @@ class Tracking_number_model extends CI_Model {
                 );
             }
             //验证客户的合同时间
-            if ($customer_id >0 ) {
-                $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer_id, $row['揽收时间']);
+            if ($customer) {
+                $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);
                 if (!$customer_rent) {
                     $msg[] = array(
                         'msg' => '第'.$i.'行，根据揽件时间没找到该客户对应的租贷合同'//.$this->CI->db->last_query()

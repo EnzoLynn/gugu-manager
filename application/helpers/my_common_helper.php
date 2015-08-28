@@ -131,8 +131,14 @@ function any_in_array($needle, $haystack)
 }
 
 // random_element() is included in Array Helper, so it overrides the native function
-function random_element($array)
-{
-    shuffle($array);
-    return array_pop($array);
+function output_error($msg) {
+    $json = array(
+        'success' => false,
+        'data' => [],
+        'total' => 0,
+        'msg' => $msg,
+        'code' => ''
+    );
+    echo json_encode($json);
+    exit;
 }
