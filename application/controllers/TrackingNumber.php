@@ -66,6 +66,13 @@ class TrackingNumber extends AdminController {
     }
 
     public function countPrice() {
-        $type = '';
+        $type = $this->input->get_post('type');
+        if ($type == 'cost') {
+
+        }
+    }
+
+    public function validateCountPrice() {
+
     }
 }
