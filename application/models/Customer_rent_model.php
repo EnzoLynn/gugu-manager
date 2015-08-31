@@ -61,7 +61,7 @@ class Customer_rent_model extends CI_Model {
     }
 
     function addCustomerRent($data) {
-        $data['update_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
         $this->db->insert('customer_rent', $data);
         return  $this->db->insert_id();
     }
