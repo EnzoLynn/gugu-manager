@@ -220,16 +220,27 @@ ActionManager.searchCustomer = function(traget) {
                     labelPad: 15,
                     width: 340,
                     labelWidth: 125,
-                    maxLength: 36 
+                    maxLength: 36,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keydown: function(field, e, opts) {
+                            var me = this; 
+                            if (e.getKey() == e.ENTER) {
+
+                                var win = me.up('window');
+                                win.down('#submit').fireHandler(e);
+                            }
+                        }
+                    }
                 },
                 items: [{
                     name: 'customer_name',
                     fieldLabel: '客户名',
-                    itemId: 'customer_nameItemId' 
+                    itemId: 'customer_nameItemId'
                 }, {
                     name: 'mobile',
                     fieldLabel: '手机号',
-                    itemId: 'mobileItemId' 
+                    itemId: 'mobileItemId'
                 }]
             }],
             buttons: [{

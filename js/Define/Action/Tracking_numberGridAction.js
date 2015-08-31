@@ -368,7 +368,18 @@ ActionManager.searchTracking_number = function(traget) {
                     labelPad: 15,
                     width: 340,
                     labelWidth: 125,
-                    maxLength: 100
+                    maxLength: 100,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keydown: function(field, e, opts) {
+                            var me = this;
+                            if (e.getKey() == e.ENTER) {
+
+                                var win = me.up('window');
+                                win.down('#submit').fireHandler(e);
+                            }
+                        }
+                    }
                 },
                 items: [{
                     fieldLabel: '票据号',
@@ -461,10 +472,18 @@ ActionManager.searchTracking_number = function(traget) {
                     var arrive_express_point_name = win.down('#arrive_express_point_name').getValue();
                     if (arrive_express_point_name != '') {
                         //加入filterMap
-                        GlobalFun.GridSearchInitFun('arrive_express_point_name', false, store, arrive_express_point);
+                        GlobalFun.GridSearchInitFun('arrive_express_point_name', false, store, arrive_express_point_name);
                         searchFlag = true;
                     } else {
                         GlobalFun.GridSearchInitFun('arrive_express_point_name', true, store, false);
+                    }
+                    var arrive_express_point_code = win.down('#arrive_express_point_code').getValue();
+                    if (arrive_express_point_code != '') {
+                        //加入filterMap
+                        GlobalFun.GridSearchInitFun('arrive_express_point_code', false, store, arrive_express_point_code);
+                        searchFlag = true;
+                    } else {
+                        GlobalFun.GridSearchInitFun('arrive_express_point_code', true, store, false);
                     }
 
                     //时间
