@@ -26,6 +26,10 @@ class TrackingNumber extends AdminController {
 
     }
 
+    public function downloadExcel() {
+
+    }
+
     public function getList() {
         $data = array(
             'arrive_time_start' => $this->input->post('arrive_time_start'),

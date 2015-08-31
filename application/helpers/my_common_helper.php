@@ -178,7 +178,7 @@ function any_in_array($needle, $haystack) {
     }
     return FALSE;
 }
-// 前一个数组（可以更多项目）必须全部在后一个数组里面
+// 前一个数组（可以更多项目）但必须全部在后一个数组里面
 function array_in_array($needle, $haystack) {
     $num = count($haystack);
     if ($num == 0) {
@@ -196,8 +196,21 @@ function array_in_array($needle, $haystack) {
     }
     return FALSE;
 }
-
-// random_element() is included in Array Helper, so it overrides the native function
+//只获取数组的指定键的数组
+function getArrayByKey($data, $keys) {
+    $rows = array();
+    foreach ($data as $row) {
+        $temp = array();
+        foreach ($row as $k => $v) {
+            if (in_array($k, $keys)) {
+                $temp[$k] = $v;
+            }
+        }
+        $rows[] = $temp;
+    }
+    return $rows;
+}
+//输出错误消息
 function output_error($msg) {
     $json = array(
         'success' => false,
