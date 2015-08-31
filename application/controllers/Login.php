@@ -81,7 +81,7 @@ class Login extends MY_Controller {
 
     public function logout() {
         $sessionToken = $this->input->get_post('sessiontoken');
-        $this->session_token_model->updateExpires($sessionToken);
+        $this->session_token_model->destroySession($sessionToken);
         $json = array(
             'success' => true,
             'data' => [],
@@ -89,6 +89,8 @@ class Login extends MY_Controller {
             'msg' => '成功',
             'code' => '01'
         );
+        delete_cookie('login_sessiontoken');
+        delete_cookie('login_username');
         echo json_encode($json);exit;
     }
 }
