@@ -201,6 +201,8 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         var extraParams = store.getProxy().extraParams;
         var param = {
             downType: 'Tracking_number',
+            arrive_time_start: extraParams.arrive_time_start,
+            arrive_time_end: extraParams.arrive_time_end,
             dir: 'ASC',
             sort: 'tracking_number',
             filter: extraParams.filter,
@@ -264,7 +266,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             target.loadGrid();
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                 ActionManager.translateError(response);
+                ActionManager.translateError(response);
             }
         }, true);
     },
@@ -541,20 +543,20 @@ ActionManager.translateError = function(response) {
             value: item.msg
         });
     });
-     
+
     Ext.create('Ext.window.Window', {
         modal: true,
         maxWidth: 800,
         maxHeight: 600,
         title: response.msg,
-        bodyPadding:20,
+        bodyPadding: 20,
         autoScroll: true,
         bodyBorder: false,
         defaults: {
             xtype: 'displayfield',
             labelAlign: 'right',
             labelWidth: 160,
-            width: 750 
+            width: 750
         },
         items: items,
         buttonAlign: 'center',
