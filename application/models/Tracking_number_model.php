@@ -39,7 +39,7 @@ class Tracking_number_model extends CI_Model {
         if ($data['limit']) {
             $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
         }
-        if ($data['filter']['account_status']) {
+        if (isset($data['filter']['account_status'])) {
             $this->db->where('account_status', $data['filter']['account_status']);
             unset($data['filter']['account_status']);
         }
@@ -64,7 +64,7 @@ class Tracking_number_model extends CI_Model {
         if ($arrive_time_end) {
             $this->db->where("arrive_time <= '$arrive_time_end 23:59:59'");
         }
-        if ($data['filter']['account_status']) {
+        if (isset($data['filter']['account_status'])) {
             $this->db->where('account_status', $data['filter']['account_status']);
             unset($data['filter']['account_status']);
         }
