@@ -111,19 +111,18 @@ function createPlugin() {
                 //Ext.Store 
 
                 var sm = e.grid.getSelectionModel();
-                //console.log('23');
+                console.log('23');
                 e.store.sync({
-                    success: function(batch, action) {
-                        //e.record.commit();
-                        //console.log('222');
-                        //store.load
-                        if (e.store.getCount() > 0) {
-                            sm.select(0);
-                        }
-                        //e.grid.loadGrid();
-
+                    success: function(batch, action) { 
+                        e.store.load({
+                            callback: function(records, operation, success) {
+                                if (e.store.getCount() > 0) {
+                                    sm.select(0);
+                                }
+                            }
+                        }); 
                     },
-                    failure: function(batch, action) {
+                    failure: function(batch, action) { 
                         if (batch.hasException) {
                             Ext.Msg.alert('失败', batch.exceptions[0].error);
                         } else {
