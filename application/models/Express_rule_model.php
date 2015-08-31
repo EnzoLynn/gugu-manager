@@ -53,6 +53,28 @@ class Express_rule_model extends CI_Model {
         $this->db->where('rule_id', $rule_id);
         return $this->db->delete('express_rule');
     }
+
+    //通过重量得到规则
+    function getItemByRuleAndWeightBetween($rule_id, $weight_min, $weight_max) {
+        $this->db->where('rule_id', $rule_id);
+        $this->db->where("weight_min", $weight_min);
+        $this->db->where("weight_max", $weight_max);
+        $this->db->order_by('sort_order', 'ASC');
+        $query = $this->db->get('express_rule_item');
+        $rule_item = $query->first_row();
+        return $rule_item;
+    }
+
+    //通过重量得到规则
+    function getItemByRuleAndWeight($rule_id, $weight) {
+        $this->db->where('rule_id', $rule_id);
+        $this->db->where("weight_min < $weight AND weight_max > $weight");
+        $this->db->order_by('sort_order', 'ASC');
+        $query = $this->db->get('express_rule_item');
+        $rule_item = $query->first_row();
+        return $rule_item;
+    }
+
     //通过重量得到规则
     function getItemByWeight($express_id, $express_point_code, $weight) {
         $this->db->where('express_id', $express_id);
