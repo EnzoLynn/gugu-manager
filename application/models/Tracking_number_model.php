@@ -254,7 +254,8 @@ class Tracking_number_model extends CI_Model {
             $rule_item = $this->CI->express_rule_model->getItemByWeight($row['express_id'], $row['arrive_express_point_code'], $row['weight']);
             if (!$rule_item) {
                 $msg[] = array(
-                    'msg' =>  $row['tracking_number'] . '没有匹配的运算成本规则（揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+                    'tracking_number' => $row['tracking_number'],
+                    'msg' =>  '没有匹配的运算成本规则（揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
                 );
             }
         }
