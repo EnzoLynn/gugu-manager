@@ -107,11 +107,9 @@ class CustomerNumber extends AdminController {
         $str = file_get_contents("php://input");
         $temp = json_decode($str);
 
-        foreach($temp as $key => $val) {
-            $post = objectToArray($val);
-            $number_id = $post['number_id'];
-            $this->customer_number_model->deleteCustomerNumber($number_id);
-        }
+        $post = objectToArray($temp);
+        $number_id = $post['number_id'];
+        $this->customer_number_model->deleteCustomerNumber($number_id);
 
         $json = array(
             'success' => true,
