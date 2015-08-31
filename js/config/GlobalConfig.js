@@ -77,7 +77,7 @@ GlobalConfig.Controllers = {
     User: { //用户登录相关
         GetCurrUserInfo: '/login/ajaxLogin', //'/data/login.json',
         CheckUserPassword: '/CheckUserPassword111',
-        UserLoginOut: '/data/UserLoginOut.json'
+        UserLoginOut: '/login/logout'//'/data/UserLoginOut.json'
     },
     UserGrid: { //用户表
 
