@@ -368,7 +368,18 @@ ActionManager.searchTracking_number = function(traget) {
                     labelPad: 15,
                     width: 340,
                     labelWidth: 125,
-                    maxLength: 100
+                    maxLength: 100,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keydown: function(field, e, opts) {
+                            var me = this;
+                            if (e.getKey() == e.ENTER) {
+
+                                var win = me.up('window');
+                                win.down('#submit').fireHandler(e);
+                            }
+                        }
+                    }
                 },
                 items: [{
                     fieldLabel: '票据号',
@@ -400,8 +411,7 @@ ActionManager.searchTracking_number = function(traget) {
                         format: 'Y-m-d',
                         itemId: 'dateStar',
                         vtype: 'daterange',
-                        endDateField: 'dateEnd',
-                        editable: false
+                        endDateField: 'dateEnd'
                     }, {
                         xtype: 'label',
                         margin: '0 0 0 5',
@@ -412,8 +422,7 @@ ActionManager.searchTracking_number = function(traget) {
                         format: 'Y-m-d',
                         itemId: 'dateEnd',
                         vtype: 'daterange',
-                        startDateField: 'dateStar',
-                        editable: false
+                        startDateField: 'dateStar'
                     }]
                 }]
             }],
@@ -438,12 +447,7 @@ ActionManager.searchTracking_number = function(traget) {
                     var store = traget.getStore();
                     var extraParams = store.getProxy().extraParams;
 
-                    //时间
-                    var dateStarField = win.down('#dateStar');
-                    var dateEndField = win.down('#dateEnd');
-                    var dateStar = dateStarField.getValue();
-                    var dateEnd = dateEndField.getValue();
-                    GlobalFun.ValidDateStartEnd(dateStarField, dateEndField);
+
                     var form = win.down('#formId').getForm();
                     if (!form.isValid()) {
                         return;
@@ -461,21 +465,36 @@ ActionManager.searchTracking_number = function(traget) {
                     var arrive_express_point_name = win.down('#arrive_express_point_name').getValue();
                     if (arrive_express_point_name != '') {
                         //加入filterMap
-                        GlobalFun.GridSearchInitFun('arrive_express_point_name', false, store, arrive_express_point);
+                        GlobalFun.GridSearchInitFun('arrive_express_point_name', false, store, arrive_express_point_name);
                         searchFlag = true;
                     } else {
                         GlobalFun.GridSearchInitFun('arrive_express_point_name', true, store, false);
                     }
+                    var arrive_express_point_code = win.down('#arrive_express_point_code').getValue();
+                    if (arrive_express_point_code != '') {
+                        //加入filterMap
+                        GlobalFun.GridSearchInitFun('arrive_express_point_code', false, store, arrive_express_point_code);
+                        searchFlag = true;
+                    } else {
+                        GlobalFun.GridSearchInitFun('arrive_express_point_code', true, store, false);
+                    }
 
-                    //时间
-                    if (dateStar && dateEnd) {
+                    //时间                    
+                    var dateStarField = win.down('#dateStar');
+                    var dateEndField = win.down('#dateEnd');
+                    var dateStar = dateStarField.getValue();
+                    var dateEnd = dateEndField.getValue();
+                    //GlobalFun.ValidDateStartEnd(dateStarField, dateEndField);
+                    if (dateStar || dateEnd) {
                         //加入.getProxy().extraParams
                         extraParams.DateFilter = true;
-                        extraParams.arrive_time = Ext.Date.format(dateStar, 'Y-m-d') + ',' + Ext.Date.format(dateEnd, 'Y-m-d');
+                        extraParams.arrive_time_start = Ext.Date.format(dateStar, 'Y-m-d');
+                        extraParams.arrive_time_end = Ext.Date.format(dateEnd, 'Y-m-d');
                         searchFlag = true;
                     } else {
                         extraParams.DateFilter = false;
-                        extraParams.arrive_time = '';
+                        extraParams.arrive_time_start  = '';
+                        extraParams.arrive_time_end  = '';
                     }
 
                     if (searchFlag) {
