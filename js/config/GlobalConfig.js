@@ -85,11 +85,11 @@ GlobalConfig.Controllers = {
     CustomerGrid: { //客户表
         create: globalFix + '/CustomerGrid.json',
         read: 'customer/getList',//globalFix + '/CustomerGrid.json',
-        update: 'customer/update',//globalFix + '/CustomerGrid.json',
+        update: globalFix + '/CustomerGrid.json',
         destroy: globalFix + '/CustomerGrid.json',
         loadRuleCount: globalFix + '/loadRuleCount.json',
         addCustomer: '/customer/add',//globalFix + '/AddCustomer.json',
-        updateCustomer: globalFix + '/UpdateCustomer.json',
+        updateCustomer:'customer/update', 
         addCustomerRent: '/customerRent/add',//globalFix + '/addCustomerRent.php',
         addCustomerRule: 'customerExpressRule/addRule',//globalFix + '/AddCustomerRule.php',
         delCustomerRule: 'customerExpressRule/deleteRule',//globalFix + '/DelCustomerRule.php',
