@@ -42,7 +42,7 @@ class Express_rule_model extends CI_Model {
         $express_rule = array(
             'express_id' => $data['express_id'],
             'province_code'  => $data['province_code'],
-            'update_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s')
         );
         $this->db->insert('express_rule', $express_rule);
         $rule_id =  $this->db->insert_id();

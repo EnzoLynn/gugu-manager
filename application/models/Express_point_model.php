@@ -45,8 +45,7 @@ class Express_point_model extends CI_Model {
             'express_point_name'        => $data['express_point_name'],
             'express_point_code'        => $data['express_point_code'],
             'province_code'              => $data['province_code'],
-            'area_code'                   => $data['area_code'],
-            'update_at'                   => $data['update_at']
+            'area_code'                   => $data['area_code']
         );
         $this->db->insert('express_point', $point);
         $point_id = $this->db->insert_id();

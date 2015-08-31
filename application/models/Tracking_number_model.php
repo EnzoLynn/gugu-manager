@@ -99,7 +99,7 @@ class Tracking_number_model extends CI_Model {
             'admin_id'    => $data['admin_id'],
             'customer_rent_id'    => $data['customer_rent_id'],
             'express_id' => $data['express_id'],
-            'update_at'  => date('Y-m-d H:i:s')
+            'updated_at'  => date('Y-m-d H:i:s')
         );
         $this->db->insert('tracking_number', $tracking_number);
         $tracking_number_id =  $this->db->insert_id();
