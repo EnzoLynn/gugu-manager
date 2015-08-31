@@ -22,6 +22,9 @@ class Customer_express_rule_model extends CI_Model {
         $this->db->where('province_code', $province_code);
         $query = $this->db->get('customer_express_rule');
         $rule = $query->first_row();
+
+        //echo $this->db->last_query();exit;
+
         return $rule;
     }
 
@@ -112,6 +115,7 @@ class Customer_express_rule_model extends CI_Model {
         $province_code = $express_point['province_code'];
 
         $rule = $this->getOneByRent($customer_rent_id, $province_code);
+
         if ($rule['price_type'] == 0) {
             return $rule;
         } else {

@@ -81,7 +81,7 @@ class Tracking_number_model extends CI_Model {
             $this->db->where('income', 0);
             $this->db->where('cost', 0);
         }
-        $this->db->order_by('tracking_number_id', 'DESC');
+        $this->db->order_by('tracking_number_id', 'ASC');
         $query = $this->db->get('tracking_number');
         return $query->result_array();
     }
@@ -120,7 +120,7 @@ class Tracking_number_model extends CI_Model {
             $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
             //$express = $this->CI->express_point_model->getExpressByNameAndCode($row['计费目的网点名称'], $row['计费目的网点代码']);
             $express = $this->CI->express_company_model->getExpressByName($row['快递公司']);
-            $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);
+            //$customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);//直接调用用户信息的customer_rent_id
 
             $number = $this->getTrackingNumber($row['运单号']);
             if ($number) {
@@ -137,7 +137,7 @@ class Tracking_number_model extends CI_Model {
                     'cost' => 0,
                     'customer_id' => $customer['customer_id'],
                     'admin_id' => $this->CI->admin_id,
-                    'customer_rent_id' => $customer_rent['customer_rent_id'],
+                    'customer_rent_id' => $customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
                     'express_id' => $express['express_id']
                 );
                 $this->add($tracking_number);
@@ -210,8 +210,8 @@ class Tracking_number_model extends CI_Model {
         $msg = array();
         $tracking_numbers = $this->getTrackingNumbersByType('income');
         foreach($tracking_numbers as $row) {
-            $rule_item = $this->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
-            if (!$rule_item) {
+            $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
+            if (!$rule_item || count($rule_item) == 1) {//如果只有一个price_type，表示有省这张表，但是没有规则
                 $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
                 $msg[] = array(
                     'tracking_number' => $row['tracking_number'],
@@ -231,10 +231,18 @@ class Tracking_number_model extends CI_Model {
                 $income = $rule_item['price_start'] + $rule_item['price_pre'] * $row['weight'];
             } else if ($rule_item['price_type'] == 1) {//步进价格
                 if ($rule_item['weight_price_type'] == 0) {//进重（取整）
-                    $pass_weight = ceil(($row['weight'] - $rule_item['weight_min']) / $rule_item['weight_pre']);
-                    $income = $row['weight_start_price'] + $pass_weight * $rule_item['weight_pre_price'];
+                    if ($rule_item['weight_pre'] == 0){
+                        $pass_weight = ceil($row['weight']);
+                    }else{
+                        $pass_weight = ceil(($row['weight'] - $rule_item['weight_min']) / $rule_item['weight_pre']);
+                    }
+                    $income = $rule_item['weight_start_price'] + $pass_weight * $rule_item['weight_pre_price'];
                 } else {//实重
-                    $pass_price = ($row['weight'] - $rule_item['weight_min']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
+                    if ($rule_item['weight_pre'] == 0) {
+                        $pass_price = 0;
+                    } else {
+                        $pass_price = ($row['weight'] - $rule_item['weight_min']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
+                    }
                     $income = $row['weight_start_price'] + $pass_price;
                 }
             }
