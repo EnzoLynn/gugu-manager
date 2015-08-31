@@ -113,20 +113,35 @@ class CustomerExpressRule extends AdminController {
             );
             $this->customer_express_rule_model->update($rule['rule_id'], $rule_update);
         }else{
+            $weight_min = $this->input->get_post('weight_min');
+            $weight_max = $this->input->get_post('weight_max');
+            //先检查是否存在该区间
+            $item1 = $this->customer_express_rule_model->getItemByRuleAndWeight($rule['rule_id'], $weight_min);
+            $item2 = $this->customer_express_rule_model->getItemByRuleAndWeight($rule['rule_id'], $weight_max);
+            $item3 = $this->customer_express_rule_model->getItemByRuleAndWeightBetween($rule['rule_id'], $weight_min, $weight_max);
+            if ($item1) {
+                output_error('其他区间已经包含起始重量');
+            }
+            if ($item2) {
+                output_error('其他区间已经包含结束重量');
+            }
+            if ($item3) {
+                output_error('重量区间重复');
+            }
+
             $rule_update = array(
                 'price_type' => 1,
                 'price_start' => 0,
                 'price_pre' => 0
             );
-            $this->customer_express_rule_model->update($rule['rule_id'], $rule_update);
 
             $item = array(
                 'rule_id'            => $rule['rule_id'],
                 'customer_id'       => $customer_id,
                 'customer_rent_id' => $customer_rent_id,
                 'weight_price_type'=> $this->input->get_post('weight_price_type'),
-                'weight_min'        => $this->input->get_post('weight_min'),
-                'weight_max'        => $this->input->get_post('weight_max'),
+                'weight_min'        => $weight_min,
+                'weight_max'        => $weight_max,
                 'weight_start_price'=> $this->input->get_post('weight_start_price'),
                 'weight_pre'            => $this->input->get_post('weight_pre'),
                 'weight_pre_price'     => $this->input->get_post('weight_pre_price'),

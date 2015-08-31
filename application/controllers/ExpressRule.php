@@ -86,14 +86,29 @@ class ExpressRule extends AdminController {
             );
             $rule['rule_id'] = $this->express_rule_model->add($rule_add);
         }
+        //先检查是否存在该区间
+        $weight_min = $this->input->get_post('weight_min');
+        $weight_max = $this->input->get_post('weight_max');
+        $item1 = $this->express_rule_model->getItemByRuleAndWeight($rule['rule_id'], $weight_min);
+        $item2 = $this->express_rule_model->getItemByRuleAndWeight($rule['rule_id'], $weight_max);
+        $item3 = $this->express_rule_model->getItemByRuleAndWeightBetween($rule['rule_id'], $weight_min, $weight_max);
+        if ($item1) {
+            output_error('其他区间已经包含起始重量');
+        }
+        if ($item2) {
+            output_error('其他区间已经包含结束重量');
+        }
+        if ($item3) {
+            output_error('重量区间重复');
+        }
 
         $item = array(
             'rule_id'            => $rule['rule_id'],
             'express_id'        => $express_id,
             'price_type'        => $this->input->get_post('price_type'),
             'price'              => $this->input->get_post('price'),
-            'weight_min'        => $this->input->get_post('weight_min'),
-            'weight_max'        => $this->input->get_post('weight_max'),
+            'weight_min'        => $weight_min,
+            'weight_max'        => $weight_max,
             'sort_order'            => $this->input->get_post('sort_order')
         );
         $this->express_rule_item_model->add($item);

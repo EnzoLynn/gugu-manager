@@ -72,6 +72,39 @@ class Customer_express_rule_model extends CI_Model {
     }
 
     //通过重量得到规则
+    function getItemByRuleAndWeightBetween($rule_id, $weight_min, $weight_max) {
+        $rule = $this->getOne($rule_id);
+        if ($rule['price_type'] == 0) {
+            return FALSE;
+        } else {
+            $this->db->where('rule_id', $rule['rule_id']);
+            $this->db->where("weight_min", $weight_min);
+            $this->db->where("weight_max", $weight_max);
+            $this->db->order_by('sort_order', 'ASC');
+            $query = $this->db->get('customer_express_rule_item');
+            $rule_item = $query->first_row();
+            return $rule_item;
+        }
+        return FALSE;
+    }
+
+    //通过重量得到规则
+    function getItemByRuleAndWeight($rule_id, $weight) {
+        $rule = $this->getOne($rule_id);
+        if ($rule['price_type'] == 0) {
+            return FALSE;
+        } else {
+            $this->db->where('rule_id', $rule['rule_id']);
+            $this->db->where("weight_min < $weight AND weight_max > $weight");
+            $this->db->order_by('sort_order', 'ASC');
+            $query = $this->db->get('customer_express_rule_item');
+            $rule_item = $query->first_row();
+            return $rule_item;
+        }
+        return FALSE;
+    }
+
+    //通过重量得到规则
     function getItemByWeight($customer_rent_id, $express_point_code, $weight) {
         $this->db->where('express_point_code', $express_point_code);
         $query = $this->db->get('express_point');
