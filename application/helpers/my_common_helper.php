@@ -81,6 +81,55 @@ function loadExcel($filename, $pars) {
     return $temp_rows;
 }
 
+function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
+    /** Include PHPExcel */
+    require_once(APPPATH . 'libraries/PHPExcel.php');
+    // Create new PHPExcel object
+    $objPHPExcel = new PHPExcel();
+    // Set document properties
+    $objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
+        ->setLastModifiedBy("Maarten Balliauw")
+        ->setTitle("Office 2007 XLSX Test Document")
+        ->setSubject("Office 2007 XLSX Test Document")
+        ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+        ->setKeywords("office 2007 openxml php")
+        ->setCategory("Test result file");
+
+    // Add some data
+    $header_length = count($header);
+    $rows_length = count($data) + 1;
+    //输出头部
+    for ($i = 0; $i < $header_length; $i++){
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).'1', $header[$i]);
+    }
+    //输出内容
+    for ($row = 0; $row < $rows_length; $row++) {
+        for ($i = 0; $i < count($data[0]); $i++){
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), $data[$i]);
+        }
+    }
+    // Rename worksheet
+    $objPHPExcel->getActiveSheet()->setTitle($title);
+    // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+    $objPHPExcel->setActiveSheetIndex(0);
+    // Redirect output to a client’s web browser (Excel2007)
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="01simple.xlsx"');
+    header('Cache-Control: max-age=0');
+    // If you're serving to IE 9, then the following may be needed
+    header('Cache-Control: max-age=1');
+
+    // If you're serving to IE over SSL, then the following may be needed
+    header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+    header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+    header ('Pragma: public'); // HTTP/1.0
+
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $objWriter->save('php://output');
+    exit;
+}
+
 if (!function_exists('loadController'))
 {
     function loadController($controller, $method = 'index')
