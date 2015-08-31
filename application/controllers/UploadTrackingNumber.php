@@ -118,7 +118,7 @@ class UploadTrackingNumber extends AdminController {
                 'success' => false,
                 'data' => $msg,
                 'total' => count($msg),
-                'msg' => '有错误',
+                'msg' => '数据有问题',
                 'code' => '89'
             );
             echo json_encode($json);
