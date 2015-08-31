@@ -214,7 +214,8 @@ class Tracking_number_model extends CI_Model {
             if (!$rule_item) {
                 $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
                 $msg[] = array(
-                    'msg' =>  $row['tracking_number'] . '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+                    'tracking_number' => $row['tracking_number'],
+                    'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
                 );
             }
         }
