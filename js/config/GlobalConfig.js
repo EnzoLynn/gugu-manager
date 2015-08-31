@@ -123,7 +123,7 @@ GlobalConfig.Controllers = {
         update: globalFix + '/traking_numberGrid.json',
         destroy: globalFix + '/traking_numberGrid.json',
         uploadExcel: '/uploadTrackingNumber/upload', //globalFix + '/uploadExcel',
-        outPutExcel: '/trackingNumber/downloadExce',//globalFix + '/outPutExcel',
+        outPutExcel: '/trackingNumber/downloadExcel',//globalFix + '/outPutExcel',
         translateExpress: '/trackingNumber/countPrice',
         translateCost: '/trackingNumber/countPrice',
     },

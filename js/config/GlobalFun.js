@@ -139,7 +139,7 @@ GlobalFun.fixedBugs = function () {
             }
             return true;
         },
-        daterangeText: '起始时间不能大于截止时间'
+        daterangeText: '日期格式错误'
 
     });
 };
