@@ -554,10 +554,7 @@ ActionManager.translateError = function(response) {
             xtype: 'displayfield',
             labelAlign: 'right',
             labelWidth: 160,
-            width: 750,
-            labelStyle:{
-                color:'blue'
-            }
+            width: 750 
         },
         items: items,
         buttonAlign: 'center',
