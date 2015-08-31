@@ -30,8 +30,8 @@ class Tracking_number_model extends CI_Model {
         $arrive_time_start = $data['arrive_time_start'];
         $arrive_time_end = $data['arrive_time_end'];
         $data = array(
-            'page' => (int)$data['page'],
-            'limit' => (int)$data['limit'],
+            'page' => $data['page'],
+            'limit' => $data['limit'],
             'sort' => $data['sort'],
             'dir' => $data['dir'],
             'filter' => $data['filter']

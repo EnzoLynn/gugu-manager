@@ -95,20 +95,27 @@ function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
         ->setKeywords("office 2007 openxml php")
         ->setCategory("Test result file");
 
-    // Add some data
+    // 只获取指定数组
+    $data = getArrayByKey($data, array_keys($header));
+
     $header_length = count($header);
-    $rows_length = count($data) + 1;
+    $rows_length = count($data);
     //输出头部
     $i = 0;
     foreach ($header as $k => $v) {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).'1', $v);
         $i++;
     }
+
     //输出内容
     for ($row = 0; $row < $rows_length; $row++) {
         $i = 0;
         foreach ($header as $k => $v) {
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), $data[$row][$k]);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), '' + $data[$row][$k]);
+            if ($k == 'tracking_number') {//强制为字符串显示
+                $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
+                $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
+            }
             $i++;
         }
     }
@@ -118,7 +125,7 @@ function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
     $objPHPExcel->setActiveSheetIndex(0);
     // Redirect output to a client’s web browser (Excel2007)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="01simple.xlsx"');
+    header('Content-Disposition: attachment;filename="'.date('YmdHis').'.xlsx"');
     header('Cache-Control: max-age=0');
     // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');

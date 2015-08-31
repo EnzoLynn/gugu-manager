@@ -28,10 +28,12 @@ class TrackingNumber extends AdminController {
 
     public function downloadExcel() {
         $data = array(
+            'page' => '',
+            'limit'=> '',
             'arrive_time_start' => $this->input->get_post('arrive_time_start'),
             'arrive_time_end' => $this->input->get_post('arrive_time_end'),
-            'sort' => $this->input->get_post('sort'),
-            'dir'  => $this->input->get_post('dir'),
+            'sort' => 'tracking_number_id',
+            'dir'  => 'ASC',
             'filter' => objectToArray(json_decode($this->input->get_post('filter')))
         );
 
