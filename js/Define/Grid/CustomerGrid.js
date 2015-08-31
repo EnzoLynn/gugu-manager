@@ -1,7 +1,7 @@
 //创建一个上下文菜单
 var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshCustomer'), '-',
-    ActionBase.getAction('searchCustomer'),
+        ActionBase.getAction('searchCustomer'),
         ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'),
         '-', ActionBase.getAction('editCustomer_number'),
         ActionBase.getAction('addCustomerRent')
@@ -14,7 +14,7 @@ Ext.define('chl.gird.CustomerGrid', {
     alternateClassName: ['CustomerGrid'],
     alias: 'widget.CustomerGrid',
     extend: 'chl.grid.BaseGrid',
-    store: 'CustomerGridStoreId', 
+    store: 'CustomerGridStoreId',
     actionBaseName: 'CustomerGridAction',
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {
@@ -46,7 +46,7 @@ Ext.define('chl.gird.CustomerGrid', {
             overflowHandler: 'Menu'
         },
         items: [ActionBase.getAction('refreshCustomer'), '-',
-             ActionBase.getAction('searchCustomer'),
+            ActionBase.getAction('searchCustomer'),
             ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), '-',
             ActionBase.getAction('editCustomer_number'), ActionBase.getAction('addCustomerRent')
 
@@ -137,35 +137,35 @@ GridManager.CreateCustomerGrid = function(param) {
         dataIndex: 'rent_area',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        groupable:false,
+        groupable: false,
         sortable: false
     }, {
         text: '面积单量比',
         dataIndex: 'area_to_order_number',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        groupable:false,
+        groupable: false,
         sortable: false
     }, {
         text: '房租单价',
         dataIndex: 'rent_pre_price',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        groupable:false,
+        groupable: false,
         sortable: false
     }, {
         text: '开始日期',
         dataIndex: 'date_start',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        groupable:false,
+        groupable: false,
         sortable: false
     }, {
         text: '结束日期',
         dataIndex: 'date_end',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
-        groupable:false,
+        groupable: false,
         sortable: false
     }];
     GridManager.CustomerGrid = Ext.create('chl.gird.CustomerGrid',
@@ -217,7 +217,18 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             width: 340,
             labelWidth: 125,
             maxLength: 100,
-            maxLengthText: '最大长度为100'
+            maxLengthText: '最大长度为100',
+            enableKeyEvents: true,
+            listeners: {
+                keydown: function(field, e, opts) {
+                    var me = this;
+                    if (e.getKey() == e.ENTER) {
+
+                        var win = me.up('window');
+                        win.down('#submit').fireHandler(e);
+                    }
+                }
+            }
         },
         items: [{
             name: 'customer_name',
@@ -267,7 +278,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
                         req: 'dataset',
                         dataname: 'AddUpdateCustomer', // dataset名称，根据实际情况设置,数据库名
                         restype: 'json',
-                        customer_id:w.record ? w.record.data.customer_id : 0,
+                        customer_id: w.record ? w.record.data.customer_id : 0,
                         Id: w.record ? w.record.data.ControllTid : 0,
                         logId: w.record ? w.record.data.Id : 0,
                         action: w.action,
@@ -445,7 +456,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
     }, {
         xtype: 'CustomerRentGrid',
         margin: '5 0 0 0',
-        width:810,
+        width: 810,
         height: 400
     }],
     buttons: [{
@@ -478,4 +489,3 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }
     }
 });
-
