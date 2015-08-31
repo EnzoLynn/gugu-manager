@@ -36,8 +36,13 @@ class Tracking_number_model extends CI_Model {
             'dir' => $data['dir'],
             'filter' => $data['filter']
         );
-
-        $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
+        if ($data['limit']) {
+            $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
+        }
+        if ($data['filter']['account_status']) {
+            $this->db->where('account_status', $data['filter']['account_status']);
+            unset($data['filter']['account_status']);
+        }
         $this->db->like($data['filter']);
         if ($arrive_time_start) {
             $this->db->where("arrive_time >= '$arrive_time_start 00:00:00'");
@@ -58,6 +63,10 @@ class Tracking_number_model extends CI_Model {
         }
         if ($arrive_time_end) {
             $this->db->where("arrive_time <= '$arrive_time_end 23:59:59'");
+        }
+        if ($data['filter']['account_status']) {
+            $this->db->where('account_status', $data['filter']['account_status']);
+            unset($data['filter']['account_status']);
         }
         $this->db->like($data['filter']);
         return $this->db->count_all_results('tracking_number');

@@ -27,7 +27,45 @@ class TrackingNumber extends AdminController {
     }
 
     public function downloadExcel() {
-        print_r($this->input->get());exit;
+        $data = array(
+            'arrive_time_start' => $this->input->get_post('arrive_time_start'),
+            'arrive_time_end' => $this->input->get_post('arrive_time_end'),
+            'sort' => $this->input->get_post('sort'),
+            'dir'  => $this->input->get_post('dir'),
+            'filter' => objectToArray(json_decode($this->input->get_post('filter')))
+        );
+
+        $tracking_numbers = $this->tracking_number_model->getTrackingNumbers($data);
+
+        foreach ($tracking_numbers as $key => $val) {
+            if($val['account_status'] == 0) {
+                $tracking_numbers[$key]['account_status_name'] = '未结算';
+            }else{
+                $tracking_numbers[$key]['account_status_name'] = '已结算';
+            }
+            //客户名字
+            $customer = $this->customer_model->getCustomer($val['customer_id']);
+            $tracking_numbers[$key]['customer_name'] = $customer['customer_name'];
+            //操作人名字
+            $tracking_numbers[$key]['admin_name'] = $this->admin_name;
+            //快递公司名字
+            $express = $this->express_company_model->getOne($val['express_id']);
+            $tracking_numbers[$key]['express_name'] = $express['express_name'];
+        }
+        $header = array(
+            'tracking_number_id'             => '自动编号',
+            'tracking_number'                => '运单号',
+            'weight'                           => '重量',
+            'arrive_express_point_name'    => '网点名称',
+            'arrive_express_point_code'    => '网点代码',
+            'arrive_time'                    => '揽收时间',
+            'income'                         => '收入（元）',
+            'cost'                           => '成本（元）',
+            'customer_name'                => '客户名称',
+            'account_status_name'         => '结算状态',
+            'express_name'                 => '快递公司'
+        );
+        outputExcel($tracking_numbers, $header);
     }
 
     public function getList() {

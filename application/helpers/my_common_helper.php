@@ -80,7 +80,7 @@ function loadExcel($filename, $pars) {
     }
     return $temp_rows;
 }
-
+//header = array('title' => '标题')
 function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
     /** Include PHPExcel */
     require_once(APPPATH . 'libraries/PHPExcel.php');
@@ -99,13 +99,17 @@ function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
     $header_length = count($header);
     $rows_length = count($data) + 1;
     //输出头部
-    for ($i = 0; $i < $header_length; $i++){
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).'1', $header[$i]);
+    $i = 0;
+    foreach ($header as $k => $v) {
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).'1', $v);
+        $i++;
     }
     //输出内容
     for ($row = 0; $row < $rows_length; $row++) {
-        for ($i = 0; $i < count($data[0]); $i++){
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), $data[$i]);
+        $i = 0;
+        foreach ($header as $k => $v) {
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), $data[$row][$k]);
+            $i++;
         }
     }
     // Rename worksheet
