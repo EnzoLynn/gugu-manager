@@ -61,6 +61,7 @@ GlobalConfig.HeartbeatRunner = new Ext.util.TaskRunner();
 //全局消息对话框
 //对话框
 GlobalConfig.newMessageBox = Ext.create('Ext.window.MessageBox', {});
+ 
 
 //全局Controller路径配置
 var globalFix = "/data";
@@ -72,59 +73,59 @@ GlobalConfig.Controllers = {
         destroy: '/data/TestGrid.json',
     },
 
-    Heartbeat: 'login/heartbeat',//'/login/heartbeat.json', //心跳
+    Heartbeat: 'login/heartbeat', //'/login/heartbeat.json', //心跳
 
     User: { //用户登录相关
         GetCurrUserInfo: '/login/ajaxLogin', //'/data/login.json',
         CheckUserPassword: '/CheckUserPassword111',
-        UserLoginOut: '/login/logout'//'/data/UserLoginOut.json'
+        UserLoginOut: '/login/logout' //'/data/UserLoginOut.json'
     },
     UserGrid: { //用户表
 
     },
     CustomerGrid: { //客户表
         create: globalFix + '/CustomerGrid.json',
-        read: 'customer/getList',//globalFix + '/CustomerGrid.json',
+        read: 'customer/getList', //globalFix + '/CustomerGrid.json',
         update: globalFix + '/CustomerGrid.json',
         destroy: globalFix + '/CustomerGrid.json',
         loadRuleCount: globalFix + '/loadRuleCount.json',
-        addCustomer: '/customer/add',//globalFix + '/AddCustomer.json',
-        updateCustomer:'customer/update', 
-        addCustomerRent: '/customerRent/add',//globalFix + '/addCustomerRent.php',
-        addCustomerRule: 'customerExpressRule/addRule',//globalFix + '/AddCustomerRule.php',
-        delCustomerRule: 'customerExpressRule/deleteRule',//globalFix + '/DelCustomerRule.php',
+        addCustomer: '/customer/add', //globalFix + '/AddCustomer.json',
+        updateCustomer: 'customer/update',
+        addCustomerRent: '/customerRent/add', //globalFix + '/addCustomerRent.php',
+        addCustomerRule: 'customerExpressRule/addRule', //globalFix + '/AddCustomerRule.php',
+        delCustomerRule: 'customerExpressRule/deleteRule', //globalFix + '/DelCustomerRule.php',
         delCustomer: globalFix + '/DelCustomer.json',
-        GetCustomerRuleByRentId: 'customerExpressRule/countProvinceRule',//globalFix + '/GetCustomerRuleByRentId.json',
-        getCustomerRule: 'customerExpressRule/show',//globalFix + '/GetCustomerRule.json',
+        GetCustomerRuleByRentId: 'customerExpressRule/countProvinceRule', //globalFix + '/GetCustomerRuleByRentId.json',
+        getCustomerRule: 'customerExpressRule/show', //globalFix + '/GetCustomerRule.json',
         uploadCustomerExcel: globalFix + '/UploadCustomerExcel.json'
     },
-    Customer_numberGrid:{
-        create: 'customerNumber/add',//globalFix + '/Customer_numberGridadd',
+    Customer_numberGrid: {
+        create: 'customerNumber/add', //globalFix + '/Customer_numberGridadd',
         read: 'customerNumber/getList', //globalFix + '/Customer_numberGrid.json',
         update: 'customerNumber/update',
         destroy: 'customerNumber/delete'
     },
     CustomerRentGrid: { //合同
-        create: '/customerRent/add',//globalFix + '/CustomerRentGrid.json',
-        read: '/customerRent/getList',//globalFix + '/CustomerRentGrid.json',
+        create: '/customerRent/add', //globalFix + '/CustomerRentGrid.json',
+        read: '/customerRent/getList', //globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json'
     },
-    ExpressPanel:{
-        GetCustomer_numberCount: 'expressRule/countProvinceRule',//globalFix + '/GetCustomer_numberCount.json',
-        GetExpressRule:'expressRule/show',//globalFix + '/GetExpressRule.json',
-        delExpressRule:'expressRule/deleteRule',//'delExpressRule',
-        addExpressRule:'expressRule/addRule'//'addExpressRule'
+    ExpressPanel: {
+        GetCustomer_numberCount: 'expressRule/countProvinceRule', //globalFix + '/GetCustomer_numberCount.json',
+        GetExpressRule: 'expressRule/show', //globalFix + '/GetExpressRule.json',
+        delExpressRule: 'expressRule/deleteRule', //'delExpressRule',
+        addExpressRule: 'expressRule/addRule' //'addExpressRule'
     },
     Tracking_numberGrid: { //票号 票据
         create: globalFix + '/traking_numberGrid.json',
-        read: 'trackingNumber/getList',//globalFix + '/traking_numberGrid.json',
+        read: 'trackingNumber/getList', //globalFix + '/traking_numberGrid.json',
         update: globalFix + '/traking_numberGrid.json',
         destroy: globalFix + '/traking_numberGrid.json',
-        uploadExcel: '/uploadTrackingNumber/upload',//globalFix + '/uploadExcel',
-        outPutExcel:globalFix + '/outPutExcel',
-        translateExpress:'/trackingNumber/countPrice',
-        translateCost:'/trackingNumber/countPrice',
+        uploadExcel: '/uploadTrackingNumber/upload', //globalFix + '/uploadExcel',
+        outPutExcel: globalFix + '/outPutExcel',
+        translateExpress: '/trackingNumber/countPrice',
+        translateCost: '/trackingNumber/countPrice',
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
 
@@ -150,7 +151,7 @@ GlobalConfig.RegexController = {
     //3位数字
     regexAreaCode: /^\d{3}$/,
     //金额验证，两位小数 8:2
-    regexMoney2Fixed: /^[0-9]\d{0,7}((\.)?\d{1,2})?$/, 
+    regexMoney2Fixed: /^[0-9]\d{0,7}((\.)?\d{1,2})?$/,
     //重量验证，3位小数
     regexMoney3Fixed: /^[0-9]\d{0,8}((\.)?\d{1,3})?$/
 };
@@ -245,4 +246,4 @@ GlobalConfig.Province = {
 };
 
 //全局缓存记忆状态
-GlobalConfig.globalStatus={};
+GlobalConfig.globalStatus = {};

@@ -110,8 +110,7 @@ function createPlugin() {
                 //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
                 //Ext.Store 
 
-                var sm = e.grid.getSelectionModel();
-                console.log('23');
+                var sm = e.grid.getSelectionModel(); 
                 e.store.sync({
                     success: function(batch, action) { 
                         e.store.load({
@@ -350,7 +349,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
     iconCls: '',
     record: false,
     //border: false,
-    height: 700,
+    height: 600,
     width: 830,
     bodyPadding: 10,
     layout: 'fit',
