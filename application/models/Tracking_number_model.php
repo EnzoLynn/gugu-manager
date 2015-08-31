@@ -26,8 +26,9 @@ class Tracking_number_model extends CI_Model {
         return $query->first_row();
     }
 
-    function getTrackingNumbers($data)
-    {
+    function getTrackingNumbers($data) {
+        $arrive_time_start = $data['arrive_time_start'];
+        $arrive_time_end = $data['arrive_time_end'];
         $data = array(
             'page' => (int)$data['page'],
             'limit' => (int)$data['limit'],
@@ -37,8 +38,12 @@ class Tracking_number_model extends CI_Model {
         );
 
         $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
-        if ($data['filter']) {
-            $this->db->like($data['filter']);
+        $this->db->like($data['filter']);
+        if ($arrive_time_start) {
+            $this->db->where("arrive_time >= '$arrive_time_start 00:00:00'");
+        }
+        if ($arrive_time_end) {
+            $this->db->where("arrive_time <= '$arrive_time_end 23:59:59'");
         }
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('tracking_number');
@@ -46,9 +51,14 @@ class Tracking_number_model extends CI_Model {
     }
 
     function getTrackingNumbersTotal($data){
-        $data = array(
-            'filter' => $data['filter']
-        );
+        $arrive_time_start = $data['arrive_time_start'];
+        $arrive_time_end = $data['arrive_time_end'];
+        if ($arrive_time_start) {
+            $this->db->where("arrive_time >= '$arrive_time_start 00:00:00'");
+        }
+        if ($arrive_time_end) {
+            $this->db->where("arrive_time <= '$arrive_time_end 23:59:59'");
+        }
         $this->db->like($data['filter']);
         return $this->db->count_all_results('tracking_number');
     }

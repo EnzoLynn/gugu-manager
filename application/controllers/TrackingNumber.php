@@ -28,6 +28,9 @@ class TrackingNumber extends AdminController {
 
     public function getList() {
         $data = array(
+            'arrive_time_start' => $this->input->post('arrive_time_start'),
+            'arrive_time_end' => $this->input->post('arrive_time_end'),
+
             'page' => (int)$this->input->post('page'),
             'limit'=> (int)$this->input->post('limit'),
             'sort' => $this->input->post('sort'),
