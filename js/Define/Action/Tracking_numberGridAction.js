@@ -540,6 +540,7 @@ ActionManager.translateError = function(response) {
     var items = [];
     Ext.Array.each(response.data, function(item, index) {
         items.push({
+            fieldLabel:item.tracking_number,
             value: item.msg
         });
     });
@@ -556,7 +557,8 @@ ActionManager.translateError = function(response) {
             xtype: 'displayfield',
             labelAlign: 'right',
             labelWidth: 160,
-            width: 750
+            width: 750,             
+            labelClsExtra:"labelCanSelect"
         },
         items: items,
         buttonAlign: 'center',
