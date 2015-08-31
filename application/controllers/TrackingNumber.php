@@ -70,7 +70,7 @@ class TrackingNumber extends AdminController {
         $type = $this->input->get_post('type');
         //计算成本
         if ($type == 'cost') {
-            $msg = $this->tracking_number_model->validateCost('cost');
+            $msg = $this->tracking_number_model->validateCost();
             if ($msg) {
                 $json = array(
                     'success' => false,
@@ -81,9 +81,20 @@ class TrackingNumber extends AdminController {
                 );
                 echo json_encode($json);
                 exit;
+            } else {
+                $this->tracking_number_model->countCost();
+                $json = array(
+                    'success' => true,
+                    'data' => [],
+                    'total' => 0,
+                    'msg' => '成功',
+                    'code' => '01'
+                );
+                echo json_encode($json);
+                exit;
             }
         } else if ($type == 'income') {
-            $msg = $this->tracking_number_model->validateCost('income');
+            $msg = $this->tracking_number_model->validateIncome();
             if ($msg) {
                 $json = array(
                     'success' => false,
@@ -91,6 +102,17 @@ class TrackingNumber extends AdminController {
                     'total' => count($msg),
                     'msg' => '有错误',
                     'code' => '89'
+                );
+                echo json_encode($json);
+                exit;
+            } else {
+                $this->tracking_number_model->countIncome();
+                $json = array(
+                    'success' => true,
+                    'data' => [],
+                    'total' => 0,
+                    'msg' => '成功',
+                    'code' => '01'
                 );
                 echo json_encode($json);
                 exit;

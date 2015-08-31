@@ -62,9 +62,8 @@ class Express_rule_model extends CI_Model {
         $province_code = $express_point['province_code'];
 
         $rule = $this->getOneByProvince($express_id, $province_code);
-        $rule_id = $rule['rule_id'];
 
-        $this->db->where('rule_id', $rule_id);
+        $this->db->where('rule_id', $rule['rule_id']);
         $this->db->where("$weight BETWEEN weight_min AND weight_max");
         $this->db->order_by('sort_order', 'ASC');
         $query = $this->db->get('express_rule_item');

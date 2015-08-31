@@ -70,4 +70,26 @@ class Customer_express_rule_model extends CI_Model {
         $this->db->where('rule_id', $rule_id);
         return $this->db->delete('customer_express_rule');
     }
+
+    //通过重量得到规则
+    function getItemByWeight($customer_rent_id, $express_point_code, $weight) {
+        $this->db->where('express_point_code', $express_point_code);
+        $query = $this->db->get('express_point');
+        $express_point = $query->first_row();
+        $province_code = $express_point['province_code'];
+
+        $rule = $this->getOneByRent($customer_rent_id, $province_code);
+        if ($rule['price_type'] == 0) {
+            return $rule;
+        } else {
+            $this->db->where('rule_id', $rule['rule_id']);
+            $this->db->where("$weight BETWEEN weight_min AND weight_max");
+            $this->db->order_by('sort_order', 'ASC');
+            $query = $this->db->get('customer_express_rule_item');
+            $rule_item = $query->first_row();
+            $rule_item['price_type'] = 1;
+            return $rule_item;
+        }
+        return FALSE;
+    }
 }
