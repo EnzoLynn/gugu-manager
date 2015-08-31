@@ -550,6 +550,7 @@ ActionManager.translateError = function(response) {
         maxWidth: 800,
         maxHeight: 600,
         title: response.msg,
+        iconCls:'error',
         bodyPadding: 20,
         autoScroll: true,
         bodyBorder: false,

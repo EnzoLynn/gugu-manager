@@ -53,7 +53,7 @@
   background-image: url(../image/workFlow/task-loading.png) !important;
 }
 .labelCanSelect {
-  color: red;
+  color: blue;
   moz-user-select: text;
   -moz-user-select: text;
   -o-user-select: text;
@@ -61,4 +61,7 @@
   -webkit-user-select: text;
   -ms-user-select: text;
   user-select: text;
+}
+.error {
+  background-image: url(../image/grid/cancelFax.png) !important;
 }
