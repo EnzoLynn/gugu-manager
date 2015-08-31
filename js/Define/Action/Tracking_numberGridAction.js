@@ -347,6 +347,7 @@ ActionManager.searchTracking_number = function(traget) {
             defaultFocus: 'tracking_number',
             iconCls: 'search',
             record: false,
+            formVals:'',
             height: 300,
             width: 500,
             layout: 'vbox',
@@ -426,6 +427,14 @@ ActionManager.searchTracking_number = function(traget) {
                     }]
                 }]
             }],
+            listeners: {
+                show: function(win) {
+                    var form = win.down('#formId').getForm();
+                    if (win.formVals!= '') {
+                        form.setValues(win.formVals);
+                    }; 
+                }
+            },
             buttons: [{
                 text: '重置',
                 handler: function() {
@@ -452,6 +461,8 @@ ActionManager.searchTracking_number = function(traget) {
                     if (!form.isValid()) {
                         return;
                     }
+                    //保存状态
+                    win.formVals = form.getValues();
                     //名称
                     var tracking_number = win.down('#tracking_number').getValue();
                     if (tracking_number != '') {
@@ -493,8 +504,8 @@ ActionManager.searchTracking_number = function(traget) {
                         searchFlag = true;
                     } else {
                         extraParams.DateFilter = false;
-                        extraParams.arrive_time_start  = '';
-                        extraParams.arrive_time_end  = '';
+                        extraParams.arrive_time_start = '';
+                        extraParams.arrive_time_end = '';
                     }
 
                     if (searchFlag) {
@@ -513,7 +524,9 @@ ActionManager.searchTracking_number = function(traget) {
                     me.up('window').close();
                 }
             }]
-        }).show();
+        });
+
+        WindowManager.Tracking_numberWin.show();
     }
 
 };

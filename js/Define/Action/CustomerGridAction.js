@@ -199,9 +199,18 @@ ActionManager.searchCustomer = function(traget) {
             defaultFocus: 'customer_nameItemId',
             iconCls: 'search',
             record: false,
+            formVals:'',
             height: 200,
             width: 500,
             layout: 'vbox',
+            listeners: {
+                show: function(win) {
+                    var form = win.down('#formId').getForm();
+                    if (win.formVals!= '') {
+                        form.setValues(win.formVals);
+                    }; 
+                }
+            },
             items: [{
                 xtype: 'form',
                 itemId: 'formId',
@@ -268,6 +277,8 @@ ActionManager.searchCustomer = function(traget) {
                     if (!form.isValid()) {
                         return;
                     }
+                    //保存状态
+                    win.formVals = form.getValues();
                     //名称
                     var customer_name = win.down('#customer_nameItemId').getValue();
                     if (customer_name != '') {
