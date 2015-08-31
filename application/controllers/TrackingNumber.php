@@ -27,7 +27,7 @@ class TrackingNumber extends AdminController {
     }
 
     public function downloadExcel() {
-
+        print_r($this->input->get());exit;
     }
 
     public function getList() {
