@@ -239,9 +239,10 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
             target.loadGrid();
+
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                Ext.Msg.alert('登录失败', response.msg);
+                ActionManager.translateError(response);
             }
         }, true);
     },
@@ -263,7 +264,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             target.loadGrid();
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                Ext.Msg.alert('登录失败', response.msg);
+                 ActionManager.translateError(response);
             }
         }, true);
     },
@@ -274,7 +275,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
 ActionManager.refreshTracking_number = function(traget) {
     traget.loadGrid();
 };
-
+//导入excel错误
 ActionManager.showUpLoadExcelError = function(obj) {
     var items = [];
 
@@ -347,7 +348,7 @@ ActionManager.searchTracking_number = function(traget) {
             defaultFocus: 'tracking_number',
             iconCls: 'search',
             record: false,
-            formVals:'',
+            formVals: '',
             height: 300,
             width: 500,
             layout: 'vbox',
@@ -430,9 +431,9 @@ ActionManager.searchTracking_number = function(traget) {
             listeners: {
                 show: function(win) {
                     var form = win.down('#formId').getForm();
-                    if (win.formVals!= '') {
+                    if (win.formVals != '') {
                         form.setValues(win.formVals);
-                    }; 
+                    };
                 }
             },
             buttons: [{
@@ -530,3 +531,40 @@ ActionManager.searchTracking_number = function(traget) {
     }
 
 };
+
+
+//计算错误 提示
+ActionManager.translateError = function(response) {
+    var items = [];
+    Ext.Array.each(response.data, function(item, index) {
+        items.push({
+            value: item.msg
+        });
+    });
+     
+    Ext.create('Ext.window.Window', {
+        modal: true,
+        maxWidth: 800,
+        maxHeight: 600,
+        title: response.msg,
+        bodyPadding:20,
+        autoScroll: true,
+        bodyBorder: false,
+        defaults: {
+            xtype: 'displayfield',
+            labelAlign: 'right',
+            labelWidth: 160,
+            width: 750 
+        },
+        items: items,
+        buttonAlign: 'center',
+        buttons: [{
+            text: '关闭',
+            handler: function(com) {
+
+                com.up('window').close();
+            }
+        }]
+
+    }).show();
+}

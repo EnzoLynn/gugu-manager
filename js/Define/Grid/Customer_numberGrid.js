@@ -110,20 +110,18 @@ function createPlugin() {
                 //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
                 //Ext.Store 
 
-                var sm = e.grid.getSelectionModel();
-                //console.log('23');
+                var sm = e.grid.getSelectionModel(); 
                 e.store.sync({
-                    success: function(batch, action) {
-                        //e.record.commit();
-                        //console.log('222');
-                        //store.load
-                        if (e.store.getCount() > 0) {
-                            sm.select(0);
-                        }
-                        //e.grid.loadGrid();
-
+                    success: function(batch, action) { 
+                        e.store.load({
+                            callback: function(records, operation, success) {
+                                if (e.store.getCount() > 0) {
+                                    sm.select(0);
+                                }
+                            }
+                        }); 
                     },
-                    failure: function(batch, action) {
+                    failure: function(batch, action) { 
                         if (batch.hasException) {
                             Ext.Msg.alert('失败', batch.exceptions[0].error);
                         } else {
@@ -351,7 +349,7 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
     iconCls: '',
     record: false,
     //border: false,
-    height: 700,
+    height: 600,
     width: 830,
     bodyPadding: 10,
     layout: 'fit',
