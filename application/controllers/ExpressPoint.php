@@ -11,6 +11,7 @@ class ExpressPoint extends AdminController {
 
     public function __construct() {
         parent::__construct();
+        $this->load->model('area_model');
         $this->load->model('express_company_model');
         $this->load->model('express_point_model');
     }
@@ -29,6 +30,10 @@ class ExpressPoint extends AdminController {
             'filter' => json_decode($this->input->post('filter'))
         );
         $express_points = $this->express_point_model->getPoints(1);
+        foreach ($express_points as $k => $v) {
+            $province = $this->area_model($v['province_code']);
+            $express_points[$k]['province_name'] = $province['area_name'];
+        }
 
         $express_points_total = $this->express_point_model->getPointsTotal(1);
 
