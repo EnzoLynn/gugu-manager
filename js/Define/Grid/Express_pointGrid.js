@@ -133,9 +133,7 @@ GridManager.CreateExpress_pointGrid = function(param) {
         text: '省份代码',
         dataIndex: 'province_code',
         renderer: GlobalFun.UpdateRecord,
-        width: 100,
-        groupable: false,
-        sortable: false
+        width: 100 
     }, {
         text: '省份名称',
         dataIndex: 'province_name',
