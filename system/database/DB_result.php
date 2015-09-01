@@ -302,42 +302,6 @@ class CI_DB_result {
         return array();
     }
 
-	// --------------------------------------------------------------------
-    /**
-     * 单行查询，返回数组
-     * @return	array
-     */
-    public function result_one_array()
-    {
-        $this->result_array = $this->result_array();
-
-        if (count($this->result_array) > 0)
-        {
-            return $this->result_array[0];
-        }
-
-        // In the event that query caching is on, the result_id variable
-        // will not be a valid resource so we'll simply return an empty
-        // array.
-        if ( ! $this->result_id OR $this->num_rows === 0)
-        {
-            return array();
-        }
-
-        if (($c = count($this->result_object)) > 0)
-        {
-            $this->result_array[0] = (array) $this->result_object[0];
-            return $this->result_array[0];
-        }
-
-        is_null($this->row_data) OR $this->data_seek(0);
-        while ($row = $this->_fetch_assoc())
-        {
-            $this->result_array[] = $row;
-        }
-
-        return array();
-    }
 	/**
 	 * Query result. "array" version.
 	 *
@@ -752,11 +716,6 @@ class CI_DB_result {
         $fields = $this->list_fields();
         @$one = $result[0][$fields[0]];
         return $one;
-    }
-    //查询一行
-    public function fetch_row()
-    {
-        return $this->result_one_array();
     }
     /**
      * 返回一列
