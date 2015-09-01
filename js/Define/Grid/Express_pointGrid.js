@@ -54,7 +54,7 @@ Ext.define('chl.gird.Express_pointGrid', {
                 labelAlign: 'right',
                 labelWidth: 80,
                 xtype: 'searchfield',
-                paramName: 'Express_point_name',
+                paramName: 'express_point_name',
                 //paramObject: true,
                 //minLength: 6,
                 //minLengthText: '请输入6位编码',
@@ -133,9 +133,7 @@ GridManager.CreateExpress_pointGrid = function(param) {
         text: '省份代码',
         dataIndex: 'province_code',
         renderer: GlobalFun.UpdateRecord,
-        width: 100,
-        groupable: false,
-        sortable: false
+        width: 100 
     }, {
         text: '省份名称',
         dataIndex: 'province_name',
