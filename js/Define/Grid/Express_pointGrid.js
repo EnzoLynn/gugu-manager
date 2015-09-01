@@ -267,6 +267,7 @@ Ext.define('chl.Grid.AddUpdateExpress_pointWin', {
                         req: 'dataset',
                         dataname: 'AddUpdateExpress_point', // dataset名称，根据实际情况设置,数据库名
                         restype: 'json',
+                        express_id:1,
                         point_id: w.record ? w.record.data.point_id : 0,
                         action: w.action,
                         sessiontoken: GlobalFun.getSeesionToken()

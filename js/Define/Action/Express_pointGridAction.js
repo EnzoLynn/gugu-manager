@@ -225,7 +225,7 @@ ActionManager.searchExpress_point = function(traget) {
                         searchFlag = true;
                     } else {
                         GlobalFun.GridSearchInitFun('express_point_name', true, store, false);
-                    }
+                    } 
                     //手机号
                     var express_point_code = win.down('#express_point_codeItemId').getValue();
                     if (express_point_code != '') {
