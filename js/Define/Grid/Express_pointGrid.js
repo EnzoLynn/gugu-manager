@@ -54,7 +54,7 @@ Ext.define('chl.gird.Express_pointGrid', {
                 labelAlign: 'right',
                 labelWidth: 80,
                 xtype: 'searchfield',
-                paramName: 'Express_point_name',
+                paramName: 'express_point_name',
                 //paramObject: true,
                 //minLength: 6,
                 //minLengthText: '请输入6位编码',
