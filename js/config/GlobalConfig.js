@@ -61,7 +61,7 @@ GlobalConfig.HeartbeatRunner = new Ext.util.TaskRunner();
 //全局消息对话框
 //对话框
 GlobalConfig.newMessageBox = Ext.create('Ext.window.MessageBox', {});
- 
+
 
 //全局Controller路径配置
 var globalFix = "/data";
@@ -123,11 +123,17 @@ GlobalConfig.Controllers = {
         update: globalFix + '/traking_numberGrid.json',
         destroy: globalFix + '/traking_numberGrid.json',
         uploadExcel: '/uploadTrackingNumber/upload', //globalFix + '/uploadExcel',
-        outPutExcel: '/trackingNumber/downloadExcel',//globalFix + '/outPutExcel',
+        outPutExcel: '/trackingNumber/downloadExcel', //globalFix + '/outPutExcel',
         translateExpress: '/trackingNumber/countPrice',
         translateCost: '/trackingNumber/countPrice',
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
+    Express_pointGrid: {
+        create:'expressPoint/add',
+        read:'/expressPoint/getList',
+        update:'/expressPoint/update',
+        destroy: '/expressPoint/delete',
+    }
 
 };
 //全局正则表达式
