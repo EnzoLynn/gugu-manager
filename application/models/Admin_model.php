@@ -30,7 +30,7 @@ class Admin_model extends CI_Model{
             'admin_pwd'  => $admin_pwd
         );
         $query = $this->db->select('admin_id,admin_name,is_admin')->get_where('admin', $data);
-        $admin = $query->fetch_row();
+        $admin = $query->first_row();
         if($admin) {
             $this->setLogin($admin_name);
         }
@@ -42,7 +42,7 @@ class Admin_model extends CI_Model{
             'admin_name' => $admin_name
         );
         $query = $this->db->select('admin_id,admin_name,is_admin')->get_where('admin', $data);
-        $admin = $query->fetch_row();
+        $admin = $query->first_row();
 
         $this->CI->session->set_userdata($admin);
     }

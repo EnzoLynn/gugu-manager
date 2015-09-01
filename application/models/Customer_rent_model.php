@@ -16,7 +16,7 @@ class Customer_rent_model extends CI_Model {
         if($customer_rent_id) {
             $this->db->where('customer_rent_id', $customer_rent_id);
             $query = $this->db->get('customer_rent');
-            $customerRent = $query->fetch_row();
+            $customerRent = $query->first_row();
             return $customerRent;
         }else{
             return array();
@@ -28,7 +28,7 @@ class Customer_rent_model extends CI_Model {
         $date = date('Y-m-d', strtotime($date));
         $this->db->where("'$date' between date_start and date_end");
         $query = $this->db->get('customer_rent');
-        $customerRent = $query->fetch_row();
+        $customerRent = $query->first_row();
         return $customerRent;
     }
 

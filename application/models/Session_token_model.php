@@ -35,7 +35,7 @@ class Session_token_model extends CI_Model {
         $this->db->select('session_token,admin_id,admin_name,expires_time');
         $this->db->where($data);
         $query = $this->db->get('session_token');
-        $session = $query->fetch_row();
+        $session = $query->first_row();
 
         return $session;
     }
