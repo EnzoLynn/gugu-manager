@@ -77,5 +77,13 @@ class ExpressPoint extends AdminController {
         foreach ($point_ids as $point_id) {
             $this->express_point_model->delete($point_id);
         }
+        $json = array(
+            'success' => true,
+            'data' => [],
+            'total' => count($point_ids),
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
     }
 }
