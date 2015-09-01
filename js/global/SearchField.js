@@ -1,45 +1,59 @@
 Ext.define('WS.lib.SearchField', {
     extend: 'Ext.form.field.Trigger',
-    
+
     alias: 'widget.searchfield',
-    
+
     trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-    
+
     trigger2Cls: Ext.baseCSSPrefix + 'form-search-trigger',
-    
-    hasSearch : false,
+
+    hasSearch: false,
     paramName: 'FullName',
     paramObject: false,
     paramNameArr: [],
-    
-    initComponent: function(){
-    	var me = this;
+
+    initComponent: function() {
+        var me = this;
         me.callParent(arguments);
-        me.on('specialkey', function(f, e){
-            if(e.getKey() == e.ENTER){
+        me.on('specialkey', function(f, e) {
+            if (e.getKey() == e.ENTER) {
                 this.onTrigger2Click();
             }
         }, me);
     },
-    
-    boxready: function(){
-    	var me = this;
-        me.callParent();    
-        me.triggerEl.item(0).up('td').setWidth(0);   
-        me.triggerEl.item(0).setDisplayed('none');  
+
+    boxready: function() {
+        var me = this;
+        me.callParent();
+        me.triggerEl.item(0).up('td').setWidth(0);
+        me.triggerEl.item(0).setDisplayed('none');
     },
-    
-    onTrigger1Click : function(){
+    setSearchStatus: function(search) {
+        var me = this;
+        if (search) {
+            me.hasSearch = true;
+            me.triggerEl.item(0).up('td').setWidth(17);
+            me.triggerEl.item(0).setDisplayed('block');
+            me.doComponentLayout();
+        } else {
+            me.hasSearch = false;
+            me.triggerEl.item(0).up('td').setWidth(0);
+            me.triggerEl.item(0).setDisplayed('none');
+            me.doComponentLayout();
+        }
+
+    },
+    onTrigger1Click: function() {
         var me = this,
             store = me.store,
             proxy = store.getProxy(),
             val;
-            
+
         if (me.hasSearch) {
             me.setValue('');
             proxy.extraParams.filter = Ext.JSON.decode(proxy.extraParams.filter);
             if (me.paramObject) {
-                Ext.Array.each(me.paramNameArr, function (key) {
+                Ext.Array.each(me.paramNameArr, function(key) {
                     delete proxy.extraParams.filter[key];
                     //ÒÆ³ýfilterMap
                     store.filterMap.removeAtKey(key);
@@ -49,35 +63,35 @@ Ext.define('WS.lib.SearchField', {
                 //ÒÆ³ýfilterMap
                 store.filterMap.removeAtKey(me.paramName);
             }
-            
+
             proxy.extraParams.filter = Ext.JSON.encode(proxy.extraParams.filter);
             //proxy.extraParams[me.paramName] = '';
             proxy.extraParams.start = 0;
-	        proxy.extraParams.refresh = 1;
-	        store.load();
-	        proxy.extraParams.refresh = null;
-            me.hasSearch = false;   
-            me.triggerEl.item(0).up('td').setWidth(0);         
+            proxy.extraParams.refresh = 1;
+            store.load();
+            proxy.extraParams.refresh = null;
+            me.hasSearch = false;
+            me.triggerEl.item(0).up('td').setWidth(0);
             me.triggerEl.item(0).setDisplayed('none');
             me.doComponentLayout();
-        } 
-        
+        }
+
     },
 
-    onTrigger2Click : function(){
+    onTrigger2Click: function() {
         var me = this,
             store = me.store,
             proxy = store.getProxy(),
             value = me.getValue();
-            
-        if (value.length < 1 ) {
+
+        if (value.length < 1) {
             me.onTrigger1Click();
             return;
         }
         if (me.isValid()) {
             proxy.extraParams.filter = Ext.JSON.decode(proxy.extraParams.filter);
             if (me.paramObject) {
-                Ext.Array.each(me.paramNameArr, function (key) {
+                Ext.Array.each(me.paramNameArr, function(key) {
                     var tempObj = {};
                     tempObj[me.paramName] = value;
                     proxy.extraParams.filter[key] = tempObj;
@@ -97,7 +111,7 @@ Ext.define('WS.lib.SearchField', {
                     store.filterMap.replace(me.paramName, value);
                 }
             }
-           
+
 
             proxy.extraParams.filter = Ext.JSON.encode(proxy.extraParams.filter);
             proxy.extraParams.start = 0;
@@ -105,11 +119,11 @@ Ext.define('WS.lib.SearchField', {
             store.load();
             proxy.extraParams.refresh = null;
         }
-      
-       
-        me.hasSearch = true;         
+
+
+        me.hasSearch = true;
         me.triggerEl.item(0).up('td').setWidth(17);
         me.triggerEl.item(0).setDisplayed('block');
-        me.doComponentLayout();   
+        me.doComponentLayout();
     }
 });

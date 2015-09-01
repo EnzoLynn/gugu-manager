@@ -135,7 +135,17 @@ ActionManager.searchExpress_point = function(traget) {
                     var form = win.down('#formId').getForm();
                     if (win.formVals != '') {
                         form.setValues(win.formVals);
-                    };
+                    }
+                    //是否有快速搜索 相同项目  
+                    var searchfield = traget.down('#Express_pointGridSearchfieldId');
+                    if (searchfield && searchfield.paramName) {
+                        var item = win.down("textfield[name=" + searchfield.paramName + "]");
+                        if (item) {
+                            var store = traget.getStore();
+                            var filter = Ext.JSON.decode(store.getProxy().extraParams.filter);
+                            item.setValue(filter[searchfield.paramName]);
+                        }
+                    }
                 }
             },
             items: [{
@@ -225,7 +235,13 @@ ActionManager.searchExpress_point = function(traget) {
                         searchFlag = true;
                     } else {
                         GlobalFun.GridSearchInitFun('express_point_name', true, store, false);
-                    } 
+                    }
+                    //是否有快速搜索 相同项目  
+                    var Searchfield = traget.down('#Express_pointGridSearchfieldId');
+                    if (Searchfield) {
+                        Searchfield.setValue(express_point_name);
+                        Searchfield.setSearchStatus(express_point_name != '' ? true : false);
+                    };
                     //手机号
                     var express_point_code = win.down('#express_point_codeItemId').getValue();
                     if (express_point_code != '') {
@@ -278,7 +294,7 @@ ActionManager.delExpress_point = function(traget) {
     Ext.Array.each(records, function(rec) {
         ids.push(rec.data.point_id);
     });
-    var store = traget.getStore(); 
+    var store = traget.getStore();
     GlobalConfig.newMessageBox.show({
         title: '提示',
         msg: '您确定要删除选定的网点吗？',
@@ -289,11 +305,11 @@ ActionManager.delExpress_point = function(traget) {
                 //获取当前登录用户信息
                 var param = {
                     sessiontoken: GlobalFun.getSeesionToken(),
-                    point_ids:ids.join()
+                    point_ids: ids.join()
                 };
                 // 调用
                 WsCall.pcall(GlobalConfig.Controllers.Express_pointGrid.destroy, 'Express_pointGridDestroy', param, function(response, opts) {
-                   (new Ext.util.DelayedTask(function() {
+                    (new Ext.util.DelayedTask(function() {
                         store.load();
                     })).delay(500);
                 }, function(response, opts) {
@@ -302,7 +318,7 @@ ActionManager.delExpress_point = function(traget) {
                         Ext.Msg.alert('登录失败', response.msg);
                     }
                 }, true);
-               
+
             }
         },
         icon: Ext.MessageBox.QUESTION

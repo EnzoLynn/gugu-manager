@@ -198,7 +198,7 @@ Ext.define('chl.Grid.AddUpdateExpress_pointWin', {
                     if (e.getKey() == e.ENTER) {
                         var win = me.up('window');
                         win.down('#submit').fireHandler(e);
-                    }
+                    } 
                 }
             }
         },

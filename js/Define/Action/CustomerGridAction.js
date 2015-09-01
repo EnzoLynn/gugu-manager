@@ -199,17 +199,28 @@ ActionManager.searchCustomer = function(traget) {
             defaultFocus: 'customer_nameItemId',
             iconCls: 'search',
             record: false,
-            formVals:'',
+            formVals: '',
             height: 200,
             width: 500,
             layout: 'vbox',
             listeners: {
                 show: function(win) {
                     var form = win.down('#formId').getForm();
-                    if (win.formVals!= '') {
+                    if (win.formVals != '') {
                         form.setValues(win.formVals);
-                    }; 
+                    }
+                    //是否有快速搜索 相同项目  
+                    var searchfield = traget.down('#CustomerGridSearchfieldId');
+                    if (searchfield && searchfield.paramName) {
+                        var item = win.down("textfield[name=" + searchfield.paramName + "]");
+                        if (item) {
+                            var store = traget.getStore();
+                            var filter = Ext.JSON.decode(store.getProxy().extraParams.filter); 
+                            item.setValue(filter[searchfield.paramName]); 
+                        }
+                    }
                 }
+
             },
             items: [{
                 xtype: 'form',
@@ -233,7 +244,7 @@ ActionManager.searchCustomer = function(traget) {
                     enableKeyEvents: true,
                     listeners: {
                         keydown: function(field, e, opts) {
-                            var me = this; 
+                            var me = this;
                             if (e.getKey() == e.ENTER) {
 
                                 var win = me.up('window');
@@ -288,6 +299,13 @@ ActionManager.searchCustomer = function(traget) {
                     } else {
                         GlobalFun.GridSearchInitFun('customer_name', true, store, false);
                     }
+                    //是否有快速搜索 相同项目  
+                    var Searchfield = traget.down('#CustomerGridSearchfieldId');
+                    if (Searchfield) {
+                        Searchfield.setValue(customer_name);
+                        
+                        Searchfield.setSearchStatus(customer_name!=''? true:false);
+                    };
                     //手机号
                     var mobile = win.down('#mobileItemId').getValue();
                     if (mobile != '') {
