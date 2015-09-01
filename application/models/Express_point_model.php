@@ -34,7 +34,7 @@ class Express_point_model extends CI_Model {
         return $items;
     }
 
-    function getItemsTotal($express_id) {
+    function getPointsTotal($express_id) {
         $this->db->where('express_id', $express_id);
         return $this->db->count_all_results('express_point');
     }
