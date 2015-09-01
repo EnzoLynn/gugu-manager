@@ -106,33 +106,52 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
             return;
         }
         if (seles[0].data.id == "003") {
-            GlobalFun.TreeSelChangeGrid('CompanyPanel', GridManager.CompanyPanel, '快递公司', true);
+            GlobalFun.TreeSelChangeGrid('003_CompanyPanel', GridManager.CompanyPanel, '快递公司', true);
             return;
         }
-        if (seles[0].data.id == "0031") {
-            GlobalFun.TreeSelChangeGrid('ExpressPanel', GridManager.ExpressPanel, '各省规则', true);
-            var param = {
-                'express_id': seles[0].data.express_id,
-                sessiontoken: GlobalFun.getSeesionToken()
+        if (seles[0].data.id == "004") {
+            GlobalFun.TreeSelChangeGrid('004_CompanyPanel', GridManager.CompanyPanel, '快递公司', true);
+            return;
+        }
+        // if (seles[0].data.id == "003_1") {
+
+        // }
+        // 子节点
+        if (seles[0].data.id.indexOf('_') != -1) {
+            var childSelArr = seles[0].data.id.split('_');
+            //成本管理
+            if (childSelArr[0] == '003') {
+
+                GlobalFun.TreeSelChangeGrid('ExpressPanel', GridManager.ExpressPanel, '各省规则', true);
+                var param = {
+                    'express_id': seles[0].data.express_id,
+                    sessiontoken: GlobalFun.getSeesionToken()
+                };
+                // 调用
+                WsCall.call(GlobalConfig.Controllers.ExpressPanel.GetCustomer_numberCount, 'GetCustomer_numberCount', param, function(response, opts) {
+
+                    var data = response.data;
+
+
+                    Ext.Array.each(data, function(item, index, alls) {
+                        var temp = GridManager.ExpressPanel.down('#lbl' + item.province_code);
+                        temp.setText('现有规则:' + item.count);
+                    });
+                }, function(response, opts) {
+                    if (!GlobalFun.errorProcess(response.code)) {
+                        Ext.Msg.alert('失败', response.msg);
+                    }
+                }, true, false, GridManager.ExpressPanel.el);
+                return;
             };
-            // 调用
-            WsCall.call(GlobalConfig.Controllers.ExpressPanel.GetCustomer_numberCount, 'GetCustomer_numberCount', param, function(response, opts) {
+            //网点管理
+            if (childSelArr[0] == '004') {
+                if (childSelArr[1] == '1') {
+                    GlobalFun.TreeSelChangeGrid('Express_pointGrid', GridManager.Express_pointGrid, '圆通网点设置');
+                };
 
-                var data = response.data;
-
-
-                Ext.Array.each(data, function(item, index, alls) {
-                    var temp = GridManager.ExpressPanel.down('#lbl' + item.province_code);
-                    temp.setText('现有规则:' + item.count);
-                });
-            }, function(response, opts) {
-                if (!GlobalFun.errorProcess(response.code)) {
-                    Ext.Msg.alert('失败', response.msg);
-                }
-            }, true, false, GridManager.ExpressPanel.el);
-            return;
-        }
-
+            };
+        };
 
         //业务管理
         // if (seles[0].data.id == 2) {

@@ -19,7 +19,18 @@
              text: "成本管理",
              expanded: true,
              children: [{
-                 id: '0031',
+                 id: '003_1',
+                 express_id:1,
+                 iconCls:'expressGrid',
+                 text: '圆通快递',
+                 leaf: true
+             }]
+         }, {
+             id: "004",
+             text: "网点管理",
+             expanded: true,
+             children: [{
+                 id: '004_1',
                  express_id:1,
                  iconCls:'expressGrid',
                  text: '圆通快递',

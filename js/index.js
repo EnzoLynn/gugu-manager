@@ -72,9 +72,18 @@ Ext.onReady(function() {
             needLoad: false
         });
         GridManager.SetTracking_numberGridSelectionChangeEvent();
+        //创建快递网点
+        //Tracking_number
+        GridManager.CreateExpress_pointGrid({
+            needLoad: false
+        });
+        GridManager.SetExpress_pointGridSelectionChangeEvent();
+
         //成本默认容器
         GridManager.CreateExpressPanel();
-        GridManager.CreateCompanyPanel();
+        GridManager.CreateCompanyPanel_Cost();
+         //成本默认容器 
+        GridManager.CreateCompanyPanel_Point();
         //创建主目录树
         TreeManager.CreateMainItemListTree({
             needLoad: false
@@ -157,7 +166,9 @@ Ext.onReady(function() {
                             gridArr.push(GridManager.CustomerGrid);
                             gridArr.push(GridManager.Tracking_numberGrid);
                             gridArr.push(GridManager.ExpressPanel);
-                            gridArr.push(GridManager.CompanyPanel);
+                            gridArr.push(GridManager.CompanyPanel_Cost);                            
+                            gridArr.push(GridManager.Express_pointGrid);
+                            gridArr.push(GridManager.CompanyPanel_Point); 
                             com.add(gridArr);
                         }
                     },
