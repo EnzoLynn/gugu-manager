@@ -25,17 +25,42 @@ class Express_point_model extends CI_Model {
         return $point;
     }
 
-    function getPoints($express_id) {
-        $this->db->where('express_id', $express_id);
-        $this->db->order_by('express_point_code', 'ASC');
+    function getPoints($data) {
+        $filter = $data['filter'];
+        $data = array(
+            'page' => (int)$data['page'],
+            'limit'=> (int)$data['limit'],
+            'sort' => $data['sort'],
+            'dir'  => $data['dir']
+        );
+        if (isset($filter['province_code']) && !empty($filter['province_code'])) {
+            $this->db->where('province_code', $filter['province_code']);
+        }
+        if (isset($filter['express_point_code'])) {
+            $this->db->where('express_point_code', $filter['express_point_code']);
+        }
+        if (isset($filter['express_point_name'])) {
+            $this->db->like('express_point_name', $filter['express_point_name']);
+        }
+        $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
+        $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('express_point');
         $items = $query->result_array();
 
         return $items;
     }
 
-    function getPointsTotal($express_id) {
-        $this->db->where('express_id', $express_id);
+    function getPointsTotal($data) {
+        $filter = $data['filter'];
+        if (isset($filter['province_code']) && !empty($filter['province_code'])) {
+            $this->db->where('province_code', $filter['province_code']);
+        }
+        if (isset($filter['express_point_code'])) {
+            $this->db->where('express_point_code', $filter['express_point_code']);
+        }
+        if (isset($filter['express_point_name'])) {
+            $this->db->like('express_point_name', $filter['express_point_name']);
+        }
         return $this->db->count_all_results('express_point');
     }
 

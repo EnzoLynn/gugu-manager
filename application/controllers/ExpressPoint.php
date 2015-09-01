@@ -21,21 +21,20 @@ class ExpressPoint extends AdminController {
     }
 
     public function getList() {
-
         $data = array(
             'page' => (int)$this->input->post('page'),
             'limit'=> (int)$this->input->post('limit'),
             'sort' => $this->input->post('sort'),
             'dir'  => $this->input->post('dir'),
-            'filter' => json_decode($this->input->post('filter'))
+            'filter' => objectToArray(json_decode($this->input->post('filter')))
         );
-        $express_points = $this->express_point_model->getPoints(1);
+        $express_points = $this->express_point_model->getPoints($data);
         foreach ($express_points as $k => $v) {
             $province = $this->area_model->getOne($v['province_code']);
             $express_points[$k]['province_name'] = $province['area_name'];
         }
 
-        $express_points_total = $this->express_point_model->getPointsTotal(1);
+        $express_points_total = $this->express_point_model->getPointsTotal($data);
 
         $json = array(
             'success' => true,
