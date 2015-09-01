@@ -101,7 +101,7 @@ ActionManager.editExpress_point = function(target, record) {
         grid: target,
         iconCls: 'edit',
         action: 'update',
-        record: null,
+        record: record,
         title: "编辑"
     });
     WindowManager.AddUpdateExpress_pointWin.show(null, function() {
@@ -276,10 +276,9 @@ ActionManager.delExpress_point = function(traget) {
         return;
     var ids = [];
     Ext.Array.each(records, function(rec) {
-        ids.push(rec.data.Id);
+        ids.push(rec.data.point_id);
     });
-    var store = traget.getStore();
-    store.getProxy().extraParams.idList = ids.join();
+    var store = traget.getStore(); 
     GlobalConfig.newMessageBox.show({
         title: '提示',
         msg: '您确定要删除选定的网点吗？',
@@ -289,7 +288,8 @@ ActionManager.delExpress_point = function(traget) {
             if (btn == 'yes') {
                 //获取当前登录用户信息
                 var param = {
-                    sessiontoken: GlobalFun.getSeesionToken()
+                    sessiontoken: GlobalFun.getSeesionToken(),
+                    point_ids:ids.join()
                 };
                 // 调用
                 WsCall.pcall(GlobalConfig.Controllers.Express_pointGrid.destroy, 'Express_pointGridDestroy', param, function(response, opts) {
