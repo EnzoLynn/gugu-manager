@@ -28,9 +28,9 @@ class ExpressPoint extends AdminController {
             'dir'  => $this->input->post('dir'),
             'filter' => json_decode($this->input->post('filter'))
         );
-        $express_points = $this->customer_rent_model->getPoints($data);
+        $express_points = $this->customer_rent_model->getPoints(1);
 
-        $express_points_total = $this->customer_rent_model->getPointsTotal($data);
+        $express_points_total = $this->customer_rent_model->getPointsTotal(1);
 
         $json = array(
             'success' => true,
