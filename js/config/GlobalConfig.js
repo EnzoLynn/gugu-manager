@@ -132,7 +132,7 @@ GlobalConfig.Controllers = {
         create:'expressPoint/add',
         read:'/expressPoint/getList',
         update:'/expressPoint/update',
-        destroy: '/expressPoint/delete1',
+        destroy: '/expressPoint/delete',
     }
 
 };
