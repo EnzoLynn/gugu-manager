@@ -72,7 +72,10 @@ class ExpressPoint extends AdminController {
     }
 
     public function delete() {
-        $point_id = $this->input->post('point_id');
-        $this->express_point_model->delete($point_id);
+        $point_ids = $this->input->post('point_ids');
+        $point_ids = explode(',', $point_ids);
+        foreach ($point_ids as $point_id) {
+            $this->express_point_model->delete($point_id);
+        }
     }
 }
