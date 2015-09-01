@@ -84,7 +84,7 @@ ActionManager.addExpress_point = function(target) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateExpress_pointWin = Ext.create('chl.Grid.AddUpdateExpress_pointWin', {
         grid: target,
-        iconCls: 'add',
+        iconCls: 'base_add',
         action: 'create',
         record: null,
         title: "新增"
@@ -99,7 +99,7 @@ ActionManager.editExpress_point = function(target, record) {
     //var record = traget.getStore().getAt(0);
     WindowManager.AddUpdateExpress_pointWin = Ext.create('chl.Grid.AddUpdateExpress_pointWin', {
         grid: target,
-        iconCls: 'edit',
+        iconCls: 'base_edit',
         action: 'update',
         record: record,
         title: "编辑"
