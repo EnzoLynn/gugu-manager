@@ -186,4 +186,8 @@ class CustomerExpressRule extends AdminController {
 
         $this->show();
     }
+
+    public function copyRule() {
+
+    }
 }

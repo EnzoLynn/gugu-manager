@@ -6,8 +6,12 @@
  * Time: 10:41
  */
 class Customer_express_rule_model extends CI_Model {
+    var $CI;
     function __construct() {
         parent::__construct();
+        $this->CI = &get_instance();
+        $this->CI->load->model('customer_rent_model');
+        $this->CI->load->model('customer_express_rule_item_model');
     }
 
     function getOne($rule_id) {
@@ -128,5 +132,30 @@ class Customer_express_rule_model extends CI_Model {
             return $rule_item;
         }
         return FALSE;
+    }
+    //根据合同复制齐下的所有规则
+    function copyRule($customer_rent_id_from, $customer_rent_id_to) {
+        $rent_from = $this->CI->customer_rent_model->getCustomerRent();
+        $customer_id_from = $rent_from['customer_id'];
+
+        $rent_to = $this->CI->customer_rent_model->getCustomerRent();
+        $customer_id_to = $rent_to['customer_id'];
+
+        $rule_from = $this->getCustomerExpressRules($customer_rent_id_from);
+        foreach ($rule_from as $row) {
+            $rule_items_from = $this->CI->customer_express_rule_item_model->getItems($row['rule_id']);
+
+            unset($row['rule_id']);
+            $row['customer_id'] = $customer_id_to;
+            $row['customer_rent_id'] = $customer_rent_id_to;
+            $rule_id = $this->add($row);
+
+            foreach ($rule_items_from as $item) {
+                $item['rule_id'] = $rule_id;
+                $item['customer_id'] = $customer_id_to;
+                $item['customer_rent_id'] = $customer_rent_id_to;
+                $this->CI->customer_express_rule_item_model->add($item);
+            }
+        }
     }
 }
