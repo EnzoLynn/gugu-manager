@@ -31,7 +31,7 @@ class ExpressPoint extends AdminController {
         );
         $express_points = $this->express_point_model->getPoints(1);
         foreach ($express_points as $k => $v) {
-            $province = $this->area_model($v['province_code']);
+            $province = $this->area_model->getOne($v['province_code']);
             $express_points[$k]['province_name'] = $province['area_name'];
         }
 
