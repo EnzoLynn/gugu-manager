@@ -121,6 +121,7 @@ Ext.define('Ext.ux.form.field.MyPasswordField', {
 	extend:'Ext.form.field.Text',
 	alias: 'widget.MyPasswordField',
 	keyCodeArr:[],
+	inputType:'password',
 	replaceChar:'●',
 	onKeyDown: function(e) {
 		var me = this;
@@ -132,11 +133,11 @@ Ext.define('Ext.ux.form.field.MyPasswordField', {
 			|| keycode == e.BACKSPACE ) {
 				var selectedText;
 				if(window.getSelection) {
-					selectedText=window.getSelection();
+					selectedText=window.getSelection(); 
 				} else if(document.selection) {
-					selectedText=document.selection.createRange().text;
+					selectedText=document.selection.createRange().text; 
 				}
-				var length = selectedText.toString().length;
+				var length = selectedText.toString().length; 
 
 				if(keycode != e.BACKSPACE) {
 					if(length && length > 0) {
