@@ -30,7 +30,8 @@
              }
          }, {
              fieldLabel: '密码',
-             xtype:'MyPasswordField',
+             xtype:'textfield',//'MyPasswordField',
+             inputType:'password',
              enableKeyEvents: true,
              allowBlank: false,
              blankText: '用户名不能为空',
