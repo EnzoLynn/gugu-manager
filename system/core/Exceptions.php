@@ -236,6 +236,12 @@ class CI_Exceptions {
 	 */
 	public function show_php_error($severity, $message, $filepath, $line)
 	{
+        //加入自己的错误消息输出
+        $severity = isset($this->levels[$severity]) ? $this->levels[$severity] : $severity;
+        $msg = "[$severity] $message : Error on line $line in $filepath";
+        output_error($msg);
+        exit;
+
 		$templates_path = config_item('error_views_path');
 		if (empty($templates_path))
 		{
