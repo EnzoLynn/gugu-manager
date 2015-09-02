@@ -137,7 +137,7 @@ class Tracking_number_model extends CI_Model {
                     'cost' => 0,
                     'customer_id' => $customer['customer_id'],
                     'admin_id' => $this->CI->admin_id,
-                    'customer_rent_id' => $customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
+                    'customer_rent_id' => 0,//计算的时候再判断合同号$customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
                     'express_id' => $express['express_id']
                 );
                 $this->add($tracking_number);
@@ -213,6 +213,15 @@ class Tracking_number_model extends CI_Model {
             $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
             if (!$rule_item || count($rule_item) == 1) {//如果只有一个price_type，表示有省这张表，但是没有规则
                 $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
+
+                $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_id']);
+                if (strtotime($row['arrive_express_point_name']) < strtotime($customer_rent['date_start'].' 00:00:00') || strtotime($row['arrive_express_point_name']) > strtotime($customer_rent['date_end'].' 23:59:59')) {
+                    $msg[] = array(
+                        'tracking_number' => $row['tracking_number'],
+                        'msg' =>  '揽收时间没有当前客户的合同期限内（客户名：'.$customer['customer_name'].')'
+                    );
+                }
+
                 $msg[] = array(
                     'tracking_number' => $row['tracking_number'],
                     'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
