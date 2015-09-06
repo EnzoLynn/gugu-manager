@@ -43,12 +43,12 @@ class CustomerNumber extends AdminController {
 
     public function add() {
         $customer_id = $this->input->post('customer_id');
-        $tracking_number_prefix = $this->input->post('tracking_number_prefix');
+        //$tracking_number_prefix = $this->input->post('tracking_number_prefix');
         $tracking_number_start = $this->input->post('tracking_number_start');
         $tracking_number_end = $this->input->post('tracking_number_end');
 
-        $customer1 = $this->customer_number_model->getCustomerByTrackingNumber($tracking_number_prefix.$tracking_number_start);
-        $customer2 = $this->customer_number_model->getCustomerByTrackingNumber($tracking_number_prefix.$tracking_number_end);
+        $customer1 = $this->customer_number_model->getCustomerByTrackingNumber($tracking_number_start);
+        $customer2 = $this->customer_number_model->getCustomerByTrackingNumber($tracking_number_end);
 
         if ($customer1) {
             output_error('该区间已被'.$customer1['customer_name'].'使用');
@@ -58,14 +58,15 @@ class CustomerNumber extends AdminController {
             output_error('该区间已被'.$customer2['customer_name'].'使用');
         }
 
-        for ($i = $tracking_number_start; $i <= $tracking_number_end; $i++) {
+        $numbers = getArrayByBetween($tracking_number_start, $tracking_number_end);
+
+        foreach ($numbers as $number) {
             $data = array(
                 'customer_id' => $customer_id,
-                'tracking_number' => $tracking_number_prefix.$i
+                'tracking_number' => $number
             );
             $this->customer_number_model->addCustomerNumber($data);
         }
-
 
         $json = array(
             'success' => true,
