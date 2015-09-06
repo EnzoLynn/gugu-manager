@@ -171,14 +171,14 @@ class Tracking_number_model extends CI_Model {
             $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
             if (!$customer) {
                 $msg[] = array(
-                    'msg' => '第'.$i.'行，运单号找不到对应的客户'
+                    'msg' => '第'.$i.'行，运单号（'.$row['运单号'].'）找不到对应的客户'
                 );
             }
             //查找快递公司
             $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
             if (!$express) {
                 $msg[] = array(
-                    'msg' => '第'.$i.'行，快递公司还未录入或者名字有误'
+                    'msg' => '第'.$i.'行，快递公司（'.$row['快递公司'].'）还未录入或者名字有误'
                 );
             }
             //验证重量
@@ -195,7 +195,7 @@ class Tracking_number_model extends CI_Model {
 //            }
             if ((float)$row['重量'] == 0) {
                 $msg[] = array(
-                    'msg' => '第'.$i.'行，重量不能为0'
+                    'msg' => '第'.$i.'行，重量（'.$row['重量'].'）格式不对'
                 );
             }
             //查找快递网点
@@ -212,7 +212,7 @@ class Tracking_number_model extends CI_Model {
                 $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);
                 if (!$customer_rent) {
                     $msg[] = array(
-                        'msg' => '第'.$i.'行，根据揽件时间没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
+                        'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
                     );
                 }
             }
