@@ -43,12 +43,12 @@ class CustomerNumber extends AdminController {
 
     public function add() {
         $customer_id = $this->input->post('customer_id');
-        $customize_number_prefix = $this->input->post('customize_number_prefix');
-        $customize_number_from = $this->input->post('customize_number_from');
-        $customize_number_to = $this->input->post('customize_number_to');
+        $tracking_number_prefix = $this->input->post('tracking_number_prefix');
+        $tracking_number_start = $this->input->post('tracking_number_start');
+        $tracking_number_end = $this->input->post('tracking_number_end');
 
-        $customer1 = $this->customer_number_model->getCustomerByTrackingNumber($customize_number_prefix.$customize_number_from);
-        $customer2 = $this->customer_number_model->getCustomerByTrackingNumber($customize_number_prefix.$customize_number_to);
+        $customer1 = $this->customer_number_model->getCustomerByTrackingNumber($tracking_number_prefix.$tracking_number_start);
+        $customer2 = $this->customer_number_model->getCustomerByTrackingNumber($tracking_number_prefix.$tracking_number_end);
 
         if ($customer1) {
             output_error('该区间已被'.$customer1['customer_name'].'使用');
@@ -58,10 +58,10 @@ class CustomerNumber extends AdminController {
             output_error('该区间已被'.$customer2['customer_name'].'使用');
         }
 
-        for ($i = $customize_number_from; $i <= $customize_number_to; $i++) {
+        for ($i = $tracking_number_start; $i <= $tracking_number_end; $i++) {
             $data = array(
                 'customer_id' => $customer_id,
-                'tracking_number' => $customize_number_prefix.$i
+                'tracking_number' => $tracking_number_prefix.$i
             );
             $this->customer_number_model->addCustomerNumber($data);
         }
