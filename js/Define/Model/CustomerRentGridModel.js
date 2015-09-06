@@ -26,5 +26,8 @@ Ext.define('chl.Model.CustomerRentGridModel', {
     }, {
         name: 'date_end', 
         type: 'string'
+    }, {
+        name: 'status', 
+        type: 'string'
     }]
 });

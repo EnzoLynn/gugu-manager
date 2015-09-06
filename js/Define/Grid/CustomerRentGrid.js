@@ -100,6 +100,11 @@ Ext.define('chl.gird.CustomerRentGrid', {
         dataIndex: 'date_end',
         renderer: GlobalFun.UpdateRecord,
         width: 100
+    },{
+        text: '状态',
+        dataIndex: 'status',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
     }],
     dockedItems: [{
         xtype: 'toolbar',
