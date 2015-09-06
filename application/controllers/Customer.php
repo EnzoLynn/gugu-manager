@@ -63,8 +63,21 @@ class Customer extends CI_Controller {
             exit;
         }
 
+        if($this->customer_model->existCustomerNo($this->input->post('customer_no'))) {
+            $json = array(
+                'success' => false,
+                'data' => [],
+                'total' => 0,
+                'msg' => '客户编号已存在',
+                'code' => '10'
+            );
+            echo json_encode($json);
+            exit;
+        }
+
         $data = array(
             'customer_name' => $this->input->get_post('customer_name'),
+            'customer_no' => $this->input->get_post('customer_no'),
             'real_name' => $this->input->get_post('real_name'),
             'mobile' => $this->input->get_post('mobile')
         );
@@ -77,6 +90,7 @@ class Customer extends CI_Controller {
 
         $data = array(
             'customer_name' => $this->input->get_post('customer_name'),
+            'customer_no' => $this->input->get_post('customer_no'),
             'real_name' => $this->input->get_post('real_name'),
             'mobile' => $this->input->get_post('mobile')
         );

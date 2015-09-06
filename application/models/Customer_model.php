@@ -48,6 +48,7 @@ class Customer_model extends CI_Model{
     function addCustomer($data) {
         $customer = array(
             'customer_name' => $data['customer_name'],
+            'customer_no' => $data['customer_no'],
             'real_name'  => $data['real_name'],
             'mobile'    => $data['mobile']
         );
@@ -59,6 +60,7 @@ class Customer_model extends CI_Model{
     function addCustomerAndRent($data) {
         $customer = array(
             'customer_name'     => $data['customer_name'],
+            'customer_no'       => $data['customer_no'],
             'real_name'     => $data['real_name'],
             'mobile'        => $data['mobile'],
             'customer_rent_id' => 0,
@@ -89,6 +91,16 @@ class Customer_model extends CI_Model{
 
     function existCustomerName($customer_name) {
         $this->db->where('customer_name', $customer_name);
+        $query = $this->db->get('customer');
+        if($query->num_rows() == 0 ){
+            return FALSE;
+        }else {
+            return TRUE;
+        }
+    }
+
+    function existCustomerNo($customer_no) {
+        $this->db->where('customer_no', $customer_no);
         $query = $this->db->get('customer');
         if($query->num_rows() == 0 ){
             return FALSE;
