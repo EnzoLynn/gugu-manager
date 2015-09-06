@@ -116,6 +116,7 @@ class Tracking_number_model extends CI_Model {
         if ($msg) {
             return false;
         }
+        $i = 0;
         foreach ($data as $row) {
             $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
             //$express = $this->CI->express_point_model->getExpressByNameAndCode($row['计费目的网点名称'], $row['计费目的网点代码']);
@@ -127,6 +128,7 @@ class Tracking_number_model extends CI_Model {
                 //已存在就不导入
                 continue;
             } else {
+                $i++;
                 $tracking_number = array(
                     'tracking_number' => $row['运单号'],
                     'weight' => (float)$row['重量'],
@@ -143,6 +145,7 @@ class Tracking_number_model extends CI_Model {
                 $this->add($tracking_number);
             }
         }
+        return $i;
     }
 
     function validateData($data) {

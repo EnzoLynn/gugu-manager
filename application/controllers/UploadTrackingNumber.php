@@ -76,11 +76,11 @@ class UploadTrackingNumber extends AdminController {
             $data = $this->validateExcel($this->file_save_path);
 
             if ($data) {
-                $this->tracking_number_model->importData($data);
+                $num = $this->tracking_number_model->importData($data);
                 $json = array(
                     'success' => true,
                     'data' => [],
-                    'total' => count($data),
+                    'total' => $num,
                     'msg' => '成功',
                     'code' => '01'
                 );
