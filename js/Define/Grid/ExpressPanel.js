@@ -403,7 +403,7 @@ GlobalFun.CreatChinaSvg = function(com) {
     //调用绘制地图方法
     paintMap(GlobalFun.raphelR);
 
-    GlobalFun.raphelR.setViewBox(0, 0, 600, 500, true);
+    GlobalFun.raphelR.setViewBox(0, 0, 600, 500, false);
 
 }
 
