@@ -266,7 +266,11 @@ GlobalFun.ExpressPanel_addRuleFun = function(com) {
                             if (Ext.isGecko) {
                                 GridManager.ExpressPanel.el.mask('正在加载图形');
                             };
-                            GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData);
+                            GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData,function(code){
+                                 GlobalFun.ExpressPanel_addRuleFun({
+                                    myval: code
+                                });
+                            });
                             if (Ext.isGecko) {
                                 GridManager.ExpressPanel.el.unmask();
                             }
@@ -349,7 +353,11 @@ GridManager.CreateExpressPanel = function() {
                     if (Ext.isGecko) {
                         GridManager.ExpressPanel.el.mask('正在加载图形');
                     };
-                    GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData);
+                    GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData,function(code){
+                                 GlobalFun.ExpressPanel_addRuleFun({
+                                    myval: code
+                                });
+                            });
                     if (Ext.isGecko) {
                         GridManager.ExpressPanel.el.unmask();
                     }
@@ -407,7 +415,7 @@ GlobalFun.CreatChinaSvg = function(com) {
 
 }
 
-GlobalFun.InitChinaSvgDataEvent = function(data) {
+GlobalFun.InitChinaSvgDataEvent = function(data,clickFun) {
     var R = GlobalFun.raphelR;
     var textAttr = {
         "fill": "#000",
@@ -480,10 +488,10 @@ GlobalFun.InitChinaSvgDataEvent = function(data) {
             china[state]['text'] = R.text(xx, yy, china[state]['name'] + "(" + val + ")").attr(textAttr);
             //console.log(china[state]['code']);
             st[0].onclick = china[state]['text'][0].onclick = function() {
-                //console.log(china[state]['text']);
-                GlobalFun.ExpressPanel_addRuleFun({
-                    myval: china[state]['code']
-                });
+                if (clickFun) {
+                    clickFun(china[state]['code']);
+                };
+               
             }
 
             st[0].onmouseover = china[state]['text'][0].onmouseover = function() {
