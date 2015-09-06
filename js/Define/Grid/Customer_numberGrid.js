@@ -9,13 +9,13 @@ Ext.define('chl.Model.Customer_numberGridModel', {
     }, {
         name: 'customer_name'
     }, {
-        name: 'customize_number_prefix'
+        name: 'tracking_number'
     }, {
-        name: 'customize_number_from'
+        name: 'use_status'
     }, {
-        name: 'customize_number_to'
+        name: 'use_status_name'
     }, {
-        name: 'customize_number_suffix'
+        name: 'use_time'
     }]
 });
 
@@ -98,53 +98,53 @@ Ext.create('Ext.data.Store', {
 });
 
 
-var Customer_numberGridRowEditing;
+//var Customer_numberGridRowEditing;
 
-function createPlugin() {
-    Customer_numberGridRowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
-        clicksToMoveEditor: 1,
-        autoCancel: true,
-        listeners: {
-            edit: function(editor, e, opts) {
-                //e.record.commit();
-                //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
-                //Ext.Store 
+// function createPlugin() {
+//     Customer_numberGridRowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+//         clicksToMoveEditor: 1,
+//         autoCancel: true,
+//         listeners: {
+//             edit: function(editor, e, opts) {
+//                 //e.record.commit();
+//                 //editor.context.record.data.faxNumber = covertToRightNumber(true,editor.context.record.data.faxNumber);
+//                 //Ext.Store 
 
-                var sm = e.grid.getSelectionModel(); 
-                e.store.sync({
-                    success: function(batch, action) { 
-                        e.store.load({
-                            callback: function(records, operation, success) {
-                                if (e.store.getCount() > 0) {
-                                    sm.select(0);
-                                }
-                            }
-                        }); 
-                    },
-                    failure: function(batch, action) { 
-                        if (batch.hasException) {
-                            Ext.Msg.alert('失败', batch.exceptions[0].error);
-                        } else {
-                            Ext.Msg.alert('失败', "同步失败");
-                        }
+//                 var sm = e.grid.getSelectionModel(); 
+//                 e.store.sync({
+//                     success: function(batch, action) { 
+//                         e.store.load({
+//                             callback: function(records, operation, success) {
+//                                 if (e.store.getCount() > 0) {
+//                                     sm.select(0);
+//                                 }
+//                             }
+//                         }); 
+//                     },
+//                     failure: function(batch, action) { 
+//                         if (batch.hasException) {
+//                             Ext.Msg.alert('失败', batch.exceptions[0].error);
+//                         } else {
+//                             Ext.Msg.alert('失败', "同步失败");
+//                         }
 
-                    }
-                });
-            },
-            canceledit: function(editor, e, opts) {
-                //e.grid.loadGrid();
-                e.store.load();
-            },
-            beforeedit: function(editor, e, opts) {
-                // console.log(Customer_numberGridRowEditing.getEditor());
-                // Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';
-                // Customer_numberGridRowEditing.getEditor().cancelBtnText = '取消';
-                // Customer_numberGridRowEditing.getEditor().errorsText = '错误';
-            }
-        }
-    });
-}
-createPlugin();
+//                     }
+//                 });
+//             },
+//             canceledit: function(editor, e, opts) {
+//                 //e.grid.loadGrid();
+//                 e.store.load();
+//             },
+//             beforeedit: function(editor, e, opts) {
+//                 // console.log(Customer_numberGridRowEditing.getEditor());
+//                 // Customer_numberGridRowEditing.getEditor().saveBtnText = '提交';
+//                 // Customer_numberGridRowEditing.getEditor().cancelBtnText = '取消';
+//                 // Customer_numberGridRowEditing.getEditor().errorsText = '错误';
+//             }
+//         }
+//     });
+// }
+// createPlugin();
 Ext.define('chl.gird.Customer_numberGrid', {
     extend: 'chl.grid.BaseGrid',
     alternateClassName: ['Customer_numberGrid'],
@@ -184,83 +184,89 @@ Ext.define('chl.gird.Customer_numberGrid', {
         }
     },
     tbar: [{
-        text: '刷新',
-        tooltip: '刷新',
-        iconCls: 'refresh',
-        handler: function() {
-            var me = this;
-            var grid = me.up('Customer_numberGrid');
-            Ext.StoreMgr.lookup('Customer_numberStoreId').load();
-            grid.down('#removeCustomer_number').setDisabled(true);
-            grid.down('#editCustomer_number').setDisabled(true);
+            text: '刷新',
+            tooltip: '刷新',
+            iconCls: 'refresh',
+            handler: function() {
+                var me = this;
+                var grid = me.up('Customer_numberGrid');
+                Ext.StoreMgr.lookup('Customer_numberStoreId').load();
+                grid.down('#removeCustomer_number').setDisabled(true);
+                //grid.down('#editCustomer_number').setDisabled(true);
 
+            }
+        }, {
+            text: '添加',
+            tooltip: '添加客户面单号范围',
+            iconCls: 'add',
+            handler: function() {
+                var me = this;
+                var target = me.up('Customer_numberGrid');
+
+                ActionManager.addCustomer_number(target);
+                //Customer_numberGridRowEditing.cancelEdit();
+
+                // Create a record instance through the ModelManager
+                // var r = Ext.ModelManager.create({
+                //     number_id: '',
+                //     customer_id: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_id,
+                //     customer_name: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_name,
+                //     customize_number_prefix: '',
+                //     customize_number_from: '',
+                //     customize_number_to: '',
+                //     customize_number_suffix: ''
+                // }, 'chl.Model.Customer_numberGridModel');
+
+                // Ext.StoreMgr.lookup('Customer_numberStoreId').insert(0, r);
+
+                // Customer_numberGridRowEditing.startEdit(0, 1);
+
+            }
         }
-    }, {
-        text: '添加',
-        tooltip: '添加客户面单号范围',
-        iconCls: 'add',
-        handler: function() {
-            Customer_numberGridRowEditing.cancelEdit();
+        // , {
+        //     text: '编辑',
+        //     tooltip: '编辑客户面单号范围',
+        //     itemId: 'editCustomer_number',
+        //     iconCls: 'edit',
+        //     handler: function() {
+        //         var me = this;
+        //         var grid = me.up('Customer_numberGrid');
+        //         var sm = me.up('Customer_numberGrid').getSelectionModel();
+        //         var record = sm.getSelection()[0];
+        //         //Customer_numberGridRowEditing.startEdit(record, 1);
 
-            // Create a record instance through the ModelManager
-            var r = Ext.ModelManager.create({
-                number_id: '',
-                customer_id: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_id,
-                customer_name: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_name,
-                customize_number_prefix: '',
-                customize_number_from: '',
-                customize_number_to: '',
-                customize_number_suffix: ''
-            }, 'chl.Model.Customer_numberGridModel');
+        //     },
+        //     disabled: true
+        // }
+        , {
+            itemId: 'removeCustomer_number',
+            text: '删除',
+            tooltip: '删除',
+            iconCls: 'remove',
+            handler: function() {
+                var me = this;
+                var grid = me.up('Customer_numberGrid');
 
-            Ext.StoreMgr.lookup('Customer_numberStoreId').insert(0, r);
+                ActionManager.delCustomer_number(grid);
+                // Customer_numberGridRowEditing.cancelEdit();
+                // Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
+                // Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
+                //     success: function(batch, opts) {
 
-            Customer_numberGridRowEditing.startEdit(0, 1);
+                //         grid.loadGrid();
+                //         if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
+                //             sm.select(0);
+                //         }
+                //     },
+                //     failure: function(batch, opts) {
+                //         Ext.Msg.alert('失败', action.result.msg);
+                //     }
+                // });
 
+            },
+            disabled: true
         }
-    }, {
-        text: '编辑',
-        tooltip: '编辑客户面单号范围',
-        itemId: 'editCustomer_number',
-        iconCls: 'edit',
-        handler: function() {
-            var me = this;
-            var grid = me.up('Customer_numberGrid');
-            var sm = me.up('Customer_numberGrid').getSelectionModel();
-            var record = sm.getSelection()[0];
-            Customer_numberGridRowEditing.startEdit(record, 1);
-
-        },
-        disabled: true
-    }, {
-        itemId: 'removeCustomer_number',
-        text: '删除',
-        tooltip: '删除',
-        iconCls: 'remove',
-        handler: function() {
-            var me = this;
-            var grid = me.up('Customer_numberGrid');
-            var sm = me.up('Customer_numberGrid').getSelectionModel();
-
-            var records = sm.getSelection();
-            Customer_numberGridRowEditing.cancelEdit();
-            Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
-            Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
-                success: function(batch, opts) {
-
-                    grid.loadGrid();
-                    if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
-                        sm.select(0);
-                    }
-                },
-                failure: function(batch, opts) {
-                    Ext.Msg.alert('失败', action.result.msg);
-                }
-            });
-
-        },
-        disabled: true
-    }],
+    ],
     columns: [{
         header: '编号',
         dataIndex: 'number_id',
@@ -269,45 +275,25 @@ Ext.define('chl.gird.Customer_numberGrid', {
             return value;
         }
     }, {
-        header: '面单号前缀',
-        dataIndex: 'customize_number_prefix',
-        flex: 1,
-        editor: {
-            maxLength: 20,
-            maxLengthText: '长度最大为20字节'
-        }
-    }, {
-        header: '面单号起始编号',
-        dataIndex: 'customize_number_from',
-        flex: 1,
-        editor: {
-            allowBlank: false,
-            blankText: '不能为空',
-            maxLength: 20,
-            maxLengthText: '长度最大为20字节',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
-        }
-    }, {
         header: '面单号截止编号',
-        dataIndex: 'customize_number_to',
-        flex: 1,
-        editor: {
-            allowBlank: false,
-            blankText: '不能为空',
-            maxLength: 20,
-            maxLengthText: '长度最大为20字节',
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
-        }
+        dataIndex: 'tracking_number',
+        flex: 1 //,
+            // editor: {
+            //     allowBlank: false,
+            //     blankText: '不能为空',
+            //     maxLength: 20,
+            //     maxLengthText: '长度最大为20字节',
+            //     regex: GlobalConfig.RegexController.regexNumber,
+            //     regexText: '请输入数字'
+            // }
     }, {
-        header: '面单号后缀',
-        dataIndex: 'customize_number_suffix',
-        flex: 1,
-        editor: {
-            maxLength: 20,
-            maxLengthText: '长度最大为20字节'
-        }
+        header: '状态',
+        dataIndex: 'use_status',
+        flex: 1
+    }, {
+        header: '使用时间',
+        dataIndex: 'use_time',
+        flex: 1
     }],
     initComponent: function() {
         var me = this;
@@ -360,17 +346,17 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
         text: '关闭',
         handler: function() {
             var me = this;
-            Customer_numberGridRowEditing.cancelEdit();
+            //Customer_numberGridRowEditing.cancelEdit();
             me.up('window').close();
         }
     }],
     listeners: {
         boxready: function(win) {
-            createPlugin();
+            //createPlugin();
             win.add({
                 xtype: 'Customer_numberGrid',
-                itemId: 'Customer_numberGrid',
-                plugins: [Customer_numberGridRowEditing]
+                itemId: 'Customer_numberGrid' //,
+                    //plugins: [Customer_numberGridRowEditing]
             });
             var grid = win.down('Customer_numberGrid');
 
@@ -381,3 +367,186 @@ Ext.define('chl.Grid.AddUpdateCustomer_numberWin', {
         }
     }
 });
+
+
+// 添加面单号window
+Ext.define('chl.Grid.Customer_numberActionWin', {
+    extend: 'Ext.window.Window',
+    title: "添加",
+    defaultFocus: 'tracking_number_start',
+    iconCls: '',
+    record: false,
+    //border: false,
+    height: 180,
+    width: 830,
+    layout: 'fit',
+    modal: true,
+    resizable: false, 
+    items: [{
+        xtype: 'form',
+        itemId: 'formId', 
+        border: false,
+        bodyPadding: 5,
+        defaultType: 'textfield',
+        layout: {
+            type: 'table',
+            columns: 2
+        },
+        defaults: {
+            labelAlign: 'right',
+            labelPad: 15,
+            width: 340,
+            labelWidth: 125,
+            maxLength: 36,
+            enableKeyEvents: true,
+            listeners: {
+                keydown: function(field, e, opts) {
+                    var me = this;
+                    if (e.getKey() == e.ENTER) {
+
+                        var win = me.up('window');
+                        win.down('#submit').fireHandler(e);
+                    }
+                }
+            }
+        },
+        items: [{
+            name: 'tracking_number_prefix',
+            colspan: 2,
+            fieldLabel: '面单号前缀',
+            maxLength: 2
+        }, {
+            name: 'tracking_number_start',
+            itemId: 'tracking_number_start',
+            fieldLabel: '面单号起始编号',
+            allowBlank: false,
+            blankText: '不能为空',
+            maxLength: 18,
+            regex: GlobalConfig.RegexController.regexNumber,
+            regexText: '请输入数字'
+        }, {
+            name: 'tracking_number_end',
+            fieldLabel: '面单号截止编号',
+            allowBlank: false,
+            blankText: '不能为空',
+            maxLength: 18,
+            regex: GlobalConfig.RegexController.regexNumber,
+            regexText: '请输入数字'
+        }]
+    }],
+    buttons: [{
+        text: '重置',
+        handler: function() {
+            var me = this;
+            var w = me.up('window');
+            var f = w.down('#formId');
+            f.getForm().reset();
+            if (w.action == 'update') {
+                var sm = w.grid.getSelectionModel();
+                if (sm.hasSelection()) {
+                    f.getForm().loadRecord(sm.getSelection()[0]);
+                }
+            }
+        }
+    }, {
+        text: '确定',
+        itemId: 'submit',
+        handler: function() {
+            var me = this;
+            var w = me.up('window');
+
+            var form = w.down('#formId').getForm();
+
+            if (form.isValid()) {
+
+                var url = w.action == "create" ? GlobalConfig.Controllers.Customer_numberGrid.create : GlobalConfig.Controllers.Customer_numberGrid.update;
+                form.submit({
+                    url: url,
+                    params: {
+                        req: 'dataset',
+                        dataname: 'Customer_numberGridAction', // dataset名称，根据实际情况设置,数据库名
+                        restype: 'json',
+                        customer_id: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_id,
+                        action: w.action,
+                        sessiontoken: GlobalFun.getSeesionToken()
+                    },
+                    success: function(form, action) {
+                        w.grid.loadGrid();
+                        w.close();
+
+                    },
+                    failure: function(form, action) {
+                        if (!GlobalFun.errorProcess(action.result.code)) {
+                            Ext.Msg.alert('失败', action.result.msg);
+                        }
+                    }
+                });
+            }
+        }
+    }, {
+        text: '取消',
+        handler: function() {
+            var me = this;
+            me.up('window').close();
+        }
+    }]
+});
+
+
+
+//新增 用户面单号
+ActionManager.addCustomer_number = function(target) {
+    //var record = traget.getStore().getAt(0);
+    WindowManager.Customer_numberActionWin = Ext.create('chl.Grid.Customer_numberActionWin', {
+        grid: target,
+        iconCls: 'add',
+        action: 'create',
+        record: null,
+        title: "新增"
+    });
+    WindowManager.Customer_numberActionWin.show(null, function() {
+        //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
+
+    });
+};
+
+//删除 
+ActionManager.delCustomer_number = function(traget) {
+    var sm = traget.getSelectionModel();
+    var records = sm.getSelection();
+    if (!records[0])
+        return;
+    var ids = [];
+    Ext.Array.each(records, function(rec) {
+        ids.push(rec.data.number_id);
+    });
+    var store = traget.getStore();
+    GlobalConfig.newMessageBox.show({
+        title: '提示',
+        msg: '您确定要删除选定的项目吗？',
+        buttons: Ext.MessageBox.YESNO,
+        closable: false,
+        fn: function(btn) {
+            if (btn == 'yes') {
+                //获取当前登录用户信息
+                var param = {
+                    sessiontoken: GlobalFun.getSeesionToken(),
+                    number_ids: ids.join()
+                };
+                // 调用
+                WsCall.pcall(GlobalConfig.Controllers.Customer_numberGrid.destroy, 'Customer_numberGrid', param, function(response, opts) {
+                    (new Ext.util.DelayedTask(function() {
+                        store.load();
+                    })).delay(500);
+                }, function(response, opts) {
+
+                    if (!GlobalFun.errorProcess(response.code)) {
+                        Ext.Msg.alert('登录失败', response.msg);
+                    }
+                }, true);
+
+            }
+        },
+        icon: Ext.MessageBox.QUESTION
+    });
+};

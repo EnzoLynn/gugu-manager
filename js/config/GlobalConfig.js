@@ -129,9 +129,9 @@ GlobalConfig.Controllers = {
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {
-        create:'expressPoint/add',
-        read:'/expressPoint/getList',
-        update:'/expressPoint/update',
+        create: 'expressPoint/add',
+        read: '/expressPoint/getList',
+        update: '/expressPoint/update',
         destroy: '/expressPoint/delete',
     }
 
@@ -253,3 +253,10 @@ GlobalConfig.Province = {
 
 //全局缓存记忆状态
 GlobalConfig.globalStatus = {};
+var cookie = Ext.util.Cookies.get("GlobalConfig.globalStatus");
+if (cookie) {
+    var obj = Ext.JSON.decode(cookie);
+    if (obj) {
+        GlobalConfig.globalStatus = obj;
+    }
+}

@@ -137,6 +137,18 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
                         var temp = GridManager.ExpressPanel.down('#lbl' + item.province_code);
                         temp.setText('现有规则:' + item.count);
                     });
+                    GlobalConfig.ExpressPanel_svgData = [];
+                    GlobalConfig.ExpressPanel_svgData = data;
+                    if (GridManager.ExpressPanel.getActiveTab().tabIndex == 1) {
+                        if (Ext.isGecko) {
+                            GridManager.ExpressPanel.el.mask('正在加载图形');
+                        };
+                        GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData);
+                        if (Ext.isGecko) {
+                            GridManager.ExpressPanel.el.unmask();
+                        }
+                    } 
+
                 }, function(response, opts) {
                     if (!GlobalFun.errorProcess(response.code)) {
                         Ext.Msg.alert('失败', response.msg);
