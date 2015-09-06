@@ -71,11 +71,19 @@ class Customer_number_model extends CI_Model {
         return $this->db->delete('customer_number');
     }
 
-    //通过tracking_number查询到客户ID
-    function getCustomerByTrackingNumber($tracking_number){
+    function getOneByTrackingNumber($tracking_number) {
         $this->db->where('tracking_number', $tracking_number);
         $query = $this->db->get('customer_number');
         $customer_number = $query->first_row();
+        if ($customer_number){
+            return $customer_number;
+        }else {
+            return FALSE;
+        }
+    }
+    //通过tracking_number查询到客户ID
+    function getCustomerByTrackingNumber($tracking_number){
+        $customer_number = $this->getOneByTrackingNumber($tracking_number);
         if ($customer_number) {
             $customer_id = (int)$customer_number['customer_id'];
             return $this->CI->customer_model->getCustomer($customer_id);

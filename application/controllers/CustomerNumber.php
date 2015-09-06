@@ -42,20 +42,13 @@ class CustomerNumber extends AdminController {
     }
 
     public function add() {
-        $str = file_get_contents("php://input");
-        $temp = json_decode($str);
+        $customer_id = $this->input->post('customer_id');
+        $customize_number_prefix = $this->input->post('customize_number_prefix');
+        $customize_number_from = $this->input->post('customize_number_from');
+        $customize_number_to = $this->input->post('customize_number_to');
 
-        $post = objectToArray($temp);
-        $data = array(
-            'customer_id' => $post['customer_id'],
-            'customize_number_prefix' => $post['customize_number_prefix'],
-            'customize_number_from' => $post['customize_number_from'],
-            'customize_number_to' => $post['customize_number_to'],
-            'customize_number_suffix' => $post['customize_number_suffix']
-        );
-
-        $customer1 = $this->customer_number_model->getCustomerByTrackingNumber($data['customize_number_prefix'].$data['customize_number_from']);
-        $customer2 = $this->customer_number_model->getCustomerByTrackingNumber($data['customize_number_prefix'].$data['customize_number_to']);
+        $customer1 = $this->customer_number_model->getCustomerByTrackingNumber($customize_number_prefix.$customize_number_from);
+        $customer2 = $this->customer_number_model->getCustomerByTrackingNumber($customize_number_prefix.$customize_number_to);
 
         if ($customer1) {
             output_error('该区间已被'.$customer1['customer_name'].'使用');
@@ -65,7 +58,10 @@ class CustomerNumber extends AdminController {
             output_error('该区间已被'.$customer2['customer_name'].'使用');
         }
 
-        $this->customer_number_model->addCustomerNumber($data);
+        for ($i = $customize_number_from; $i <= $customize_number_to; $i++) {
+            $this->customer_number_model->addCustomerNumber($customize_number_prefix.$i);
+        }
+
 
         $json = array(
             'success' => true,
@@ -78,21 +74,7 @@ class CustomerNumber extends AdminController {
     }
 
     public function update() {
-        $str = file_get_contents("php://input");
-        $temp = json_decode($str);
-        $post = objectToArray($temp);
-        //foreach($temp as $key => $val) {
-            $number_id = $post['number_id'];
-            $data = array(
-                'customer_id' => $post['customer_id'],
-                'customize_number_prefix' => $post['customize_number_prefix'],
-                'customize_number_from' => $post['customize_number_from'],
-                'customize_number_to' => $post['customize_number_to'],
-                'customize_number_suffix' => $post['customize_number_suffix']
-            );
-            $this->customer_number_model->updateCustomerNumber($number_id, $data);
-        //}
-
+        //不能修改
         $json = array(
             'success' => true,
             'data' => [],
@@ -104,17 +86,8 @@ class CustomerNumber extends AdminController {
     }
 
     public function delete() {
-        $str = file_get_contents("php://input");
-        $temp = json_decode($str);
-        if (is_array($temp)) {
-            foreach ($temp as $key => $val) {
-                $post = objectToArray($val);
-                $number_id = $post['number_id'];
-                $this->customer_number_model->deleteCustomerNumber($number_id);
-            }
-        } else {
-            $post = objectToArray($temp);
-            $number_id = $post['number_id'];
+        $number_ids = explode(',',$this->input->post('number_ids'));
+        foreach ($number_ids as $number_id) {
             $this->customer_number_model->deleteCustomerNumber($number_id);
         }
         $json = array(
