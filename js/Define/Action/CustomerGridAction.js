@@ -142,7 +142,7 @@ ActionManager.editCustomer = function(target, record) {
         grid: target,
         iconCls: 'edit',
         action: 'update',
-        record: null,
+        record: record,
         title: "编辑"
     });
     WindowManager.AddUpdateCustomerWin.show(null, function() {
