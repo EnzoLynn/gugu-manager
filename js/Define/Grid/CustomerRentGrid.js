@@ -611,7 +611,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                             fieldLabel: '起价',
                                                             name: 'price_start',
                                                             minValue: 0,
-                                                            decimalPrecision: 3,
+                                                            decimalPrecision: 2,
                                                             maxValue: GlobalConfig.MaxLimit,
                                                             allowBlank: false,
                                                             blankText: '不能为空'
@@ -620,7 +620,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                             fieldLabel: '后续单价',
                                                             name: 'price_pre',
                                                             minValue: 0,
-                                                            decimalPrecision: 3,
+                                                            decimalPrecision: 2,
                                                             maxValue: GlobalConfig.MaxLimit,
                                                             allowBlank: false,
                                                             blankText: '不能为空'
@@ -715,7 +715,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 fieldLabel: '起始重量(kg)',
                                                                 minValue: 0,
                                                                 value: 0,
-                                                                decimalPrecision: 3,
+                                                                decimalPrecision: 2,
                                                                 maxValue: GlobalConfig.MaxLimit,
                                                                 allowBlank: false,
                                                                 blankText: '不能为空'
@@ -726,7 +726,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 minValue: 0,
                                                                 value: 1,
                                                                 maxValue: GlobalConfig.MaxLimit,
-                                                                decimalPrecision: 3,
+                                                                decimalPrecision: 2,
                                                                 allowBlank: false,
                                                                 blankText: '不能为空'
                                                             }, {
@@ -763,7 +763,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
                                                                 fieldLabel: '重量(kg)',
                                                                 minValue: 0,
                                                                 maxValue: GlobalConfig.MaxLimit,
-                                                                decimalPrecision: 3,
+                                                                decimalPrecision: 2,
                                                                 allowBlank: false,
                                                                 blankText: '不能为空'
                                                             }, {
