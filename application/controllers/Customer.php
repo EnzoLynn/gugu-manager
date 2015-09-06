@@ -73,7 +73,7 @@ class Customer extends CI_Controller {
     }
 
     public function update() {
-        $customer_id = $this->input->get_post('customer_name');
+        $customer_id = $this->input->get_post('customer_id');
 
         $data = array(
             'customer_name' => $this->input->get_post('customer_name'),
