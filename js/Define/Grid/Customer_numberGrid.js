@@ -179,7 +179,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
 
             var me = this;
             me.down('#removeCustomer_number').setDisabled(!seles.length);
-            me.down('#editCustomer_number').setDisabled(seles.length != 1);
+            //me.down('#editCustomer_number').setDisabled(seles.length != 1);
             //ActionBase.updateActions('CustomerRentGridAction', seles);
         }
     },
