@@ -22,22 +22,7 @@ class UploadTrackingNumber extends AdminController {
     }
 
     public function index() {
-        //$this->load->view('upload_test');
 
-//        if( preg_match('/^[0-9]+(\.[0-9]{1,3})?$/', '0.1234')) {
-//            echo 'OK';
-//        }
-
-//        $express = $this->express_point_model->getOneByNameAndCode('深圳转运中心', '755901');
-//        print_r($express);
-
-//        echo $this->tracking_number_model->importData(array());
-        $arr1 = array('aaa', 'bbbb', '订单号', '日期');
-        $arr2 = array('订单号', '客户名', '日期');
-//        print_r(array_intersect($arr1, $arr2));
-        if(array_in_array($arr1, $arr2)) {
-            echo 'OK';
-        }
     }
 
     public function upload() {
@@ -57,6 +42,7 @@ class UploadTrackingNumber extends AdminController {
             $error = array('error' => $this->upload->display_errors());
 
             print_r($error);
+            exit;
         }
         else
         {
@@ -76,11 +62,11 @@ class UploadTrackingNumber extends AdminController {
             $data = $this->validateExcel($this->file_save_path);
 
             if ($data) {
-                $this->tracking_number_model->importData($data);
+                $num = $this->tracking_number_model->importData($data);
                 $json = array(
                     'success' => true,
                     'data' => [],
-                    'total' => count($data),
+                    'total' => $num,
                     'msg' => '成功',
                     'code' => '01'
                 );
