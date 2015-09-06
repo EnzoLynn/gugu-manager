@@ -143,7 +143,11 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
                         if (Ext.isGecko) {
                             GridManager.ExpressPanel.el.mask('正在加载图形');
                         };
-                        GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData);
+                        GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData,function(code){
+                                 GlobalFun.ExpressPanel_addRuleFun({
+                                    myval: code
+                                });
+                            });
                         if (Ext.isGecko) {
                             GridManager.ExpressPanel.el.unmask();
                         }
