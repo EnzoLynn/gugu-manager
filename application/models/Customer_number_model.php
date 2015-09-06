@@ -66,6 +66,17 @@ class Customer_number_model extends CI_Model {
         return $this->db->update('customer_number', $customer_number);
     }
 
+    function updateByTrackingNumber($tracking_number) {
+        $customer_number = array(
+            //'customer_id' => $data['customer_id'],
+            //'customer_number' => $data['customer_number'],
+            'use_status' => 1,
+            'use_time' => date('y-m-d H:i:s')
+        );
+        $this->db->where('tracking_number', $tracking_number);
+        return $this->db->update('customer_number', $customer_number);
+    }
+
     function deleteCustomerNumber($number_id) {
         $this->db->where('number_id', $number_id);
         return $this->db->delete('customer_number');

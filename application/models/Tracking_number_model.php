@@ -143,6 +143,8 @@ class Tracking_number_model extends CI_Model {
                     'express_id' => $express['express_id']
                 );
                 $this->add($tracking_number);
+
+                $this->CI->customer_number_model->updateByTrackingNumber($row['运单号']);
             }
         }
         return $i;
