@@ -157,6 +157,11 @@ class Tracking_number_model extends CI_Model {
         $msg = array();//错误信息，一行一个
         $i = 2;//对应excel中的行
         foreach($data as $row) {
+            $number = $this->getTrackingNumber($row['运单号']);
+            if ($number) {
+                //已存在就不导入
+                continue;
+            }
             //通过运单号查找客户ID
             $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
             if (!$customer) {
@@ -172,16 +177,21 @@ class Tracking_number_model extends CI_Model {
                 );
             }
             //验证重量
-            if (!preg_match('/^[0-9]+(\.[0-9]{1,3})?$/', $row['重量'])) {
-                if ((float)$row['重量'] == 0) {
-                    $msg[] = array(
-                        'msg' => '第'.$i.'行，重量不能为0'
-                    );
-                }else{
-                    $msg[] = array(
-                        'msg' => '第'.$i.'行，重量格式不正确'
-                    );
-                }
+//            if (!preg_match('/^[0-9]+(\.[0-9]{1,3})?$/', $row['重量'])) {
+//                if ((float)$row['重量'] == 0) {
+//                    $msg[] = array(
+//                        'msg' => '第'.$i.'行，重量不能为0'
+//                    );
+//                }else{
+//                    $msg[] = array(
+//                        'msg' => '第'.$i.'行，'.$row['重量'].'，重量格式不正确'
+//                    );
+//                }
+//            }
+            if ((float)$row['重量'] == 0) {
+                $msg[] = array(
+                    'msg' => '第'.$i.'行，重量不能为0'
+                );
             }
             //查找快递网点
             if ($express) {

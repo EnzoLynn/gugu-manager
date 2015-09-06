@@ -15,10 +15,10 @@ class Customer extends CI_Controller {
 
     public function getList() {
         $data = array(
-            'page' => (int)$this->input->post('page'),
-            'limit'=> (int)$this->input->post('limit'),
-            'sort' => $this->input->post('sort'),
-            'dir'  => $this->input->post('dir'),
+            'page' => (int)$this->input->get_post('page'),
+            'limit'=> (int)$this->input->get_post('limit'),
+            'sort' => $this->input->get_post('sort'),
+            'dir'  => $this->input->get_post('dir'),
             'filter' => objectToArray(json_decode($this->input->post('filter')))
         );
         $rows = $this->customer_model->getCustomers($data);
@@ -73,7 +73,7 @@ class Customer extends CI_Controller {
     }
 
     public function update() {
-        $customer_id = $this->input->get_post('customer_name');
+        $customer_id = $this->input->get_post('customer_id');
 
         $data = array(
             'customer_name' => $this->input->get_post('customer_name'),
