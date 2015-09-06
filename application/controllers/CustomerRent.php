@@ -18,7 +18,6 @@ class CustomerRent extends AdminController {
     }
 
     public function getList() {
-
         $data = array(
             'page' => (int)$this->input->post('page'),
             'limit'=> (int)$this->input->post('limit'),
@@ -27,7 +26,17 @@ class CustomerRent extends AdminController {
             'filter' => json_decode($this->input->post('filter')),
             'customer_id' => (int)$this->input->post('customer_id')
         );
+
+        $customer = $this->customer_model->getCustomer((int)$this->input->post('customer_id'));
+
         $customer_rents = $this->customer_rent_model->getCustomerRents($data);
+        foreach ($customer_rents as $k => $v) {
+            if ($v['customer_rent_id'] == $customer['customer_rent_id']) {
+                $customer_rents[$k]['status'] = '有效';
+            } else {
+                $customer_rents[$k]['status'] = '无效';
+            }
+        }
 
         $customer_rents_total = $this->customer_rent_model->getCustomerRentsTotal($data);
 
