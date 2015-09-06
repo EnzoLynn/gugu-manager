@@ -59,7 +59,11 @@ class CustomerNumber extends AdminController {
         }
 
         for ($i = $customize_number_from; $i <= $customize_number_to; $i++) {
-            $this->customer_number_model->addCustomerNumber($customize_number_prefix.$i);
+            $data = array(
+                'customer_id' => $customer_id,
+                'tracking_number' => $customize_number_prefix.$i
+            );
+            $this->customer_number_model->addCustomerNumber($data);
         }
 
 
