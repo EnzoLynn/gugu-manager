@@ -377,8 +377,8 @@ Ext.define('chl.Grid.Customer_numberActionWin', {
     iconCls: '',
     record: false,
     //border: false,
-    height: 180,
-    width: 830,
+    height: 140,
+    width: 530,
     layout: 'fit',
     modal: true,
     resizable: false, 
@@ -390,7 +390,7 @@ Ext.define('chl.Grid.Customer_numberActionWin', {
         defaultType: 'textfield',
         layout: {
             type: 'table',
-            columns: 2
+            columns: 1
         },
         defaults: {
             labelAlign: 'right',
@@ -411,27 +411,18 @@ Ext.define('chl.Grid.Customer_numberActionWin', {
             }
         },
         items: [{
-            name: 'tracking_number_prefix',
-            colspan: 2,
-            fieldLabel: '面单号前缀',
-            maxLength: 2
-        }, {
             name: 'tracking_number_start',
             itemId: 'tracking_number_start',
             fieldLabel: '面单号起始编号',
             allowBlank: false,
             blankText: '不能为空',
-            maxLength: 18,
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
+            maxLength: 18 
         }, {
             name: 'tracking_number_end',
             fieldLabel: '面单号截止编号',
             allowBlank: false,
             blankText: '不能为空',
-            maxLength: 18,
-            regex: GlobalConfig.RegexController.regexNumber,
-            regexText: '请输入数字'
+            maxLength: 18 
         }]
     }],
     buttons: [{
