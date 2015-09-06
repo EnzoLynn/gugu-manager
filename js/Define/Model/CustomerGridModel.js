@@ -9,6 +9,9 @@ Ext.define('chl.Model.CustomerGridModel', {
         name: 'customer_name', 
         type: 'string'
     }, {
+        name: 'customer_no', 
+        type: 'string'
+    }, {
         name: 'real_name', 
         type: 'string'
     }, {

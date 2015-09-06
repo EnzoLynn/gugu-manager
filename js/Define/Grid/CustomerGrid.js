@@ -128,6 +128,11 @@ GridManager.CreateCustomerGrid = function(param) {
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }, {
+        text: '客户编号',
+        dataIndex: 'customer_no',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
         text: '手机号',
         dataIndex: 'mobile',
         renderer: GlobalFun.UpdateRecord,
@@ -137,6 +142,7 @@ GridManager.CreateCustomerGrid = function(param) {
         dataIndex: 'rent_area',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        hidden: true,
         groupable: false,
         sortable: false
     }, {
@@ -144,6 +150,7 @@ GridManager.CreateCustomerGrid = function(param) {
         dataIndex: 'area_to_order_number',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        hidden: true,
         groupable: false,
         sortable: false
     }, {
@@ -151,6 +158,7 @@ GridManager.CreateCustomerGrid = function(param) {
         dataIndex: 'rent_pre_price',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        hidden: true,
         groupable: false,
         sortable: false
     }, {
@@ -158,6 +166,7 @@ GridManager.CreateCustomerGrid = function(param) {
         dataIndex: 'date_start',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        hidden: true,
         groupable: false,
         sortable: false
     }, {
@@ -165,6 +174,7 @@ GridManager.CreateCustomerGrid = function(param) {
         dataIndex: 'date_end',
         renderer: GlobalFun.UpdateRecord,
         width: 100,
+        hidden: true,
         groupable: false,
         sortable: false
     }];
@@ -193,7 +203,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
     iconCls: '',
     record: false,
     //border: false,
-    height: 120,
+    height: 160,
     width: 830,
     layout: 'vbox',
     modal: true,
@@ -203,7 +213,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
         itemId: 'formId',
         autoScroll: true,
         height: 450,
-        width: 810,
+        width: 820,
         border: false,
         bodyPadding: 15,
         defaultType: 'textfield',
@@ -216,8 +226,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             labelPad: 15,
             width: 340,
             labelWidth: 125,
-            maxLength: 100,
-            maxLengthText: '最大长度为100',
+            maxLength: 36,
             enableKeyEvents: true,
             listeners: {
                 keydown: function(field, e, opts) {
@@ -234,6 +243,13 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             name: 'customer_name',
             fieldLabel: '客户名',
             itemId: 'customer_nameItemId',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空'
+        }, {
+            name: 'customer_no',
+            fieldLabel: '客户编号',
+            itemId: 'customer_noItemId',
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
@@ -329,7 +345,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         xtype: 'form',
         itemId: 'formId',
         autoScroll: true,
-        height: 170,
+        height: 180,
         width: 810,
         border: false,
         bodyPadding: 5,
@@ -449,6 +465,13 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
                     });
                 }
             }
+        },{
+            xtype:'label',
+            colspan:2,
+            style:{
+                color:'red'
+            },
+            text:'注：如客户存在多个租赁房间，添加合同时需要将多个房间面积相加后，再添加合同。多个房间对应的单量比和房租单价必须一致。每个客户只有最新添加的合同处于生效状态。'
         }, {
             name: 'customer_id',
             xtype: 'hidden'
@@ -457,7 +480,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         xtype: 'CustomerRentGrid',
         margin: '5 0 0 0',
         width: 810,
-        height: 400
+        height: 390
     }],
     buttons: [{
         text: '关闭',
