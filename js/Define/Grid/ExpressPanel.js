@@ -374,19 +374,23 @@ GridManager.CreateExpressPanel = function() {
                 title: '图形视图',
                 autoScroll: true,
                 tabIndex: 1,
-                listeners: {
-                    boxready: function(com) {
-                        if (Ext.isGecko) {
-                            com.el.mask('正在加载图形');
-                        };
-                        GlobalFun.CreatChinaSvg(com);
-                        //GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData);
-                        if (Ext.isGecko) {
-                            com.el.unmask();
+
+                items: [{
+                    xtype: 'container',
+                    listeners: {
+                        boxready: function(com) {
+                            if (Ext.isGecko) {
+                                com.el.mask('正在加载图形');
+                            };
+                            GlobalFun.CreatChinaSvg(com);
+                            //GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData);
+                            if (Ext.isGecko) {
+                                com.el.unmask();
+                            }
                         }
-                    }
-                },
-                items: []
+                    },
+                    items: []
+                }]
             }]
             //
     });
@@ -395,9 +399,11 @@ GridManager.CreateExpressPanel = function() {
 };
 
 GlobalFun.CreatChinaSvg = function(com) {
-    GlobalFun.raphelR = Raphael(com.el.dom, 600, 500);
+    GlobalFun.raphelR = Raphael(com.el.dom, 800, 700);
     //调用绘制地图方法
     paintMap(GlobalFun.raphelR);
+
+    GlobalFun.raphelR.setViewBox(0, 0, 600, 500, true);
 
 }
 
