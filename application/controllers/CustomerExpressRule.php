@@ -145,6 +145,7 @@ class CustomerExpressRule extends AdminController {
                 'price_start' => 0,
                 'price_pre' => 0
             );
+            $this->customer_express_rule_model->update($rule['rule_id'], $rule_update);
 
             $item = array(
                 'rule_id'            => $rule['rule_id'],
