@@ -47,10 +47,8 @@ class Customer_number_model extends CI_Model {
     function addCustomerNumber($data) {
         $customer_number = array(
             'customer_id' => $data['customer_id'],
-            'customize_number_prefix' => $data['customize_number_prefix'],
-            'customize_number_from' => $data['customize_number_from'],
-            'customize_number_to' => $data['customize_number_to'],
-            'customize_number_suffix' => $data['customize_number_suffix']
+            'tracking_number' => $data['tracking_number'],
+            'updated_at' => date('y-m-d H:i:s')
         );
         $this->db->insert('customer_number', $customer_number);
         $number_id =  $this->db->insert_id();
@@ -59,11 +57,10 @@ class Customer_number_model extends CI_Model {
 
     function updateCustomerNumber($number_id, $data) {
         $customer_number = array(
-            'customer_id' => $data['customer_id'],
-            'customize_number_prefix' => $data['customize_number_prefix'],
-            'customize_number_from' => $data['customize_number_from'],
-            'customize_number_to' => $data['customize_number_to'],
-            'customize_number_suffix' => $data['customize_number_suffix']
+            //'customer_id' => $data['customer_id'],
+            //'customer_number' => $data['customer_number'],
+            'use_status' => $data['use_status'],
+            'use_time' => date('y-m-d H:i:s')
         );
         $this->db->where('number_id', $number_id);
         return $this->db->update('customer_number', $customer_number);
@@ -76,21 +73,14 @@ class Customer_number_model extends CI_Model {
 
     //通过tracking_number查询到客户ID
     function getCustomerByTrackingNumber($tracking_number){
-        $arr = array();
-        $num = preg_match('/[A-Za-z]+/i', $tracking_number, $arr);
-        if($num == 0){
-            $query = $this->db->query("SELECT customer_id FROM customer_number WHERE $tracking_number BETWEEN CAST(customize_number_from AS UNSIGNED) AND CAST(customize_number_to AS UNSIGNED) ");
-            $row = $query->first_row();
-            $customer_id = (int)$row['customer_id'];
+        $this->db->where('tracking_number', $tracking_number);
+        $query = $this->db->get('customer_number');
+        $customer_number = $query->first_row();
+        if ($customer_number) {
+            $customer_id = (int)$customer_number['customer_id'];
             return $this->CI->customer_model->getCustomer($customer_id);
-        }else if($num == 1){
-            $tracking_number = str_replace($arr[0], '', $tracking_number);//去掉字母
-            $query = $this->db->query("SELECT customer_id FROM customer_number WHERE customize_number_prefix='$arr[0]' AND $tracking_number BETWEEN CAST(customize_number_from AS UNSIGNED) AND CAST(customize_number_to AS UNSIGNED)  ");
-            $row = $query->first_row();
-            $customer_id = (int)$row['customer_id'];
-            return $this->CI->customer_model->getCustomer($customer_id);
-        }else{
-            return 0;
+        } else {
+            return FALSE;
         }
     }
 }
