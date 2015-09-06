@@ -233,3 +233,49 @@ function output_error($msg) {
     echo json_encode($json);
     exit;
 }
+//根据客户免单号区间生成单号数组
+function getArrayByBetween($begin, $end) {
+    $begin_len = strlen($begin);
+    $end_len = strlen($end);
+    if ($begin_len != $end_len) {
+        return FALSE;
+    }
+
+    //如果完全相同
+    if ($begin == $end) {
+        return array($begin);
+    }
+
+    $begin_arr = array();
+    $end_arr = array();
+    for ($i = 0; $i<$begin_len; $i++) {
+        $begin_arr[] = substr($begin, $i, 1);
+    }
+    for ($i = 0; $i<$end_len; $i++) {
+        $end_arr[] = substr($end, $i, 1);
+    }
+
+    $same_begin_len = 0;
+    $same_begin_arr = array();
+    for ($i = 0; $i < $begin_len; $i++) {
+        if ($begin_arr[$i] == $end_arr[$i]) {
+            $same_begin_len++;
+            $same_begin_arr[] = $begin_arr[$i];
+        } else {
+            break;
+        }
+    }
+
+    $same_begin = implode('', $same_begin_arr);
+    $same_begin_len = strlen($same_begin);
+
+    $diff_length = $begin_len - $same_begin_len;
+    $diff_begin = (int)str_replace($same_begin, '', $begin);
+    $diff_end = (int)str_replace($same_begin, '', $end);
+
+    $diff_arr = array();
+    for ($i = $diff_begin; $i <= $diff_end; $i++) {
+        $diff_arr[] = strval($same_begin).str_pad($i, $diff_length, '0', STR_PAD_LEFT);
+    }
+    return $diff_arr;
+}
