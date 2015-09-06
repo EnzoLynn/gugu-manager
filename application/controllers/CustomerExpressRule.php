@@ -24,12 +24,18 @@ class CustomerExpressRule extends AdminController {
 
         $data = array();
         $rules = $this->customer_express_rule_model->getCustomerExpressRules($customer_rent_id);
+
         foreach($rules as $rule) {
             $temp = array(
                 'province_code' => $rule['province_code'],
-                'count' => 1,
+                'count' => 0,
             );
-            if($rule['price_type'] ==  1) {//汇总区间
+            if($rule['price_type'] ==  0) {
+                if ($rule['price_start'] > 0 || $rule['price_pre'] > 0){
+                    $temp['count'] = 1;
+                }
+            } else {//汇总区间
+
                 $temp['count'] = $this->customer_express_rule_item_model->getItemsTotal($rule['rule_id']);
             }
             $data[] = $temp;
@@ -54,8 +60,13 @@ class CustomerExpressRule extends AdminController {
         $rule = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code);
 
         if($rule['price_type'] == 0) {
-            $data = $rule;
-            $total = 1;
+            if ($rule['price_start'] > 0 || $rule['price_pre'] > 0){
+                $data = $rule;
+                $total = 1;
+            } else {
+                $data = [];
+                $total = 0;
+            }
         }else{
             $items = $this->customer_express_rule_item_model->getItems($rule['rule_id']);
             $total = $this->customer_express_rule_item_model->getItemsTotal($rule['rule_id']);

@@ -60,6 +60,9 @@ class CustomerNumber extends AdminController {
 
         $numbers = getArrayByBetween($tracking_number_start, $tracking_number_end);
 
+        if (!$numbers) {
+            output_error('区间填写错误，没有生成相关单号');
+        }
         foreach ($numbers as $number) {
             $data = array(
                 'customer_id' => $customer_id,
