@@ -246,6 +246,15 @@ function getArrayByBetween($begin, $end) {
         return array($begin);
     }
 
+    //判断字符部分
+    $begin_matches = array();
+    preg_match('/^[A-Z]+/', $begin, $begin_matches);
+    $end_matches = array();
+    preg_match('/^[A-Z]+/', $end, $end_matches);
+    if ($begin_matches != $end_matches) {
+        output_error('前缀不同');
+    }
+
     $begin_arr = array();
     $end_arr = array();
     for ($i = 0; $i<$begin_len; $i++) {
@@ -274,8 +283,15 @@ function getArrayByBetween($begin, $end) {
     $diff_end = (int)str_replace($same_begin, '', $end);
 
     $diff_arr = array();
+    $count = 0;
     for ($i = $diff_begin; $i <= $diff_end; $i++) {
+        if ($count > 50000) {
+            unset($diff_arr);
+            output_error('一次性生成单号不能超过5W个');
+            break;
+        }
         $diff_arr[] = strval($same_begin).str_pad($i, $diff_length, '0', STR_PAD_LEFT);
+        $count++;
     }
     return $diff_arr;
 }
