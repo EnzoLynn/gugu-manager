@@ -415,18 +415,18 @@ GridManager.CreateGridFilterDateMenu = function(componet, param) {
 
 
     var now = new Date();
-    var week = GlobalFun.GetNextDate(7);
-    var mouth = GlobalFun.GetNextDate(30);
-    var year = GlobalFun.GetNextDate(365);
+    var week = GlobalFun.GetNextDate(-7);
+    var mouth = GlobalFun.GetNextDate(-30);
+    var year = GlobalFun.GetNextDate(-365);
     var obj = [{
         text: '一周',
-        value: Ext.util.Format.date(now, 'Y-m-d') + ',' + week
+        value: week + ',' + Ext.util.Format.date(now, 'Y-m-d')
     }, {
         text: '一月',
-        value: Ext.util.Format.date(now, 'Y-m-d') + ',' + mouth
+        value:  mouth+ ',' + Ext.util.Format.date(now, 'Y-m-d')
     }, {
         text: '一年',
-        value: Ext.util.Format.date(now, 'Y-m-d') + ',' + year
+        value: year+ ',' + Ext.util.Format.date(now, 'Y-m-d')
     }];
     Ext.Array.each(obj, function(item, index) {
         componet.menu.add(GridManager.GridFilterMenuCheckItemInit({
