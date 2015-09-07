@@ -21,26 +21,34 @@ class Customer_number_model extends CI_Model {
     }
 
     function getCustomerNumbers($data) {
-        $data = array(
-            'customer_id' => $data['customer_id'],
-            'page' => (int)$data['page'],
-            'limit'=> (int)$data['limit'],
-            'sort' => $data['sort'],
-            'dir'  => $data['dir']
-            //'filter' => $data['filter']
-        );
-
-        $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
+        if (isset($data['filter']['use_status'])) {
+            $this->db->where('use_status', $data['filter']['use_status']);
+        }
+        if (isset($data['filter']['use_time_begin']) && $data['filter']['use_time_begin'] != '') {
+            $this->db->where("use_time >= '". $data['filter']['use_time_begin'] ." 00:00:00'");
+        }
+        if (isset($data['filter']['use_time_end']) && $data['filter']['use_time_end'] != '') {
+            $this->db->where("use_time <= '". $data['filter']['use_time_end'] ." 23:59:59'");
+        }
         $this->db->where('customer_id', $data['customer_id']);
+        $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer_number');
         $customer_numbers = $query->result_array();
-
         return $customer_numbers;
     }
 
-    function getCustomerNumbersTotal($customer_id) {
-        $this->db->where('customer_id', $customer_id);
+    function getCustomerNumbersTotal($data) {
+        if (isset($data['filter']['use_status'])) {
+            $this->db->where('use_status', $data['filter']['use_status']);
+        }
+        if (isset($data['filter']['use_time_begin']) && $data['filter']['use_time_begin'] != '') {
+            $this->db->where("use_time >= '". $data['filter']['use_time_begin'] ." 00:00:00'");
+        }
+        if (isset($data['filter']['use_time_end']) && $data['filter']['use_time_end'] != '') {
+            $this->db->where("use_time <= '". $data['filter']['use_time_end'] ." 23:59:59'");
+        }
+        $this->db->where('customer_id', $data['customer_id']);
         return $this->db->count_all_results('customer_number');
     }
 
