@@ -44,8 +44,8 @@ class CustomerNumber extends AdminController {
     public function add() {
         $customer_id = $this->input->post('customer_id');
         //$tracking_number_prefix = $this->input->post('tracking_number_prefix');
-        $tracking_number_start = $this->input->post('tracking_number_start');
-        $tracking_number_end = $this->input->post('tracking_number_end');
+        $tracking_number_start = strtoupper($this->input->post('tracking_number_start'));
+        $tracking_number_end = strtoupper($this->input->post('tracking_number_end'));
 
         $customer1 = $this->customer_number_model->getCustomerByTrackingNumber($tracking_number_start);
         $customer2 = $this->customer_number_model->getCustomerByTrackingNumber($tracking_number_end);
