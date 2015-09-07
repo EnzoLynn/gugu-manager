@@ -29,7 +29,7 @@ Ext.create('Ext.data.Store', {
     autoLoad: false,
     remoteSort: true, //排序通过查询数据库
     sorters: [{
-        property: 'customer_id',
+        property: 'number_id',
         direction: 'DESC'
     }],
     proxy: {
