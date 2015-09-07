@@ -28,6 +28,13 @@ class CustomerNumber extends AdminController {
             'customer_id' => (int)$this->input->post('customer_id')
         );
         $customer_numbers = $this->customer_number_model->getCustomerNumbers($data);
+        foreach ($customer_numbers as $k => $v) {
+            if ($v['use_status'] == 0) {
+                $customer_numbers[$k]['use_status_name'] = '未用';
+            } else {
+                $customer_numbers[$k]['use_status_name'] = '已用';
+            }
+        }
 
         $customer_numbers_total = $this->customer_number_model->getCustomerNumbersTotal($data['customer_id']);
 
