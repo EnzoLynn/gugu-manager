@@ -24,9 +24,14 @@ class CustomerNumber extends AdminController {
             'limit'=> (int)$this->input->post('limit'),
             'sort' => $this->input->post('sort'),
             'dir'  => $this->input->post('dir'),
-            //'filter' => json_decode($this->input->post('filter')),
+            'filter' => objectToArray(json_decode($this->input->post('filter'))),
             'customer_id' => (int)$this->input->post('customer_id')
         );
+        if (isset($data['filter']['use_time'])) {
+            $temp = explode(',', $data['filter']['use_time']);
+            $data['filter']['use_time_begin'] = $temp[0];
+            $data['filter']['use_time_end'] = $temp[1];
+        }
         $customer_numbers = $this->customer_number_model->getCustomerNumbers($data);
         foreach ($customer_numbers as $k => $v) {
             if ($v['use_status'] == 0) {
@@ -36,7 +41,7 @@ class CustomerNumber extends AdminController {
             }
         }
 
-        $customer_numbers_total = $this->customer_number_model->getCustomerNumbersTotal($data['customer_id']);
+        $customer_numbers_total = $this->customer_number_model->getCustomerNumbersTotal($data);
 
         $json = array(
             'success' => true,
