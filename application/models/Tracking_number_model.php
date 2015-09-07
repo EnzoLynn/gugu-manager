@@ -10,6 +10,8 @@ class Tracking_number_model extends CI_Model {
     public function __construct() {
         parent::__construct();
         $this->CI = &get_instance();
+        $this->CI->load->model('area_model');
+
         $this->CI->load->model('customer_model');
         $this->CI->load->model('customer_number_model');
         $this->CI->load->model('customer_rent_model');
@@ -123,6 +125,8 @@ class Tracking_number_model extends CI_Model {
             $express = $this->CI->express_company_model->getExpressByName($row['快递公司']);
             //$customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);//直接调用用户信息的customer_rent_id
 
+            $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
+
             $number = $this->getTrackingNumber($row['运单号']);
             if ($number) {
                 //已存在就不导入
@@ -139,7 +143,7 @@ class Tracking_number_model extends CI_Model {
                     'cost' => 0,
                     'customer_id' => $customer['customer_id'],
                     'admin_id' => $this->CI->admin_id,
-                    'customer_rent_id' => 0,//计算的时候再判断合同号$customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
+                    'customer_rent_id' => $customer_rent['customer_rent_id'],//计算的时候再判断合同号$customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
                     'express_id' => $express['express_id']
                 );
                 $this->add($tracking_number);
@@ -209,7 +213,9 @@ class Tracking_number_model extends CI_Model {
             }
             //验证客户的合同时间
             if ($customer) {
-                $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);
+                $date = strtotime($row['揽收时间']);
+                $date = date('Y-m-d', $date);
+                $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $date);
                 if (!$customer_rent) {
                     $msg[] = array(
                         'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
@@ -225,21 +231,23 @@ class Tracking_number_model extends CI_Model {
         $msg = array();
         $tracking_numbers = $this->getTrackingNumbersByType('income');
         foreach($tracking_numbers as $row) {
+            //导入的时候，不验证合同，现在开始赋值合同 ？？？
             $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
+
             if (!$rule_item || count($rule_item) == 1) {//如果只有一个price_type，表示有省这张表，但是没有规则
                 $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
-
-                $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_id']);
-                if (strtotime($row['arrive_express_point_name']) < strtotime($customer_rent['date_start'].' 00:00:00') || strtotime($row['arrive_express_point_name']) > strtotime($customer_rent['date_end'].' 23:59:59')) {
+                $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
+                if (strtotime($row['arrive_time']) < strtotime($customer_rent['date_start'].' 00:00:00') || strtotime($row['arrive_time']) > strtotime($customer_rent['date_end'].' 23:59:59')) {
                     $msg[] = array(
                         'tracking_number' => $row['tracking_number'],
                         'msg' =>  '揽收时间没有当前客户的合同期限内（客户名：'.$customer['customer_name'].')'
                     );
                 }
-
+                $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
+                $area = $this->CI->area_model->getOne($point['province_code']);
                 $msg[] = array(
                     'tracking_number' => $row['tracking_number'],
-                    'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+                    'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
                 );
             }
         }
@@ -285,9 +293,11 @@ class Tracking_number_model extends CI_Model {
         foreach($tracking_numbers as $row) {
             $rule_item = $this->CI->express_rule_model->getItemByWeight($row['express_id'], $row['arrive_express_point_code'], $row['weight']);
             if (!$rule_item) {
+                $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
+                $area = $this->CI->area_model->getOne($point['province_code']);
                 $msg[] = array(
                     'tracking_number' => $row['tracking_number'],
-                    'msg' =>  '没有匹配的运算成本规则（揽收网点地址：'.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+                    'msg' =>  '没有匹配的运算成本规则（揽收网点地址：'.$area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
                 );
             }
         }
