@@ -16,6 +16,18 @@ StoreManager.ComboStore.Tracking_numberGridTypeStore = Ext.create('Ext.data.Stor
     }]
 });
 
+StoreManager.ComboStore.Customer_numberGridStatusStore = Ext.create('Ext.data.Store', {
+    storeId: 'Tracking_numberGridTypeStoreId',
+    fields: ['Id', 'Name'],
+    data: [{
+        Id: 0,
+        Name: '未使用'
+    }, {
+        Id: 1,
+        Name: '已使用'
+    }]
+});
+
 //角色Store
 // StoreManager.ComboStore.RoleStore = Ext.create('Ext.data.Store', {
 //     storeId: 'RoleStoreId',

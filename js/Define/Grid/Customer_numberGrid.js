@@ -24,7 +24,7 @@ Ext.create('Ext.data.Store', {
     model: 'chl.Model.Customer_numberGridModel',
     storeId: 'Customer_numberStoreId',
     filterMap: Ext.create('Ext.util.HashMap'),
-    pageSize: GlobalConfig.GridPageSize,
+    pageSize: GlobalConfig.GridPageSize+150,
     autoSync: false,
     autoLoad: false,
     remoteSort: true, //排序通过查询数据库
@@ -158,7 +158,36 @@ Ext.define('chl.gird.Customer_numberGrid', {
         itemId: 'pagingtoolbarID',
         store: 'Customer_numberStoreId',
         dock: 'bottom',
-        items: []
+        items: [{
+            xtype: 'tbtext',
+            text: '过滤:'
+        }, {
+            xtype: 'GridFilterMenuButton',
+            itemId: 'menuID',
+            text: '全部状态',
+            filterParam: {
+                group: 'customer_nubmer_statusGroup',
+                text: '全部类别',
+                filterKey: 'use_status',
+                GridTypeName: 'Customer_numberGrid',
+                store: StoreManager.ComboStore.Customer_numberGridStatusStore
+            }
+        },{
+            xtype: 'GridFilterMenuButton',  
+            text: '全部时间',
+            filterParam: {
+                menuType:'date',
+                group: 'customer_nubmer_use_timeGroup',
+                text: '全部时间',
+                filterKey: 'use_time',
+                GridTypeName: 'Customer_numberGrid' 
+            }
+        }, '-', {
+            xtype: 'GridSelectCancelMenuButton',
+            itemId: 'selectRecId',
+            text: '选择',
+            targetName: 'Customer_numberGrid'
+        }]
     }],
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {

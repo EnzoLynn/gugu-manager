@@ -1,5 +1,4 @@
-﻿
-//表格过滤菜单按钮
+﻿//表格过滤菜单按钮
 Ext.define('chl.exUnit.GridFilterMenuButton', {
     alias: 'widget.GridFilterMenuButton',
     extend: 'Ext.button.Button',
@@ -19,20 +18,31 @@ Ext.define('chl.exUnit.GridFilterMenuButton', {
         },
         items: []
     },
-    initComponent: function () {
+    initComponent: function() {
         var me = this;
         var filter = '';
-        me.callParent(arguments);	// 调用父类方法
-        me.on('boxready', function (componet, width, height, eOpts) {
+        me.callParent(arguments); // 调用父类方法
+        me.on('boxready', function(componet, width, height, eOpts) {
             if (me.filterParam) {
                 var target = componet.up(me.filterParam.GridTypeName);
-                GridManager.CreateGridFilterMenu(componet, me.filterParam.store, {
-                    group: me.filterParam.group,
-                    text: me.filterParam.text,
-                    target: target,
-                    componet: componet,
-                    filterKey: me.filterParam.filterKey
-                });
+                if (me.filterParam.menuType && me.filterParam.menuType == "date") {
+                    GridManager.CreateGridFilterDateMenu(componet, {
+                        group: me.filterParam.group,
+                        text: me.filterParam.text,
+                        target: target,
+                        componet: componet,
+                        filterKey: me.filterParam.filterKey
+                    });
+                } else {
+                    GridManager.CreateGridFilterMenu(componet, me.filterParam.store, {
+                        group: me.filterParam.group,
+                        text: me.filterParam.text,
+                        target: target,
+                        componet: componet,
+                        filterKey: me.filterParam.filterKey
+                    });
+                }
+
             }
         });
     }
@@ -50,11 +60,11 @@ Ext.define('chl.exUnit.GridSelectCancelMenuButton', {
         },
         items: []
     },
-    initComponent: function () {
+    initComponent: function() {
         var me = this;
         var filter = '';
-        me.callParent(arguments);	// 调用父类方法
-        me.on('boxready', function (componet, width, height, eOpts) {
+        me.callParent(arguments); // 调用父类方法
+        me.on('boxready', function(componet, width, height, eOpts) {
             var target = componet.up(me.targetName);
             GridManager.CreateGridSelectCancelMenu(componet, target);
         });
@@ -100,15 +110,15 @@ Ext.define('MiniPngDDSortViewClass', {
         RowId: 0,
         AreaId: 0,
         currPngTotal: 1, //当前图形总数
-        shiftImg: 0////shift选择记录位置
+        shiftImg: 0 ////shift选择记录位置
     },
-    constructor: function (cfg) {
+    constructor: function(cfg) {
         this.initConfig(cfg);
         this.pngSels = new Ext.util.MixedCollection(); //所有选中的Png 数组 //缩略图数组
         this.pngSelBig = new Ext.util.MixedCollection(); //大图数组
         this.pngAllMini = new Ext.util.MixedCollection(); //所有缩略图Png数组
     },
-    initPngPanel: function (palPngContainer) {
+    initPngPanel: function(palPngContainer) {
 
         var window = palPngContainer.up('window');
         var pngClass = window.pngClass;
@@ -127,14 +137,14 @@ Ext.define('MiniPngDDSortViewClass', {
             sort: 'SortNum',
             sessiontoken: GlobalFun.getSeesionToken()
         };
-        WsCall.call(GlobalConfig.Controllers.TombstoneGrid.read, 'LoadTombstoneGrid', param, function (response, opts) {
+        WsCall.call(GlobalConfig.Controllers.TombstoneGrid.read, 'LoadTombstoneGrid', param, function(response, opts) {
             var data = response.dataset;
             window.el.mask('请稍候...');
-            Ext.Array.each(data, function (item, index, allItems) {
+            Ext.Array.each(data, function(item, index, allItems) {
                 var src = GlobalFun.GetTomestoneImageSrc(item.PaymentStatusId, item.Id, item.TypeId);
                 var pngContainer = Ext.create('Ext.container.Container', {
-                    width: 100,//100,
-                    height: 80,//140,
+                    width: 100, //100,
+                    height: 80, //140,
                     tombstoneId: item.Id,
                     layout: {
                         type: 'vbox',
@@ -143,21 +153,21 @@ Ext.define('MiniPngDDSortViewClass', {
                     items: [{
                         xtype: 'image',
                         cls: 'hospital-target',
-                        sortNum: index,//item.SortNum,
+                        sortNum: index, //item.SortNum,
                         tombstoneId: item.Id,
-                        width: 77,//90,
-                        height: 60,//120,
+                        width: 77, //90,
+                        height: 60, //120,
                         style: pngNStyle,
                         src: src,
                         listeners: {
-                            boxready: function (img, width, height, opts) {
+                            boxready: function(img, width, height, opts) {
                                 //设置为可拖放状态
                                 DropDragControl.initializeHospitalDropZone(img, window);
                                 var imgDom = img.getEl();
                                 //装载缩略图数组
                                 pngClass.getPngAllMini().add(img.id, img);
 
-                                imgDom.on('click', function (eve) {
+                                imgDom.on('click', function(eve) {
 
                                     if (stopClick)
                                         return;
@@ -176,7 +186,7 @@ Ext.define('MiniPngDDSortViewClass', {
                                                 pngClass.getPngSels().add(img.id, img);
                                             }
 
-                                        } else {//取消
+                                        } else { //取消
                                             //patientImg= "";
                                             imgDom.setStyle('border', '1px solid black');
                                             if (pngClass.getPngSels().contains(img)) {
@@ -188,14 +198,14 @@ Ext.define('MiniPngDDSortViewClass', {
                                             }
                                         }
                                         return;
-                                    }//判断是否按下ctrl end
+                                    } //判断是否按下ctrl end
 
                                     //判断是否按下shift
                                     if (eve.shiftKey) {
                                         var firstImg;
                                         var imageList = palPngContainer.query('image');
                                         //追加到后方
-                                        Ext.Array.each(imageList, function (item, index, allItems) {
+                                        Ext.Array.each(imageList, function(item, index, allItems) {
                                             if (index == 0) {
                                                 if (pngClass.getShiftImg() != 0) {
                                                     firstImg = pngClass.getShiftImg();
@@ -210,7 +220,7 @@ Ext.define('MiniPngDDSortViewClass', {
                                         });
                                         //清空选择数组
                                         pngClass.getPngSels().clear();
-                                        Ext.Array.each(imageList, function (item, index, allItems) {
+                                        Ext.Array.each(imageList, function(item, index, allItems) {
                                             var imgItem = item.getEl();
                                             imgItem.setStyle('border', '1px solid black'); //取消选中
 
@@ -232,12 +242,12 @@ Ext.define('MiniPngDDSortViewClass', {
                                             }
                                         });
                                         return;
-                                    }//判断是否按下shift end
+                                    } //判断是否按下shift end
 
                                     pngClass.setShiftImg(img);
                                     var imageList = palPngContainer.query('image');
                                     //追加到后方
-                                    Ext.Array.each(imageList, function (item, index, allItems) {
+                                    Ext.Array.each(imageList, function(item, index, allItems) {
                                         //设置为禁止拖拽
                                         DropDragControl.uninitPatientDragZone(item);
                                         //设置为可拖放状态
@@ -245,7 +255,7 @@ Ext.define('MiniPngDDSortViewClass', {
                                     });
                                     //清空选择数组
                                     pngClass.getPngSels().clear();
-                                    Ext.Array.each(imageList, function (item, index, allItems) {
+                                    Ext.Array.each(imageList, function(item, index, allItems) {
                                         var imgItem = item.getEl();
                                         imgItem.setStyle('border', '1px solid black'); //取消选中
                                         if (item.id == img.id) {
@@ -260,11 +270,11 @@ Ext.define('MiniPngDDSortViewClass', {
 
                                 });
                                 //双击
-                                imgDom.on('dblclick', function () {
+                                imgDom.on('dblclick', function() {
 
                                     var imageList = palPngContainer.query('image');
                                     //追加到后方
-                                    Ext.Array.each(imageList, function (item, index, allItems) {
+                                    Ext.Array.each(imageList, function(item, index, allItems) {
                                         //设置为禁止拖拽
                                         DropDragControl.uninitPatientDragZone(item);
                                         //设置为可拖放状态
@@ -272,7 +282,7 @@ Ext.define('MiniPngDDSortViewClass', {
                                     });
                                     //清空选择数组
                                     pngClass.getPngSels().clear();
-                                    Ext.Array.each(imageList, function (item, index, allItems) {
+                                    Ext.Array.each(imageList, function(item, index, allItems) {
                                         var imgItem = item.getEl();
                                         imgItem.setStyle('border', '1px solid black'); //取消选中
                                     });
@@ -292,7 +302,7 @@ Ext.define('MiniPngDDSortViewClass', {
 
                                 });
 
-                                imgDom.dom.onload = function () {
+                                imgDom.dom.onload = function() {
                                     if (imgDom.dom && imgDom.dom.height > 1) {
                                         img.ownerCt.el.unmask();
                                     }
@@ -309,7 +319,7 @@ Ext.define('MiniPngDDSortViewClass', {
                 palPngContainer.add(pngContainer);
             });
             window.el.unmask();
-        }, function (response, opts) {
+        }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
                 Ext.Msg.alert('失败', response.msg);
             }
@@ -338,15 +348,15 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
     },
     dockedItems: [{
         xtype: 'container',
-        itemId:'container',
+        itemId: 'container',
         layout: {
             type: 'hbox',
             align: 'middle'
         },
-        height:34,
+        height: 34,
         dock: 'top',
         defaults: {
-            margin:'2px 2px 2px 2px'
+            margin: '2px 2px 2px 2px'
         },
         items: [{
             xtype: 'textfield',
@@ -361,7 +371,7 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
             regexText: '请输入3位或5位或7位编码',
             enableKeyEvents: true,
             listeners: {
-                keypress: function (field, e, opts) {
+                keypress: function(field, e, opts) {
                     if (e.getKey() == e.ENTER) {
                         var toolbar = field.up('container');
                         var showTomb = toolbar.down('#showTomb');
@@ -377,7 +387,7 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
         }, {
             xtype: 'button',
             text: '选择',
-            handler: function (com) {
+            handler: function(com) {
                 var w = this.up('container');
                 var field = w.down('#tombCode');
                 WindowManager.SelectCemeteryAreaWin = WindowManager.ShowSelectCemeteryAreaWin();
@@ -385,14 +395,14 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
             }
         }, {
             text: '显示',
-            xtype:'button',
+            xtype: 'button',
             iconCls: 'search',
             width: 100,
             //height:24,
             cls: 'big-fieldtext',
             itemId: 'showTomb',
             listeners: {
-                click: function (com) {
+                click: function(com) {
                     var toolbar = com.up('container');
                     var tombCode = toolbar.down('#tombCode');
 
@@ -411,7 +421,7 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
                         if (codeVal.length > 0) {
                             param.filter = '{ "Area": { "Alias": "' + codeVal + '" }, "Row": { "Alias": "' + codeVal + '" }, "Column": { "Alias": "' + codeVal + '" } }';
                         }
-                        WsCall.call(GlobalConfig.Controllers.TombstoneGrid.read, 'LoadTombstoneGrid', param, function (response, opts) {
+                        WsCall.call(GlobalConfig.Controllers.TombstoneGrid.read, 'LoadTombstoneGrid', param, function(response, opts) {
                             var data = response.dataset;
                             GridManager.AreaTombstoneImagePanel.el.mask('请稍候...');
                             //模拟加载
@@ -434,7 +444,7 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
                             //行组信息
                             var rowMaps = new Ext.util.MixedCollection();
                             var areaSort = 'ASC';
-                            Ext.Array.each(data, function (item, index, allItems) {
+                            Ext.Array.each(data, function(item, index, allItems) {
                                 var key = item.RowId;
                                 if (!rowMaps.containsKey(key)) {
                                     rowMaps.add(key, [item]);
@@ -443,10 +453,10 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
                                 }
                                 if (item.AreaSort == "DESC") {
                                     areaSort = "DESC";
-                                } 
+                                }
                             });
                             rowMaps.sortByKey(areaSort);
-                            rowMaps.each(function (row, index) {
+                            rowMaps.each(function(row, index) {
                                 items1 = [];
                                 pngContainer = Ext.create('Ext.container.Container', {
                                     style: {
@@ -455,12 +465,12 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
                                     },
                                     items: []
                                 });
-                                Ext.Array.each(row, function (item, index1) {
+                                Ext.Array.each(row, function(item, index1) {
                                     var src = GlobalFun.GetTomestoneImageSrc(item.PaymentStatusId, item.Id, item.TypeId);
 
                                     var pngContainer1 = Ext.create('Ext.container.Container', {
-                                        width: 100,//100,
-                                        height: 80,//140,
+                                        width: 100, //100,
+                                        height: 80, //140,
                                         tombstoneId: item.Id,
                                         layout: {
                                             type: 'vbox',
@@ -475,15 +485,15 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
                                             sortNum: item.SortNum,
                                             tombstoneId: item.Id,
                                             PaymentStatusId: item.PaymentStatusId,
-                                            tombstoneInfo:item,
-                                            width: 77,//90,
-                                            height: 60,//120,
+                                            tombstoneInfo: item,
+                                            width: 77, //90,
+                                            height: 60, //120,
                                             style: pngNStyle,
                                             src: src,
                                             listeners: {
-                                                boxready: function (img) {
+                                                boxready: function(img) {
                                                     var imgDom = img.getEl();
-                                                    imgDom.on('click', function (eve) {
+                                                    imgDom.on('click', function(eve) {
                                                         var tid = img.tombstoneId;
                                                         var tombstoneInfo = img.tombstoneInfo;
                                                         GlobalFun.JobTombPngClickFun(eve, tid, tombstoneInfo);
@@ -505,7 +515,7 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
                             //pngContainer.add(items1);
                             //GridManager.AreaTombstoneImagePanel.add(pngContainer);
                             GridManager.AreaTombstoneImagePanel.el.unmask();
-                        }, function (response, opts) {
+                        }, function(response, opts) {
                             if (!GlobalFun.errorProcess(response.code)) {
                                 Ext.Msg.alert('失败', response.msg);
                             }
@@ -520,9 +530,9 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
             xtype: 'button',
             width: 100,
             cls: 'big-fieldtext',
-            itemId:'reset',
+            itemId: 'reset',
             listeners: {
-                click: function (field) {
+                click: function(field) {
                     var toolbar = field.up('container');
                     var tombCode = toolbar.down('#tombCode');
                     tombCode.setValue("");
@@ -530,7 +540,7 @@ Ext.define('chl.exUnit.AreaTombstoneImagePanel', {
                     tombCode.inputEl.focus(100);
                 }
             }
-           
+
         }]
     }],
     items: []

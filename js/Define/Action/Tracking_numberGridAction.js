@@ -87,6 +87,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                     var data = action.result.data;
                                     //if (action.result.success) {
                                     target.loadGrid();
+                                    outWin.close();
                                     //} else {                                        
                                     //ActionManager.showUpLoadExcelError(action.result.data);
                                     //}
