@@ -288,7 +288,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
             // }
     }, {
         header: '状态',
-        dataIndex: 'use_status',
+        dataIndex: 'use_status_name',
         flex: 1
     }, {
         header: '使用时间',
