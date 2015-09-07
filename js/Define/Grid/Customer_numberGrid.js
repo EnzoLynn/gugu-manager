@@ -479,7 +479,7 @@ Ext.define('chl.Grid.Customer_numberActionWin', {
                 var number_end_number = tracking_number_end.replace(regex, function($0, $1, $2, $3) {
                     return $2;
                 });
-                var tempCount = Math.abs(number_start_number - number_end_number);
+                var tempCount = Math.abs(number_start_number - number_end_number)+1;
                 GlobalConfig.newMessageBox.show({
                     title: '提示',
                     msg: '该面单范围即将产生' + tempCount + '条面单数据，是否继续?',
