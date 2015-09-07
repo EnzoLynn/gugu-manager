@@ -1,6 +1,6 @@
 Ext.onReady(function() {
 
- 
+    
 
     Ext.getBody().mask('正在加载...');
     //修正Bug
