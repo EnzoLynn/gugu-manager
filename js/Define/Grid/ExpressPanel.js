@@ -498,7 +498,7 @@ GlobalFun.InitChinaSvgDataEvent = function(data,clickFun) {
 
                 st.animate({
                     fill: st.color,
-                    stroke: "#920808",
+                    stroke: "#04937D",
                     'stroke-width':2
                 }, 500);
                 st.toFront();
