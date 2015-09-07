@@ -381,10 +381,10 @@ Ext.define('chl.Grid.Customer_numberActionWin', {
     width: 530,
     layout: 'fit',
     modal: true,
-    resizable: false, 
+    resizable: false,
     items: [{
         xtype: 'form',
-        itemId: 'formId', 
+        itemId: 'formId',
         border: false,
         bodyPadding: 5,
         defaultType: 'textfield',
@@ -416,13 +416,14 @@ Ext.define('chl.Grid.Customer_numberActionWin', {
             fieldLabel: '面单号起始编号',
             allowBlank: false,
             blankText: '不能为空',
-            maxLength: 18 
+            maxLength: 18
         }, {
             name: 'tracking_number_end',
+            itemId: 'tracking_number_end',
             fieldLabel: '面单号截止编号',
             allowBlank: false,
             blankText: '不能为空',
-            maxLength: 18 
+            maxLength: 18
         }]
     }],
     buttons: [{
@@ -449,29 +450,72 @@ Ext.define('chl.Grid.Customer_numberActionWin', {
             var form = w.down('#formId').getForm();
 
             if (form.isValid()) {
-
-                var url = w.action == "create" ? GlobalConfig.Controllers.Customer_numberGrid.create : GlobalConfig.Controllers.Customer_numberGrid.update;
-                form.submit({
-                    url: url,
-                    params: {
-                        req: 'dataset',
-                        dataname: 'Customer_numberGridAction', // dataset名称，根据实际情况设置,数据库名
-                        restype: 'json',
-                        customer_id: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_id,
-                        action: w.action,
-                        sessiontoken: GlobalFun.getSeesionToken()
-                    },
-                    success: function(form, action) {
-                        w.grid.loadGrid();
-                        w.close();
-
-                    },
-                    failure: function(form, action) {
-                        if (!GlobalFun.errorProcess(action.result.code)) {
-                            Ext.Msg.alert('失败', action.result.msg);
-                        }
-                    }
+                //面单号数量提示
+                //普通面单：12位数字
+                //到付面单：D+11位数字 
+                //承诺达面单：C+11位数字 
+                //电子面单：12或18位数字 
+                //电子到付面单：DD+8位或10位数字 
+                var regex = /^([A-Za-z]*)(\d+)$/;
+                var tracking_number_start = w.down('#tracking_number_start').getValue();
+                var tracking_number_end = w.down('#tracking_number_end').getValue();
+                if (tracking_number_start.length != tracking_number_end.length) {
+                    Ext.Msg.alert('提示', '请输入位数一致的面单范围.');
+                    return;
+                };
+                var number_start_fix = tracking_number_start.replace(regex, function($0, $1, $2, $3) {
+                    return $1;
                 });
+                var number_end_fix = tracking_number_end.replace(regex, function($0, $1, $2, $3) {
+                    return $1;
+                });
+                if (number_start_fix.toUpperCase() != number_end_fix.toUpperCase()) {
+                    Ext.Msg.alert('提示', '请输入相同的面单前缀.');
+                    return;
+                };
+                var number_start_number = tracking_number_start.replace(regex, function($0, $1, $2, $3) {
+                    return $2;
+                });
+                var number_end_number = tracking_number_end.replace(regex, function($0, $1, $2, $3) {
+                    return $2;
+                });
+                var tempCount = Math.abs(number_start_number - number_end_number);
+                GlobalConfig.newMessageBox.show({
+                    title: '提示',
+                    msg: '该面单范围即将产生' + tempCount + '条面单数据，是否继续?',
+                    buttons: Ext.MessageBox.YESNO,
+                    closable: false,
+                    fn: function(btn) {
+                        if (btn == 'yes') {
+                            var url = w.action == "create" ? GlobalConfig.Controllers.Customer_numberGrid.create : GlobalConfig.Controllers.Customer_numberGrid.update;
+                            form.submit({
+                                url: url,
+                                params: {
+                                    req: 'dataset',
+                                    dataname: 'Customer_numberGridAction', // dataset名称，根据实际情况设置,数据库名
+                                    restype: 'json',
+                                    customer_id: WindowManager.AddUpdateCustomer_numberWin.record.data.customer_id,
+                                    action: w.action,
+                                    sessiontoken: GlobalFun.getSeesionToken()
+                                },
+                                success: function(form, action) {
+                                    w.grid.loadGrid();
+                                    w.close();
+
+                                },
+                                failure: function(form, action) {
+                                    if (!GlobalFun.errorProcess(action.result.code)) {
+                                        Ext.Msg.alert('失败', action.result.msg);
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    icon: Ext.MessageBox.QUESTION
+                });
+
+
+
             }
         }
     }, {
