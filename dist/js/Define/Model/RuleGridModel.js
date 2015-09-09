@@ -1,0 +1,2 @@
+Ext.define("chl.Model.RuleGridModel",{extend:"Ext.data.Model",idProperty:"Id",alternateClassName:["RuleGridModel"],fields:[{name:"Id",type:"string"},{name:"Date",mapping:"Date",type:"string"}]});
+//# sourceMappingURL=RuleGridModel.js.map

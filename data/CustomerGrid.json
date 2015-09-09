@@ -1,0 +1,21 @@
+{
+    "success": true,
+    "data": [{
+    	"customer_id":"1",
+    	"customer_name":"testName",
+    	"real_name":"real_name",
+    	"mobile":"1444444",
+    	"customize_number_from":"1000",
+    	"customize_number_to":"9000",
+        "customer_rent_id":"1",
+    	"rent_area":"60",
+    	"area_to_order_number":"1.1",
+    	"rent_pre_price":"1.2",
+    	"date_start":"2015-01-09",
+    	"date_end":"2015-03-09",
+    	"updated_at":"1000" 
+    }],
+    "total": "200",
+    "msg": "成功",
+    "code": "01"
+}

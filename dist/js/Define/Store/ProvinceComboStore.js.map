@@ -1,0 +1,1 @@
+{"version":3,"file":"ProvinceComboStore.js","sources":["../../../../js/Define/Store/ProvinceComboStore.js"],"names":["states","Ext","create","fields","data","abbr","name"],"mappings":"AAAA,GAAIA,QAASC,IAAIC,OAAO,kBACpBC,QAAS,OAAQ,QACjBC,OACKC,KAAO,KAAMC,KAAO,YACpBD,KAAO,KAAMC,KAAO,WACpBD,KAAO,KAAMC,KAAO"}

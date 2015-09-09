@@ -1,0 +1,36 @@
+{
+    "success": true,
+
+    "data": [{         
+        "price_type":"1",
+    	"rule_id":"1",
+    	"price":"1",
+    	"weight_min_sign":"",
+    	"weight_min":"1",
+    	"weight_max_sign":"",
+    	"weight_max":"2",
+        "sort_order":"1" 
+    },{        
+        "price_type":"2",
+    	"rule_id":"1",
+        "price":"1",
+        "weight_min_sign":"",
+        "weight_min":"2",
+        "weight_max_sign":"",
+        "weight_max":"3",
+        "sort_order":"1" 
+    },{
+        
+        "price_type":"2",
+    	"rule_id":"1",
+        "price":"1",
+        "weight_min_sign":"",
+        "weight_min":"3",
+        "weight_max_sign":"",
+        "weight_max":"99999",
+        "sort_order":"1" 
+    }],
+    "total": "200",
+    "msg": "成功",
+    "code": "01"
+}

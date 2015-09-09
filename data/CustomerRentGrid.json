@@ -1,0 +1,16 @@
+{
+    "success": true,
+    "data": [{
+    	"customer_rent_id":"1",
+        "customer_id":"1",
+    	"title":"testName",
+    	"rent_area":"10",
+    	"area_to_order_number":"1.1",
+    	"rent_pre_price":"2.3",
+    	"date_start":"1000",
+    	"date_end":"9000" 
+    }],
+    "total": "200",
+    "msg": "成功",
+    "code": "01"
+}
