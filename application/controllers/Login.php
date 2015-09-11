@@ -39,7 +39,7 @@ class Login extends MY_Controller {
                 'data' => $admin,
                 'total' => 1,
                 'msg' => '登录成功',
-                'code' => '01'
+                'code' => '02'
             );
         }else {
             $json = array(
