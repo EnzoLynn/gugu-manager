@@ -498,16 +498,20 @@ GlobalFun.InitChinaSvgDataEvent = function(data,clickFun) {
 
                 st.animate({
                     fill: st.color,
-                    stroke: "#eee"
+                    stroke: "#04937D",
+                    'stroke-width':2
                 }, 500);
+                st.toFront();
                 china[state]['text'].toFront();
                 R.safari();
             };
             st[0].onmouseout = china[state]['text'][0].onmouseout = function() {
                 st.animate({
                     fill: "#97d6f5",
-                    stroke: "#eee"
-                }, 500);
+                    stroke: "#eee",
+                    'stroke-width':1
+                }, 500); 
+                st.toBack();
                 china[state]['text'].toFront();
                 R.safari();
             };
