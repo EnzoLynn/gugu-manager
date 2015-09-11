@@ -22,7 +22,10 @@ Ext.onReady(function() {
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.User.GetCurrUserInfo, 'GetCurrUserInfo', param, function(response, opts) {
-            GlobalConfig.CurrUserInfo = response.data[0];
+             GlobalConfig.CurrUserInfo = response.data;
+            Ext.util.Cookies.set("login_sessiontoken", GlobalConfig.CurrUserInfo.session_token,
+                                    new Date(new Date().getTime()
+                                            + (1000 * 60 * 60 * 24 * 30)));
             callBack();
         }, function(response, opts) {
 

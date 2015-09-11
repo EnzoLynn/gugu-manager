@@ -59,7 +59,11 @@
                      };
                      // 调用
                      WsCall.pcall(GlobalConfig.Controllers.User.GetCurrUserInfo, 'GetCurrUserInfo', param, function(response, opts) {
-                         GlobalConfig.CurrUserInfo = response.data[0];
+                         GlobalConfig.CurrUserInfo = response.data;
+                         //console.log(GlobalConfig.CurrUserInfo);
+                         Ext.util.Cookies.set("login_sessiontoken", GlobalConfig.CurrUserInfo.session_token,
+                                    new Date(new Date().getTime()
+                                            + (1000 * 60 * 60 * 24 * 30)));
                          GlobalFun.ReDirectUrl("index.html");
                      }, function(response, opts) {
                          if (!GlobalFun.errorProcess(response.code)) {

@@ -76,7 +76,7 @@ GlobalConfig.Controllers = {
     Heartbeat: 'login/heartbeat', //'/login/heartbeat.json', //心跳
 
     User: { //用户登录相关
-        GetCurrUserInfo: '/login/ajaxLogin', //'/data/login.json',
+        GetCurrUserInfo: '/login/ajaxLogin',//'http://localhost:8222/upload', //'/data/login.json',
         CheckUserPassword: '/CheckUserPassword111',
         UserLoginOut: '/login/logout' //'/data/UserLoginOut.json'
     },
