@@ -45,7 +45,7 @@ class Login extends MY_Controller {
             $json = array(
                 'success' => false,
                 'msg' => '帐号或者密码错误',
-                'code' => 99
+                'code' => 0
             );
         }
         echo json_encode($json);
