@@ -50,7 +50,7 @@ class Login extends MY_Controller {
 
             $json = array(
                 'success' => true,
-                'data' => $admin,
+                'data' => $data,
                 'total' => 1,
                 'msg' => '登录成功',
                 'code' => '01'
