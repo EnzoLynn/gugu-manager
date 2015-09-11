@@ -8,7 +8,7 @@ class Login extends MY_Controller {
     }
 
     public function ajaxLogin() {
-        $admin = array();
+        $admin = array(); 
         if($this->input->post('admin_name') && $this->input->post('admin_pwd')) {
             $admin_name = $this->input->post('admin_name');
             $admin_pwd = $this->input->post('admin_pwd');
@@ -48,6 +48,7 @@ class Login extends MY_Controller {
                 'code' => 99
             );
         }
+        header('Content-type: application/json');
         echo json_encode($json);
     }
 
