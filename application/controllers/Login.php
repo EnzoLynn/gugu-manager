@@ -19,7 +19,22 @@ class Login extends MY_Controller {
                 $admin = $this->admin_model->getAdmin($session['admin_name']);
             }else{
                 delete_cookie('login_sessiontoken');
+                $json = array(
+                    'success' => false,
+                    'msg' => '登录信息失效',
+                    'code' => 99
+                );
+                echo json_encode($json);
+                exit;
             }
+        } else {
+            $json = array(
+                'success' => false,
+                'msg' => '登录信息失效',
+                'code' => 99
+            );
+            echo json_encode($json);
+            exit;
         }
 
         if($admin) {
@@ -45,7 +60,7 @@ class Login extends MY_Controller {
             $json = array(
                 'success' => false,
                 'msg' => '帐号或者密码错误',
-                'code' => 99
+                'code' => 0
             );
         }
         header('Content-type: application/json');
@@ -74,7 +89,7 @@ class Login extends MY_Controller {
         }
         $json = array(
             'success' => false,
-            'msg' => '帐号或者密码错误',
+            'msg' => '登录信息失效',
             'code' => 99
         );
         echo json_encode($json);
