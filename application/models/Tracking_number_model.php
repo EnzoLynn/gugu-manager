@@ -259,25 +259,23 @@ class Tracking_number_model extends CI_Model {
         foreach($tracking_numbers as $row) {
             $income = 0;
             $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
-            if ($rule_item['price_type'] == 0) {//固定价格 + 单价
-                $income = $rule_item['price_start'] + $rule_item['price_pre'] * $row['weight'];
-            } else if ($rule_item['price_type'] == 1) {//步进价格
-                if ($rule_item['weight_price_type'] == 0) {//进重（取整）
-                    if ($rule_item['weight_pre'] == 0){
-                        $pass_weight = ceil($row['weight']);
-                    }else{
-                        $pass_weight = ceil(($row['weight'] - $rule_item['weight_min']) / $rule_item['weight_pre']);
-                    }
-                    $income = $rule_item['weight_start_price'] + $pass_weight * $rule_item['weight_pre_price'];
-                } else {//实重
-                    if ($rule_item['weight_pre'] == 0) {
-                        $pass_price = 0;
-                    } else {
-                        $pass_price = ($row['weight'] - $rule_item['weight_min']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
-                    }
-                    $income = $row['weight_start_price'] + $pass_price;
+
+            if ($rule_item['weight_price_type'] == 0) {//进重（取整）
+                if ($rule_item['weight_pre'] == 0){
+                    $pass_weight = ceil($row['weight']);
+                }else{
+                    $pass_weight = ceil(($row['weight'] - $rule_item['weight_min']) / $rule_item['weight_pre']);
                 }
+                $income = $rule_item['weight_start_price'] + $pass_weight * $rule_item['weight_pre_price'];
+            } else {//实重
+                if ($rule_item['weight_pre'] == 0) {
+                    $pass_price = 0;
+                } else {
+                    $pass_price = ($row['weight'] - $rule_item['weight_min']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
+                }
+                $income = $row['weight_start_price'] + $pass_price;
             }
+
             $income_data = array(
                 'income' => $income,
                 'income_time' => date('Y-m-d H:i:s')
