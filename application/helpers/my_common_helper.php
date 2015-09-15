@@ -111,11 +111,12 @@ function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
     for ($row = 0; $row < $rows_length; $row++) {
         $i = 0;
         foreach ($header as $k => $v) {
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), '' + $data[$row][$k]);
-            if ($k == 'tracking_number') {//强制为字符串显示
-                $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
-                $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
-            }
+            $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
+//            if ($k == 'tracking_number') {//强制为字符串显示
+//                $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
+//                $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
+//            }
             $i++;
         }
     }
