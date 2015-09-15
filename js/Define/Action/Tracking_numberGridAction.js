@@ -247,6 +247,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             if (!GlobalFun.errorProcess(response.code)) {
                 ActionManager.translateError(response);
             }
+            target.loadGrid();
         }, true);
     },
     updateStatus: function(selection) {}
@@ -269,6 +270,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             if (!GlobalFun.errorProcess(response.code)) {
                 ActionManager.translateError(response);
             }
+            target.loadGrid();
         }, true);
     },
     updateStatus: function(selection) {}
