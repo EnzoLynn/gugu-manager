@@ -54,6 +54,7 @@ class CustomerRent extends AdminController {
         $customer_id = $this->input->post('customer_id');
         $data = array(
             'customer_id' => $customer_id,
+            'rent_no' => $this->input->post('rent_no'),
             'title' => $this->input->post('title'),
             'rent_area' => $this->input->post('rent_area'),
             'area_to_order_number' => $this->input->post('area_to_order_number'),
@@ -75,6 +76,7 @@ class CustomerRent extends AdminController {
         $customer_rent_id = $this->input->post('customer_rent_id');
         $data = array(
             'customer_id' => $this->input->post('customer_id'),
+            'rent_no' => $this->input->post('rent_no'),
             'title' => $this->input->post('title'),
             'rent_area' => $this->input->post('rent_area'),
             'area_to_order_number' => $this->input->post('area_to_order_number'),
