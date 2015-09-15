@@ -273,7 +273,7 @@ class Tracking_number_model extends CI_Model {
                     } else {
                         $pass_price = ($row['weight'] - $rule_item['weight_min']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
                     }
-                    $income = $row['weight_start_price'] + $pass_price;
+                    $income = $rule_item['weight_start_price'] + $pass_price;
                 }
 
                 $income_data = array(
