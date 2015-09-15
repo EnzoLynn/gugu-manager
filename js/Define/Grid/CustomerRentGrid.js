@@ -563,7 +563,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                 title: '添加规则' + '(' + GlobalConfig.Province[com.myval] + ')',
                 pid: com.myval,
                 width: 820,
-                height: 700,
+                height: 600,
                 iconCls: 'editCustomerRule',
                 resizable: false,
                 action: 'create',
