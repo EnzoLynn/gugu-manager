@@ -227,7 +227,7 @@ ActionManager.editCustomerRule = function(target, record) {
             iconCls: 'editCustomerRule',
             record: record,
             action: 'update',
-            loaded:false,
+            loaded: false,
             title: "添加规则"
         });
         WindowManager.AddUpdateCustomerRuleWin.show(null, function() {
@@ -240,9 +240,9 @@ ActionManager.editCustomerRule = function(target, record) {
                 WindowManager.AddUpdateCustomerRuleWin.el.mask('正在加载图形');
             };
             if (!WindowManager.AddUpdateCustomerRuleWin.loaded) {
-                
+
                 GlobalFun.CreatChinaSvg(WindowManager.AddUpdateCustomerRuleWin.down("#fs_rule"));
-            };            
+            };
             WindowManager.AddUpdateCustomerRuleWin.loaded = true;
             GlobalFun.InitChinaSvgDataEvent(data, function(code) {
                 GlobalFun.CustomerRent_CreateRuleFun({
@@ -271,7 +271,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
     defaultFocus: 'customer_rent_idItemId',
     iconCls: '',
     record: false,
-    closeAction:'hide',
+    closeAction: 'hide',
     //border: false,
     height: 600,
     width: 830,
@@ -327,7 +327,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
         }, {
             name: 'rent_pre_price',
             fieldLabel: '房租单价',
-            validateOnBlur: false, 
+            validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexMoney2Fixed,
@@ -433,124 +433,74 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                 var tempRuleItems = [];
                 Ext.Array.each(rowData, function(item, index, alls) {
                     var obj = {};
-                    if (item['price_type'] == "0") {
-                        obj = {
-                            xtype: 'fieldset',
-                            collapsible: true,
-                            title: '<font style="font-size:14px;">固定价格</font>',
-                            width: 770,
-                            layout: {
-                                type: 'table',
-                                columns: 2
-                            },
-                            defaults: {
-                                xtype: 'displayfield',
-                                labelAlign: 'right',
-                                labelPad: 15,
-                                width: 340,
-                                labelWidth: 125,
-                                maxLength: 100,
-                                maxLengthText: '最大长度为100'
-                            },
-                            items: [{
-                                fieldLabel: '起价',
-                                value: item['price_start']
-                            }, {
-                                fieldLabel: '后续单价',
-                                value: item['price_pre']
-                            }, {
-                                xtype: 'button',
-                                rule_id: item['rule_id'],
-                                colspan: 2,
-                                width: 100,
-                                margin: '0 0 0 630',
-                                text: '删除',
-                                handler: function(com) {
-                                    var rule_id = com.rule_id;
-                                    var param = {
-                                        'rule_id': rule_id,
-                                        sessiontoken: GlobalFun.getSeesionToken()
-                                    };
-                                    // 调用
-                                    WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
 
-                                        com.up('fieldset').destroy();
-                                    }, function(response, opts) {
-                                        if (!GlobalFun.errorProcess(response.code)) {
-                                            Ext.Msg.alert('失败', response.msg);
-                                        }
-                                    }, true, false, com.up('window').getEl());
-                                }
-                            }]
-                        };
-                    } else {
-                        obj = {
-                            xtype: 'fieldset',
-                            legend: {
-                                xtype: 'component',
-                                style: {
-                                    height: 40,
-                                    'background-color': 'red'
-                                }
-                            },
-                            title: '<font style="font-size:14px;">步进价格' + '  [ 首重区间(kg): <font style="color:red;">' + item['weight_min'] + '-' + item['weight_max'] + '</font> ]</font>',
-                            width: 770,
-                            collapsible: true,
-                            layout: {
-                                type: 'table',
-                                columns: 2
-                            },
-                            defaults: {
-                                xtype: 'displayfield',
-                                labelAlign: 'right',
-                                labelPad: 15,
-                                width: 340,
-                                labelWidth: 125,
-                                maxLength: 100,
-                                maxLengthText: '最大长度为100'
-                            },
-                            items: [{
-                                fieldLabel: '首重价格',
-                                value: item['weight_start_price'],
-                                colspan: 2
-                            }, {
-                                fieldLabel: '续重重量(kg)',
-                                value: item['weight_pre']
-                            }, {
-                                fieldLabel: '续重价格',
-                                value: item['weight_pre_price']
-                            }, {
-                                fieldLabel: '记重方式',
-                                value: item['weight_price_type_name']
-                            }, {
-                                fieldLabel: '排序',
-                                value: item['sort_order']
-                            }, {
-                                xtype: 'button',
-                                colspan: 2,
-                                rule_id: item['item_id'],
-                                width: 100,
-                                margin: '0 0 0 630',
-                                text: '删除',
-                                handler: function(com) {
-                                    var rule_id = com.rule_id;
-                                    var param = {
-                                        'item_id': rule_id,
-                                        sessiontoken: GlobalFun.getSeesionToken()
-                                    };
-                                    // 调用
-                                    WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
+                    obj = {
+                        xtype: 'fieldset',
+                        legend: {
+                            xtype: 'component',
+                            style: {
+                                height: 40,
+                                'background-color': 'red'
+                            }
+                        },
+                        title: '<font style="font-size:14px;">' + '  [ 首重区间(kg): <font style="color:red;">' + item['weight_min'] + '-' + item['weight_max'] + '</font> ]</font>',
+                        width: 770,
+                        collapsible: true,
+                        layout: {
+                            type: 'table',
+                            columns: 2
+                        },
+                        defaults: {
+                            xtype: 'displayfield',
+                            labelAlign: 'right',
+                            labelPad: 15,
+                            width: 340,
+                            labelWidth: 125,
+                            maxLength: 100,
+                            maxLengthText: '最大长度为100'
+                        },
+                        items: [{
+                            fieldLabel: '首重价格',
+                            value: item['weight_start_price'],
+                            colspan: 2
+                        }, {
+                            fieldLabel: '续重重量(kg)',
+                            value: item['weight_pre']
+                        }, {
+                            fieldLabel: '续重价格',
+                            value: item['weight_pre_price']
+                        }, {
+                            fieldLabel: '记重方式',
+                            value: item['weight_price_type_name']
+                        }, {
+                            fieldLabel: '排序',
+                            value: item['sort_order']
+                        }, {
+                            xtype: 'button',
+                            colspan: 2,
+                            rule_id: item['item_id'],
+                            width: 100,
+                            margin: '0 0 0 630',
+                            text: '删除',
+                            handler: function(com) {
+                                var rule_id = com.rule_id;
+                                var param = {
+                                    'item_id': rule_id,
+                                    sessiontoken: GlobalFun.getSeesionToken()
+                                };
+                                // 调用
+                                WsCall.call(GlobalConfig.Controllers.CustomerGrid.delCustomerRule, 'delCustomerRule', param, function(response, opts) {
 
-                                        com.up('fieldset').destroy();
-                                    }, function(response, opts) {
-                                        if (!GlobalFun.errorProcess(response.code)) {
-                                            Ext.Msg.alert('失败', response.msg);
-                                        }
-                                    }, true, false, com.up('window').getEl());
-                                }
-                            }]
-                        };
-                    }
+                                    com.up('fieldset').destroy();
+                                }, function(response, opts) {
+                                    if (!GlobalFun.errorProcess(response.code)) {
+                                        Ext.Msg.alert('失败', response.msg);
+                                    }
+                                }, true, false, com.up('window').getEl());
+                            }
+                        }]
+                    };
+
                     tempRuleItems.push(obj);
                 });
 
@@ -590,135 +540,6 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                         maxLengthText: '最大长度为100'
                     },
                     items: [{
-                        xtype: 'fieldcontainer',
-                        colspan: 2,
-                        fieldLabel: '计价方式',
-                        defaultType: 'radiofield',
-                        layout: 'hbox',
-                        defaults: {
-                            flex: 1
-                        },
-                        items: [{
-                            boxLabel: '固定价格',
-                            checked: true,
-                            itemId: 'rd_price0',
-                            name: 'price_type',
-                            inputValue: '0',
-                            listeners: {
-                                change: function(com, nval, oval, opts) {
-                                    var me = this;
-                                    var win = me.up('window');
-                                    if (nval) {
-                                        win.down('#price_type0').show();
-                                        win.down('#price_type1').hide();
-                                    } else {
-                                        win.down('#price_type1').show();
-                                        win.down('#price_type0').hide();
-
-                                    }
-                                }
-                            }
-                        }, {
-                            boxLabel: '步进价格',
-                            itemId: 'rd_price1',
-                            name: 'price_type',
-                            inputValue: '1'
-                        }]
-                    }, {
-                        xtype: 'form',
-                        itemId: 'price_type0',
-                        height: 100,
-                        width: 810,
-                        bodyPadding: 15,
-                        layout: {
-                            type: 'table',
-                            columns: 2
-                        },
-                        defaults: {
-                            labelAlign: 'right',
-                            labelPad: 15,
-                            width: 340,
-                            labelWidth: 125,
-                            maxLength: 100,
-                            maxLengthText: '最大长度为100'
-                        },
-                        items: [{
-                            xtype: 'numberfield',
-                            fieldLabel: '起价',
-                            name: 'price_start',
-                            minValue: 0,
-                            decimalPrecision: 2,
-                            maxValue: GlobalConfig.MaxLimit,
-                            allowBlank: false,
-                            blankText: '不能为空'
-                        }, {
-                            xtype: 'numberfield',
-                            fieldLabel: '后续单价',
-                            name: 'price_pre',
-                            minValue: 0,
-                            decimalPrecision: 2,
-                            maxValue: GlobalConfig.MaxLimit,
-                            allowBlank: false,
-                            blankText: '不能为空'
-                        }, {
-                            xtype: 'button',
-                            itemId: 'btn_add',
-                            colspan: 2,
-                            margin: '0 0 0 580',
-                            width: 100,
-                            text: '添加',
-                            handler: function(com) {
-                                var me = this;
-                                var w = me.up('window');
-
-                                var form = w.down('#price_type0').getForm();
-
-                                if (form.isValid()) {
-                                    GlobalConfig.newMessageBox.show({
-                                        title: '提示',
-                                        msg: '添加固定价格将覆盖已有的所有价格设置，是否继续?',
-                                        buttons: Ext.MessageBox.YESNO,
-                                        closable: false,
-                                        fn: function(btn) {
-                                            if (btn == 'yes') {
-                                                var url = GlobalConfig.Controllers.CustomerGrid.addCustomerRule;
-                                                form.submit({
-                                                    url: url,
-                                                    params: {
-                                                        req: 'dataset',
-                                                        dataname: 'addCustomerRule', // dataset名称，根据实际情况设置,数据库名
-                                                        restype: 'json',
-                                                        price_type: 0,
-                                                        province_code: w.pid,
-                                                        action: w.action,
-                                                        'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
-                                                        sessiontoken: GlobalFun.getSeesionToken()
-                                                    },
-                                                    success: function(form, action) {
-                                                        var data = action.result.data;
-                                                        var arr = createRuleRow(data);
-                                                        w.removeAll();
-                                                        w.add(arr);
-
-                                                    },
-                                                    failure: function(form, action) {
-                                                        if (!GlobalFun.errorProcess(action.result.code)) {
-                                                            Ext.Msg.alert('失败', action.result.msg);
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        },
-                                        icon: Ext.MessageBox.QUESTION
-                                    });
-
-
-                                }
-
-
-                            }
-                        }]
-                    }, {
                         xtype: 'form',
                         colspan: 2,
                         bodyPadding: 15,
@@ -728,8 +549,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                         layout: {
                             type: 'table',
                             columns: 2
-                        },
-                        hidden: true,
+                        }, 
                         items: [{
                             xtype: 'fieldset',
                             title: '首重',
