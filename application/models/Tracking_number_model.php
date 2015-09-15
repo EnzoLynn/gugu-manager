@@ -262,7 +262,7 @@ class Tracking_number_model extends CI_Model {
             if ($rule_item) {
                 if ($rule_item['weight_price_type'] == 0) {//进重（取整）
                     if ($rule_item['weight_pre'] == 0) {
-                        $pass_weight = ceil($row['weight']);
+                        $pass_weight = ceil($row['weight'] - $rule_item['weight_min']);
                     } else {
                         $pass_weight = ceil(($row['weight'] - $rule_item['weight_min']) / $rule_item['weight_pre']);
                     }
