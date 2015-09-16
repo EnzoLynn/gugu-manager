@@ -649,6 +649,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                                 fieldLabel: '价格',
                                 decimalPrecision: 2,
                                 minValue: 0,
+                                value: 0,
                                 maxValue: GlobalConfig.MaxLimit,
                                 regex: GlobalConfig.RegexController.regexMoney2Fixed,
                                 regexText: '请填写两位小数的数字',
@@ -675,6 +676,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                                 name: 'weight_pre',
                                 fieldLabel: '重量(kg)',
                                 minValue: 0,
+                                value: 0,
                                 maxValue: GlobalConfig.MaxLimit,
                                 decimalPrecision: 2,
                                 allowBlank: false,
@@ -685,6 +687,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                                 fieldLabel: '价格',
                                 decimalPrecision: 2,
                                 minValue: 0,
+                                value: 0,
                                 maxValue: GlobalConfig.MaxLimit,
                                 allowBlank: false,
                                 blankText: '不能为空'
