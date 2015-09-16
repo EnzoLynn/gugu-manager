@@ -99,7 +99,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
         width: 80
     }, {
         text: '合同编号',
-        dataIndex: 'customer_rent_id',
+        dataIndex: 'rent_no',
         renderer: GlobalFun.UpdateRecord,
         width: 80
     }, {
@@ -306,7 +306,7 @@ ActionManager.copyCustomerRule = function(target, record) {
                 sessiontoken: GlobalFun.getSeesionToken()
             };
             // 调用
-            WsCall.call(GlobalConfig.Controllers.CustomerRentGrid.copyRuleToRent, 'copyRuleToRent', param, function(response, opts) {
+            WsCall.pcall(GlobalConfig.Controllers.CustomerRentGrid.copyRuleToRent, 'copyRuleToRent', param, function(response, opts) {
                     var data = response.data;
                     Ext.Msg.alert('成功', '复制成功.');
                 },

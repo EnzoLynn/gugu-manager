@@ -345,7 +345,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         xtype: 'form',
         itemId: 'formId',
         autoScroll: true,
-        height: 180,
+        height: 200,
         width: 810,
         border: false,
         bodyPadding: 5,
@@ -379,10 +379,19 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             allowBlank: false,
             blankText: '不能为空'
         }, {
+            name: 'rent_no',
+            fieldLabel: '合同编号',  
+            allowBlank: false,
+            blankText: '不能为空', 
+            maxLength: 64
+        }, {
+            name: 'title',
+            fieldLabel: '标题',  
+            maxLength: 64
+        }, {
             name: 'rent_area',
             fieldLabel: '租贷面积（平米）',
-            itemId: 'rent_areaItemId',
-            validateOnBlur: false,
+            itemId: 'rent_areaItemId', 
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexNumber,
@@ -391,16 +400,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }, {
             name: 'area_to_order_number',
             fieldLabel: '面积单量比',
-            itemId: 'area_to_order_numberItemId',
-            validateOnBlur: false,
+            itemId: 'area_to_order_numberItemId', 
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexMoney2Fixed,
             regexText: '请输入数字'
         }, {
             name: 'rent_pre_price',
-            fieldLabel: '房租单价',
-            validateOnBlur: false,
+            fieldLabel: '房租单价', 
             colspan: 2,
             allowBlank: false,
             blankText: '不能为空',
@@ -480,7 +487,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         xtype: 'CustomerRentGrid',
         margin: '5 0 0 0',
         width: 810,
-        height: 390
+        height: 370
     }],
     buttons: [{
         text: '关闭',
