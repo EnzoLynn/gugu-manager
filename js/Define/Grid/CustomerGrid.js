@@ -247,28 +247,24 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
         items: [{
             name: 'customer_name',
             fieldLabel: '客户名',
-            itemId: 'customer_nameItemId',
-            validateOnBlur: false,
+            itemId: 'customer_nameItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'customer_no',
             fieldLabel: '客户编号',
-            itemId: 'customer_noItemId',
-            validateOnBlur: false,
+            itemId: 'customer_noItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'yto_no',
-            fieldLabel: '圆通商家代码', 
-            validateOnBlur: false,
+            fieldLabel: '圆通商家代码',  
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'mobile',
             fieldLabel: '手机号',
-            itemId: 'mobileItemId',
-            validateOnBlur: false,
+            itemId: 'mobileItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }]
