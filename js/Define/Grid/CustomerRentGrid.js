@@ -652,7 +652,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                                 name: 'weight_start',
                                 fieldLabel: '首重重量(kg)',
                                 minValue: 0,
-                                value: 1,
+                                value: 0,
                                 maxValue: GlobalConfig.MaxLimit,
                                 decimalPrecision: 2,
                                 allowBlank: false,
