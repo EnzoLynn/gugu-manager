@@ -520,9 +520,11 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                             maxLengthText: '最大长度为100'
                         },
                         items: [{
+                            fieldLabel: '首重重量(kg)',
+                            value: item['weight_start'] 
+                        },{
                             fieldLabel: '首重价格',
-                            value: item['weight_start_price'],
-                            colspan: 2
+                            value: item['weight_start_price'] 
                         }, {
                             fieldLabel: '续重重量(kg)',
                             value: item['weight_pre']
@@ -647,7 +649,16 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                                 blankText: '不能为空'
                             }, {
                                 xtype: 'numberfield',
-                                span: 2,
+                                name: 'weight_start',
+                                fieldLabel: '首重重量(kg)',
+                                minValue: 0,
+                                value: 1,
+                                maxValue: GlobalConfig.MaxLimit,
+                                decimalPrecision: 2,
+                                allowBlank: false,
+                                blankText: '不能为空'
+                            }, {
+                                xtype: 'numberfield', 
                                 name: 'weight_start_price',
                                 fieldLabel: '价格',
                                 decimalPrecision: 2,
