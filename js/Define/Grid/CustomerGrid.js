@@ -133,6 +133,11 @@ GridManager.CreateCustomerGrid = function(param) {
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }, {
+        text: '圆通商家代码',
+        dataIndex: 'yto_no',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
         text: '手机号',
         dataIndex: 'mobile',
         renderer: GlobalFun.UpdateRecord,
@@ -250,6 +255,12 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             name: 'customer_no',
             fieldLabel: '客户编号',
             itemId: 'customer_noItemId',
+            validateOnBlur: false,
+            allowBlank: false,
+            blankText: '不能为空'
+        }, {
+            name: 'yto_no',
+            fieldLabel: '圆通商家代码', 
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
