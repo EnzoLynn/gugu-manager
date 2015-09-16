@@ -50,7 +50,8 @@ class Customer_model extends CI_Model{
             'customer_name' => $data['customer_name'],
             'customer_no' => $data['customer_no'],
             'real_name'  => $data['real_name'],
-            'mobile'    => $data['mobile']
+            'mobile'    => $data['mobile'],
+            'yto_no'    => $data['yto_no']
         );
         $this->db->insert('customer', $customer);
         $customer_id =  $this->db->insert_id();
