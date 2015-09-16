@@ -301,8 +301,8 @@ ActionManager.copyCustomerRule = function(target, record) {
     GlobalConfig.newMessageBox.prompt('复制已有规则', '请输入合同编号:', function(btn, text) {
         if (btn == 'ok') {
             var param = {
-                'rent_no_from': record.data.rent_no,
-                'rent_no_to': text,
+                'rent_no_from': text,
+                'rent_no_to': record.data.rent_no,
                 sessiontoken: GlobalFun.getSeesionToken()
             };
             // 调用
@@ -324,8 +324,7 @@ ActionManager.copyCustomerRule = function(target, record) {
 //添加编辑窗口  规则
 Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
     extend: 'Ext.window.Window',
-    title: "添加",
-    defaultFocus: 'customer_rent_idItemId',
+    title: "添加", 
     iconCls: '',
     record: false,
     closeAction: 'hide',
@@ -357,9 +356,8 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
             maxLengthText: '最大长度为100'
         },
         items: [{
-            name: 'customer_rent_id',
-            fieldLabel: '合同编号',
-            itemId: 'customer_rent_idItemId',
+            name: 'rent_no',
+            fieldLabel: '合同编号', 
             validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
@@ -409,6 +407,11 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
             itemId: 'date_end',
             vtype: 'daterange',
             startDateField: 'date_start'
+        },{
+            name: 'customer_rent_id',
+            xtype:'hidden',
+            colspan:2,
+            fieldLabel: '自动编号'
         }, {
             xtype: 'container',
             colspan: 2,
