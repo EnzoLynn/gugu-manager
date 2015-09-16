@@ -11,6 +11,7 @@ class CustomerNumber extends AdminController {
 
     public function __construct() {
         parent::__construct();
+        $this->load->model('file_upload_model');
         $this->load->model('customer_number_model');
     }
 
@@ -158,14 +159,7 @@ class CustomerNumber extends AdminController {
 
             if ($data) {
                 $num = $this->customer_number_model->importData($data);
-                $json = array(
-                    'success' => true,
-                    'data' => [],
-                    'total' => $num,
-                    'msg' => '成功',
-                    'code' => '01'
-                );
-                echo json_encode($json);
+                output_success();
             }
         }
         exit;
