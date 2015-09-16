@@ -4,6 +4,7 @@ var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
         ActionBase.getAction('searchCustomer'),
         ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'),
         '-', ActionBase.getAction('editCustomer_number'),
+        ActionBase.getAction('importCustomer_number'),
         ActionBase.getAction('addCustomerRent')
 
     ]
@@ -48,7 +49,7 @@ Ext.define('chl.gird.CustomerGrid', {
         items: [ActionBase.getAction('refreshCustomer'), '-',
             ActionBase.getAction('searchCustomer'),
             ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), '-',
-            ActionBase.getAction('editCustomer_number'), ActionBase.getAction('addCustomerRent')
+            ActionBase.getAction('editCustomer_number'), ActionBase.getAction('importCustomer_number'), ActionBase.getAction('addCustomerRent')
 
             , '->', {
                 fieldLabel: '按客户名查找',
