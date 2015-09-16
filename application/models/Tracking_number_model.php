@@ -262,16 +262,16 @@ class Tracking_number_model extends CI_Model {
             if ($rule_item) {
                 if ($rule_item['weight_price_type'] == 0) {//进重（取整）
                     if ($rule_item['weight_pre'] == 0) {
-                        $pass_weight = ceil($row['weight']  - $rule_item['weight_min']);
+                        $pass_weight = ceil($row['weight']  - $rule_item['weight_start']);
                     } else {
-                        $pass_weight = ceil(($row['weight'] - $rule_item['weight_min']) / $rule_item['weight_pre']);
+                        $pass_weight = ceil(($row['weight'] - $rule_item['weight_start']) / $rule_item['weight_pre']);
                     }
                     $income = $rule_item['weight_start_price'] + $pass_weight * $rule_item['weight_pre_price'];
                 } else {//实重
                     if ($rule_item['weight_pre'] == 0) {
                         $pass_price = 0;
                     } else {
-                        $pass_price = ($row['weight'] - $rule_item['weight_min']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
+                        $pass_price = ($row['weight'] - $rule_item['weight_start']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
                     }
                     $income = $rule_item['weight_start_price'] + $pass_price;
                 }

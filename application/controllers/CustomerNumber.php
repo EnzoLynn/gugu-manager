@@ -119,4 +119,8 @@ class CustomerNumber extends AdminController {
         );
         echo json_encode($json);
     }
+
+    public function import() {
+
+    }
 }
