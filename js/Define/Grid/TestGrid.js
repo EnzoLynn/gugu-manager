@@ -148,8 +148,7 @@ Ext.define('chl.Grid.AddUpdateTestWin', {
         items: [{
             name: 'Test',
             fieldLabel: '姓名',
-            itemId: 'TestItemId',
-            validateOnBlur: false,
+            itemId: 'TestItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }, {

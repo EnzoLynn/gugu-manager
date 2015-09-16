@@ -358,14 +358,12 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
         items: [{
             name: 'rent_no',
             fieldLabel: '合同编号', 
-            validateOnBlur: false,
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'rent_area',
             fieldLabel: '租贷面积（平米）',
-            itemId: 'rent_areaItemId',
-            validateOnBlur: false,
+            itemId: 'rent_areaItemId', 
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexNumber,
@@ -373,16 +371,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
         }, {
             name: 'area_to_order_number',
             fieldLabel: '面积单量比',
-            itemId: 'area_to_order_numberItemId',
-            validateOnBlur: false,
+            itemId: 'area_to_order_numberItemId', 
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexMoney2Fixed,
             regexText: '请输入数字'
         }, {
             name: 'rent_pre_price',
-            fieldLabel: '房租单价',
-            validateOnBlur: false,
+            fieldLabel: '房租单价', 
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexMoney2Fixed,

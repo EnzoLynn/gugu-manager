@@ -372,17 +372,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             name: 'customer_name',
             xtype: 'displayfield',
             fieldLabel: '客户名',
-            itemId: 'customer_nameItemId',
-            validateOnBlur: false,
+            itemId: 'customer_nameItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'mobile',
-            fieldLabel: '手机号',
-
+            fieldLabel: '手机号', 
             xtype: 'displayfield',
-            itemId: 'mobileItemId',
-            validateOnBlur: false,
+            itemId: 'mobileItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }, {
