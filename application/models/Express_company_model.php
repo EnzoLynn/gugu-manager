@@ -13,8 +13,7 @@ class Express_company_model extends CI_Model {
     function getOne($express_id) {
         $this->db->where('express_id', $express_id);
         $query = $this->db->get('express_company');
-        $rule = $query->first_row();
-        return $rule;
+        return $query->first_row();
     }
 
     function getExpressByName($express_name) {

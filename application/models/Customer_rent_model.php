@@ -75,4 +75,17 @@ class Customer_rent_model extends CI_Model {
         $this->db->where('customer_rent_id', $customer_rent_id);
         return $this->db->delete('customer_rent');
     }
+
+    function existRentNo($rent_no, $rent_id = 0) {
+        $this->db->where('rent_no', $rent_no);
+        if ($rent_id > 0) {
+            $this->db->where('rent_id<>' . $rent_id);
+        }
+        $query = $this->db->get('customer_rent');
+        if($query->num_rows() == 0 ){
+            return FALSE;
+        }else {
+            return TRUE;
+        }
+    }
 }

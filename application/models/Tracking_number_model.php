@@ -262,7 +262,7 @@ class Tracking_number_model extends CI_Model {
             if ($rule_item) {
                 if ($rule_item['weight_price_type'] == 0) {//进重（取整）
                     if ($rule_item['weight_pre'] == 0) {
-                        $pass_weight = ceil($row['weight']);
+                        $pass_weight = ceil($row['weight']  - $rule_item['weight_min']);
                     } else {
                         $pass_weight = ceil(($row['weight'] - $rule_item['weight_min']) / $rule_item['weight_pre']);
                     }
@@ -273,11 +273,11 @@ class Tracking_number_model extends CI_Model {
                     } else {
                         $pass_price = ($row['weight'] - $rule_item['weight_min']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
                     }
-                    $income = $row['weight_start_price'] + $pass_price;
+                    $income = $rule_item['weight_start_price'] + $pass_price;
                 }
 
                 $income_data = array(
-                    'income' => $income,
+                    'income' => number_format($income, 2),
                     'income_time' => date('Y-m-d H:i:s')
                 );
                 $this->update($row['tracking_number_id'], $income_data);
@@ -297,8 +297,8 @@ class Tracking_number_model extends CI_Model {
                     'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
                 );
             }
-            return $msg;
         }
+        return $msg;
     }
 
     function validateCost() {

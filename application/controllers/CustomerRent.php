@@ -51,9 +51,22 @@ class CustomerRent extends AdminController {
     }
 
     public function add() {
+        $sign = $this->customer_rent_model->existRentNo($this->input->post('rent_no'), 0);
+        if ($sign) {
+            $json = array(
+                'success' => false,
+                'data' => [],
+                'total' => 0,
+                'msg' => '合同编号重复',
+                'code' => '01'
+            );
+            echo json_encode($json);
+            exit;
+        }
         $customer_id = $this->input->post('customer_id');
         $data = array(
             'customer_id' => $customer_id,
+            'rent_no' => $this->input->post('rent_no'),
             'title' => $this->input->post('title'),
             'rent_area' => $this->input->post('rent_area'),
             'area_to_order_number' => $this->input->post('area_to_order_number'),
@@ -73,8 +86,21 @@ class CustomerRent extends AdminController {
 
     public function update() {
         $customer_rent_id = $this->input->post('customer_rent_id');
+        $sign = $this->customer_rent_model->existRentNo($this->input->post('rent_no'), $customer_rent_id);
+        if ($sign) {
+            $json = array(
+                'success' => false,
+                'data' => [],
+                'total' => 0,
+                'msg' => '合同编号重复',
+                'code' => '01'
+            );
+            echo json_encode($json);
+            exit;
+        }
         $data = array(
             'customer_id' => $this->input->post('customer_id'),
+            'rent_no' => $this->input->post('rent_no'),
             'title' => $this->input->post('title'),
             'rent_area' => $this->input->post('rent_area'),
             'area_to_order_number' => $this->input->post('area_to_order_number'),

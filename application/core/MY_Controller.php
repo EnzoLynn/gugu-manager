@@ -48,4 +48,8 @@ class AdminController extends MY_Controller
             exit;
         }
     }
+
+    public function write_log($msg) {
+
+    }
 }
