@@ -606,7 +606,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                         colspan: 2,
                         bodyPadding: 15,
                         itemId: 'price_type1',
-                        height: 280,
+                        height: 260,
                         width: 810,
                         layout: {
                             type: 'table',

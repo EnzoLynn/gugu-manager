@@ -17,6 +17,8 @@ Ext.define('chl.Model.CustomerGridModel', {
     }, {
         name: 'mobile', 
         type: 'string'
+    },{
+        name:'yto_no'
     }, {
         name: 'customize_number_from', 
         type: 'string'
