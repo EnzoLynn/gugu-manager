@@ -24,7 +24,7 @@ Ext.create('chl.Action.CustomerRentGridAction', {
 Ext.create('chl.Action.CustomerRentGridAction', {
     itemId: 'copyCustomerRule',
     iconCls: 'copyCustomerRule',
-    tooltip: '复制已有规则',
+    tooltip: '复制已有规则到选择项目',
     text: '复制已有规则',
     handler: function() {
         var me = this;
@@ -69,6 +69,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
     extend: 'chl.grid.BaseGrid',
     store: 'CustomerRentGridStoreId',
     actionBaseName: 'CustomerRentGridAction',
+    multiSelect: false,
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {
             var me = this;
