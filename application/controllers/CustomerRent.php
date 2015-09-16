@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class CustomerRent extends AdminController {
-
     public function __construct() {
         parent::__construct();
         $this->load->model('customer_model');
@@ -115,5 +114,20 @@ class CustomerRent extends AdminController {
     public function delete() {
         $customer_rent_id = $this->input->post('customer_rent_id');
         $this->customer_rent_model->deleteCustomerRent($customer_rent_id);
+    }
+
+    public function copy() {
+        $rent_no_from = $this->input->post('rent_no_from');
+        $rent_from = $this->customer_rent_model->getCustomerRentByRentNo($rent_no_from);
+
+        $rent_no_to = $this->input->post('rent_no_to');
+        $rent_to = $this->customer_rent_model->getCustomerRentByRentNo($rent_no_to);
+
+        if ($rent_to) {
+            $this->customer_rent_model->copyRule($rent_from['customer_rent_id'], $rent_to['customer_rent_id']);
+            output_success();
+        } else{
+            output_error('填写的合同编号不存在');
+        }
     }
 }

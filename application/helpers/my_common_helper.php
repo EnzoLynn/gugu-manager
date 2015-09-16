@@ -234,6 +234,18 @@ function output_error($msg) {
     echo json_encode($json);
     exit;
 }
+//输出成功消息框
+function output_success($msg = '') {
+    $json = array(
+        'success' => true,
+        'data' => [],
+        'total' => 0,
+        'msg' => $msg?$msg:'成功',
+        'code' => ''
+    );
+    echo json_encode($json);
+    exit;
+}
 //根据客户免单号区间生成单号数组
 function getArrayByBetween($begin, $end) {
     $begin_len = strlen($begin);
