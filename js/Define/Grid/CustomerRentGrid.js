@@ -301,8 +301,8 @@ ActionManager.copyCustomerRule = function(target, record) {
     GlobalConfig.newMessageBox.prompt('复制已有规则', '请输入合同编号:', function(btn, text) {
         if (btn == 'ok') {
             var param = {
-                'customer_rent_id_from': record.data.rent_no,
-                'customer_rent_id_to': text,
+                'rent_no_from': record.data.rent_no,
+                'rent_no_to': text,
                 sessiontoken: GlobalFun.getSeesionToken()
             };
             // 调用

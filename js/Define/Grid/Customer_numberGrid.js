@@ -24,7 +24,7 @@ Ext.create('Ext.data.Store', {
     model: 'chl.Model.Customer_numberGridModel',
     storeId: 'Customer_numberStoreId',
     filterMap: Ext.create('Ext.util.HashMap'),
-    pageSize: GlobalConfig.GridPageSize+150,
+    pageSize: GlobalConfig.GridPageSize + 150,
     autoSync: false,
     autoLoad: false,
     remoteSort: true, //排序通过查询数据库
@@ -172,15 +172,15 @@ Ext.define('chl.gird.Customer_numberGrid', {
                 GridTypeName: 'Customer_numberGrid',
                 store: StoreManager.ComboStore.Customer_numberGridStatusStore
             }
-        },{
-            xtype: 'GridFilterMenuButton',  
+        }, {
+            xtype: 'GridFilterMenuButton',
             text: '全部时间',
             filterParam: {
-                menuType:'date',
+                menuType: 'date',
                 group: 'customer_nubmer_use_timeGroup',
                 text: '全部时间',
                 filterKey: 'use_time',
-                GridTypeName: 'Customer_numberGrid' 
+                GridTypeName: 'Customer_numberGrid'
             }
         }, '-', {
             xtype: 'GridSelectCancelMenuButton',
@@ -195,9 +195,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
         },
         itemdblclick: function(grid, record, hitem, index, e, opts) {},
         itemcontextmenu: function(view, rec, item, index, e, opts) {
-            e.stopEvent();
-
-            CustomerRentGrid_RightMenu.showAt(e.getXY());
+            e.stopEvent(); 
         },
         beforeitemmousedown: function(view, record, item, index, e, options) {
             var me = this;
@@ -224,7 +222,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
                 //grid.down('#editCustomer_number').setDisabled(true);
 
             }
-        }, {
+        }, '-', {
             text: '添加',
             tooltip: '添加客户面单号范围',
             iconCls: 'add',
@@ -294,6 +292,177 @@ Ext.define('chl.gird.Customer_numberGrid', {
 
             },
             disabled: true
+        }, '-', {           
+            text: '导入',
+            tooltip: '导入',
+            iconCls: 'import',
+            handler: function() {
+                 var me = this;
+                var target = me.up('Customer_numberGrid');
+                var win = Ext.create('Ext.window.Window', {
+                    height: 360,
+                    width: 800,
+                    modal: true,
+                    resizable: false,
+                    iconCls: 'import',
+                    title: '上传文件',
+                    bodyPadding: 15,
+                    defaults: {
+                        margin: '0 0 20 0'
+                    },
+                    items: [{
+                        xtype: 'form',
+                        itemId: 'formId',
+                        bodyPadding: 15,
+                        items: [{
+                            xtype: 'filefield',
+                            name: 'fileUpload',
+                            fieldLabel: '请选择导入的文件',
+                            width: 600,
+                            labelWidth: 150,
+                            labelAlign: 'right',
+                            blankText: '请选择导入的文件',
+                            msgTarget: 'side',
+                            itemId: 'fileupId',
+                            buttonConfig: {
+                                iconCls: 'import',
+                                width: 100
+                            },
+                            buttonText: '添加文件',
+                            listeners: {
+                                change: function(com) {
+                                    var me = com;
+                                    var supType = new Array('xls', 'xlsx');
+                                    var fNmae = me.getValue();
+                                    var fType = fNmae.substring(
+                                        fNmae.lastIndexOf('.') + 1,
+                                        fNmae.length).toLowerCase();
+                                    var returnFlag = true;
+
+                                    Ext.Array.each(supType, function(rec) {
+                                        if (rec == fType) {
+                                            returnFlag = false;
+                                            return false;
+                                        }
+                                    });
+
+                                    if (returnFlag) {
+                                        Ext.Msg.alert('添加文件', '不支持的文件格式！');
+                                        return;
+                                    }
+                                    var f = me.up('form');
+                                    var outWin = me.up('window');
+                                    var form = f.getForm();
+                                    var urlStr = GlobalConfig.Controllers.Customer_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken();
+                                    form.submit({
+                                        timeout: 60 * 10,
+                                        url: urlStr,
+                                        waitMsg: '正在上传...',
+                                        waitTitle: '等待文件上传,请稍候...',
+                                        success: function(fp, action) {
+                                            var data = action.result.data;
+                                            //if (action.result.success) {
+                                            target.loadGrid();
+                                            outWin.close();
+                                            //} else {                                        
+                                            //ActionManager.showUpLoadExcelError(action.result.data);
+                                            //}
+                                        },
+                                        failure: function(fp, action) {
+                                            if (!GlobalFun.errorProcess(action.result.code)) {
+                                                var obj = {};
+                                                obj[fNmae] = action.result.data;
+                                                ActionManager.showUpLoadExcelError(obj);
+
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }]
+                    }, {
+                        xtype: 'form',
+                        itemId: 'h5formId',
+                        layout: 'vbox',
+                        bodyPadding: 15,
+                        items: [{
+                            xtype: 'label',
+                            style: {
+                                'font-weight': 'bold'
+                            },
+                            text: '如果您使用的是高级的支持Html5的浏览器，请使用的这里的上传'
+                        }, {
+                            xtype: 'label',
+                            style: {
+                                color: 'red',
+                                'font-weight': 'bold'
+                            },
+                            text: '多文件批量，更快捷，可拖拽文件，可视化的真实上传进度显示,更大的文件'
+                        }, {
+                            xtype: 'container',
+                            style: {
+                                border: '1px dotted  green'
+                            },
+                            items: [{
+                                xtype: 'Html5FileUpload',
+                                name: 'fileUpload',
+                                labelAlign: 'right',
+
+                                fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
+                                width: 600,
+                                height: 100,
+                                buttonOnly: true,
+                                labelWidth: 150,
+                                msgTarget: 'side',
+                                itemId: 'fileupId',
+                                buttonConfig: {
+                                    iconCls: 'import',
+                                    width: 300
+                                },
+                                uploadUrl: GlobalConfig.Controllers.Customer_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
+                                accept: ".xls*",
+                                buttonText: '添加文件',
+                                listeners: {
+                                    change: function(com) {
+                                        var me = com;
+                                        if (Ext.isIE) {
+                                            Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
+                                            return;
+                                        }
+                                        var supType = new Array('xls', 'xlsx');
+                                        var fNmae = me.getValue();
+                                        var fType = fNmae.substring(
+                                            fNmae.lastIndexOf('.') + 1,
+                                            fNmae.length).toLowerCase();
+                                        var returnFlag = true;
+
+                                        Ext.Array.each(supType, function(rec) {
+                                            if (rec == fType) {
+                                                returnFlag = false;
+                                                return false;
+                                            }
+                                        });
+
+                                        if (returnFlag) {
+                                            Ext.Msg.alert('添加文件', '不支持的文件格式！');
+                                            return;
+                                        }
+                                        me.sendFiles(me.fileInputEl.dom.files);
+
+                                    }
+                                }
+                            }]
+                        }]
+                    }],
+                    buttons: [{
+                        text: '关闭',
+                        handler: function() {
+                            win.close();
+                        }
+                    }]
+                });
+                win.show();
+            }
         }
     ],
     columns: [{
@@ -318,10 +487,10 @@ Ext.define('chl.gird.Customer_numberGrid', {
     }, {
         header: '状态',
         dataIndex: 'use_status',
-        flex: 1, 
+        flex: 1,
         renderer: function(value) {
 
-            return value == 0?'未用':'已用';
+            return value == 0 ? '未用' : '已用';
         }
     }, {
         header: '使用时间',
@@ -512,7 +681,7 @@ Ext.define('chl.Grid.Customer_numberActionWin', {
                 var number_end_number = tracking_number_end.replace(regex, function($0, $1, $2, $3) {
                     return $2;
                 });
-                var tempCount = Math.abs(number_start_number - number_end_number)+1;
+                var tempCount = Math.abs(number_start_number - number_end_number) + 1;
                 GlobalConfig.newMessageBox.show({
                     title: '提示',
                     msg: '该面单范围即将产生' + tempCount + '条面单数据，是否继续?',
