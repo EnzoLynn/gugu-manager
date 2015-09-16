@@ -688,7 +688,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                             items: [{
                                 xtype: 'numberfield',
                                 name: 'weight_pre',
-                                fieldLabel: '重量(kg)',
+                                fieldLabel: '续重重量(kg)',
                                 minValue: 0,
                                 value: 0,
                                 maxValue: GlobalConfig.MaxLimit,
