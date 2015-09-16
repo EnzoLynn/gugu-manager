@@ -98,8 +98,7 @@ Ext.create('chl.Action.CustomerGridAction', {
 
 
     },
-    updateStatus: function(selection) {
-        this.setDisabled(selection.length != 1);
+    updateStatus: function(selection) { 
     }
 });
 
