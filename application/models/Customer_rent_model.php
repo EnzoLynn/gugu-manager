@@ -109,8 +109,8 @@ class Customer_rent_model extends CI_Model {
         $rent_to = $this->getCustomerRent($customer_rent_id_to);
         $customer_id_to = $rent_to['customer_id'];
         //先清除目标的所有规则
-        $this->CI->customer_express_rule_model->deleteByRentID($customer_id_to);
-        $this->CI->customer_express_rule_item_model->deleteByRentID($customer_id_to);
+        $this->CI->customer_express_rule_model->deleteByRentID($customer_rent_id_to);
+        $this->CI->customer_express_rule_item_model->deleteByRentID($customer_rent_id_to);
         //再遍历插入
         $rule_from = $this->CI->customer_express_rule_model->getCustomerExpressRules($customer_rent_id_from);
         foreach ($rule_from as $row) {
@@ -119,7 +119,8 @@ class Customer_rent_model extends CI_Model {
             unset($row['rule_id']);
             $row['customer_id'] = $customer_id_to;
             $row['customer_rent_id'] = $customer_rent_id_to;
-            $rule_id = $this->add($row);
+
+            $rule_id = $this->CI->customer_express_rule_model->add($row);
 
             foreach ($rule_items_from as $item) {
                 $item['rule_id'] = $rule_id;
