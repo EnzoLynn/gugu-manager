@@ -20,6 +20,11 @@ class Customer_model extends CI_Model{
         $query = $this->db->get('customer');
         return $query->first_row();
     }
+    function getCustomerByField($field = 'customer_id', $value) {
+        $this->db->where($field, $value);
+        $query = $this->db->get('customer');
+        return $query->first_row();
+    }
 
     function getCustomers($data){
         $data = array(

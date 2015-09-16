@@ -39,6 +39,7 @@ class Express_company_model extends CI_Model {
             'express_id'                 => $data['express_id'],
             'express_name'               => $data['express_name'],
             'express_code'               => $data['express_code'],
+            'customer_field'            => $data['customer_field'],
             'url'                          => $data['url']
         );
         $this->db->insert('express_company', $express);
@@ -50,6 +51,7 @@ class Express_company_model extends CI_Model {
         $express = array(
             'express_name'               => $data['express_name'],
             'express_code'               => $data['express_code'],
+            'customer_field'            => $data['customer_field'],
             'url'                          => $data['url']
         );
         $this->db->where('express_id', $express_id);
