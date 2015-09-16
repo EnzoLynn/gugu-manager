@@ -72,6 +72,11 @@ class Customer_express_rule_model extends CI_Model {
         return $this->db->delete('customer_express_rule');
     }
 
+    function deleteByRentID($customer_rent_id) {
+        $this->db->where('customer_rent_id', $customer_rent_id);
+        return $this->db->delete('customer_express_rule');
+    }
+
     //通过重量得到规则
     function getItemByRuleAndWeightBetween($rule_id, $weight_min, $weight_max) {
         $rule = $this->getOne($rule_id);

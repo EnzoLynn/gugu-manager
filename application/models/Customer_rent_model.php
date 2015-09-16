@@ -11,6 +11,7 @@ class Customer_rent_model extends CI_Model {
     var $CI;
     function __construct() {
         parent::__construct();
+        $this->CI = &get_instance();
         $this->CI->load->model('customer_express_rule_model');
         $this->CI->load->model('customer_express_rule_item_model');
     }
@@ -107,7 +108,10 @@ class Customer_rent_model extends CI_Model {
     function copyRule($customer_rent_id_from, $customer_rent_id_to) {
         $rent_to = $this->getCustomerRent($customer_rent_id_to);
         $customer_id_to = $rent_to['customer_id'];
-
+        //先清除目标的所有规则
+        $this->CI->customer_express_rule_model->deleteByRentID($customer_id_to);
+        $this->CI->customer_express_rule_item_model->deleteByRentID($customer_id_to);
+        //再遍历插入
         $rule_from = $this->CI->customer_express_rule_model->getCustomerExpressRules($customer_rent_id_from);
         foreach ($rule_from as $row) {
             $rule_items_from = $this->CI->customer_express_rule_item_model->getItems($row['rule_id']);
