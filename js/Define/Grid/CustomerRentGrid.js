@@ -21,6 +21,24 @@ Ext.create('chl.Action.CustomerRentGridAction', {
     }
 });
 
+Ext.create('chl.Action.CustomerRentGridAction', {
+    itemId: 'copyCustomerRule',
+    iconCls: 'copyCustomerRule',
+    tooltip: '复制已有规则',
+    text: '复制已有规则',
+    handler: function() {
+        var me = this;
+        var target = me.getTargetView();
+        var record = target.getSelectionModel().getSelection()[0];
+        ActionManager.copyCustomerRule(target, record);
+    },
+    updateStatus: function(selection) {
+        // var flag =  selection[0] && selection[0].data.customer_rent_id != 0; 
+        // this.setDisabled(selection.length != 1 || !flag);
+        this.setDisabled(selection.length != 1);
+    }
+});
+
 
 Ext.create('chl.Action.CustomerRentGridAction', {
     itemId: 'refreshCustomerRent',
@@ -40,7 +58,9 @@ ActionManager.refreshCustomerRent = function(target) {
 
 //创建一个上下文菜单
 var CustomerRentGrid_RightMenu = Ext.create('Ext.menu.Menu', {
-    items: [ActionBase.getAction('refreshCustomerRent'), '-', ActionBase.getAction('editCustomerRule')]
+    items: [ActionBase.getAction('refreshCustomerRent'), '-', ActionBase.getAction('editCustomerRule'),
+        ActionBase.getAction('copyCustomerRule')
+    ]
 });
 
 Ext.define('chl.gird.CustomerRentGrid', {
@@ -71,8 +91,19 @@ Ext.define('chl.gird.CustomerRentGrid', {
         }
     },
     columns: [{
-        text: '编号',
+        text: '自动编号',
         dataIndex: 'customer_rent_id',
+        hidden: true,
+        renderer: GlobalFun.UpdateRecord,
+        width: 80
+    }, {
+        text: '合同编号',
+        dataIndex: 'customer_rent_id',
+        renderer: GlobalFun.UpdateRecord,
+        width: 80
+    }, {
+        text: '标题',
+        dataIndex: 'title',
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }, {
@@ -113,7 +144,7 @@ Ext.define('chl.gird.CustomerRentGrid', {
         layout: {
             overflowHandler: 'Menu'
         },
-        items: [ActionBase.getAction('refreshCustomerRent'), '-', ActionBase.getAction('editCustomerRule')]
+        items: [ActionBase.getAction('refreshCustomerRent'), '-', ActionBase.getAction('editCustomerRule'), ActionBase.getAction('copyCustomerRule')]
     }, {
         xtype: 'Pagingtoolbar',
         itemId: 'pagingtoolbarID',
@@ -153,6 +184,8 @@ Ext.define('chl.gird.CustomerRentGrid', {
         ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
     }
 });
+
+
 
 
 //根据传入参数创建客户表，返回自身
@@ -261,6 +294,29 @@ ActionManager.editCustomerRule = function(target, record) {
     }, true);
 
 };
+
+//复制已有规则
+ActionManager.copyCustomerRule = function(target, record) {
+    GlobalConfig.newMessageBox.prompt('复制已有规则', '请输入合同编号:', function(btn, text) {
+        if (btn == 'ok') {
+            var param = {
+                'customer_rent_id_from': record.data.rent_no,
+                'customer_rent_id_to': text,
+                sessiontoken: GlobalFun.getSeesionToken()
+            };
+            // 调用
+            WsCall.call(GlobalConfig.Controllers.CustomerRentGrid.copyRuleToRent, 'copyRuleToRent', param, function(response, opts) {
+                    var data = response.data;
+                    Ext.Msg.alert('成功', '复制成功.');
+                },
+                function(response, opts) {
+                    if (!GlobalFun.errorProcess(response.code)) {
+                        Ext.Msg.alert('失败', response.msg);
+                    }
+                }, false);
+        }
+    });
+}
 
 
 
@@ -549,7 +605,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                         layout: {
                             type: 'table',
                             columns: 2
-                        }, 
+                        },
                         items: [{
                             xtype: 'fieldset',
                             title: '首重',
