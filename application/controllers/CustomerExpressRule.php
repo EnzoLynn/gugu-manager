@@ -117,6 +117,7 @@ class CustomerExpressRule extends AdminController {
             'weight_price_type'=> $this->input->get_post('weight_price_type'),
             'weight_min'        => $weight_min,
             'weight_max'        => $weight_max,
+            'weight_start'      => $this->input->get_post('weight_start'),
             'weight_start_price'=> $this->input->get_post('weight_start_price'),
             'weight_pre'            => $this->input->get_post('weight_pre'),
             'weight_pre_price'     => $this->input->get_post('weight_pre_price'),
