@@ -19,8 +19,7 @@ class Express_company_model extends CI_Model {
     function getExpressByName($express_name) {
         $this->db->where('express_name', $express_name);
         $query = $this->db->get('express_company');
-        $express = $query->first_row();
-        return $express;
+        return $query->first_row();
     }
 
     function getAll() {

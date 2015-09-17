@@ -10,6 +10,7 @@ class Customer_number_model extends CI_Model {
     public function __construct(){
         parent::__construct();
         $this->CI = &get_instance();
+        $this->CI->load->model('express_company_model');
         $this->CI->load->model('customer_model');
     }
 
@@ -116,7 +117,7 @@ class Customer_number_model extends CI_Model {
         foreach ($data as $row) {
             //查找快递公司
             $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
-            $customer = $this->CI->customer_model->getCustomerByField($express['customer_filed'], $row['商家代码']);
+            $customer = $this->CI->customer_model->getCustomerByField($express['customer_field'], $row['商家代码']);
 
             $number = $this->getCustomerByTrackingNumber($row['运单号码']);
             if ($number) {
@@ -126,7 +127,7 @@ class Customer_number_model extends CI_Model {
                 $i++;
                 $new_number = array(
                     'customer_id' => $customer['customer_id'],
-                    'tracking_number' => $row['运单号']
+                    'tracking_number' => $row['运单号码']
                 );
                 $this->addCustomerNumber($new_number);
             }
@@ -150,9 +151,10 @@ class Customer_number_model extends CI_Model {
             }
             //查找快递公司
             $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
+
             if ($express) {
                 //存在快递公司，再通过运单号查找客户ID
-                $customer = $this->CI->customer_model->getCustomerByField($express['customer_filed'], $row['商家代码']);
+                $customer = $this->CI->customer_model->getCustomerByField($express['customer_field'], $row['商家代码']);
                 if (!$customer) {
                     $msg[] = array(
                         'msg' => '第'.$i.'行，圆通商家代码（'.$row['商家代码'].'）找不到对应的客户'
