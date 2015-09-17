@@ -112,7 +112,7 @@ Ext.define('chl.gird.Customer_number_allGrid', {
     dockedItems: [{
         xtype: 'Pagingtoolbar',
         itemId: 'pagingtoolbarID',
-        store: 'Customer_numberStoreId',
+        store: 'Customer_number_allStoreId',
         dock: 'bottom',
         items: [{
             xtype: 'tbtext',
