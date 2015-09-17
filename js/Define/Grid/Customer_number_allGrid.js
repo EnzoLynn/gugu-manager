@@ -152,7 +152,7 @@ Ext.define('chl.gird.Customer_number_allGrid', {
         itemdblclick: function(grid, record, hitem, index, e, opts) {},
         itemcontextmenu: function(view, rec, item, index, e, opts) {
             e.stopEvent();
-            CustomerGrid_RightMenu.showAt(e.getXY());
+            Customer_number_allGrid_RightMenu.showAt(e.getXY());
         },
         beforeitemmousedown: function(view, record, item, index, e, options) {
             var me = this;
@@ -160,11 +160,8 @@ Ext.define('chl.gird.Customer_number_allGrid', {
         selectionchange: function(view, seles, op) {
             if (!seles[0])
                 return;
-
-            var me = this;
-            me.down('#removeCustomer_number').setDisabled(!seles.length);
-            //me.down('#editCustomer_number').setDisabled(seles.length != 1);
-            //ActionBase.updateActions('Customer_number_allGridAction', seles);
+ 
+            ActionBase.updateActions('Customer_number_allGridAction', seles);
         }
     },
     tbar: [ActionBase.getAction('refreshCustomer_number_all'), '-', ActionBase.getAction('searchCustomer_number_all')],
