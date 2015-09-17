@@ -230,7 +230,16 @@ Ext.onReady(function() {
                 xtype: 'toolbar',
                 split: false,
                 collapsible: false,
-                items: ['->', '-', {
+                items: ['->', '-',{
+                    xtype:'button',
+                    width: 120,
+                    iconCls: 'about',
+                    text: '关于(Version 9.17)',
+                    tooltip: '关于本系统',
+                    handler:function(){
+                        Ext.Msg.alert('关于本系统(Version 9.17)','Designed by Enzo&YiHui. <br> Copyright © 2015-xxxx  gugu123.com 版权所有');
+                    }
+                }, '-',{
                     xtype: 'button',
                     width: 80,
                     iconCls: 'logout',
