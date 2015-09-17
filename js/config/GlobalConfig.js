@@ -70,7 +70,7 @@ GlobalConfig.Controllers = {
         create: '/data/TestGrid.json',
         read: '/data/TestGrid.json',
         update: '/data/TestGrid.json',
-        destroy: '/data/TestGrid.json',
+        destroy: '/data/TestGrid.json'
     },
 
     Heartbeat: 'login/heartbeat', //'/login/heartbeat.json', //心跳
@@ -105,6 +105,7 @@ GlobalConfig.Controllers = {
         update: 'customerNumber/update',
         destroy: 'customerNumber/delete',
         uploadExcel: '/customerNumber/upload', 
+        downloadTemplate:'/customerNumber/downloadTemplate'
     },
     CustomerRentGrid: { //合同
         create: '/customerRent/add', //globalFix + '/CustomerRentGrid.json',
@@ -127,14 +128,15 @@ GlobalConfig.Controllers = {
         uploadExcel: '/uploadTrackingNumber/upload', //globalFix + '/uploadExcel',
         outPutExcel: '/trackingNumber/downloadExcel', //globalFix + '/outPutExcel',
         translateExpress: '/trackingNumber/countPrice',
-        translateCost: '/trackingNumber/countPrice',
+        translateCost: '/trackingNumber/countPrice', 
+        downloadTemplate:'/customerNumber/downloadTemplate'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {
         create: 'expressPoint/add',
         read: '/expressPoint/getList',
         update: '/expressPoint/update',
-        destroy: '/expressPoint/delete',
+        destroy: '/expressPoint/delete'
     }
 
 };

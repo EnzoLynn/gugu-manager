@@ -179,6 +179,18 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                 }]
             }],
             buttons: [{
+            text: '下载导入模版',
+            iconCls:'downloadTpl',  
+            width:120,
+            handler: function() {
+                
+                var param = {
+                    downType: 'importTracking_number', 
+                    sessiontoken: GlobalFun.getSeesionToken()
+                };
+                WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.downloadTemplate, 'download', param);
+            }
+        },{
                 text: '关闭',
                 handler: function() {
                     win.close();

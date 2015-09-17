@@ -195,7 +195,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
         },
         itemdblclick: function(grid, record, hitem, index, e, opts) {},
         itemcontextmenu: function(view, rec, item, index, e, opts) {
-            e.stopEvent(); 
+            e.stopEvent();
         },
         beforeitemmousedown: function(view, record, item, index, e, options) {
             var me = this;
@@ -302,7 +302,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
             return value;
         }
     }, {
-        header: '面单号截止编号',
+        header: '面单编号',
         dataIndex: 'tracking_number',
         flex: 1 //,
             // editor: {
@@ -334,7 +334,7 @@ Ext.define('chl.gird.Customer_numberGrid', {
         ActionBase.setTargetView(me.actionBaseName, me);
         ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
     },
-    loadGrid: function(isSearch) {
+    loadGrid: function(clearFilter) {
         var me = this;
         var store = me.getStore();
 
@@ -344,11 +344,17 @@ Ext.define('chl.gird.Customer_numberGrid', {
             //return;
         }
         var filter = {};
+        if (clearFilter) {
+            filter = {};
+        } else {
+            store.filterMap.each(function(key, value, length) {
+                filter[key] = value;
+            });
+        }
 
-        store.filterMap.each(function(key, value, length) {
-            filter[key] = value;
-        });
         store.getProxy().extraParams.filter = Ext.JSON.encode(filter);
+
+
 
         store.getProxy().extraParams.refresh = 1;
 
