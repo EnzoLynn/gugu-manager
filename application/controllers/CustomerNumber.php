@@ -11,8 +11,9 @@ class CustomerNumber extends AdminController {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('file_upload_model');
+        $this->load->model('customer_model');
         $this->load->model('customer_number_model');
+        $this->load->model('file_upload_model');
     }
 
     public function index() {
@@ -40,6 +41,8 @@ class CustomerNumber extends AdminController {
             } else {
                 $customer_numbers[$k]['use_status_name'] = '已用';
             }
+            $customer = $this->customer_model->getCustomer($v['customer_id']);
+            $customer_numbers[$k]['customer_name'] = $customer['customer_name'];
         }
 
         $customer_numbers_total = $this->customer_number_model->getCustomerNumbersTotal($data);

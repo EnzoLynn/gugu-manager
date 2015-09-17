@@ -22,6 +22,14 @@ class Customer_number_model extends CI_Model {
     }
 
     function getCustomerNumbers($data) {
+        if (isset($data['filter']['customer_name'])) {
+            $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
+            $this->db->where('customer_id', $customer['customer_id']);
+        } else {
+            if ($data['customer_id'] > 0) {
+                $this->db->where('customer_id', $data['customer_id']);
+            }
+        }
         if (isset($data['filter']['use_status'])) {
             $this->db->where('use_status', $data['filter']['use_status']);
         }
@@ -30,14 +38,6 @@ class Customer_number_model extends CI_Model {
         }
         if (isset($data['filter']['use_time_end']) && $data['filter']['use_time_end'] != '') {
             $this->db->where("use_time <= '". $data['filter']['use_time_end'] ." 23:59:59'");
-        }
-        if (isset($data['filter']['customer_name'])) {
-            $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
-            $this->db->where('customer_id', $customer['customer_id']);
-        } else {
-            if ($data['customer_id'] > 0) {
-                $this->db->where('customer_id', $data['customer_id']);
-            }
         }
         if (isset($data['filter']['tracking_number'])) {
             $this->db->where('tracking_number', $data['filter']['tracking_number']);
@@ -50,6 +50,14 @@ class Customer_number_model extends CI_Model {
     }
 
     function getCustomerNumbersTotal($data) {
+        if (isset($data['filter']['customer_name'])) {
+            $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
+            $this->db->where('customer_id', $customer['customer_id']);
+        } else {
+            if ($data['customer_id'] > 0) {
+                $this->db->where('customer_id', $data['customer_id']);
+            }
+        }
         if (isset($data['filter']['use_status'])) {
             $this->db->where('use_status', $data['filter']['use_status']);
         }
@@ -59,7 +67,9 @@ class Customer_number_model extends CI_Model {
         if (isset($data['filter']['use_time_end']) && $data['filter']['use_time_end'] != '') {
             $this->db->where("use_time <= '". $data['filter']['use_time_end'] ." 23:59:59'");
         }
-        $this->db->where('customer_id', $data['customer_id']);
+        if (isset($data['filter']['tracking_number'])) {
+            $this->db->where('tracking_number', $data['filter']['tracking_number']);
+        }
         return $this->db->count_all_results('customer_number');
     }
 
