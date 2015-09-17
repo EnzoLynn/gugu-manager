@@ -38,7 +38,7 @@
              }]
          }, {
              id: "005",
-             text: "面单号管理",
+             text: "面单号查询",
              iconCls:'eidtCustomer_number',
              leaf: true
          }]

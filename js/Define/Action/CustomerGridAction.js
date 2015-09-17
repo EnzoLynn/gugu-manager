@@ -179,7 +179,7 @@ ActionManager.editCustomer_number = function(target, record) {
     });
     WindowManager.AddUpdateCustomer_numberWin.show(null, function() {
         //WindowManager.AddUpdateCustomerWin.down("#SupperManageItemId").setDisabled(GlobalFun.IsAllowFun('无限期管理年限') ? false : true);
-
+        WindowManager.AddUpdateCustomer_numberWin.down('Customer_numberGrid').loadGrid(true);
     });
 };
 

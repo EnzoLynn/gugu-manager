@@ -87,6 +87,13 @@ Ext.onReady(function() {
         GridManager.CreateCompanyPanel_Cost();
          //成本默认容器 
         GridManager.CreateCompanyPanel_Point();
+
+         //创建面单号管理表格
+        GridManager.CreateCustomer_number_allGrid({
+            needLoad: false
+        });
+        GridManager.SetCustomer_number_allGridSelectionChangeEvent();
+
         //创建主目录树
         TreeManager.CreateMainItemListTree({
             needLoad: false
@@ -172,6 +179,7 @@ Ext.onReady(function() {
                             gridArr.push(GridManager.CompanyPanel_Cost);                            
                             gridArr.push(GridManager.Express_pointGrid);
                             gridArr.push(GridManager.CompanyPanel_Point); 
+                            gridArr.push(GridManager.Customer_number_allGrid);
                             com.add(gridArr);
                         }
                     },
