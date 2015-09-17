@@ -35,10 +35,12 @@ class Customer_number_model extends CI_Model {
             $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
             $this->db->where('customer_id', $customer['customer_id']);
         } else {
-            $this->db->where('customer_id', $data['customer_id']);
+            if ($data['customer_id'] > 0) {
+                $this->db->where('customer_id', $data['customer_id']);
+            }
         }
         if (isset($data['filter']['tracking_number'])) {
-            $this->db->where('tracking_number', $data['tracking_number']);
+            $this->db->where('tracking_number', $data['filter']['tracking_number']);
         }
         $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
         $this->db->order_by($data['sort'], $data['dir']);
