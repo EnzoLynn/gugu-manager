@@ -77,3 +77,6 @@
 .base_delete {
   background-image: url(../image/icons/fam/delete.gif) !important;
 }
+.downloadTpl {
+  background-image: url(../image/fileimg/xlsx.png) !important;
+}

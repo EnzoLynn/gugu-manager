@@ -36,6 +36,11 @@
                  text: '圆通快递',
                  leaf: true
              }]
+         }, {
+             id: "005",
+             text: "面单号管理",
+             iconCls:'eidtCustomer_number',
+             leaf: true
          }]
      }
  });
