@@ -81,7 +81,12 @@ function loadExcel($filename, $pars) {
     return $temp_rows;
 }
 //header = array('title' => '标题')
-function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
+function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $type = 'xlsx') {
+
+    if ($fileName == 'now') {
+        $fileName = date('YmdHis');
+    }
+
     /** Include PHPExcel */
     require_once(APPPATH . 'libraries/PHPExcel.php');
     // Create new PHPExcel object
@@ -126,7 +131,7 @@ function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
     $objPHPExcel->setActiveSheetIndex(0);
     // Redirect output to a client’s web browser (Excel2007)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="'.date('YmdHis').'.xlsx"');
+    header('Content-Disposition: attachment;filename="'.$fileName.'.xlsx"');
     header('Cache-Control: max-age=0');
     // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');
