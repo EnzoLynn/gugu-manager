@@ -31,7 +31,15 @@ class Customer_number_model extends CI_Model {
         if (isset($data['filter']['use_time_end']) && $data['filter']['use_time_end'] != '') {
             $this->db->where("use_time <= '". $data['filter']['use_time_end'] ." 23:59:59'");
         }
-        $this->db->where('customer_id', $data['customer_id']);
+        if (isset($data['filter']['customer_name'])) {
+            $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
+            $this->db->where('customer_id', $customer['customer_id']);
+        } else {
+            $this->db->where('customer_id', $data['customer_id']);
+        }
+        if (isset($data['filter']['tracking_number'])) {
+            $this->db->where('tracking_number', $data['tracking_number']);
+        }
         $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer_number');
