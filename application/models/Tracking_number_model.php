@@ -34,49 +34,56 @@ class Tracking_number_model extends CI_Model {
         return $query->first_row();
     }
 
-    function getTrackingNumbers($data) {
-        $arrive_time_start = $data['arrive_time_start'];
-        $arrive_time_end = $data['arrive_time_end'];
-        $data = array(
-            'page' => $data['page'],
-            'limit' => $data['limit'],
-            'sort' => $data['sort'],
-            'dir' => $data['dir'],
-            'filter' => $data['filter']
-        );
-        if ($data['limit']) {
-            $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
+    function getWhere($data) {
+
+        //print_r($data);exit;
+
+//        $data = array(
+//            'page' => $data['page'],
+//            'limit' => $data['limit'],
+//            'sort' => $data['sort'],
+//            'dir' => $data['dir'],
+//            'filter' => $data['filter']
+//        );
+
+        if (isset($data['filter']['customer_name'])) {
+            $customer = $this->CI->customer_model->getCustomerByField('customer_name', $data['filter']['customer_name']);
+            $this->db->where('customer_id', $customer['customer_id']);
         }
+
         if (isset($data['filter']['account_status'])) {
             $this->db->where('account_status', $data['filter']['account_status']);
-            unset($data['filter']['account_status']);
         }
-        $this->db->like($data['filter']);
+        if (isset($data['filter']['tracking_number'])) {
+            $this->db->where('tracking_number', $data['filter']['tracking_number']);
+        }
+        if (isset($data['filter']['arrive_express_point_name'])) {
+            $this->db->where('arrive_express_point_name', $data['filter']['arrive_express_point_name']);
+        }
+        if (isset($data['filter']['arrive_express_point_code'])) {
+            $this->db->where('arrive_express_point_code', $data['filter']['arrive_express_point_code']);
+        }
+
+        $arrive_time_start = $data['arrive_time_start'];
+        $arrive_time_end = $data['arrive_time_end'];
         if ($arrive_time_start) {
             $this->db->where("arrive_time >= '$arrive_time_start 00:00:00'");
         }
         if ($arrive_time_end) {
             $this->db->where("arrive_time <= '$arrive_time_end 23:59:59'");
         }
+    }
+
+    function getTrackingNumbers($data) {
+        $this->getWhere($data);
+        $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('tracking_number');
         return $query->result_array();
     }
 
     function getTrackingNumbersTotal($data){
-        $arrive_time_start = $data['arrive_time_start'];
-        $arrive_time_end = $data['arrive_time_end'];
-        if ($arrive_time_start) {
-            $this->db->where("arrive_time >= '$arrive_time_start 00:00:00'");
-        }
-        if ($arrive_time_end) {
-            $this->db->where("arrive_time <= '$arrive_time_end 23:59:59'");
-        }
-        if (isset($data['filter']['account_status'])) {
-            $this->db->where('account_status', $data['filter']['account_status']);
-            unset($data['filter']['account_status']);
-        }
-        $this->db->like($data['filter']);
+        $this->getWhere($data);
         return $this->db->count_all_results('tracking_number');
     }
 
@@ -89,6 +96,8 @@ class Tracking_number_model extends CI_Model {
             $this->db->where('income', 0);
             $this->db->where('cost', 0);
         }
+        //未结算的才能结算
+        $this->db->where('account_status', 0);
         $this->db->order_by('tracking_number_id', 'ASC');
         $query = $this->db->get('tracking_number');
         return $query->result_array();
@@ -345,5 +354,14 @@ class Tracking_number_model extends CI_Model {
             );
         }
         return $msg;
+    }
+    //根据状态结算
+    function initAccount($data) {
+        $this->getWhere($data);
+        $upd_data = array(
+            'account_status' => 1
+        );
+        $this->db->update('tracking_number', $upd_data);
+        return $this->db->affected_rows();
     }
 }
