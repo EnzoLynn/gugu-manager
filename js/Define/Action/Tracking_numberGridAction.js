@@ -743,7 +743,7 @@ ActionManager.delTracking_number = function(traget) {
                 }, function(response, opts) {
 
                     if (!GlobalFun.errorProcess(response.code)) {
-                        Ext.Msg.alert('登录失败', response.msg);
+                        Ext.Msg.alert('失败', response.msg);
                     }
                 }, true);
 
