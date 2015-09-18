@@ -324,7 +324,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             tracking_number_ids: ids
         };
         // 调用
-        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
+        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
             target.loadGrid(false,true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
@@ -359,7 +359,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             tracking_number_ids: ids
         };
         // 调用
-        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
+        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
             target.loadGrid(false,true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {

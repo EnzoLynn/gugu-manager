@@ -124,11 +124,13 @@ GlobalConfig.Controllers = {
         create: globalFix + '/traking_numberGrid.json',
         read: 'trackingNumber/getList', //globalFix + '/traking_numberGrid.json',
         update: globalFix + '/traking_numberGrid.json',
-        destroy: globalFix + '/traking_numberGrid.json',
+        destroy:'/trackingNumber/delete',
         uploadExcel: '/uploadTrackingNumber/upload', //globalFix + '/uploadExcel',
         outPutExcel: '/trackingNumber/downloadExcel', //globalFix + '/outPutExcel',
         translateExpress: '/trackingNumber/countPrice',
         translateCost: '/trackingNumber/countPrice', 
+        retranslateExpress: '/trackingNumber/reCountPrice',
+        retranslateCost: '/trackingNumber/reCountPrice', 
         downloadTemplate:'/downloadExcelTemplate/trackingNumberExcel'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
