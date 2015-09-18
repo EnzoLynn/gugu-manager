@@ -113,6 +113,13 @@ class Tracking_number_model extends CI_Model {
         return $this->db->update('tracking_number', $data);
     }
 
+    function delete($tracking_number_id) {
+        $this->db->where('tracking_number_id', $tracking_number_id);
+        $this->db->where('account_status', 0);//未审核才能删除
+        $this->db->delete('tracking_number');
+        return $this->db->affected_rows();
+    }
+
     function importData($data) {
         $msg = $this->validateData($data);
         if ($msg) {

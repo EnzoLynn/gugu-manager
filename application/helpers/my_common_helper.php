@@ -240,12 +240,12 @@ function output_error($msg) {
     exit;
 }
 //输出成功消息框
-function output_success($msg = '') {
+function output_success($msg = '', $total = 0, $data = []) {
     $json = array(
         'success' => true,
-        'data' => [],
-        'total' => 0,
-        'msg' => $msg?$msg:'成功',
+        'data' => $data,
+        'total' => $total,
+        'msg' => $msg ? $msg : '成功',
         'code' => ''
     );
     echo json_encode($json);

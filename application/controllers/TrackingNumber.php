@@ -144,13 +144,18 @@ class TrackingNumber extends AdminController {
                 exit;
             }
         }
-        $json = array(
-            'success' => true,
-            'data' => [],
-            'total' => 0,
-            'msg' => '成功',
-            'code' => '01'
-        );
-        echo json_encode($json);
+        output_success();
+    }
+
+    public function delete() {
+        $tracking_number_ids = explode(',', $this->input->post('$tracking_number_ids'));
+        $delete_total = 0;
+        foreach ($tracking_number_ids as $tracking_number_id) {
+            $result = $this->tracking_number_model->delete($tracking_number_id);
+            if ($result) {
+                $delete_total++;
+            }
+        }
+        output_success('成功', $delete_total);
     }
 }
