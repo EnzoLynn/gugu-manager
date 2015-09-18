@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class CustomerRent extends AdminController {
-
     public function __construct() {
         parent::__construct();
         $this->load->model('customer_model');
@@ -51,9 +50,22 @@ class CustomerRent extends AdminController {
     }
 
     public function add() {
+        $sign = $this->customer_rent_model->existRentNo($this->input->post('rent_no'), 0);
+        if ($sign) {
+            $json = array(
+                'success' => false,
+                'data' => [],
+                'total' => 0,
+                'msg' => '合同编号重复',
+                'code' => '01'
+            );
+            echo json_encode($json);
+            exit;
+        }
         $customer_id = $this->input->post('customer_id');
         $data = array(
             'customer_id' => $customer_id,
+            'rent_no' => $this->input->post('rent_no'),
             'title' => $this->input->post('title'),
             'rent_area' => $this->input->post('rent_area'),
             'area_to_order_number' => $this->input->post('area_to_order_number'),
@@ -73,8 +85,21 @@ class CustomerRent extends AdminController {
 
     public function update() {
         $customer_rent_id = $this->input->post('customer_rent_id');
+        $sign = $this->customer_rent_model->existRentNo($this->input->post('rent_no'), $customer_rent_id);
+        if ($sign) {
+            $json = array(
+                'success' => false,
+                'data' => [],
+                'total' => 0,
+                'msg' => '合同编号重复',
+                'code' => '01'
+            );
+            echo json_encode($json);
+            exit;
+        }
         $data = array(
             'customer_id' => $this->input->post('customer_id'),
+            'rent_no' => $this->input->post('rent_no'),
             'title' => $this->input->post('title'),
             'rent_area' => $this->input->post('rent_area'),
             'area_to_order_number' => $this->input->post('area_to_order_number'),
@@ -89,5 +114,20 @@ class CustomerRent extends AdminController {
     public function delete() {
         $customer_rent_id = $this->input->post('customer_rent_id');
         $this->customer_rent_model->deleteCustomerRent($customer_rent_id);
+    }
+
+    public function copy() {
+        $rent_no_from = $this->input->post('rent_no_from');
+        $rent_from = $this->customer_rent_model->getCustomerRentByRentNo($rent_no_from);
+
+        $rent_no_to = $this->input->post('rent_no_to');
+        $rent_to = $this->customer_rent_model->getCustomerRentByRentNo($rent_no_to);
+
+        if ($rent_to) {
+            $this->customer_rent_model->copyRule($rent_from['customer_rent_id'], $rent_to['customer_rent_id']);
+            output_success();
+        } else{
+            output_error('填写的合同编号不存在');
+        }
     }
 }

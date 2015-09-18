@@ -22,6 +22,9 @@ class AdminController extends MY_Controller
     {
         parent::__construct();
 
+        //设置头部为json
+        $this->output->set_content_type('application/json', strtolower($this->config->item('charset')));
+
         $admin = array();
 
         if($this->input->get_post('sessiontoken')){
@@ -44,5 +47,9 @@ class AdminController extends MY_Controller
             echo json_encode($json);
             exit;
         }
+    }
+
+    public function write_log($msg) {
+
     }
 }

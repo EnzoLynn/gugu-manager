@@ -4,6 +4,7 @@ var CustomerGrid_RightMenu = Ext.create('Ext.menu.Menu', {
         ActionBase.getAction('searchCustomer'),
         ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'),
         '-', ActionBase.getAction('editCustomer_number'),
+        ActionBase.getAction('importCustomer_number'),
         ActionBase.getAction('addCustomerRent')
 
     ]
@@ -48,7 +49,7 @@ Ext.define('chl.gird.CustomerGrid', {
         items: [ActionBase.getAction('refreshCustomer'), '-',
             ActionBase.getAction('searchCustomer'),
             ActionBase.getAction('addCustomer'), ActionBase.getAction('editCustomer'), '-',
-            ActionBase.getAction('editCustomer_number'), ActionBase.getAction('addCustomerRent')
+            ActionBase.getAction('editCustomer_number'), ActionBase.getAction('importCustomer_number'), ActionBase.getAction('addCustomerRent')
 
             , '->', {
                 fieldLabel: '按客户名查找',
@@ -130,6 +131,11 @@ GridManager.CreateCustomerGrid = function(param) {
     }, {
         text: '客户编号',
         dataIndex: 'customer_no',
+        renderer: GlobalFun.UpdateRecord,
+        width: 100
+    }, {
+        text: '圆通商家代码',
+        dataIndex: 'yto_no',
         renderer: GlobalFun.UpdateRecord,
         width: 100
     }, {
@@ -242,22 +248,24 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
         items: [{
             name: 'customer_name',
             fieldLabel: '客户名',
-            itemId: 'customer_nameItemId',
-            validateOnBlur: false,
+            itemId: 'customer_nameItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'customer_no',
             fieldLabel: '客户编号',
-            itemId: 'customer_noItemId',
-            validateOnBlur: false,
+            itemId: 'customer_noItemId', 
+            allowBlank: false,
+            blankText: '不能为空'
+        }, {
+            name: 'yto_no',
+            fieldLabel: '圆通商家代码',  
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'mobile',
             fieldLabel: '手机号',
-            itemId: 'mobileItemId',
-            validateOnBlur: false,
+            itemId: 'mobileItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }]
@@ -345,7 +353,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         xtype: 'form',
         itemId: 'formId',
         autoScroll: true,
-        height: 180,
+        height: 200,
         width: 810,
         border: false,
         bodyPadding: 5,
@@ -365,24 +373,30 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
             name: 'customer_name',
             xtype: 'displayfield',
             fieldLabel: '客户名',
-            itemId: 'customer_nameItemId',
-            validateOnBlur: false,
+            itemId: 'customer_nameItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'mobile',
-            fieldLabel: '手机号',
-
+            fieldLabel: '手机号', 
             xtype: 'displayfield',
-            itemId: 'mobileItemId',
-            validateOnBlur: false,
+            itemId: 'mobileItemId', 
             allowBlank: false,
             blankText: '不能为空'
         }, {
+            name: 'rent_no',
+            fieldLabel: '合同编号',  
+            allowBlank: false,
+            blankText: '不能为空', 
+            maxLength: 64
+        }, {
+            name: 'title',
+            fieldLabel: '标题',  
+            maxLength: 64
+        }, {
             name: 'rent_area',
             fieldLabel: '租贷面积（平米）',
-            itemId: 'rent_areaItemId',
-            validateOnBlur: false,
+            itemId: 'rent_areaItemId', 
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexNumber,
@@ -391,16 +405,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         }, {
             name: 'area_to_order_number',
             fieldLabel: '面积单量比',
-            itemId: 'area_to_order_numberItemId',
-            validateOnBlur: false,
+            itemId: 'area_to_order_numberItemId', 
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexMoney2Fixed,
             regexText: '请输入数字'
         }, {
             name: 'rent_pre_price',
-            fieldLabel: '房租单价',
-            validateOnBlur: false,
+            fieldLabel: '房租单价', 
             colspan: 2,
             allowBlank: false,
             blankText: '不能为空',
@@ -480,7 +492,7 @@ Ext.define('chl.Grid.AddUpdateCustomerRentWin', {
         xtype: 'CustomerRentGrid',
         margin: '5 0 0 0',
         width: 810,
-        height: 390
+        height: 370
     }],
     buttons: [{
         text: '关闭',

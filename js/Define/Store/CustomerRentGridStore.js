@@ -21,7 +21,7 @@ Ext.create('Ext.data.Store', {
         simpleSortMode: true,		//单一字段排序
         extraParams: {
             req: 'data',
-            dataname: 'User',             //dataset名称，根据实际情况设置,数据库名
+            dataname: 'customer_rent',             //dataset名称，根据实际情况设置,数据库名
             restype: 'json',
             sessiontoken: GlobalFun.getSeesionToken(),
             folderid: -1,
@@ -71,3 +71,5 @@ Ext.create('Ext.data.Store', {
     }
 
 });
+
+ 

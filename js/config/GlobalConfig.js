@@ -37,7 +37,7 @@ Ext.namespace('Template', 'Template');
 GlobalConfig.ViewPort = '';
 
 //全局表格分页控制
-GlobalConfig.GridPageSize = 50;
+GlobalConfig.GridPageSize = 200;
 //最大值
 GlobalConfig.MaxLimit = 99999;
 
@@ -70,13 +70,13 @@ GlobalConfig.Controllers = {
         create: '/data/TestGrid.json',
         read: '/data/TestGrid.json',
         update: '/data/TestGrid.json',
-        destroy: '/data/TestGrid.json',
+        destroy: '/data/TestGrid.json'
     },
 
     Heartbeat: 'login/heartbeat', //'/login/heartbeat.json', //心跳
 
     User: { //用户登录相关
-        GetCurrUserInfo: '/login/ajaxLogin', //'/data/login.json',
+        GetCurrUserInfo: '/login/ajaxLogin',//'http://localhost:8222/upload', //'/data/login.json',
         CheckUserPassword: '/CheckUserPassword111',
         UserLoginOut: '/login/logout' //'/data/UserLoginOut.json'
     },
@@ -103,13 +103,16 @@ GlobalConfig.Controllers = {
         create: 'customerNumber/add', //globalFix + '/Customer_numberGridadd',
         read: 'customerNumber/getList', //globalFix + '/Customer_numberGrid.json',
         update: 'customerNumber/update',
-        destroy: 'customerNumber/delete'
+        destroy: 'customerNumber/delete',
+        uploadExcel: '/customerNumber/upload', 
+        downloadTemplate:'/downloadExcelTemplate/customerNumberExcel'
     },
     CustomerRentGrid: { //合同
         create: '/customerRent/add', //globalFix + '/CustomerRentGrid.json',
         read: '/customerRent/getList', //globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
-        destroy: globalFix + '/CustomerRentGrid.json'
+        destroy: globalFix + '/CustomerRentGrid.json',
+        copyRuleToRent:'/customerRent/copy'
     },
     ExpressPanel: {
         GetCustomer_numberCount: 'expressRule/countProvinceRule', //globalFix + '/GetCustomer_numberCount.json',
@@ -121,18 +124,22 @@ GlobalConfig.Controllers = {
         create: globalFix + '/traking_numberGrid.json',
         read: 'trackingNumber/getList', //globalFix + '/traking_numberGrid.json',
         update: globalFix + '/traking_numberGrid.json',
-        destroy: globalFix + '/traking_numberGrid.json',
+        destroy:'/trackingNumber/delete',
         uploadExcel: '/uploadTrackingNumber/upload', //globalFix + '/uploadExcel',
         outPutExcel: '/trackingNumber/downloadExcel', //globalFix + '/outPutExcel',
         translateExpress: '/trackingNumber/countPrice',
-        translateCost: '/trackingNumber/countPrice',
+        translateCost: '/trackingNumber/countPrice', 
+        retranslateExpress: '/trackingNumber/reCountPrice',
+        retranslateCost: '/trackingNumber/reCountPrice', 
+        downloadTemplate:'/downloadExcelTemplate/trackingNumberExcel',
+        setAccount_status:'/setAccount_status'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {
         create: 'expressPoint/add',
         read: '/expressPoint/getList',
         update: '/expressPoint/update',
-        destroy: '/expressPoint/delete',
+        destroy: '/expressPoint/delete'
     }
 
 };

@@ -8,7 +8,7 @@ class Login extends MY_Controller {
     }
 
     public function ajaxLogin() {
-        $admin = array();
+        $admin = array();  
         if($this->input->post('admin_name') && $this->input->post('admin_pwd')) {
             $admin_name = $this->input->post('admin_name');
             $admin_pwd = $this->input->post('admin_pwd');
@@ -19,7 +19,22 @@ class Login extends MY_Controller {
                 $admin = $this->admin_model->getAdmin($session['admin_name']);
             }else{
                 delete_cookie('login_sessiontoken');
+                $json = array(
+                    'success' => false,
+                    'msg' => '登录信息失效',
+                    'code' => 99
+                );
+                echo json_encode($json);
+                exit;
             }
+        } else {
+            $json = array(
+                'success' => false,
+                'msg' => '登录信息失效',
+                'code' => 99
+            );
+            echo json_encode($json);
+            exit;
         }
 
         if($admin) {
@@ -29,14 +44,13 @@ class Login extends MY_Controller {
                 'admin_name' => $admin['admin_name'],
                 'expires_time' => date('Y-m-d H:i:s', time() + 60*60)
             );
-            $this->session_token_model->setSession($data);
-
+            $this->session_token_model->setSession($data); 
             set_cookie('login_sessiontoken', session_id(), 60*60*24);
             set_cookie('login_username', $admin['admin_name'], 60*60*24);
 
             $json = array(
                 'success' => true,
-                'data' => $admin,
+                'data' => $data,
                 'total' => 1,
                 'msg' => '登录成功',
                 'code' => '01'
@@ -45,9 +59,10 @@ class Login extends MY_Controller {
             $json = array(
                 'success' => false,
                 'msg' => '帐号或者密码错误',
-                'code' => 99
+                'code' => 0
             );
         }
+        header('Content-type: application/json');
         echo json_encode($json);
     }
 
@@ -73,7 +88,7 @@ class Login extends MY_Controller {
         }
         $json = array(
             'success' => false,
-            'msg' => '帐号或者密码错误',
+            'msg' => '登录信息失效',
             'code' => 99
         );
         echo json_encode($json);

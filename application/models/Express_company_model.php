@@ -13,15 +13,13 @@ class Express_company_model extends CI_Model {
     function getOne($express_id) {
         $this->db->where('express_id', $express_id);
         $query = $this->db->get('express_company');
-        $rule = $query->first_row();
-        return $rule;
+        return $query->first_row();
     }
 
     function getExpressByName($express_name) {
         $this->db->where('express_name', $express_name);
         $query = $this->db->get('express_company');
-        $express = $query->first_row();
-        return $express;
+        return $query->first_row();
     }
 
     function getAll() {
@@ -40,6 +38,7 @@ class Express_company_model extends CI_Model {
             'express_id'                 => $data['express_id'],
             'express_name'               => $data['express_name'],
             'express_code'               => $data['express_code'],
+            'customer_field'            => $data['customer_field'],
             'url'                          => $data['url']
         );
         $this->db->insert('express_company', $express);
@@ -51,6 +50,7 @@ class Express_company_model extends CI_Model {
         $express = array(
             'express_name'               => $data['express_name'],
             'express_code'               => $data['express_code'],
+            'customer_field'            => $data['customer_field'],
             'url'                          => $data['url']
         );
         $this->db->where('express_id', $express_id);

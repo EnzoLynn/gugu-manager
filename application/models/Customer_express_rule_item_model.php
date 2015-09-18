@@ -39,6 +39,7 @@ class Customer_express_rule_item_model extends CI_Model {
             'weight_price_type'=> $data['weight_price_type'],
             'weight_min'        => $data['weight_min'],
             'weight_max'        => $data['weight_max'],
+            'weight_start'      => $data['weight_start'],
             'weight_start_price'=> $data['weight_start_price'],
             'weight_pre'            => $data['weight_pre'],
             'weight_pre_price'     => $data['weight_pre_price'],
@@ -57,6 +58,7 @@ class Customer_express_rule_item_model extends CI_Model {
             'weight_price_type'=> $data['weight_price_type'],
             'weight_min'        => $data['weight_min'],
             'weight_max'        => $data['weight_max'],
+            'weight_start'      => $data['weight_start'],
             'weight_start_price'=> $data['weight_start_price'],
             'weight_pre'            => $data['weight_pre'],
             'weight_pre_price'     => $data['weight_pre_price'],
@@ -73,6 +75,11 @@ class Customer_express_rule_item_model extends CI_Model {
 
     function deleteByRuleID($rule_id) {
         $this->db->where('rule_id', $rule_id);
+        return $this->db->delete('customer_express_rule_item');
+    }
+
+    function deleteByRentID($customer_rent_id) {
+        $this->db->where('customer_rent_id', $customer_rent_id);
         return $this->db->delete('customer_express_rule_item');
     }
 }

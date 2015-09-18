@@ -113,6 +113,10 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
             GlobalFun.TreeSelChangeGrid('004_CompanyPanel', GridManager.CompanyPanel, '快递公司', true);
             return;
         }
+        if (seles[0].data.id == "005") {
+            GlobalFun.TreeSelChangeGrid('Customer_number_allGrid', GridManager.Customer_number_allGrid, '面单号查询');
+            return;
+        }
         // if (seles[0].data.id == "003_1") {
 
         // }
@@ -143,15 +147,15 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
                         if (Ext.isGecko) {
                             GridManager.ExpressPanel.el.mask('正在加载图形');
                         };
-                        GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData,function(code){
-                                 GlobalFun.ExpressPanel_addRuleFun({
-                                    myval: code
-                                });
+                        GlobalFun.InitChinaSvgDataEvent(GlobalConfig.ExpressPanel_svgData, function(code) {
+                            GlobalFun.ExpressPanel_addRuleFun({
+                                myval: code
                             });
+                        });
                         if (Ext.isGecko) {
                             GridManager.ExpressPanel.el.unmask();
                         }
-                    } 
+                    }
 
                 }, function(response, opts) {
                     if (!GlobalFun.errorProcess(response.code)) {

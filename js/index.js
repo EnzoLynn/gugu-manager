@@ -22,7 +22,10 @@ Ext.onReady(function() {
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.User.GetCurrUserInfo, 'GetCurrUserInfo', param, function(response, opts) {
-            GlobalConfig.CurrUserInfo = response.data[0];
+             GlobalConfig.CurrUserInfo = response.data;
+            Ext.util.Cookies.set("login_sessiontoken", GlobalConfig.CurrUserInfo.session_token,
+                                    new Date(new Date().getTime()
+                                            + (1000 * 60 * 60 * 24 * 30)));
             callBack();
         }, function(response, opts) {
 
@@ -84,6 +87,13 @@ Ext.onReady(function() {
         GridManager.CreateCompanyPanel_Cost();
          //成本默认容器 
         GridManager.CreateCompanyPanel_Point();
+
+         //创建面单号管理表格
+        GridManager.CreateCustomer_number_allGrid({
+            needLoad: false
+        });
+        GridManager.SetCustomer_number_allGridSelectionChangeEvent();
+
         //创建主目录树
         TreeManager.CreateMainItemListTree({
             needLoad: false
@@ -169,6 +179,7 @@ Ext.onReady(function() {
                             gridArr.push(GridManager.CompanyPanel_Cost);                            
                             gridArr.push(GridManager.Express_pointGrid);
                             gridArr.push(GridManager.CompanyPanel_Point); 
+                            gridArr.push(GridManager.Customer_number_allGrid);
                             com.add(gridArr);
                         }
                     },
@@ -219,7 +230,16 @@ Ext.onReady(function() {
                 xtype: 'toolbar',
                 split: false,
                 collapsible: false,
-                items: ['->', '-', {
+                items: ['->', '-',{
+                    xtype:'button',
+                    width: 120,
+                    iconCls: 'about',
+                    text: '关于(Version 9.17)',
+                    tooltip: '关于本系统',
+                    handler:function(){
+                        Ext.Msg.alert('关于本系统(Version 9.17)','Designed by EnzoLynn & YiHui. <br> Copyright © 2015-xxxx  gugu123.com 版权所有');
+                    }
+                }, '-',{
                     xtype: 'button',
                     width: 80,
                     iconCls: 'logout',

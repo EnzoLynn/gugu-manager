@@ -50,10 +50,7 @@ class Customer_express_rule_model extends CI_Model {
         $rule = array(
             'customer_id' => $data['customer_id'],
             'customer_rent_id' => $data['customer_rent_id'],
-            'province_code' => $data['province_code'],
-            'price_type' => $data['price_type'],
-            'price_start' => $data['price_start'],
-            'price_pre' => $data['price_pre']
+            'province_code' => $data['province_code']
         );
         $this->db->insert('customer_express_rule', $rule);
         $rule_id = $this->db->insert_id();
@@ -64,10 +61,7 @@ class Customer_express_rule_model extends CI_Model {
 //        $rule = array(
 //            'customer_id' => $data['customer_id'],
 //            'customer_rent_id' => $data['customer_rent_id'],
-//            'province_code' => $data['province_code'],
-//            'price_type' => $data['price_type'],
-//            'price_start' => $data['price_start'],
-//            'price_pre' => $data['price_pre']
+//            'province_code' => $data['province_code']
 //        );
         $this->db->where('rule_id', $rule_id);
         return $this->db->update('customer_express_rule', $data);
@@ -78,12 +72,15 @@ class Customer_express_rule_model extends CI_Model {
         return $this->db->delete('customer_express_rule');
     }
 
+    function deleteByRentID($customer_rent_id) {
+        $this->db->where('customer_rent_id', $customer_rent_id);
+        return $this->db->delete('customer_express_rule');
+    }
+
     //通过重量得到规则
     function getItemByRuleAndWeightBetween($rule_id, $weight_min, $weight_max) {
         $rule = $this->getOne($rule_id);
-        if ($rule['price_type'] == 0) {
-            return FALSE;
-        } else {
+        if ($rule) {
             $this->db->where('rule_id', $rule['rule_id']);
             $this->db->where("weight_min", $weight_min);
             $this->db->where("weight_max", $weight_max);
@@ -91,24 +88,24 @@ class Customer_express_rule_model extends CI_Model {
             $query = $this->db->get('customer_express_rule_item');
             $rule_item = $query->first_row();
             return $rule_item;
+        } else {
+            return FALSE;
         }
-        return FALSE;
     }
 
     //通过重量得到规则
     function getItemByRuleAndWeight($rule_id, $weight) {
         $rule = $this->getOne($rule_id);
-        if ($rule['price_type'] == 0) {
-            return FALSE;
-        } else {
+        if ($rule) {
             $this->db->where('rule_id', $rule['rule_id']);
             $this->db->where("weight_min < $weight AND weight_max > $weight");
             $this->db->order_by('sort_order', 'ASC');
             $query = $this->db->get('customer_express_rule_item');
             $rule_item = $query->first_row();
             return $rule_item;
+        } else {
+            return FALSE;
         }
-        return FALSE;
     }
 
     //通过重量得到规则
@@ -120,42 +117,15 @@ class Customer_express_rule_model extends CI_Model {
 
         $rule = $this->getOneByRent($customer_rent_id, $province_code);
 
-        if ($rule['price_type'] == 0) {
-            return $rule;
-        } else {
+        if ($rule) {
             $this->db->where('rule_id', $rule['rule_id']);
             $this->db->where("$weight BETWEEN weight_min AND weight_max");
             $this->db->order_by('sort_order', 'ASC');
             $query = $this->db->get('customer_express_rule_item');
             $rule_item = $query->first_row();
-            $rule_item['price_type'] = 1;
             return $rule_item;
-        }
-        return FALSE;
-    }
-    //根据合同复制齐下的所有规则
-    function copyRule($customer_rent_id_from, $customer_rent_id_to) {
-        $rent_from = $this->CI->customer_rent_model->getCustomerRent();
-        $customer_id_from = $rent_from['customer_id'];
-
-        $rent_to = $this->CI->customer_rent_model->getCustomerRent();
-        $customer_id_to = $rent_to['customer_id'];
-
-        $rule_from = $this->getCustomerExpressRules($customer_rent_id_from);
-        foreach ($rule_from as $row) {
-            $rule_items_from = $this->CI->customer_express_rule_item_model->getItems($row['rule_id']);
-
-            unset($row['rule_id']);
-            $row['customer_id'] = $customer_id_to;
-            $row['customer_rent_id'] = $customer_rent_id_to;
-            $rule_id = $this->add($row);
-
-            foreach ($rule_items_from as $item) {
-                $item['rule_id'] = $rule_id;
-                $item['customer_id'] = $customer_id_to;
-                $item['customer_rent_id'] = $customer_rent_id_to;
-                $this->CI->customer_express_rule_item_model->add($item);
-            }
+        } else {
+            return FALSE;
         }
     }
 }

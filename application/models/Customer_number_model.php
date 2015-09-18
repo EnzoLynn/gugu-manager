@@ -10,6 +10,7 @@ class Customer_number_model extends CI_Model {
     public function __construct(){
         parent::__construct();
         $this->CI = &get_instance();
+        $this->CI->load->model('express_company_model');
         $this->CI->load->model('customer_model');
     }
 
@@ -21,6 +22,14 @@ class Customer_number_model extends CI_Model {
     }
 
     function getCustomerNumbers($data) {
+        if (isset($data['filter']['customer_name'])) {
+            $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
+            $this->db->where('customer_id', $customer['customer_id']);
+        } else {
+            if ($data['customer_id'] > 0) {
+                $this->db->where('customer_id', $data['customer_id']);
+            }
+        }
         if (isset($data['filter']['use_status'])) {
             $this->db->where('use_status', $data['filter']['use_status']);
         }
@@ -30,7 +39,9 @@ class Customer_number_model extends CI_Model {
         if (isset($data['filter']['use_time_end']) && $data['filter']['use_time_end'] != '') {
             $this->db->where("use_time <= '". $data['filter']['use_time_end'] ." 23:59:59'");
         }
-        $this->db->where('customer_id', $data['customer_id']);
+        if (isset($data['filter']['tracking_number'])) {
+            $this->db->where('tracking_number', $data['filter']['tracking_number']);
+        }
         $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('customer_number');
@@ -39,6 +50,14 @@ class Customer_number_model extends CI_Model {
     }
 
     function getCustomerNumbersTotal($data) {
+        if (isset($data['filter']['customer_name'])) {
+            $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
+            $this->db->where('customer_id', $customer['customer_id']);
+        } else {
+            if ($data['customer_id'] > 0) {
+                $this->db->where('customer_id', $data['customer_id']);
+            }
+        }
         if (isset($data['filter']['use_status'])) {
             $this->db->where('use_status', $data['filter']['use_status']);
         }
@@ -48,7 +67,9 @@ class Customer_number_model extends CI_Model {
         if (isset($data['filter']['use_time_end']) && $data['filter']['use_time_end'] != '') {
             $this->db->where("use_time <= '". $data['filter']['use_time_end'] ." 23:59:59'");
         }
-        $this->db->where('customer_id', $data['customer_id']);
+        if (isset($data['filter']['tracking_number'])) {
+            $this->db->where('tracking_number', $data['filter']['tracking_number']);
+        }
         return $this->db->count_all_results('customer_number');
     }
 
@@ -109,5 +130,63 @@ class Customer_number_model extends CI_Model {
         } else {
             return FALSE;
         }
+    }
+
+    function importData($data) {
+        $i = 0;
+        foreach ($data as $row) {
+            //查找快递公司
+            $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
+            $customer = $this->CI->customer_model->getCustomerByField($express['customer_field'], $row['商家代码']);
+
+            $number = $this->getCustomerByTrackingNumber($row['运单号码']);
+            if ($number) {
+                //已存在就不导入
+                continue;
+            } else {
+                $i++;
+                $new_number = array(
+                    'customer_id' => $customer['customer_id'],
+                    'tracking_number' => $row['运单号码']
+                );
+                $this->addCustomerNumber($new_number);
+            }
+        }
+        return $i;
+    }
+
+    function validateData($data) {
+        /*
+        [运单号码] => 560082711439
+        [商家代码] => 圆通快递的商家代号
+        [快递公司] => 圆通快递
+         * */
+        $msg = array();//错误信息，一行一个
+        $i = 2;//对应excel中的行
+        foreach($data as $row) {
+            $number = $this->getCustomerByTrackingNumber($row['运单号码']);
+            if ($number) {
+                //已存在就不导入
+                continue;
+            }
+            //查找快递公司
+            $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
+
+            if ($express) {
+                //存在快递公司，再通过运单号查找客户ID
+                $customer = $this->CI->customer_model->getCustomerByField($express['customer_field'], $row['商家代码']);
+                if (!$customer) {
+                    $msg[] = array(
+                        'msg' => '第'.$i.'行，圆通商家代码（'.$row['商家代码'].'）找不到对应的客户'
+                    );
+                }
+            } else {
+                $msg[] = array(
+                    'msg' => '第'.$i.'行，快递公司（'.$row['快递公司'].'）还未录入或者名字有误'
+                );
+            }
+            $i++;
+        }
+        return $msg;
     }
 }

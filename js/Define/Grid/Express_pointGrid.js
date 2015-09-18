@@ -204,15 +204,13 @@ Ext.define('chl.Grid.AddUpdateExpress_pointWin', {
         },
         items: [{
             name: 'express_point_name',
-            fieldLabel: '网点名称',
-            validateOnBlur: false,
+            fieldLabel: '网点名称', 
             allowBlank: false,
             blankText: '不能为空',
             maxLength: 40
         }, {
             name: 'express_point_code',
-            fieldLabel: '网点代码',
-            validateOnBlur: false,
+            fieldLabel: '网点代码', 
             allowBlank: false,
             blankText: '不能为空',
             maxLength: 20

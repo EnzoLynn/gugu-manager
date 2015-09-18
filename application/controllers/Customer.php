@@ -79,7 +79,8 @@ class Customer extends CI_Controller {
             'customer_name' => $this->input->get_post('customer_name'),
             'customer_no' => $this->input->get_post('customer_no'),
             'real_name' => $this->input->get_post('real_name'),
-            'mobile' => $this->input->get_post('mobile')
+            'mobile' => $this->input->get_post('mobile'),
+            'yto_no'    => $this->input->get_post('yto_no')
         );
 
         $this->customer_model->addCustomer($data);
@@ -92,7 +93,8 @@ class Customer extends CI_Controller {
             'customer_name' => $this->input->get_post('customer_name'),
             'customer_no' => $this->input->get_post('customer_no'),
             'real_name' => $this->input->get_post('real_name'),
-            'mobile' => $this->input->get_post('mobile')
+            'mobile' => $this->input->get_post('mobile'),
+            'yto_no'    => $this->input->get_post('yto_no')
         );
 
         $this->customer_model->updateCustomer($customer_id, $data);

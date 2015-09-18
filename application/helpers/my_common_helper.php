@@ -81,7 +81,12 @@ function loadExcel($filename, $pars) {
     return $temp_rows;
 }
 //header = array('title' => '标题')
-function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
+function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $type = 'xlsx') {
+
+    if ($fileName == 'now') {
+        $fileName = date('YmdHis');
+    }
+
     /** Include PHPExcel */
     require_once(APPPATH . 'libraries/PHPExcel.php');
     // Create new PHPExcel object
@@ -111,11 +116,12 @@ function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
     for ($row = 0; $row < $rows_length; $row++) {
         $i = 0;
         foreach ($header as $k => $v) {
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), '' + $data[$row][$k]);
-            if ($k == 'tracking_number') {//强制为字符串显示
-                $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
-                $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
-            }
+            $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
+//            if ($k == 'tracking_number') {//强制为字符串显示
+//                $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
+//                $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
+//            }
             $i++;
         }
     }
@@ -125,7 +131,7 @@ function outputExcel($data, $header, $title = 'Sheet1' , $type = 'xlsx') {
     $objPHPExcel->setActiveSheetIndex(0);
     // Redirect output to a client’s web browser (Excel2007)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="'.date('YmdHis').'.xlsx"');
+    header('Content-Disposition: attachment;filename="'.$fileName.'.xlsx"');
     header('Cache-Control: max-age=0');
     // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');
@@ -228,6 +234,18 @@ function output_error($msg) {
         'data' => [],
         'total' => 0,
         'msg' => $msg,
+        'code' => ''
+    );
+    echo json_encode($json);
+    exit;
+}
+//输出成功消息框
+function output_success($msg = '', $total = 0, $data = []) {
+    $json = array(
+        'success' => true,
+        'data' => $data,
+        'total' => $total,
+        'msg' => $msg ? $msg : '成功',
         'code' => ''
     );
     echo json_encode($json);
