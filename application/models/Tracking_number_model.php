@@ -22,6 +22,12 @@ class Tracking_number_model extends CI_Model {
         $this->CI->load->model('express_rule_model');
     }
 
+    function getTrackingNumberByID($tracking_number_id) {
+        $this->db->where('tracking_number_id', $tracking_number_id);
+        $query = $this->db->get('tracking_number');;
+        return $query->first_row();
+    }
+
     function getTrackingNumber($tracking_number) {
         $this->db->where('tracking_number', $tracking_number);
         $query = $this->db->get('tracking_number');;
@@ -238,7 +244,7 @@ class Tracking_number_model extends CI_Model {
         $msg = array();
         $tracking_numbers = $this->getTrackingNumbersByType('income');
         foreach($tracking_numbers as $row) {
-            //导入的时候，不验证合同，现在开始赋值合同 ？？？
+            //导入的时候，不验证合同，现在开始赋值合同 ？
             $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
 
             if (!$rule_item) {
@@ -261,96 +267,82 @@ class Tracking_number_model extends CI_Model {
         return $msg;
     }
 
-    function countIncome() {
+    /**
+     * 快递单号数据计算成本
+     * @author 周辉
+     * @param mixed $row 快递单号数据
+     * @return array 错误消息数组
+     */
+    function costExpression($row) {
         $msg = array();
-        $tracking_numbers = $this->getTrackingNumbersByType('income');
-        foreach($tracking_numbers as $row) {
-            $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
-            if ($rule_item) {
-                if ($rule_item['weight_price_type'] == 0) {//进重（取整）
-                    if ($rule_item['weight_pre'] == 0) {
-                        $pass_weight = ceil($row['weight']  - $rule_item['weight_start']);
-                    } else {
-                        $pass_weight = ceil(($row['weight'] - $rule_item['weight_start']) / $rule_item['weight_pre']);
-                    }
-                    $income = $rule_item['weight_start_price'] + $pass_weight * $rule_item['weight_pre_price'];
-                } else {//实重
-                    if ($rule_item['weight_pre'] == 0) {
-                        $pass_price = 0;
-                    } else {
-                        $pass_price = ($row['weight'] - $rule_item['weight_start']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
-                    }
-                    $income = $rule_item['weight_start_price'] + $pass_price;
-                }
-
-                $income_data = array(
-                    'income' => number_format($income, 2),
-                    'income_time' => date('Y-m-d H:i:s')
-                );
-                $this->update($row['tracking_number_id'], $income_data);
-            } else {//有错误的记录错误信息
-                $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
-                $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
-                if (strtotime($row['arrive_time']) < strtotime($customer_rent['date_start'].' 00:00:00') || strtotime($row['arrive_time']) > strtotime($customer_rent['date_end'].' 23:59:59')) {
-                    $msg[] = array(
-                        'tracking_number' => $row['tracking_number'],
-                        'msg' =>  '揽收时间没有当前客户的合同期限内（客户名：'.$customer['customer_name'].')'
-                    );
-                }
-                $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
-                $area = $this->CI->area_model->getOne($point['province_code']);
-                $msg[] = array(
-                    'tracking_number' => $row['tracking_number'],
-                    'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
-                );
+        $rule_item = $this->CI->express_rule_model->getItemByWeight($row['express_id'], $row['arrive_express_point_code'], $row['weight']);
+        if ($rule_item) {
+            if ($rule_item['price_type'] == 1) {//固定价格
+                $cost = $rule_item['price'];
+            } else if ($rule_item['price_type'] == 2) {//称重价格
+                $cost = $row['weight'] * $rule_item['price'];
             }
+            $cost_data = array(
+                'cost' => $cost,
+                'cost_time' => date('Y-m-d H:i:s')
+            );
+            $this->update($row['tracking_number_id'], $cost_data);
+        } else {
+            $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
+            $area = $this->CI->area_model->getOne($point['province_code']);
+            $msg[] = array(
+                'tracking_number' => $row['tracking_number'],
+                'msg' =>  '没有匹配的运算成本规则（揽收网点地址：'.$area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+            );
         }
         return $msg;
     }
 
-    function validateCost() {
+    /**
+     * 快递单号数据计算收入
+     * @author 周辉
+     * @param mixed $row 快递单号数据
+     * @return array 错误消息数组
+     */
+    function incomeExpression($row) {
         $msg = array();
-        $tracking_numbers = $this->getTrackingNumbersByType('cost');
-
-        foreach($tracking_numbers as $row) {
-            $rule_item = $this->CI->express_rule_model->getItemByWeight($row['express_id'], $row['arrive_express_point_code'], $row['weight']);
-            if (!$rule_item) {
-                $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
-                $area = $this->CI->area_model->getOne($point['province_code']);
-                $msg[] = array(
-                    'tracking_number' => $row['tracking_number'],
-                    'msg' =>  '没有匹配的运算成本规则（揽收网点地址：'.$area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
-                );
-            }
-        }
-        return $msg;
-    }
-
-    function countCost() {
-        $msg = array();
-        $tracking_numbers = $this->getTrackingNumbersByType('cost');
-        foreach($tracking_numbers as $row) {
-            $cost = 0;
-            $rule_item = $this->CI->express_rule_model->getItemByWeight($row['express_id'], $row['arrive_express_point_code'], $row['weight']);
-            if ($rule_item) {
-                if ($rule_item['price_type'] == 1) {//固定价格
-                    $cost = $rule_item['price'];
-                } else if ($rule_item['price_type'] == 2) {//称重价格
-                    $cost = $row['weight'] * $rule_item['price'];
+        $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
+        if ($rule_item) {
+            if ($rule_item['weight_price_type'] == 0) {//进重（取整）
+                if ($rule_item['weight_pre'] == 0) {
+                    $pass_weight = ceil($row['weight']  - $rule_item['weight_start']);
+                } else {
+                    $pass_weight = ceil(($row['weight'] - $rule_item['weight_start']) / $rule_item['weight_pre']);
                 }
-                $cost_data = array(
-                    'cost' => $cost,
-                    'cost_time' => date('Y-m-d H:i:s')
-                );
-                $this->update($row['tracking_number_id'], $cost_data);
-            } else {
-                $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
-                $area = $this->CI->area_model->getOne($point['province_code']);
+                $income = $rule_item['weight_start_price'] + $pass_weight * $rule_item['weight_pre_price'];
+            } else {//实重
+                if ($rule_item['weight_pre'] == 0) {
+                    $pass_price = 0;
+                } else {
+                    $pass_price = ($row['weight'] - $rule_item['weight_start']) * ($rule_item['weight_pre_price'] / $rule_item['weight_pre']);
+                }
+                $income = $rule_item['weight_start_price'] + $pass_price;
+            }
+            $income_data = array(
+                'income' => number_format($income, 2),
+                'income_time' => date('Y-m-d H:i:s')
+            );
+            $this->update($row['tracking_number_id'], $income_data);
+        } else {
+            $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
+            $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
+            if (strtotime($row['arrive_time']) < strtotime($customer_rent['date_start'].' 00:00:00') || strtotime($row['arrive_time']) > strtotime($customer_rent['date_end'].' 23:59:59')) {
                 $msg[] = array(
                     'tracking_number' => $row['tracking_number'],
-                    'msg' =>  '没有匹配的运算成本规则（揽收网点地址：'.$area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+                    'msg' =>  '揽收时间没有当前客户的合同期限内（客户名：'.$customer['customer_name'].')'
                 );
             }
+            $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
+            $area = $this->CI->area_model->getOne($point['province_code']);
+            $msg[] = array(
+                'tracking_number' => $row['tracking_number'],
+                'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+            );
         }
         return $msg;
     }

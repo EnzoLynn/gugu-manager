@@ -116,33 +116,72 @@ class TrackingNumber extends AdminController {
     public function countPrice() {
         //type = income 收入计算，cost 成本计算， income_cost 收入成本计算
         $type = $this->input->get_post('type');
+        $msg = array();
         //计算成本
         if ($type == 'cost') {
-            $msg = $this->tracking_number_model->countCost();
-            if (count($msg) > 0) {
-                $json = array(
-                    'success' => false,
-                    'data' => $msg,
-                    'total' => count($msg),
-                    'msg' => '数据有问题',
-                    'code' => '89'
-                );
-                echo json_encode($json);
-                exit;
+            $tracking_numbers = $this->tracking_number_model->getTrackingNumbersByType('cost');
+            foreach($tracking_numbers as $row) {
+                $temp_msg = $this->tracking_number_model->costExpression($row);
+                if ($temp_msg) {
+                    array_push($msg, $temp_msg);
+                }
             }
         } else if ($type == 'income') {
-            $msg = $this->tracking_number_model->countIncome();
-            if (count($msg) > 0) {
-                $json = array(
-                    'success' => false,
-                    'data' => $msg,
-                    'total' => count($msg),
-                    'msg' => '数据有问题',
-                    'code' => '89'
-                );
-                echo json_encode($json);
-                exit;
+            $tracking_numbers = $this->tracking_number_model->getTrackingNumbersByType('income');
+            foreach($tracking_numbers as $row) {
+                $temp_msg = $this->tracking_number_model->incomeExpression($row);
+                if ($temp_msg) {
+                    array_push($msg, $temp_msg);
+                }
             }
+        }
+        if (count($msg) > 0) {
+            $json = array(
+                'success' => false,
+                'data' => $msg,
+                'total' => count($msg),
+                'msg' => '数据有问题',
+                'code' => '89'
+            );
+            echo json_encode($json);
+            exit;
+        }
+        output_success();
+    }
+
+    public function reCountPrice() {
+        //type = income 收入计算，cost 成本计算， income_cost 收入成本计算
+        $type = $this->input->get_post('type');
+        $msg = array();
+        if ($type == 'income') {
+            $tracking_number_ids = explode(',', $this->input->post('$tracking_number_ids'));
+            foreach ($tracking_number_ids as $tracking_number_id) {
+                $tracking_number = $this->tracking_number_model->getTrackingNumberByID($tracking_number_id);
+                $temp_msg = $this->tracking_number_model->incomeExpression($tracking_number);
+                if ($temp_msg) {
+                    array_push($msg, $temp_msg);
+                }
+            }
+        } else if ($type == 'cost') {
+            $tracking_number_ids = explode(',', $this->input->post('$tracking_number_ids'));
+            foreach ($tracking_number_ids as $tracking_number_id) {
+                $tracking_number = $this->tracking_number_model->getTrackingNumberByID($tracking_number_id);
+                $temp_msg = $this->tracking_number_model->costExpression($tracking_number);
+                if ($temp_msg) {
+                    array_push($msg, $temp_msg);
+                }
+            }
+        }
+        if (count($msg) > 0) {
+            $json = array(
+                'success' => false,
+                'data' => $msg,
+                'total' => count($msg),
+                'msg' => '数据有问题',
+                'code' => '89'
+            );
+            echo json_encode($json);
+            exit;
         }
         output_success();
     }
