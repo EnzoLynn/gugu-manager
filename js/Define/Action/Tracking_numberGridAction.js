@@ -647,6 +647,7 @@ ActionManager.translateError = function(response) {
 
     Ext.create('Ext.window.Window', {
         modal: true,
+        minWidth:320,
         maxWidth: 800,
         maxHeight: 600,
         title: response.msg,
