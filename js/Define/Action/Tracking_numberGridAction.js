@@ -636,7 +636,7 @@ ActionManager.searchTracking_number = function(traget) {
                         GlobalFun.GridSearchInitFun('customer_name', false, store, customer_name);
                         searchFlag = true;
                     } else {
-                        GlobalFun.GridSearchInitFun('customer_name', true, customer_name, false);
+                        GlobalFun.GridSearchInitFun('customer_name', true, store, false);
                     }
 
 
