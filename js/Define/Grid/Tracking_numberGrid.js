@@ -1,10 +1,11 @@
 //创建一个上下文菜单
 var Tracking_numberGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshTracking_number'), '-',
-            ActionBase.getAction('searchTracking_number'),'-',
-        ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number')
-        ,'-',
-         ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number')
+        ActionBase.getAction('searchTracking_number'),
+        ActionBase.getAction('removeTracking_number'), '-',
+        ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number'), '-',
+        ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number'), '-',
+        ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number')
     ]
 });
 
@@ -13,11 +14,11 @@ Ext.define('chl.gird.Tracking_numberGrid', {
     alternateClassName: ['Tracking_numberGrid'],
     alias: 'widget.Tracking_numberGrid',
     extend: 'chl.grid.BaseGrid',
-    store: 'Tracking_numberGridStoreId', 
+    store: 'Tracking_numberGridStoreId',
     actionBaseName: 'Tracking_numberGridAction',
-     viewConfig: {
+    viewConfig: {
         loadingText: '<b>' + '正在加载数据...' + '</b>',
-        enableTextSelection:true
+        enableTextSelection: true
     },
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {
@@ -39,7 +40,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             ActionBase.updateActions('Tracking_numberGridAction', seles);
         }
     },
-    
+
     columns: [],
     dockedItems: [{
         xtype: 'toolbar',
@@ -49,10 +50,11 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             overflowHandler: 'Menu'
         },
         items: [ActionBase.getAction('refreshTracking_number'), '-',
-            ActionBase.getAction('searchTracking_number'),'-',
-            ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number')
-            ,'-',
-         ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number')
+            ActionBase.getAction('searchTracking_number'),
+            ActionBase.getAction('removeTracking_number'), '-',
+            ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number'), '-',
+            ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number'), '-',
+            ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number')
         ]
     }, {
         xtype: 'Pagingtoolbar',
@@ -88,7 +90,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         ActionBase.setTargetView(me.actionBaseName, me);
         ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
     },
-    loadGrid: function(isSearch) {
+    loadGrid: function(clearFilter, noPageOne) {
         var me = this;
         var store = me.getStore();
 
@@ -105,8 +107,12 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         store.getProxy().extraParams.filter = Ext.JSON.encode(filter);
 
         store.getProxy().extraParams.refresh = 1;
+        if (noPageOne) {
+            store.load();
+        } else {
+            store.loadPage(1);
+        }
 
-        store.loadPage(1);
         store.getProxy().extraParams.refresh = null;
         GlobalFun.SetGridTitle(me.up('#centerGridDisplayContainer'), store, "票据列表");
         ActionBase.updateActions(me.actionBaseName, me.getSelectionModel().getSelection());
@@ -161,28 +167,28 @@ GridManager.CreateTracking_numberGrid = function(param) {
         dataIndex: 'customer_name',
         renderer: GlobalFun.UpdateRecord,
         flex: 1,
-        groupable:false,
+        groupable: false,
         sortable: false
     }, {
         text: '操作人',
         dataIndex: 'admin_name',
         renderer: GlobalFun.UpdateRecord,
         flex: 1,
-        groupable:false,
+        groupable: false,
         sortable: false
     }, {
         text: '结算状态',
         dataIndex: 'account_status_name',
         renderer: GlobalFun.UpdateRecord,
         flex: 1,
-        groupable:false,
+        groupable: false,
         sortable: false
-    },{
+    }, {
         text: '快递公司',
         dataIndex: 'express_name',
         renderer: GlobalFun.UpdateRecord,
         flex: 1,
-        groupable:false,
+        groupable: false,
         sortable: false
     }];
     GridManager.Tracking_numberGrid = Ext.create('chl.gird.Tracking_numberGrid',

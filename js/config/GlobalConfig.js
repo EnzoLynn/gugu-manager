@@ -37,7 +37,7 @@ Ext.namespace('Template', 'Template');
 GlobalConfig.ViewPort = '';
 
 //全局表格分页控制
-GlobalConfig.GridPageSize = 50;
+GlobalConfig.GridPageSize = 200;
 //最大值
 GlobalConfig.MaxLimit = 99999;
 
