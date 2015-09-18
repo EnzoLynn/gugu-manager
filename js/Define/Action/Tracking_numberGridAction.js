@@ -707,6 +707,7 @@ ActionManager.translateError = function(response) {
 
 //删除 
 ActionManager.delTracking_number = function(traget) {
+    var store = target.getStore();
     var sm = traget.getSelectionModel();
     var records = sm.getSelection();
     if (!records[0])
