@@ -24,20 +24,17 @@ class Tracking_number_model extends CI_Model {
 
     function getTrackingNumberByID($tracking_number_id) {
         $this->db->where('tracking_number_id', $tracking_number_id);
-        $query = $this->db->get('tracking_number');;
+        $query = $this->db->get('tracking_number');
         return $query->first_row();
     }
 
     function getTrackingNumber($tracking_number) {
         $this->db->where('tracking_number', $tracking_number);
-        $query = $this->db->get('tracking_number');;
+        $query = $this->db->get('tracking_number');
         return $query->first_row();
     }
 
     function getWhere($data) {
-
-        //print_r($data);exit;
-
 //        $data = array(
 //            'page' => $data['page'],
 //            'limit' => $data['limit'],
