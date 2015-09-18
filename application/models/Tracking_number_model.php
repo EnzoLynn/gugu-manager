@@ -355,6 +355,7 @@ class Tracking_number_model extends CI_Model {
     //根据状态结算
     function initAccount($data) {
         $this->getWhere($data);
+        $this->db->where('income>0');
         $upd_data = array(
             'account_status' => 1
         );
