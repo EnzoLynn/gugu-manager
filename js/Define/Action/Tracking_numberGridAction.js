@@ -321,7 +321,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         var param = {
             sessiontoken: GlobalFun.getSeesionToken(),
             type: 'income',
-            tracking_number_ids: ids
+            tracking_number_ids: ids.join()
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
@@ -356,7 +356,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         var param = {
             sessiontoken: GlobalFun.getSeesionToken(),
             type: 'cost',
-            tracking_number_ids: ids
+            tracking_number_ids: ids.join()
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
