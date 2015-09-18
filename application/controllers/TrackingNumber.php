@@ -71,27 +71,19 @@ class TrackingNumber extends AdminController {
     //开始结算
     public function initAccount() {
         $data = array(
-            'page' => '',
-            'limit'=> '',
             'arrive_time_start' => $this->input->get_post('arrive_time_start'),
             'arrive_time_end' => $this->input->get_post('arrive_time_end'),
-            'sort' => 'tracking_number_id',
-            'dir'  => 'ASC',
             'filter' => objectToArray(json_decode($this->input->get_post('filter')))
         );
-
-        $tracking_numbers = $this->tracking_number_model->initAccount($data);
+        $total = $this->tracking_number_model->initAccount($data);
+        output_success('成功', $total);
     }
 
     //导出excel
     public function downloadExcel() {
         $data = array(
-            'page' => '',
-            'limit'=> '',
             'arrive_time_start' => $this->input->get_post('arrive_time_start'),
             'arrive_time_end' => $this->input->get_post('arrive_time_end'),
-            'sort' => 'tracking_number_id',
-            'dir'  => 'ASC',
             'filter' => objectToArray(json_decode($this->input->get_post('filter')))
         );
 
@@ -139,7 +131,7 @@ class TrackingNumber extends AdminController {
             foreach($tracking_numbers as $row) {
                 $temp_msg = $this->tracking_number_model->costExpression($row);
                 if ($temp_msg) {
-                    array_push($msg, $temp_msg);
+                    $msg = array_merge($msg, $temp_msg);
                 }
             }
         } else if ($type == 'income') {
@@ -147,7 +139,7 @@ class TrackingNumber extends AdminController {
             foreach($tracking_numbers as $row) {
                 $temp_msg = $this->tracking_number_model->incomeExpression($row);
                 if ($temp_msg) {
-                    array_push($msg, $temp_msg);
+                    $msg = array_merge($msg, $temp_msg);
                 }
             }
         }
@@ -176,7 +168,7 @@ class TrackingNumber extends AdminController {
                 if ($tracking_number['account_status'] == 0) {//未结算的才能重新计算
                     $temp_msg = $this->tracking_number_model->incomeExpression($tracking_number);
                     if ($temp_msg) {
-                        array_push($msg, $temp_msg);
+                        $msg = array_merge($msg, $temp_msg);                        //array_push($msg, $temp_msg);
                     }
                 }
             }
@@ -187,11 +179,13 @@ class TrackingNumber extends AdminController {
                 if ($tracking_number['account_status'] == 0) {//未结算的才能重新计算
                     $temp_msg = $this->tracking_number_model->costExpression($tracking_number);
                     if ($temp_msg) {
-                        array_push($msg, $temp_msg);
+                        $msg = array_merge($msg, $temp_msg);
+                        //array_push($msg, $temp_msg);
                     }
                 }
             }
         }
+
         if (count($msg) > 0) {
             $json = array(
                 'success' => false,
