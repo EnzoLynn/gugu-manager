@@ -89,6 +89,8 @@ class Tracking_number_model extends CI_Model {
             $this->db->where('income', 0);
             $this->db->where('cost', 0);
         }
+        //未结算的才能结算
+        $this->db->where('account_status', 0);
         $this->db->order_by('tracking_number_id', 'ASC');
         $query = $this->db->get('tracking_number');
         return $query->result_array();
@@ -345,5 +347,37 @@ class Tracking_number_model extends CI_Model {
             );
         }
         return $msg;
+    }
+    //根据状态结算
+    function initAccount($data) {
+        $arrive_time_start = $data['arrive_time_start'];
+        $arrive_time_end = $data['arrive_time_end'];
+        $data = array(
+            'page' => $data['page'],
+            'limit' => $data['limit'],
+            'sort' => $data['sort'],
+            'dir' => $data['dir'],
+            'filter' => $data['filter']
+        );
+        if ($data['limit']) {
+            $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
+        }
+        if (isset($data['filter']['account_status'])) {
+            $this->db->where('account_status', $data['filter']['account_status']);
+            unset($data['filter']['account_status']);
+        }
+        $this->db->like($data['filter']);
+        if ($arrive_time_start) {
+            $this->db->where("arrive_time >= '$arrive_time_start 00:00:00'");
+        }
+        if ($arrive_time_end) {
+            $this->db->where("arrive_time <= '$arrive_time_end 23:59:59'");
+        }
+
+        $upd_data = array(
+            'account_status' => 1
+        );
+        $this->db->update('tracking_number', $upd_data);
+        return $this->db->affected_rows();
     }
 }

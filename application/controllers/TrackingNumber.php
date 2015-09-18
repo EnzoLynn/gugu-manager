@@ -26,6 +26,64 @@ class TrackingNumber extends AdminController {
 
     }
 
+    public function getList() {
+        $data = array(
+            'arrive_time_start' => $this->input->post('arrive_time_start'),
+            'arrive_time_end' => $this->input->post('arrive_time_end'),
+
+            'page' => (int)$this->input->post('page'),
+            'limit'=> (int)$this->input->post('limit'),
+            'sort' => $this->input->post('sort'),
+            'dir'  => $this->input->post('dir'),
+            'filter' => objectToArray(json_decode($this->input->post('filter')))
+        );
+
+        $tracking_numbers = $this->tracking_number_model->getTrackingNumbers($data);
+
+        foreach ($tracking_numbers as $key => $val) {
+            if($val['account_status'] == 0) {
+                $tracking_numbers[$key]['account_status_name'] = '未结算';
+            }else{
+                $tracking_numbers[$key]['account_status_name'] = '已结算';
+            }
+            //客户名字
+            $customer = $this->customer_model->getCustomer($val['customer_id']);
+            $tracking_numbers[$key]['customer_name'] = $customer['customer_name'];
+            //操作人名字
+            $tracking_numbers[$key]['admin_name'] = $this->admin_name;
+            //快递公司名字
+            $express = $this->express_company_model->getOne($val['express_id']);
+            $tracking_numbers[$key]['express_name'] = $express['express_name'];
+        }
+
+        $tracking_numbers_total = $this->tracking_number_model->getTrackingNumbersTotal($data);
+
+        $json = array(
+            'success' => true,
+            'data' => $tracking_numbers,
+            'total' => $tracking_numbers_total,
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
+    }
+
+    //开始结算
+    public function initAccount() {
+        $data = array(
+            'page' => '',
+            'limit'=> '',
+            'arrive_time_start' => $this->input->get_post('arrive_time_start'),
+            'arrive_time_end' => $this->input->get_post('arrive_time_end'),
+            'sort' => 'tracking_number_id',
+            'dir'  => 'ASC',
+            'filter' => objectToArray(json_decode($this->input->get_post('filter')))
+        );
+
+        $tracking_numbers = $this->tracking_number_model->initAccount($data);
+    }
+
+    //导出excel
     public function downloadExcel() {
         $data = array(
             'page' => '',
@@ -71,48 +129,6 @@ class TrackingNumber extends AdminController {
         outputExcel($tracking_numbers, $header);
     }
 
-    public function getList() {
-        $data = array(
-            'arrive_time_start' => $this->input->post('arrive_time_start'),
-            'arrive_time_end' => $this->input->post('arrive_time_end'),
-
-            'page' => (int)$this->input->post('page'),
-            'limit'=> (int)$this->input->post('limit'),
-            'sort' => $this->input->post('sort'),
-            'dir'  => $this->input->post('dir'),
-            'filter' => objectToArray(json_decode($this->input->post('filter')))
-        );
-
-        $tracking_numbers = $this->tracking_number_model->getTrackingNumbers($data);
-
-        foreach ($tracking_numbers as $key => $val) {
-            if($val['account_status'] == 0) {
-                $tracking_numbers[$key]['account_status_name'] = '未结算';
-            }else{
-                $tracking_numbers[$key]['account_status_name'] = '已结算';
-            }
-            //客户名字
-            $customer = $this->customer_model->getCustomer($val['customer_id']);
-            $tracking_numbers[$key]['customer_name'] = $customer['customer_name'];
-            //操作人名字
-            $tracking_numbers[$key]['admin_name'] = $this->admin_name;
-            //快递公司名字
-            $express = $this->express_company_model->getOne($val['express_id']);
-            $tracking_numbers[$key]['express_name'] = $express['express_name'];
-        }
-
-        $tracking_numbers_total = $this->tracking_number_model->getTrackingNumbersTotal($data);
-
-        $json = array(
-            'success' => true,
-            'data' => $tracking_numbers,
-            'total' => $tracking_numbers_total,
-            'msg' => '成功',
-            'code' => '01'
-        );
-        echo json_encode($json);
-    }
-
     public function countPrice() {
         //type = income 收入计算，cost 成本计算， income_cost 收入成本计算
         $type = $this->input->get_post('type');
@@ -154,21 +170,25 @@ class TrackingNumber extends AdminController {
         $type = $this->input->get_post('type');
         $msg = array();
         if ($type == 'income') {
-            $tracking_number_ids = explode(',', $this->input->post('$tracking_number_ids'));
+            $tracking_number_ids = explode(',', $this->input->post('tracking_number_ids'));
             foreach ($tracking_number_ids as $tracking_number_id) {
                 $tracking_number = $this->tracking_number_model->getTrackingNumberByID($tracking_number_id);
-                $temp_msg = $this->tracking_number_model->incomeExpression($tracking_number);
-                if ($temp_msg) {
-                    array_push($msg, $temp_msg);
+                if ($tracking_number['account_status'] == 0) {//未结算的才能重新计算
+                    $temp_msg = $this->tracking_number_model->incomeExpression($tracking_number);
+                    if ($temp_msg) {
+                        array_push($msg, $temp_msg);
+                    }
                 }
             }
         } else if ($type == 'cost') {
-            $tracking_number_ids = explode(',', $this->input->post('$tracking_number_ids'));
+            $tracking_number_ids = explode(',', $this->input->post('tracking_number_ids'));
             foreach ($tracking_number_ids as $tracking_number_id) {
                 $tracking_number = $this->tracking_number_model->getTrackingNumberByID($tracking_number_id);
-                $temp_msg = $this->tracking_number_model->costExpression($tracking_number);
-                if ($temp_msg) {
-                    array_push($msg, $temp_msg);
+                if ($tracking_number['account_status'] == 0) {//未结算的才能重新计算
+                    $temp_msg = $this->tracking_number_model->costExpression($tracking_number);
+                    if ($temp_msg) {
+                        array_push($msg, $temp_msg);
+                    }
                 }
             }
         }
