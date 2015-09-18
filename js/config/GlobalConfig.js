@@ -131,7 +131,8 @@ GlobalConfig.Controllers = {
         translateCost: '/trackingNumber/countPrice', 
         retranslateExpress: '/trackingNumber/reCountPrice',
         retranslateCost: '/trackingNumber/reCountPrice', 
-        downloadTemplate:'/downloadExcelTemplate/trackingNumberExcel'
+        downloadTemplate:'/downloadExcelTemplate/trackingNumberExcel',
+        setAccount_status:'/setAccount_status'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {

@@ -325,12 +325,12 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
-            target.loadGrid(false,true);
+            target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
                 ActionManager.translateError(response);
             }
-            target.loadGrid(false,true);
+            target.loadGrid(false, true);
         }, true);
     },
     updateStatus: function(selection) {
@@ -360,17 +360,30 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
-            target.loadGrid(false,true);
+            target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
                 ActionManager.translateError(response);
             }
-            target.loadGrid(false,true);
+            target.loadGrid(false, true);
         }, true);
     },
     updateStatus: function(selection) {
         this.setDisabled(selection.length < 1);
     }
+});
+
+
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'account_statusTracking_number',
+    iconCls: 'status-suc',
+    tooltip: '设置结算状态',
+    text: '设置结算状态',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.account_statusTracking_number(target);
+    },
+    updateStatus: function(selection) {}
 });
 
 //刷新 
@@ -528,6 +541,10 @@ ActionManager.searchTracking_number = function(traget) {
                         vtype: 'daterange',
                         startDateField: 'dateStar'
                     }]
+                }, {
+                    fieldLabel: '客户名称',
+                    itemId: 'customer_name',
+                    maxLength: 64
                 }]
             }],
             listeners: {
@@ -611,6 +628,18 @@ ActionManager.searchTracking_number = function(traget) {
                         extraParams.arrive_time_end = '';
                     }
 
+                    //客户名称
+
+                    var customer_name = win.down('#customer_name').getValue();
+                    if (customer_name != '') {
+                        //加入filterMap
+                        GlobalFun.GridSearchInitFun('customer_name', false, store, customer_name);
+                        searchFlag = true;
+                    } else {
+                        GlobalFun.GridSearchInitFun('customer_name', true, store, false);
+                    }
+
+
                     if (searchFlag) {
                         win.close();
                         traget.loadGrid(true);
@@ -647,7 +676,7 @@ ActionManager.translateError = function(response) {
 
     Ext.create('Ext.window.Window', {
         modal: true,
-        minWidth:320,
+        minWidth: 320,
         maxWidth: 800,
         maxHeight: 600,
         title: response.msg,
@@ -693,7 +722,6 @@ ActionManager.delTracking_number = function(traget) {
         Ext.Msg.alert('提示', '请选择至少1条未结算状态的项目.');
         return;
     };
-    var store = traget.getStore();
     GlobalConfig.newMessageBox.show({
         title: '提示',
         msg: '您确定要删除选定的(未结算)项目吗？',
@@ -715,6 +743,42 @@ ActionManager.delTracking_number = function(traget) {
 
                     if (!GlobalFun.errorProcess(response.code)) {
                         Ext.Msg.alert('登录失败', response.msg);
+                    }
+                }, true);
+
+            }
+        },
+        icon: Ext.MessageBox.QUESTION
+    });
+};
+
+//设置状态
+ActionManager.account_statusTracking_number = function(target) {
+    var store = target.getStore();
+    var extraParams = store.getProxy().extraParams;
+    var param = {
+        arrive_time_start: extraParams.arrive_time_start,
+        arrive_time_end: extraParams.arrive_time_end,
+        filter: extraParams.filter,
+        sessiontoken: GlobalFun.getSeesionToken()
+    };
+    GlobalConfig.newMessageBox.show({
+        title: '提示',
+        msg: '您确定要设置当前的所有项目状态为已结算吗？',
+        buttons: Ext.MessageBox.YESNO,
+        closable: false,
+        fn: function(btn) {
+            if (btn == 'yes') {
+
+                // 调用
+                WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.setAccount_status, 'setAccount_status', param, function(response, opts) {
+                    (new Ext.util.DelayedTask(function() {
+                        store.load();
+                    })).delay(500);
+                }, function(response, opts) {
+
+                    if (!GlobalFun.errorProcess(response.code)) {
+                        Ext.Msg.alert('失败', response.msg);
                     }
                 }, true);
 

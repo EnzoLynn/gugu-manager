@@ -89,3 +89,6 @@
 .remove_base {
   background-image: url(../image/icons/fam/delete.gif) !important;
 }
+.status-suc {
+  background-image: url(../image/workFlow/task-suc.png) !important;
+}
