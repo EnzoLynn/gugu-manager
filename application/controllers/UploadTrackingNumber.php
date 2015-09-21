@@ -142,7 +142,13 @@ class UploadTrackingNumber extends AdminController {
         $data = loadExcel($file, $pars_default);
 
         if (!$data) {
-            output_error('数据有问题，列都不匹配');
+            //output_error('数据有问题，列都不匹配');
+            $msg = array('数据有问题，列都不匹配');
+            $header = array(
+                //'tracking_number' => '运单号',
+                'msg'   => '消息'
+            );
+            outputExcel($msg, $header);
         }
 
         $msg = $this->tracking_number_model->validateData($data);
