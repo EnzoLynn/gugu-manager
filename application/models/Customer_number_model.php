@@ -21,7 +21,24 @@ class Customer_number_model extends CI_Model {
         return $customer_number;
     }
 
-    function getCustomerNumbers($data) {
+    function getCustomerNumbersByIDS($number_ids, $cond = array()) {
+        if (is_string($number_ids)) {
+            $number_ids = explode(',', $number_ids);
+        }
+        if ($cond) {
+            foreach ($cond as $where) {
+                $this->db->where($where);
+            }
+        }
+        if (is_array($number_ids) && count($number_ids) > 0) {
+            $this->db->where_in('$number_id', $number_ids);
+            $query = $this->db->get('customer_number');
+            return $query->result_array();
+        }
+        return FALSE;
+    }
+
+    function getWhere() {
         if (isset($data['filter']['customer_name'])) {
             $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
             $this->db->where('customer_id', $customer['customer_id']);
@@ -42,34 +59,21 @@ class Customer_number_model extends CI_Model {
         if (isset($data['filter']['tracking_number'])) {
             $this->db->where('tracking_number', $data['filter']['tracking_number']);
         }
-        $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
-        $this->db->order_by($data['sort'], $data['dir']);
+    }
+
+    function getCustomerNumbers($data) {
+        $this->getWhere($data);
+        if ($data['limit']) {
+            $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
+            $this->db->order_by($data['sort'], $data['dir']);
+        }
         $query = $this->db->get('customer_number');
         $customer_numbers = $query->result_array();
         return $customer_numbers;
     }
 
     function getCustomerNumbersTotal($data) {
-        if (isset($data['filter']['customer_name'])) {
-            $customer = $this->CI->customer_model->getCustomerByField('customer_name', trim($data['filter']['customer_name']));
-            $this->db->where('customer_id', $customer['customer_id']);
-        } else {
-            if ($data['customer_id'] > 0) {
-                $this->db->where('customer_id', $data['customer_id']);
-            }
-        }
-        if (isset($data['filter']['use_status'])) {
-            $this->db->where('use_status', $data['filter']['use_status']);
-        }
-        if (isset($data['filter']['use_time_begin']) && $data['filter']['use_time_begin'] != '') {
-            $this->db->where("use_time >= '". $data['filter']['use_time_begin'] ." 00:00:00'");
-        }
-        if (isset($data['filter']['use_time_end']) && $data['filter']['use_time_end'] != '') {
-            $this->db->where("use_time <= '". $data['filter']['use_time_end'] ." 23:59:59'");
-        }
-        if (isset($data['filter']['tracking_number'])) {
-            $this->db->where('tracking_number', $data['filter']['tracking_number']);
-        }
+        $this->getWhere($data);
         return $this->db->count_all_results('customer_number');
     }
 

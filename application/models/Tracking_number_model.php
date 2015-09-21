@@ -34,6 +34,23 @@ class Tracking_number_model extends CI_Model {
         return $query->first_row();
     }
 
+    function getTrackingNumberByIDS($tracking_number_ids, $cond = array()) {
+        if (is_string($tracking_number_ids)) {
+            $tracking_number_ids = explode(',', $tracking_number_ids);
+        }
+        if ($cond) {
+            foreach ($cond as $where) {
+                $this->db->where($where);
+            }
+        }
+        if (is_array($tracking_number_ids) && count($tracking_number_ids) > 0) {
+            $this->db->where_in('tracking_number_id', $tracking_number_ids);
+            $query = $this->db->get('tracking_number');
+            return $query->result_array();
+        }
+        return FALSE;
+    }
+
     function getWhere($data) {
 //        $data = array(
 //            'page' => $data['page'],
@@ -60,7 +77,12 @@ class Tracking_number_model extends CI_Model {
         if (isset($data['filter']['arrive_express_point_code'])) {
             $this->db->where('arrive_express_point_code', $data['filter']['arrive_express_point_code']);
         }
-
+        if (isset($data['filter']['income'])) {
+            $this->db->where($data['filter']['income']);
+        }
+        if (isset($data['filter']['cost'])) {
+            $this->db->where($data['filter']['cost']);
+        }
         $arrive_time_start = $data['arrive_time_start'];
         $arrive_time_end = $data['arrive_time_end'];
         if ($arrive_time_start) {
@@ -73,8 +95,10 @@ class Tracking_number_model extends CI_Model {
 
     function getTrackingNumbers($data) {
         $this->getWhere($data);
-        $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
-        $this->db->order_by($data['sort'], $data['dir']);
+        if ($data['limit']) {
+            $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
+            $this->db->order_by($data['sort'], $data['dir']);
+        }
         $query = $this->db->get('tracking_number');
         return $query->result_array();
     }
@@ -82,22 +106,6 @@ class Tracking_number_model extends CI_Model {
     function getTrackingNumbersTotal($data){
         $this->getWhere($data);
         return $this->db->count_all_results('tracking_number');
-    }
-
-    function getTrackingNumbersByType($type = 'income_cost') {
-        if($type == 'income') {
-            $this->db->where('income', 0);
-        } else if ($type == 'cost') {
-            $this->db->where('cost', 0);
-        } else {
-            $this->db->where('income', 0);
-            $this->db->where('cost', 0);
-        }
-        //未结算的才能结算
-        $this->db->where('account_status', 0);
-        $this->db->order_by('tracking_number_id', 'ASC');
-        $query = $this->db->get('tracking_number');
-        return $query->result_array();
     }
 
     function add($data) {
@@ -127,7 +135,7 @@ class Tracking_number_model extends CI_Model {
 
     function delete($tracking_number_id) {
         $this->db->where('tracking_number_id', $tracking_number_id);
-        $this->db->where('account_status', 0);//未审核才能删除
+        $this->db->where('account_status', 0);//未结算才能删除
         $this->db->delete('tracking_number');
         return $this->db->affected_rows();
     }
@@ -246,13 +254,10 @@ class Tracking_number_model extends CI_Model {
         return $msg;
     }
 
-    function validateIncome() {
-        $msg = array();
-        $tracking_numbers = $this->getTrackingNumbersByType('income');
+    function validateIncome($tracking_numbers) {
         foreach($tracking_numbers as $row) {
             //导入的时候，不验证合同，现在开始赋值合同 ？
             $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
-
             if (!$rule_item) {
                 $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
                 $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
