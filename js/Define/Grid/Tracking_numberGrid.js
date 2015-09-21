@@ -4,7 +4,6 @@ var Tracking_numberGrid_RightMenu = Ext.create('Ext.menu.Menu', {
         ActionBase.getAction('searchTracking_number'),
         ActionBase.getAction('removeTracking_number'), '-',
         ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number'), '-',
-        ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number'), '-',
         ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number')
         ,'-',  ActionBase.getAction('account_statusTracking_number')
     ]
@@ -52,11 +51,10 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         },
         items: [ActionBase.getAction('refreshTracking_number'), '-',
             ActionBase.getAction('searchTracking_number'),
-            ActionBase.getAction('removeTracking_number'), '-',
-            ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number'), '-',
-            ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number'), '-',
-            ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number')
-            ,'-',  ActionBase.getAction('account_statusTracking_number')
+            ActionBase.getAction('removeTracking_number_t'), '-',
+            ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number_t'), '-',            
+            ActionBase.getAction('retranslateExpressTracking_number_t'), ActionBase.getAction('retranslateCostTracking_number_t')
+            ,'-',  ActionBase.getAction('account_statusTracking_number_t')
         ]
     }, {
         xtype: 'Pagingtoolbar',
