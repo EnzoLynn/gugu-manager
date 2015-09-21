@@ -259,9 +259,7 @@ Ext.define('chl.Grid.AddUpdateCustomerWin', {
             blankText: '不能为空'
         }, {
             name: 'yto_no',
-            fieldLabel: '圆通商家代码',  
-            allowBlank: false,
-            blankText: '不能为空'
+            fieldLabel: '圆通商家代码' 
         }, {
             name: 'mobile',
             fieldLabel: '手机号',
