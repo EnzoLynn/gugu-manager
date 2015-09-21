@@ -105,7 +105,8 @@ GlobalConfig.Controllers = {
         update: 'customerNumber/update',
         destroy: 'customerNumber/delete',
         uploadExcel: '/customerNumber/upload', 
-        downloadTemplate:'/downloadExcelTemplate/customerNumberExcel'
+        downloadTemplate:'/downloadExcelTemplate/customerNumberExcel',
+        errorReport:'customerNumber/downloadError'
     },
     CustomerRentGrid: { //合同
         create: '/customerRent/add', //globalFix + '/CustomerRentGrid.json',
@@ -132,7 +133,8 @@ GlobalConfig.Controllers = {
         retranslateExpress: '/trackingNumber/reCountPrice',
         retranslateCost: '/trackingNumber/reCountPrice', 
         downloadTemplate:'/downloadExcelTemplate/trackingNumberExcel',
-        setAccount_status:'/trackingNumber/initAccount'
+        setAccount_status:'/trackingNumber/initAccount',
+        errorReport:'uploadTrackingNumber/downloadError'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {

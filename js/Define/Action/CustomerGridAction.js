@@ -429,7 +429,7 @@ ActionManager.importCustomer_number = function(target, record) {
                                 if (!GlobalFun.errorProcess(action.result.code)) {
                                     var obj = {};
                                     obj[fNmae] = action.result.data;
-                                    ActionManager.showUpLoadExcelError(obj);
+                                    ActionManager.showUpLoadExcelError(obj,true);
 
                                 }
                             }
