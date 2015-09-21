@@ -198,6 +198,12 @@ class CustomerNumber extends AdminController {
         $msg = $this->customer_number_model->validateData($data);
 
         if ($msg) {
+
+            $temp = array(
+                'error_upload_number_file' => $file_path
+            );
+            $this->session_token_model->addData($this->session_token, $temp);
+
             $json = array(
                 'success' => false,
                 'data' => $msg,
@@ -208,7 +214,34 @@ class CustomerNumber extends AdminController {
             echo json_encode($json);
             exit;
         } else {
+            $this->session_token_model->clearData($this->session_token, 'error_upload_number_file');
             return $data;
         }
+    }
+
+    function downloadError() {
+        $file = $this->session_token_model->getData($this->session_token, 'error_upload_number_file');
+        if (!$file) {
+            output_error('没有日志可供下载');
+        }
+        $pars_default = array(
+            'sheetIndex' => 0,
+            'headerKey' => TRUE,
+            'readColumn' => array('运单号码', '商家代码', '快递公司')
+        );
+
+        $data = loadExcel($file, $pars_default);
+
+        if (!$data) {
+            output_error('数据有问题，列都不匹配');
+        }
+
+        $msg = $this->customer_number_model->validateData($data);
+
+        $header = array(
+            //'tracking_number' => '运单号',
+            'msg'   => '消息'
+        );
+        outputExcel($msg, $header);
     }
 }

@@ -13,37 +13,12 @@ class Admin_model extends CI_Model{
         $this->CI = &get_instance();
     }
 
-    function getAdmin($admin_name){
-        $data = array(
-            'admin_name' => $admin_name
-        );
-        $this->db->select('admin_id,admin_name,is_admin');
-        $this->db->where($data);
+    function getOne($cond) {
+        foreach ($cond as $field => $value) {
+            $this->db->where($field, $value);
+        }
         $query = $this->db->get('admin');
         $admin = $query->first_row();
         return $admin;
-    }
-
-    function login($admin_name, $admin_pwd) {
-        $data = array(
-            'admin_name' => $admin_name,
-            'admin_pwd'  => $admin_pwd
-        );
-        $query = $this->db->select('admin_id,admin_name,is_admin')->get_where('admin', $data);
-        $admin = $query->first_row();
-        if($admin) {
-            $this->setLogin($admin_name);
-        }
-        return $admin;
-    }
-
-    function setLogin($admin_name) {
-        $data = array(
-            'admin_name' => $admin_name
-        );
-        $query = $this->db->select('admin_id,admin_name,is_admin')->get_where('admin', $data);
-        $admin = $query->first_row();
-
-        $this->CI->session->set_userdata($admin);
     }
 }
