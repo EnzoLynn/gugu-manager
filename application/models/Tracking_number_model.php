@@ -95,7 +95,7 @@ class Tracking_number_model extends CI_Model {
 
     function getTrackingNumbers($data) {
         $this->getWhere($data);
-        if ($data['limit']) {
+        if (isset($data['limit'])) {
             $this->db->limit($data['limit'], (int)($data['page'] - 1) * $data['limit']);
             $this->db->order_by($data['sort'], $data['dir']);
         }
