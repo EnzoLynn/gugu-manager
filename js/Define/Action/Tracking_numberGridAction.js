@@ -373,8 +373,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             target.loadGrid(false, true);
         }, true);
     },
-    updateStatus: function(selection) { 
-    }
+    updateStatus: function(selection) {}
 });
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
@@ -442,8 +441,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             target.loadGrid(false, true);
         }, true);
     },
-    updateStatus: function(selection) { 
-    }
+    updateStatus: function(selection) {}
 });
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
@@ -512,7 +510,7 @@ ActionManager.refreshTracking_number = function(traget) {
     traget.loadGrid();
 };
 //导入excel错误
-ActionManager.showUpLoadExcelError = function(obj) {
+ActionManager.showUpLoadExcelError = function(obj,isCustomer_number) {
     var items = [];
 
     for (key in obj) {
@@ -563,6 +561,17 @@ ActionManager.showUpLoadExcelError = function(obj) {
             items: items
         }],
         buttons: [{
+            text: '下载错误报告',
+            iconCls:'download',
+            handler: function(com) { 
+                var param = {
+                    downType: 'ErrorReport',                     
+                    sessiontoken: GlobalFun.getSeesionToken()
+                };
+                var url = isCustomer_number?GlobalConfig.Controllers.Customer_numberGrid.errorReport:GlobalConfig.Controllers.Tracking_numberGrid.errorReport;
+                WsCall.downloadFile(url, 'download', param);
+            }
+        }, {
             text: '确定',
             handler: function(com) {
                 com.up('window').close();

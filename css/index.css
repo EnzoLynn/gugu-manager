@@ -83,6 +83,9 @@
 .downloadTpl {
   background-image: url(../image/fileimg/xlsx.png) !important;
 }
+.download {
+  background-image: url(../image/tree/download.png) !important;
+}
 .about {
   background-image: url(../image/workFlow/flag/wFlag1.png) !important;
 }
