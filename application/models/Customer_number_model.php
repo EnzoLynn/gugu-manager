@@ -2,8 +2,7 @@
 /**
  * Created by PhpStorm.
  * User: 周
- * Date: 2015/8/25
- * Time: 14:44
+ * Date: 2015/8/25 14:44
  */
 class Customer_number_model extends CI_Model {
     var $CI;
