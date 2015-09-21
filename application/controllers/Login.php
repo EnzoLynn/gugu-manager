@@ -19,7 +19,7 @@ class Login extends MY_Controller {
             $admin = $this->admin_model->getOne($where);
         }else if($this->input->get_post('sessiontoken')){
             $session = $this->session_token_model->getSession($this->input->get_post('sessiontoken'));
-            if($session) {
+            if(!empty($session) > 0) {
                 $where = array(
                     'admin_name' => $session['admin_name']
                 );

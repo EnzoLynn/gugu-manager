@@ -17,10 +17,10 @@ class Session_token_model extends CI_Model {
         } else {
             $data = array(
                 'session_token' => $data['session_token'],
-//                'admin_id' => $data['admin_id'],
-//                'admin_name' => $data['admin_name'],
+                'admin_id' => $data['admin_id'],
+                'admin_name' => $data['admin_name'],
                 'expires_time' => date('Y-m-d H:i:s'),
-                'data' => serialize($data['data'])
+                'data' => ''//serialize($data['data'])
             );
             $this->db->insert('session_token', $data);
         }
@@ -37,6 +37,10 @@ class Session_token_model extends CI_Model {
         $this->db->where($data);
         $query = $this->db->get('session_token');
         $session = $query->first_row();
+
+        if (empty($session)) {
+            return FALSE;
+        }
 
         if (empty($session['data'])) {
             $session['data'] = array();
