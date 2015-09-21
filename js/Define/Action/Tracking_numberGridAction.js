@@ -869,6 +869,8 @@ ActionManager.delTracking_number = function(target, opts) {
                 if (opts && opts.filter) {
                     var extraParams = store.getProxy().extraParams;
                     param = {
+                        arrive_time_start: extraParams.arrive_time_start,
+                        arrive_time_end: extraParams.arrive_time_end,
                         sessiontoken: GlobalFun.getSeesionToken(),
                         filter: extraParams.filter
                     }
