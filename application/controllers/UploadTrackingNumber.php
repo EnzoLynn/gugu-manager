@@ -100,6 +100,11 @@ class UploadTrackingNumber extends AdminController {
         $msg = $this->tracking_number_model->validateData($data);
 
         if ($msg) {
+            $temp = array(
+                'error_upload_tracking_file' => $file_path
+            );
+            $this->session_token_model->addData($this->session_token, $temp);
+
             $json = array(
                 'success' => false,
                 'data' => $msg,
@@ -110,6 +115,7 @@ class UploadTrackingNumber extends AdminController {
             echo json_encode($json);
             exit;
         } else {
+            $this->session_token_model->clearData($this->session_token, 'error_upload_tracking_file');
             return $data;
 //            $json = array(
 //                'success' => true,
@@ -120,5 +126,30 @@ class UploadTrackingNumber extends AdminController {
 //            );
 //            echo json_encode($json);
         }
+    }
+
+    function downloadError() {
+        $file = $this->session_token_model->getData($this->session_token, 'error_upload_tracking_file');
+        if (!$file) {
+            output_error('没有日志可供下载');
+        }
+        $pars_default = array(
+            'sheetIndex' => 0,
+            'headerKey' => TRUE,
+            'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间', '快递公司')
+        );
+
+        $data = loadExcel($file, $pars_default);
+
+        if (!$data) {
+            output_error('数据有问题，列都不匹配');
+        }
+
+        $msg = $this->tracking_number_model->validateData($data);
+        $header = array(
+            //'tracking_number' => '运单号',
+            'msg'   => '消息'
+        );
+        outputExcel($msg, $header);
     }
 }

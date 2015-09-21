@@ -17,6 +17,7 @@ class AdminController extends MY_Controller
 {
     var $admin_id = 0;
     var $admin_name = '';
+    var $session_token = '';
 
     public function __construct()
     {
@@ -29,11 +30,14 @@ class AdminController extends MY_Controller
 
         if($this->input->get_post('sessiontoken')){
             $session = $this->session_token_model->getSession($this->input->get_post('sessiontoken'));
-
+            $this->session_token = $this->input->get_post('sessiontoken');
             if($session) {
                 $this->admin_id = $session['admin_id'];
                 $this->admin_name = $session['admin_name'];
-                $admin = $this->admin_model->getAdmin($session['admin_name']);
+                $where = array(
+                    'admin_name' => $session['admin_name']
+                );
+                $admin = $this->admin_model->getOne($where);
             }else{
                 delete_cookie('login_sessiontoken');
             }
