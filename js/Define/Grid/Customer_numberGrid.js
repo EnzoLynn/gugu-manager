@@ -16,6 +16,8 @@ Ext.define('chl.Model.Customer_numberGridModel', {
         name: 'use_status_name'
     }, {
         name: 'use_time'
+    },{
+        name:'created_at'
     }]
 });
 
@@ -265,34 +267,34 @@ Ext.define('chl.gird.Customer_numberGrid', {
         //     },
         //     disabled: true
         // }
-        , {
-            itemId: 'removeCustomer_number',
-            text: '删除',
-            tooltip: '删除',
-            iconCls: 'remove',
-            handler: function() {
-                var me = this;
-                var grid = me.up('Customer_numberGrid');
+        // , {
+        //     itemId: 'removeCustomer_number',
+        //     text: '删除',
+        //     tooltip: '删除',
+        //     iconCls: 'remove',
+        //     handler: function() {
+        //         var me = this;
+        //         var grid = me.up('Customer_numberGrid');
 
-                ActionManager.delCustomer_number(grid);
-                // Customer_numberGridRowEditing.cancelEdit();
-                // Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
-                // Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
-                //     success: function(batch, opts) {
+        //         ActionManager.delCustomer_number(grid);
+        //         // Customer_numberGridRowEditing.cancelEdit();
+        //         // Ext.StoreMgr.lookup('Customer_numberStoreId').remove(records);
+        //         // Ext.StoreMgr.lookup('Customer_numberStoreId').sync({
+        //         //     success: function(batch, opts) {
 
-                //         grid.loadGrid();
-                //         if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
-                //             sm.select(0);
-                //         }
-                //     },
-                //     failure: function(batch, opts) {
-                //         Ext.Msg.alert('失败', action.result.msg);
-                //     }
-                // });
+        //         //         grid.loadGrid();
+        //         //         if (Ext.StoreMgr.lookup('Customer_numberStoreId').getCount() > 0) {
+        //         //             sm.select(0);
+        //         //         }
+        //         //     },
+        //         //     failure: function(batch, opts) {
+        //         //         Ext.Msg.alert('失败', action.result.msg);
+        //         //     }
+        //         // });
 
-            },
-            disabled: true
-        }
+        //     },
+        //     disabled: true
+        // }
     ],
     columns: [{
         header: '编号',

@@ -16,6 +16,8 @@ Ext.define('chl.Model.Customer_number_allGridModel', {
         name: 'use_status_name'
     }, {
         name: 'use_time'
+    },{
+        name:'created_at'
     }]
 });
 
@@ -98,7 +100,9 @@ Ext.create('Ext.data.Store', {
 });
 //创建一个上下文菜单
 var Customer_number_allGrid_RightMenu = Ext.create('Ext.menu.Menu', {
-    items: [ActionBase.getAction('refreshCustomer_number_all'), '-', ActionBase.getAction('searchCustomer_number_all')]
+    items: [ActionBase.getAction('refreshCustomer_number_all'), '-'
+    , ActionBase.getAction('searchCustomer_number_all')
+    ,ActionBase.getAction('removeCustomer_number_all')]
 });
 
 Ext.define('chl.gird.Customer_number_allGrid', {
@@ -164,7 +168,9 @@ Ext.define('chl.gird.Customer_number_allGrid', {
             ActionBase.updateActions('Customer_number_allGridAction', seles);
         }
     },
-    tbar: [ActionBase.getAction('refreshCustomer_number_all'), '-', ActionBase.getAction('searchCustomer_number_all')],
+    tbar: [ActionBase.getAction('refreshCustomer_number_all'), '-'
+    , ActionBase.getAction('searchCustomer_number_all')
+    ,ActionBase.getAction('removeCustomer_number_all_t')],
     columns: [],
     initComponent: function() {
         var me = this;
@@ -227,6 +233,10 @@ GridManager.CreateCustomer_number_allGrid = function(param) {
     }, {
         header: '使用时间',
         dataIndex: 'use_time',
+        flex: 1
+    }, {
+        header: '创建时间',
+        dataIndex: 'created_at',
         flex: 1
     }];
     GridManager.Customer_number_allGrid = Ext.create('chl.gird.Customer_number_allGrid',

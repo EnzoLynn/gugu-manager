@@ -204,10 +204,10 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     }
 });
 Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'exportTracking_number',
+    itemId: 'exportTracking_number_t',
     iconCls: 'export',
-    tooltip: '导出',
-    text: '导出',
+    tooltip: '导出所有匹配查询结果的项目',
+    text: '导出(匹配)',
     handler: function() {
         var target = this.getTargetView();
         var store = target.getStore();
@@ -222,6 +222,47 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             sessiontoken: GlobalFun.getSeesionToken()
         };
         WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.outPutExcel, 'download', param);
+    },
+    updateStatus: function(selection) {}
+});
+
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'exportTracking_number',
+    iconCls: 'export',
+    tooltip: '导出',
+    text: '导出',
+    handler: function() {
+        var target = this.getTargetView();
+        var store = target.getStore();
+        var sm = target.getSelectionModel();
+        var records = sm.getSelection();
+        if (!records[0])
+            return;
+        var ids = [];
+        Ext.Array.each(records, function(rec) {
+            ids.push(rec.data.tracking_number_id);
+        });
+        var param = {
+            downType: 'Tracking_number',
+            tracking_number_ids: ids.join(),
+            sessiontoken: GlobalFun.getSeesionToken()
+        };
+        WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.outPutExcel, 'download', param);
+    },
+    updateStatus: function(selection) {}
+});
+
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'removeTracking_number_t',
+    iconCls: 'remove_base',
+    tooltip: '删除所有匹配查询结果的项目',
+    text: '删除(匹配)',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.delTracking_number(target, {
+            filter: true,
+            title: '您确定要所有删除匹配查询结果的项目吗？'
+        });
     },
     updateStatus: function(selection) {}
 });
@@ -254,59 +295,93 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     updateStatus: function(selection) {}
 });
 
-Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'translateExpressTracking_number',
-    iconCls: 'translate',
-    tooltip: '计算收入',
-    text: '计算收入',
-    handler: function() {
-        var target = this.getTargetView();
-        var param = {
-            sessiontoken: GlobalFun.getSeesionToken(),
-            type: 'income'
-        };
-        // 调用
-        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
-            target.loadGrid();
+// Ext.create('chl.Action.Tracking_numberGridAction', {
+//     itemId: 'translateExpressTracking_number',
+//     iconCls: 'translate',
+//     tooltip: '计算收入',
+//     text: '计算收入',
+//     handler: function() {
+//         var target = this.getTargetView();
+//         var param = {
+//             sessiontoken: GlobalFun.getSeesionToken(),
+//             type: 'income'
+//         };
+//         // 调用
+//         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
+//             target.loadGrid();
 
-        }, function(response, opts) {
-            if (!GlobalFun.errorProcess(response.code)) {
-                ActionManager.translateError(response);
-            }
-            target.loadGrid();
-        }, true);
-    },
-    updateStatus: function(selection) {}
-});
+//         }, function(response, opts) {
+//             if (!GlobalFun.errorProcess(response.code)) {
+//                 ActionManager.translateError(response);
+//             }
+//             target.loadGrid();
+//         }, true);
+//     },
+//     updateStatus: function(selection) {}
+// });
+// Ext.create('chl.Action.Tracking_numberGridAction', {
+//     itemId: 'translateCostTracking_number',
+//     iconCls: 'translate',
+//     tooltip: '计算成本',
+//     text: '计算成本',
+//     handler: function() {
+//         var target = this.getTargetView();
+//         var param = {
+//             sessiontoken: GlobalFun.getSeesionToken(),
+//             type: 'cost'
+//         };
+//         // 调用
+//         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
+//             target.loadGrid();
+//         }, function(response, opts) {
+//             if (!GlobalFun.errorProcess(response.code)) {
+//                 ActionManager.translateError(response);
+//             }
+//             target.loadGrid();
+//         }, true);
+//     },
+//     updateStatus: function(selection) {}
+// });
+
 Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'translateCostTracking_number',
+    itemId: 'retranslateExpressTracking_number_t',
     iconCls: 'translate',
-    tooltip: '计算成本',
-    text: '计算成本',
+    tooltip: '计算所有匹配查询结果的项目',
+    text: '计算收入(匹配)',
     handler: function() {
+
         var target = this.getTargetView();
+        var store = target.getStore();
+        var extraParams = store.getProxy().extraParams;
+
         var param = {
             sessiontoken: GlobalFun.getSeesionToken(),
-            type: 'cost'
+            type: 'income',
+            arrive_time_start: extraParams.arrive_time_start,
+            arrive_time_end: extraParams.arrive_time_end,
+            dir: 'ASC',
+            sort: 'tracking_number',
+            filter: extraParams.filter
         };
         // 调用
-        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
-            target.loadGrid();
+        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
+            target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
                 ActionManager.translateError(response);
             }
-            target.loadGrid();
+            target.loadGrid(false, true);
         }, true);
     },
-    updateStatus: function(selection) {}
+    updateStatus: function(selection) { 
+    }
 });
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'retranslateExpressTracking_number',
-    iconCls: 'retranslate',
-    tooltip: '重新计算收入',
-    text: '重新计算收入',
+    iconCls: 'translate',
+    tooltip: '计算收入',
+    text: '计算收入',
     handler: function() {
 
         var target = this.getTargetView();
@@ -337,12 +412,45 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         this.setDisabled(selection.length < 1);
     }
 });
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'retranslateCostTracking_number_t',
+    iconCls: 'translate',
+    tooltip: '计算所有匹配查询结果的项目',
+    text: '计算成本(匹配)',
+    handler: function() {
+        var target = this.getTargetView();
+        var store = target.getStore();
+        var extraParams = store.getProxy().extraParams;
+
+        var param = {
+            sessiontoken: GlobalFun.getSeesionToken(),
+            type: 'cost',
+            arrive_time_start: extraParams.arrive_time_start,
+            arrive_time_end: extraParams.arrive_time_end,
+            dir: 'ASC',
+            sort: 'tracking_number',
+            filter: extraParams.filter
+        };
+
+        // 调用
+        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
+            target.loadGrid(false, true);
+        }, function(response, opts) {
+            if (!GlobalFun.errorProcess(response.code)) {
+                ActionManager.translateError(response);
+            }
+            target.loadGrid(false, true);
+        }, true);
+    },
+    updateStatus: function(selection) { 
+    }
+});
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'retranslateCostTracking_number',
-    iconCls: 'retranslate',
-    tooltip: '重新计算成本',
-    text: '重新计算成本',
+    iconCls: 'translate',
+    tooltip: '计算成本',
+    text: '计算成本',
     handler: function() {
         var target = this.getTargetView();
         var sm = target.getSelectionModel();
@@ -372,7 +480,20 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         this.setDisabled(selection.length < 1);
     }
 });
-
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'account_statusTracking_number_t',
+    iconCls: 'status-suc',
+    tooltip: '设置结算所有匹配查询结果的项目)',
+    text: '设置结算状态(匹配)',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.account_statusTracking_number(target, {
+            filter: true,
+            title: '您确定要设置结算所有匹配查询结果的项目吗？'
+        });
+    },
+    updateStatus: function(selection) {}
+});
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'account_statusTracking_number',
@@ -706,11 +827,11 @@ ActionManager.translateError = function(response) {
 
 
 //删除 
-ActionManager.delTracking_number = function(traget) {
+ActionManager.delTracking_number = function(target, opts) {
     var store = target.getStore();
-    var sm = traget.getSelectionModel();
+    var sm = target.getSelectionModel();
     var records = sm.getSelection();
-    if (!records[0])
+    if (!opts && !records[0])
         return;
     var ids = [];
     Ext.Array.each(records, function(rec) {
@@ -719,11 +840,12 @@ ActionManager.delTracking_number = function(traget) {
         };
     });
 
-    if (ids.length == 0) {
-        Ext.Msg.alert('提示', '请选择至少1条未结算状态的项目.');
+    if (!opts && ids.length == 0) {
+        Ext.Msg.alert('提示', '至少需要1条未结算状态的项目.');
         return;
     };
-    GlobalConfig.newMessageBox.show({
+
+    var defConfig = {
         title: '提示',
         msg: '您确定要删除选定的(未结算)项目吗？',
         buttons: Ext.MessageBox.YESNO,
@@ -734,6 +856,13 @@ ActionManager.delTracking_number = function(traget) {
                 var param = {
                     sessiontoken: GlobalFun.getSeesionToken(),
                     tracking_number_ids: ids.join()
+                };
+                if (opts && opts.filter) {
+                    var extraParams = store.getProxy().extraParams;
+                    param = {
+                        sessiontoken: GlobalFun.getSeesionToken(),
+                        filter: extraParams.filter
+                    }
                 };
                 // 调用
                 WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.destroy, 'Tracking_numberGrid', param, function(response, opts) {
@@ -750,20 +879,47 @@ ActionManager.delTracking_number = function(traget) {
             }
         },
         icon: Ext.MessageBox.QUESTION
-    });
+    };
+    var mesConfig = Ext.Object.merge(defConfig, opts);
+    GlobalConfig.newMessageBox.show(mesConfig);
 };
 
 //设置状态
-ActionManager.account_statusTracking_number = function(target) {
+ActionManager.account_statusTracking_number = function(target, opts) {
+
+
     var store = target.getStore();
-    var extraParams = store.getProxy().extraParams;
-    var param = {
-        arrive_time_start: extraParams.arrive_time_start,
-        arrive_time_end: extraParams.arrive_time_end,
-        filter: extraParams.filter,
-        sessiontoken: GlobalFun.getSeesionToken()
+    var sm = target.getSelectionModel();
+    var records = sm.getSelection();
+    if (!opts && !records[0])
+        return;
+    var ids = [];
+    Ext.Array.each(records, function(rec) {
+        if (rec.data.account_status == 0) {
+            ids.push(rec.data.tracking_number_id);
+        };
+    });
+
+    if (!opts && ids.length == 0) {
+        Ext.Msg.alert('提示', '至少需要1条未结算状态的项目.');
+        return;
     };
-    GlobalConfig.newMessageBox.show({
+
+    var param = {
+        sessiontoken: GlobalFun.getSeesionToken(),
+        tracking_number_ids: ids.join()
+    };
+    if (opts && opts.filter) {
+        var extraParams = store.getProxy().extraParams;
+        var param = {
+            arrive_time_start: extraParams.arrive_time_start,
+            arrive_time_end: extraParams.arrive_time_end,
+            filter: extraParams.filter,
+            sessiontoken: GlobalFun.getSeesionToken()
+        };
+    };
+
+    var defConfig = {
         title: '提示',
         msg: '您确定要设置当前的所有项目状态为已结算吗？',
         buttons: Ext.MessageBox.YESNO,
@@ -786,5 +942,7 @@ ActionManager.account_statusTracking_number = function(target) {
             }
         },
         icon: Ext.MessageBox.QUESTION
-    });
+    };
+    var mesConfig = Ext.Object.merge(defConfig, opts);
+    GlobalConfig.newMessageBox.show(mesConfig);
 };
