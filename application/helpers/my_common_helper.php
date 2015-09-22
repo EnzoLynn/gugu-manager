@@ -91,19 +91,20 @@ function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $typ
     require_once(APPPATH . 'libraries/PHPExcel.php');
 
     // 设置缓存方式，减少对内存的占用
-    //$cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
 //    $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
 //    $cacheSettings = array ( 'cacheTime' => 300 );
 //    PHPExcel_Settings::setCacheStorageMethod ( $cacheMethod, $cacheSettings );
 
-//    $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory;
-//    PHPExcel_Settings::setCacheStorageMethod($cacheMethod);
-    $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
-    $cacheSettings = array('memoryCacheSize' => '8MB');
-    PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+    $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory;
+    PHPExcel_Settings::setCacheStorageMethod($cacheMethod);
+
+//    $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+//    $cacheSettings = array( 'memoryCacheSize'  => '8MB');
+//    PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
     // Create new PHPExcel object
     $objPHPExcel = new PHPExcel();
+
     // Set document properties
     $objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
         ->setLastModifiedBy("Maarten Balliauw")
@@ -129,15 +130,21 @@ function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $typ
     for ($row = 0; $row < $rows_length; $row++) {
         $i = 0;
         foreach ($header as $k => $v) {
-            $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
-//            if ($k == 'tracking_number') {//强制为字符串显示
+            if ($k == 'tracking_number') {//强制为字符串显示
 //                $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
 //                $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
-//            }
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), " " . $data[$row][$k]);
+            } else {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), $data[$row][$k]);
+            }
             $i++;
         }
     }
+
+    //Set column widths 设置列宽度
+    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+//    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+
     // Rename worksheet
     $objPHPExcel->getActiveSheet()->setTitle($title);
     // Set active sheet index to the first sheet, so Excel opens this as the first sheet
