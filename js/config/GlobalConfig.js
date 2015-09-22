@@ -113,7 +113,8 @@ GlobalConfig.Controllers = {
         read: '/customerRent/getList', //globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json',
-        copyRuleToRent:'/customerRent/copy'
+        copyRuleToRent:'/customerRent/copy',
+        copyRuleToPrivice:'customerExpressRule/copyProvinceRule'
     },
     ExpressPanel: {
         GetCustomer_numberCount: 'expressRule/countProvinceRule', //globalFix + '/GetCustomer_numberCount.json',

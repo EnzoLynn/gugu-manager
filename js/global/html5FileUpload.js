@@ -52,7 +52,7 @@
          // xhr.send(fd);
          me.FileUpload(file, scope);
      },
-     FileUpload: function(file, scope) {
+     FileUpload: function(file, scope,target) {
 
          //var reader = new FileReader();
          var xhr = new XMLHttpRequest();
@@ -74,9 +74,11 @@
 
              if (xhr.readyState == 4 && xhr.status == 200) {
                  // Handle response. 
-                 var data = Ext.JSON.decode(xhr.responseText);
-
-                 scope.multipleDataObj[file.name] = data.data;
+                 var data = Ext.JSON.decode(xhr.responseText); 
+                 if (data.data && data.data.length > 0) {
+                     scope.multipleDataObj[file.name] = data.data;
+                 };
+                
                  scope.progressEl.dom.value = 100;
                  scope.currentFile++;
                  scope.countEl.dom.innerHTML = "文件: " + scope.currentFile + '/' + scope.totalFile;
@@ -92,7 +94,13 @@
                              scope.multipleDataObj = {};
                          });
 
-                     };
+                     }else{
+                         if (target) {
+                             target.loadGrid();
+                             var outWin = scope.up('window');
+                             outWin.close();
+                         };
+                     }
 
 
 
@@ -107,7 +115,7 @@
 
      },
 
-     sendFiles: function(files) {
+     sendFiles: function(files,target) {
          var me = this;
          me.progressEl.dom.value = 0;
          me.countEl.dom.innerHTML = "文件: 1" + '/' + files.length;
@@ -119,7 +127,7 @@
          me.fileNameLabelEl.dom.innerHTML = str;
          for (var i = 0; i < files.length; i++) {
 
-             new me.FileUpload(files[i], me);
+             new me.FileUpload(files[i], me,target);
          }
      },
 
