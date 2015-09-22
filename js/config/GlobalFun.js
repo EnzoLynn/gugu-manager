@@ -599,7 +599,7 @@ var stopClick = false;
 //设置可拖拽状态
 DropDragControl.initializePatientDragZone = function(v, window) {
 
-    v.dragZone = Ext.create('Ext.dd.DragZone', v.getEl(), {
+    v.dragZone = Ext.create('Ext.dd.DragZone',v.el, {
         ddGroup: window.groupName,
         isTarget: false,
         getDragData: function(e) {
@@ -607,14 +607,14 @@ DropDragControl.initializePatientDragZone = function(v, window) {
             var sourceEl = e.getTarget(),
                 d;
 
-            //alert(Ext.fly(sourceEl).getXY()[0]);
+           
             if (sourceEl) {
                 //拖拽用图
                 var selCount;
-                selCount = window.pngClass.getPngSels().getCount();
+                selCount = 1;
 
                 var oNewNode = document.createElement("div");
-                oNewNode.innerHTML = "<span><img src='../../Content/images/pub/docDrag.png'/>x" + selCount + "</span>";
+                oNewNode.innerHTML = "<span><img src='../../image/pub/docDrag.png'/>x" + selCount + "</span>";
                 //d = sourceEl.cloneNode(true);
                 //d=oNewNode;
                 oNewNode.id = Ext.id();
