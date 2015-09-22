@@ -486,13 +486,14 @@ GlobalFun.InitChinaSvgDataEvent = function(data,clickFun) {
                 china[state]['text'].remove();
             };
             china[state]['text'] = R.text(xx, yy, china[state]['name'] + "(" + val + ")").attr(textAttr);
-            //console.log(china[state]['code']);
+             
             st[0].onclick = china[state]['text'][0].onclick = function() {
                 if (clickFun) {
                     clickFun(china[state]['code']);
                 };
                
             }
+            
 
             st[0].onmouseover = china[state]['text'][0].onmouseover = function() {
 

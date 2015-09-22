@@ -239,6 +239,7 @@ WsCall.addStatics({
 		var sParam = Ext.Object.toQueryString(param);
 		if (sParam.length > 0)
 			sParam = '&' + sParam;
+
 		var url = url + '?req=rc&rcname=' + rcName + sParam;
 		if (typeof(me.iframe) == "undefined") {
 			var iframe = document.createElement("iframe");
@@ -246,6 +247,10 @@ WsCall.addStatics({
 			document.body.appendChild(me.iframe);
 		}
 		me.iframe.src = url;
+		Ext.getBody().mask('正在下载中...');
+		me.iframe.onload=function(){
+			Ext.getBody().unmask();
+		};
 		me.iframe.style.display = "none";
 	},
 	callchain: function(callname) {
