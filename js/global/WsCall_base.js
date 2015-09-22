@@ -247,7 +247,7 @@ WsCall.addStatics({
 			document.body.appendChild(me.iframe);
 		}
 		me.iframe.src = url;
-		Ext.getBody().mask('正在下载中...');
+		Ext.getBody().mask('正在初始化下载数据...');
 		me.iframe.onload=function(){
 			Ext.getBody().unmask();
 		};
