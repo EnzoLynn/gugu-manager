@@ -103,11 +103,9 @@ class TrackingNumber extends AdminController {
 //        if ($this->checkCondition() == FALSE) {
 //            output_error('条件不足，不能执行该操作');
 //        }
-
-        if ($this->input->post('tracking_number_ids')) {
-            $tracking_number_ids = explode(',', $this->input->post('tracking_number_ids'));
-            $cond = array('account_status=0');//income = 0
-            $tracking_numbers = $this->tracking_number_model->getTrackingNumberByIDS($tracking_number_ids, $cond);
+        if ($this->input->get_post('tracking_number_ids')) {
+            $tracking_number_ids = explode(',', $this->input->get_post('tracking_number_ids'));
+            $tracking_numbers = $this->tracking_number_model->getTrackingNumberByIDS($tracking_number_ids);
         } else {
             $data = array(
                 'arrive_time_start' => $this->input->get_post('arrive_time_start'),
