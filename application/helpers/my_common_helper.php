@@ -191,7 +191,6 @@ function outputCVS($data, $header, $fileName = 'now') {
         $head[$i] = iconv('utf-8', 'gbk', $v);
         $i++;
     }
-
     fputcsv($fp, $head);
 
     // 计数器
@@ -216,7 +215,6 @@ function outputCVS($data, $header, $fileName = 'now') {
         unset($rows);
         $i++;
     }
-
     exit;
 }
 

@@ -26,9 +26,6 @@ class Customer_express_rule_model extends CI_Model {
         $this->db->where('province_code', $province_code);
         $query = $this->db->get('customer_express_rule');
         $rule = $query->first_row();
-
-        //echo $this->db->last_query();exit;
-
         return $rule;
     }
 
