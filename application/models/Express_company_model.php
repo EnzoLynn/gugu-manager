@@ -22,6 +22,18 @@ class Express_company_model extends CI_Model {
         return $query->first_row();
     }
 
+    //后期改为文件缓存
+    function getAllExpress() {
+        $query = $this->db->get('express_company');
+        //return $query->fetch_option('express_id', 'express_name');
+        $rows = $query->result_array();
+        $express = array();
+        foreach ($rows as $row) {
+            $express[$row['express_id']] = $row['express_name'];
+        }
+        return $express;
+    }
+
     function getAll() {
         $this->db->order_by('express_id', 'ASC');
         $query = $this->db->get('express_company');
