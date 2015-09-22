@@ -100,9 +100,9 @@ class TrackingNumber extends AdminController {
 
     //导出excel
     public function downloadExcel() {
-        if ($this->checkCondition() == FALSE) {
-            output_error('条件不足，不能执行该操作');
-        }
+//        if ($this->checkCondition() == FALSE) {
+//            output_error('条件不足，不能执行该操作');
+//        }
 
         if ($this->input->post('tracking_number_ids')) {
             $tracking_number_ids = explode(',', $this->input->post('tracking_number_ids'));
@@ -114,9 +114,14 @@ class TrackingNumber extends AdminController {
                 'arrive_time_end' => $this->input->get_post('arrive_time_end'),
                 'filter' => objectToArray(json_decode($this->input->get_post('filter')))
             );
-            $data['filter']['account_status'] = 0;//未结算的才能重新计算收入或者成本
             $tracking_numbers = $this->tracking_number_model->getTrackingNumbers($data);
         }
+
+        //查询所有客户
+        $all_customers = $this->customer_model->getAllCustomers();
+
+        //查询所有快递
+        $all_express = $this->express_company_model->getAllExpress();
 
         foreach ($tracking_numbers as $key => $val) {
             if($val['account_status'] == 0) {
@@ -125,13 +130,15 @@ class TrackingNumber extends AdminController {
                 $tracking_numbers[$key]['account_status_name'] = '已结算';
             }
             //客户名字
-            $customer = $this->customer_model->getCustomer($val['customer_id']);
-            $tracking_numbers[$key]['customer_name'] = $customer['customer_name'];
+            //$customer = $this->customer_model->getCustomer($val['customer_id']);
+            //$tracking_numbers[$key]['customer_name'] = $customer['customer_name'];
+            $tracking_numbers[$key]['customer_name'] = $all_customers[$tracking_numbers[$key]['customer_id']];
             //操作人名字
             $tracking_numbers[$key]['admin_name'] = $this->admin_name;
             //快递公司名字
-            $express = $this->express_company_model->getOne($val['express_id']);
-            $tracking_numbers[$key]['express_name'] = $express['express_name'];
+            //$express = $this->express_company_model->getOne($val['express_id']);
+            //$tracking_numbers[$key]['express_name'] = $express['express_name'];
+            $tracking_numbers[$key]['express_name'] = $all_express[$tracking_numbers[$key]['express_id']];
         }
 
         $header = array(

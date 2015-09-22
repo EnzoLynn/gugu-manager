@@ -195,24 +195,26 @@ class Tracking_number_model extends CI_Model {
         foreach($data as $row) {
             $number = $this->getTrackingNumber($row['运单号']);
             if ($number) {
-                //已存在就不导入
-                continue;
-            }
-            //通过运单号查找客户ID
-            $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
-            if (!$customer) {
+                //continue;
                 $msg[] = array(
-                    'msg' => '第'.$i.'行，运单号（'.$row['运单号'].'）找不到对应的客户'
+                    'msg' => '第'.$i.'行，运单号（'.$row['运单号'].'）已经存在'
                 );
-            }
-            //查找快递公司
-            $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
-            if (!$express) {
-                $msg[] = array(
-                    'msg' => '第'.$i.'行，快递公司（'.$row['快递公司'].'）还未录入或者名字有误'
-                );
-            }
-            //验证重量
+            } else {//运单号已经存在就不检查其他错误
+                //通过运单号查找客户ID
+                $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
+                if (!$customer) {
+                    $msg[] = array(
+                        'msg' => '第'.$i.'行，运单号（'.$row['运单号'].'）找不到对应的客户'
+                    );
+                }
+                //查找快递公司
+                $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
+                if (!$express) {
+                    $msg[] = array(
+                        'msg' => '第'.$i.'行，快递公司（'.$row['快递公司'].'）还未录入或者名字有误'
+                    );
+                }
+                //验证重量
 //            if (!preg_match('/^[0-9]+(\.[0-9]{1,3})?$/', $row['重量'])) {
 //                if ((float)$row['重量'] == 0) {
 //                    $msg[] = array(
@@ -224,29 +226,30 @@ class Tracking_number_model extends CI_Model {
 //                    );
 //                }
 //            }
-            if ((float)$row['重量'] == 0) {
-                $msg[] = array(
-                    'msg' => '第'.$i.'行，重量（'.$row['重量'].'）格式不对'
-                );
-            }
-            //查找快递网点
-            if ($express) {
-                $express_point = $this->CI->express_point_model->getPointByExpressIDAndCode($express['express_id'], $row['计费目的网点代码']);
-                if ( !$express_point ) {
+                if ((float)$row['重量'] == 0) {
                     $msg[] = array(
-                        'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点'
+                        'msg' => '第'.$i.'行，重量（'.$row['重量'].'）格式不对'
                     );
                 }
-            }
-            //验证客户的合同时间
-            if ($customer) {
-                $date = strtotime($row['揽收时间']);
-                $date = date('Y-m-d', $date);
-                $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $date);
-                if (!$customer_rent) {
-                    $msg[] = array(
-                        'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
-                    );
+                //查找快递网点
+                if ($express) {
+                    $express_point = $this->CI->express_point_model->getPointByExpressIDAndCode($express['express_id'], $row['计费目的网点代码']);
+                    if ( !$express_point ) {
+                        $msg[] = array(
+                            'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点'
+                        );
+                    }
+                }
+                //验证客户的合同时间
+                if ($customer) {
+                    $date = strtotime($row['揽收时间']);
+                    $date = date('Y-m-d', $date);
+                    $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $date);
+                    if (!$customer_rent) {
+                        $msg[] = array(
+                            'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
+                        );
+                    }
                 }
             }
             $i++;
