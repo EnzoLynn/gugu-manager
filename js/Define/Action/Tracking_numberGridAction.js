@@ -520,6 +520,10 @@ ActionManager.showUpLoadExcelError = function(obj,isCustomer_number) {
                 xtype: 'label',
                 text: item.msg
             });
+            if (index >= 500) {
+                return false;
+            };
+
 
         });
         items.push({

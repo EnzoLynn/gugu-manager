@@ -844,8 +844,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
 
 
 //复制已有规则到省份 
-ActionManager.copyCustomerRule_Province = function(targetCode, record) {
-    return;
+ActionManager.copyCustomerRule_Province = function(targetCode, record) { 
     GlobalConfig.newMessageBox.prompt('复制已有其他省份规则到该省份', '请输入省份全称或编号:', function(btn, text) {
         if (btn == 'ok') {
             var param = {
