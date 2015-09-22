@@ -817,6 +817,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                 buttons: [{
                     itemId: 'copyCustomerRule',
                     iconCls: 'copyCustomerRule',
+                    hidden:true,
                     tooltip: '复制已有其他省份规则到该省份',
                     text: '复制已有规则',
                     handler: function() {
