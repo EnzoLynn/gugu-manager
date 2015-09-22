@@ -25,6 +25,14 @@ class Express_point_model extends CI_Model {
         return $point;
     }
 
+    function getPointByExpressIDAndName($express_id, $point_name) {
+        $this->db->where('express_id', $express_id);
+        $this->db->where('express_point_name', $point_name);
+        $query = $this->db->get('express_point');
+        $point = $query->first_row();
+        return $point;
+    }
+
     function getPoints($data) {
         $filter = $data['filter'];
         $data = array(
