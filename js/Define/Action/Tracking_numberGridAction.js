@@ -171,7 +171,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                     Ext.Msg.alert('添加文件', '不支持的文件格式！');
                                     return;
                                 }
-                                me.sendFiles(me.fileInputEl.dom.files);
+                                me.sendFiles(me.fileInputEl.dom.files,target);
 
                             }
                         }
