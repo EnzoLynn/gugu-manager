@@ -167,6 +167,59 @@ function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $typ
     exit;
 }
 
+function outputCVS($data, $header, $fileName = 'now') {
+    if ($fileName == 'now') {
+        $fileName = date('YmdHis');
+    }
+
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="'. $fileName .'.csv"');
+    header('Cache-Control: max-age=0');
+
+    $fp = fopen('php://output', 'a');
+
+    // 只获取指定数组
+    $data = getArrayByKey($data, array_keys($header));
+
+    $header_length = count($header);
+    $rows_length = count($data);
+    //输出头部
+    $i = 0;
+    $head = array_values($header);
+    foreach ($header as $k => $v) {
+        // CSV的Excel支持GBK编码，一定要转换，否则乱码
+        $head[$i] = iconv('utf-8', 'gbk', $v);
+        $i++;
+    }
+
+    fputcsv($fp, $head);
+
+    // 计数器
+    $i = 0;
+    // 每隔$limit行，刷新一下输出buffer，不要太大，也不要太小
+    $limit = 10000;
+    for ($row = 0; $row < $rows_length; $row++) {
+        if ($limit == $i) { //刷新一下输出buffer，防止由于数据过多造成问题
+            ob_flush();
+            flush();
+            $i = 0;
+        }
+        $row_data = array();
+        foreach ($header as $k => $v) {
+            if ($k == 'tracking_number') {
+                $row_data[] = "\t" . iconv('utf-8', 'gbk', $data[$row][$k]);
+            } else {
+                $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
+            }
+        }
+        fputcsv($fp, $row_data);
+        unset($rows);
+        $i++;
+    }
+
+    exit;
+}
+
 if (!function_exists('loadController'))
 {
     function loadController($controller, $method = 'index')
