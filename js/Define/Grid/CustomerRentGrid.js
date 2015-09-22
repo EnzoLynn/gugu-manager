@@ -817,7 +817,6 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                 buttons: [{
                     itemId: 'copyCustomerRule',
                     iconCls: 'copyCustomerRule',
-                    hidden:true,
                     tooltip: '复制已有其他省份规则到该省份',
                     text: '复制已有规则',
                     handler: function() {
@@ -845,24 +844,55 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
 
 
 //复制已有规则到省份 
-ActionManager.copyCustomerRule_Province = function(targetCode, record) { 
-    GlobalConfig.newMessageBox.prompt('复制已有其他省份规则到该省份', '请输入省份全称或编号:', function(btn, text) {
-        if (btn == 'ok') {
-            var param = {
-                'rule_no_from': text,
-                'rule_no_to': targetCode,
-                sessiontoken: GlobalFun.getSeesionToken()
-            };
-            // 调用
-            WsCall.pcall(GlobalConfig.Controllers.CustomerRentGrid.copyRuleToRent, 'copyRuleToRent', param, function(response, opts) {
-                    var data = response.data;
-                    Ext.Msg.alert('成功', '复制成功.');
-                },
-                function(response, opts) {
-                    if (!GlobalFun.errorProcess(response.code)) {
-                        Ext.Msg.alert('失败', response.msg);
-                    }
-                }, false);
-        }
-    });
+ActionManager.copyCustomerRule_Province = function(targetCode, record) {
+    Ext.create('Ext.window.Window', {
+        modal: true,
+        title: '复制已有规则到省份',
+        iconCls: 'copyCustomerRule',
+        minWidth: 400,
+        minHeight: 100,
+        bodyPadding: 20,
+        items: [{
+            name: 'resourceType',
+            fieldLabel: '规则来源',
+            itemId: 'resourceType',
+            xtype: 'combobox',
+            store: StoreManager.ComboStore.ProvinceStore,
+            queryMode: 'local',
+            displayField: 'Name',
+            valueField: 'Id',
+            value: '310000',
+            editable: false
+        }],
+        buttons: [{
+            text: '确定',
+            handler: function(com) {
+                var win = com.up('window'); 
+                var param = {
+                    customer_rent_id : record.data.customer_rent_id,
+                    'province_code_from': win.down('#resourceType').getValue(),
+                    'province_code_to': targetCode,
+                    sessiontoken: GlobalFun.getSeesionToken()
+                };
+                // 调用
+                WsCall.pcall(GlobalConfig.Controllers.CustomerRentGrid.copyRuleToPrivice, 'copyRuleToPrivice', param, function(response, opts) {
+                        var data = response.data;
+                        Ext.Msg.alert('成功', '复制成功.');
+                        win.close();
+                    },
+                    function(response, opts) {
+                        if (!GlobalFun.errorProcess(response.code)) {
+                            Ext.Msg.alert('失败', response.msg);
+                        }
+                    }, false);
+            }
+        }, {
+            text: '关闭',
+            handler: function(com) {
+                var win = com.up('window');
+                win.close();
+            }
+        }]
+    }).show();
+
 }
