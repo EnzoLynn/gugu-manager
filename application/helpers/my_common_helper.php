@@ -92,9 +92,15 @@ function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $typ
 
     // 设置缓存方式，减少对内存的占用
     //$cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
-    $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
-    $cacheSettings = array ( 'cacheTime' => 300 );
-    PHPExcel_Settings::setCacheStorageMethod ( $cacheMethod, $cacheSettings );
+//    $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
+//    $cacheSettings = array ( 'cacheTime' => 300 );
+//    PHPExcel_Settings::setCacheStorageMethod ( $cacheMethod, $cacheSettings );
+
+//    $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory;
+//    PHPExcel_Settings::setCacheStorageMethod($cacheMethod);
+    $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+    $cacheSettings = array('memoryCacheSize' => '8MB');
+    PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
     // Create new PHPExcel object
     $objPHPExcel = new PHPExcel();

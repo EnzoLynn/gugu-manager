@@ -114,7 +114,6 @@ class TrackingNumber extends AdminController {
                 'arrive_time_end' => $this->input->get_post('arrive_time_end'),
                 'filter' => objectToArray(json_decode($this->input->get_post('filter')))
             );
-            $data['filter']['account_status'] = 0;//未结算的才能重新计算收入或者成本
             $tracking_numbers = $this->tracking_number_model->getTrackingNumbers($data);
         }
 
