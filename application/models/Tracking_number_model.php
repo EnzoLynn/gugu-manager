@@ -302,6 +302,7 @@ class Tracking_number_model extends CI_Model {
             );
             $this->update($row['tracking_number_id'], $cost_data);
         } else {
+            //20150922 需求变更，成本计算根据网点代码
             $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
             $area = $this->CI->area_model->getOne($point['province_code']);
             $msg[] = array(
@@ -351,7 +352,9 @@ class Tracking_number_model extends CI_Model {
                     'msg' =>  '揽收时间没有当前客户的合同期限内（客户名：'.$customer['customer_name'].')'
                 );
             }
-            $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
+            //$point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
+            //20150922 需求变更，收入计算根据网点名字
+            $point = $this->CI->express_point_model->getPointByExpressIDAndName($row['express_id'], $row['arrive_express_point_name']);
             $area = $this->CI->area_model->getOne($point['province_code']);
             $msg[] = array(
                 'tracking_number' => $row['tracking_number'],
