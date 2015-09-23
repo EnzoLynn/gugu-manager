@@ -56,11 +56,13 @@
 
          //var reader = new FileReader();
          var xhr = new XMLHttpRequest();
-         xhr.timeout = 1000 * 60 * 10;
+
          var fd = new FormData();
          scope.updatePropress(xhr, scope);
 
          xhr.open("POST", scope.uploadUrl, true);
+
+         xhr.timeout = 600000;
          //xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
          // reader.onload = function(evt) {
          //     xhr.send(evt.target.result);
