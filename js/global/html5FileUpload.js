@@ -56,6 +56,7 @@
 
          //var reader = new FileReader();
          var xhr = new XMLHttpRequest();
+         xhr.timeout = 1000 * 60 * 10;
          var fd = new FormData();
          scope.updatePropress(xhr, scope);
 
