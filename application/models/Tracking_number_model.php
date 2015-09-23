@@ -223,17 +223,6 @@ class Tracking_number_model extends CI_Model {
                     );
                 }
                 //验证重量
-//            if (!preg_match('/^[0-9]+(\.[0-9]{1,3})?$/', $row['重量'])) {
-//                if ((float)$row['重量'] == 0) {
-//                    $msg[] = array(
-//                        'msg' => '第'.$i.'行，重量不能为0'
-//                    );
-//                }else{
-//                    $msg[] = array(
-//                        'msg' => '第'.$i.'行，'.$row['重量'].'，重量格式不正确'
-//                    );
-//                }
-//            }
                 if ((float)$row['重量'] == 0) {
                     $msg[] = array(
                         'msg' => '第'.$i.'行，重量（'.$row['重量'].'）格式不对'
