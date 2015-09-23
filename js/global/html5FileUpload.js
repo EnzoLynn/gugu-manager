@@ -76,10 +76,7 @@
 
              if (xhr.readyState == 4 && xhr.status == 200) {
                  if (mywin) {
-                    (new Ext.util.DelayedTask()).delay(200,function(){
-                        mywin.el.unmask();
-                    });
-                     
+                     mywin.el.unmask();
                  };
 
                  // Handle response. 
