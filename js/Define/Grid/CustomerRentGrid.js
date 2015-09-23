@@ -847,7 +847,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
 ActionManager.copyCustomerRule_Province = function(targetCode, record) {
     Ext.create('Ext.window.Window', {
         modal: true,
-        title: '复制已有规则到省份',
+        title: '复制已有其他省份规则到该省份',
         iconCls: 'copyCustomerRule',
         minWidth: 400,
         minHeight: 100,
