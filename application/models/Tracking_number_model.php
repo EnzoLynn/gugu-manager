@@ -159,7 +159,7 @@ class Tracking_number_model extends CI_Model {
 
     function importData($data) {
         $insert_batch_index = 0;
-        $insert_batch_num = 200;//每多少条执行一次批量插入
+        $insert_batch_num = 100;//每多少条执行一次批量插入
         $insert_batch_data = array();
 
 //        $msg = $this->validateData($data);

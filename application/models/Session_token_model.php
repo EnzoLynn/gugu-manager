@@ -142,4 +142,9 @@ class Session_token_model extends CI_Model {
         }
         return FALSE;
     }
+
+    function write_msg($session_token, $msg) {
+        $this->db->where('session_token', $session_token);
+        $this->db->update('session_token', array('msg' => $msg));
+    }
 }

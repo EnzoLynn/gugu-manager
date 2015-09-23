@@ -67,11 +67,9 @@ class UploadTrackingNumber extends AdminController {
 
             $data = $this->validateExcel($this->file_save_path);
 
-
 //            echo '<script>console.log("验证完成")</script><br />'.str_repeat(" ",256);
 //            ob_flush();
 //            flush();
-
 
             if ($data) {
                 $num = $this->tracking_number_model->importData($data);
