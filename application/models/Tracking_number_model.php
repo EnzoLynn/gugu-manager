@@ -234,9 +234,13 @@ class Tracking_number_model extends CI_Model {
                     $express_point = $this->CI->express_point_model->getPointByExpressIDAndCode($all_express[$row['快递公司']], $row['计费目的网点代码']);
                     if ( !$express_point ) {
                         $msg[] = array(
-                            'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点'
+                            'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点代码（'. $row['计费目的网点代码'] .'）'
                         );
                     }
+                    $point = $this->CI->express_point_model->getPointByExpressIDAndName($row['express_id'], $row['arrive_express_point_name']);
+                    $msg[] = array(
+                        'msg' =>  '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该揽收网点名称（'. $row['计费目的网点名称'] .'）'
+                    );
                 }
                 //验证客户的合同时间
                 if ($number) {
