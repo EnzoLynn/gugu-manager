@@ -16,6 +16,16 @@ class Customer_rent_model extends CI_Model {
         $this->CI->load->model('customer_express_rule_item_model');
     }
 
+    function getAllEnableRents() {
+        $query = $this->db->query("select * from customer_rent where customer_id in(select customer_id from customer)");
+        $rows = $query->result_array();
+        $data = array();
+        foreach ($rows as $row) {
+            $data[$row['customer_id']] = $row;
+        }
+        return $data;
+    }
+
     function getCustomerRent($customer_rent_id) {
         if($customer_rent_id) {
             $this->db->where('customer_rent_id', $customer_rent_id);
