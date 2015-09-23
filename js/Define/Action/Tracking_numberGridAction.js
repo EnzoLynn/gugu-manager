@@ -24,23 +24,25 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     handler: function() {
         var target = this.getTargetView();
         var win = Ext.create('Ext.window.Window', {
-            height: 360,
+            height: 200,
             width: 800,
             modal: true,
             resizable: false,
             iconCls: 'import',
             title: '上传文件',
-            bodyPadding: 15,
+            bodyPadding: 5,
             defaults: {
                 margin: '0 0 20 0'
             },
             items: [{
                 xtype: 'form',
                 itemId: 'formId',
+                 hidden:true,
                 bodyPadding: 15,
                 items: [{
                     xtype: 'filefield',
                     name: 'fileUpload',
+                   
                     fieldLabel: '请选择导入的文件',
                     width: 600,
                     labelWidth: 150,
@@ -108,21 +110,8 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                 xtype: 'form',
                 itemId: 'h5formId',
                 layout: 'vbox',
-                bodyPadding: 15,
+                bodyPadding: 5,
                 items: [{
-                    xtype: 'label',
-                    style: {
-                        'font-weight': 'bold'
-                    },
-                    text: '如果您使用的是高级的支持Html5的浏览器，请使用的这里的上传'
-                }, {
-                    xtype: 'label',
-                    style: {
-                        color: 'red',
-                        'font-weight': 'bold'
-                    },
-                    text: '多文件批量，更快捷，可拖拽文件，可视化的真实上传进度显示,更大的文件'
-                }, {
                     xtype: 'container',
                     style: {
                         border: '1px dotted  green'
@@ -133,7 +122,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                         labelAlign: 'right',
 
                         fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
-                        width: 600,
+                        width: 700,
                         height: 100,
                         buttonOnly: true,
                         labelWidth: 150,
@@ -171,8 +160,8 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
                                     Ext.Msg.alert('添加文件', '不支持的文件格式！');
                                     return;
                                 }
-                                me.sendFiles(me.fileInputEl.dom.files,target);
-
+                                me.sendFiles(me.fileInputEl.dom.files,target,win);
+                                me.fileInputEl.dom.value="";
                             }
                         }
                     }]
@@ -520,7 +509,7 @@ ActionManager.showUpLoadExcelError = function(obj,isCustomer_number) {
                 xtype: 'label',
                 text: item.msg
             });
-            if (index >= 500) {
+            if (index >= 200) {
                 return false;
             };
 
