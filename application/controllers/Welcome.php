@@ -33,6 +33,26 @@ class Welcome extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index() {
+
+        $row['快递公司'] = '圆通快递';
+
+        //查询所有快递
+        $all_express = $this->express_company_model->getAllExpress();
+        $all_express = array_flip($all_express);
+
+        echo '<pre>';
+        print_r($all_express);
+
+        if (!isset($all_express[$row['快递公司']])) {
+            $msg[] = array(
+                'msg' => '快递公司（'.$row['快递公司'].'）还未录入或者名字有误'
+            );
+        }
+
+        echo $all_express[$row['快递公司']];
+
+        print_r($msg);
+
 		$this->load->view('welcome_message');
 	}
 

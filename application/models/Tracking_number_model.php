@@ -190,6 +190,14 @@ class Tracking_number_model extends CI_Model {
 [揽收时间] => 2015-06-01 17:05:54.96
 [快递公司] => 圆通快递
  * */
+
+        //查询所有客户
+        $all_customers = $this->customer_model->getAllCustomers();
+
+        //查询所有快递
+        $all_express = $this->express_company_model->getAllExpress();
+        $all_express = array_flip($all_express);
+
         $msg = array();//错误信息，一行一个
         $i = 2;//对应excel中的行
         foreach($data as $row) {
@@ -201,15 +209,15 @@ class Tracking_number_model extends CI_Model {
                 );
             } else {//运单号已经存在就不检查其他错误
                 //通过运单号查找客户ID
-                $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
-                if (!$customer) {
+                $number = $this->CI->customer_number_model->getOneByTrackingNumber($row['运单号']);
+                if (!$number) {
                     $msg[] = array(
                         'msg' => '第'.$i.'行，运单号（'.$row['运单号'].'）找不到对应的客户'
                     );
                 }
                 //查找快递公司
-                $express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
-                if (!$express) {
+                //$express =  $this->CI->express_company_model->getExpressByName($row['快递公司']);
+                if (!isset($all_express[$row['快递公司']])) {
                     $msg[] = array(
                         'msg' => '第'.$i.'行，快递公司（'.$row['快递公司'].'）还未录入或者名字有误'
                     );
@@ -232,8 +240,8 @@ class Tracking_number_model extends CI_Model {
                     );
                 }
                 //查找快递网点
-                if ($express) {
-                    $express_point = $this->CI->express_point_model->getPointByExpressIDAndCode($express['express_id'], $row['计费目的网点代码']);
+                if (isset($all_express[$row['快递公司']])) {
+                    $express_point = $this->CI->express_point_model->getPointByExpressIDAndCode($all_express[$row['快递公司']], $row['计费目的网点代码']);
                     if ( !$express_point ) {
                         $msg[] = array(
                             'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点'
