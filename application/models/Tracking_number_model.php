@@ -199,9 +199,24 @@ class Tracking_number_model extends CI_Model {
         $all_express = $this->express_company_model->getAllExpress();
         $all_express = array_flip($all_express);
 
+        //计数器
+        $num = 0;
+        $limit = 1000;
+
+        $total = count($data);
+
         $msg = array();//错误信息，一行一个
         $i = 2;//对应excel中的行
         foreach($data as $row) {
+
+//            if ($num >= $limit) {
+//                echo '<script>console.log("'. ($i - 2) .'/'. $total .'")</script><br />'.str_repeat(" ",256);
+//                ob_flush();
+//                flush();
+//                $num = 0;
+//                exit;
+//            }
+
             $number = $this->getTrackingNumber($row['运单号']);
             if ($number) {
                 //continue;
@@ -274,6 +289,7 @@ class Tracking_number_model extends CI_Model {
                 }
             }
             $i++;
+            $num++;
         }
         return $msg;
     }

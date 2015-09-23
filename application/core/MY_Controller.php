@@ -24,7 +24,7 @@ class AdminController extends MY_Controller
         parent::__construct();
 
         //设置头部为json
-        $this->output->set_content_type('application/json', strtolower($this->config->item('charset')));
+        //$this->output->set_content_type('application/json', strtolower($this->config->item('charset')));
 
         $admin = array();
 

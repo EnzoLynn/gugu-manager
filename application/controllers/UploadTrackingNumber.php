@@ -46,6 +46,9 @@ class UploadTrackingNumber extends AdminController {
         }
         else
         {
+
+
+
             $fileInfo = $this->upload->data();
 
             $fileData = array(
@@ -59,7 +62,18 @@ class UploadTrackingNumber extends AdminController {
 
             $this->file_save_path = FCPATH . $config['upload_path'] .$fileData['file_save_name'] ;
 
+//            echo '<script>console.log("上传完成，正在验证")</script><br />'.str_repeat(" ",256);
+//            ob_flush();
+//            flush();
+//            sleep(1);
+
             $data = $this->validateExcel($this->file_save_path);
+
+
+//            echo '<script>console.log("验证完成")</script><br />'.str_repeat(" ",256);
+//            ob_flush();
+//            flush();
+
 
             if ($data) {
                 $num = $this->tracking_number_model->importData($data);
