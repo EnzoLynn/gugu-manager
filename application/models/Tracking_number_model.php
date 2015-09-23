@@ -249,10 +249,10 @@ class Tracking_number_model extends CI_Model {
                     }
                 }
                 //验证客户的合同时间
-                if ($customer) {
+                if ($number) {
                     $date = strtotime($row['揽收时间']);
                     $date = date('Y-m-d', $date);
-                    $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $date);
+                    $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($number['customer_id'], $date);
                     if (!$customer_rent) {
                         $msg[] = array(
                             'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
