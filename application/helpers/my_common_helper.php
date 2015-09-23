@@ -20,6 +20,11 @@ function loadExcel($filename, $pars) {
 //    ini_set('display_startup_errors', TRUE);
 
     require_once(APPPATH . 'libraries/PHPExcel.php');
+
+    $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+    $cacheSettings = array( 'memoryCacheSize'  => '16MB');
+    PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
     $objPHPExcel = new PHPExcel();
 
     $objReader = PHPExcel_IOFactory::createReaderForFile($filename);
@@ -324,6 +329,20 @@ function output_success($msg = '', $total = 0, $data = []) {
     echo json_encode($json);
     exit;
 }
+//获取重复数据
+function get_repeat_in_array($array) {
+    $len = count ( $array );
+    for($i = 0; $i < $len; $i ++) {
+        for($j = $i + 1; $j < $len; $j ++) {
+            if ($array [$i] == $array [$j]) {
+                $repeat_arr [] = $array [$i];
+                break;
+            }
+        }
+    }
+    return $repeat_arr;
+}
+
 //根据客户免单号区间生成单号数组
 function getArrayByBetween($begin, $end) {
     $begin_len = strlen($begin);

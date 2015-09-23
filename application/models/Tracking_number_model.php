@@ -174,9 +174,7 @@ class Tracking_number_model extends CI_Model {
         $i = 0;
         foreach ($data as $row) {
             $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
-
             //$customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
-
             $number = $this->getTrackingNumber($row['运单号']);
             if ($number) {
                 //已存在就不导入
@@ -204,7 +202,6 @@ class Tracking_number_model extends CI_Model {
                 if ($insert_batch_index >= $insert_batch_num) {
                     //批量插入运单号
                     $this->importBatch($insert_batch_data);
-
 
                     $insert_batch_index = 0;
                     unset($insert_batch_data);
@@ -449,5 +446,13 @@ class Tracking_number_model extends CI_Model {
         );
         $this->db->update('tracking_number', $upd_data);
         return $this->db->affected_rows();
+    }
+    //列去重复
+    function checkExcelField($data, $field = '运单号') {
+        $rows = array();
+        foreach ($data as $row) {
+            array_push($rows, $row[$field]);
+        }
+        return get_repeat_in_array($rows);
     }
 }

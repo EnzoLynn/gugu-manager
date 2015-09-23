@@ -47,8 +47,6 @@ class UploadTrackingNumber extends AdminController {
         else
         {
 
-
-
             $fileInfo = $this->upload->data();
 
             $fileData = array(
@@ -105,6 +103,26 @@ class UploadTrackingNumber extends AdminController {
                 'data' => array('msg' => 'excel没有数据匹配'),
                 'total' => 0,
                 'msg' => 'excel没有数据匹配',
+                'code' => '89'
+            );
+            echo json_encode($json);
+            exit;
+        }
+
+        $repeat_number = $this->tracking_number_model->checkExcelField($data, '运单号');
+
+        if ($repeat_number) {
+            $msg = array();
+            foreach ($repeat_number as $number) {
+                $msg[] = array(
+                    'msg' => 'Excel内部重复的运单号：' . $number
+                );
+            }
+            $json = array(
+                'success' => false,
+                'data' => $msg,
+                'total' => 1,
+                'msg' => '数据有问题',
                 'code' => '89'
             );
             echo json_encode($json);
