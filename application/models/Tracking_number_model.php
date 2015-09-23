@@ -193,6 +193,7 @@ class Tracking_number_model extends CI_Model {
 
         //查询所有客户
         $all_customers = $this->customer_model->getAllCustomers();
+        $all_customer_rents = $this->customer_rent_model->getAllEnableRents();
 
         //查询所有快递
         $all_express = $this->express_company_model->getAllExpress();
@@ -233,20 +234,43 @@ class Tracking_number_model extends CI_Model {
                     $express_point = $this->CI->express_point_model->getPointByExpressIDAndCode($all_express[$row['快递公司']], $row['计费目的网点代码']);
                     if ( !$express_point ) {
                         $msg[] = array(
-                            'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点'
+                            'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点代码（'. $row['计费目的网点代码'] .'）'
                         );
                     }
+                    $point = $this->CI->express_point_model->getPointByExpressIDAndName($row['express_id'], $row['arrive_express_point_name']);
+                    $msg[] = array(
+                        'msg' =>  '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该揽收网点名称（'. $row['计费目的网点名称'] .'）'
+                    );
                 }
                 //验证客户的合同时间
                 if ($number) {
-                    $date = strtotime($row['揽收时间']);
-                    $date = date('Y-m-d', $date);
-                    $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($number['customer_id'], $date);
-                    if (!$customer_rent) {
+                    $rent = $all_customer_rents[$number['customer_id']];
+                    if (!$rent) {
                         $msg[] = array(
-                            'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
+                            'msg' => '第'.$i.'行，该客户当前没有对应的租贷合同'
                         );
+                    } else {
+                        $date_start = strtotime($rent['date_start'].' 00:00:00');
+                        $date_end = strtotime($rent['date_end'].' 23:59:59');
+
+                        $date = strtotime($row['揽收时间']);
+                        if ($date<$date_start || $date>$date_end) {
+
+                            echo $date_start.'<br/>'.$date.'<br/>'.$date_end;exit;
+
+                            $msg[] = array(
+                                'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'
+                            );
+                        }
                     }
+//                    $date = strtotime($row['揽收时间']);
+//                    $date = date('Y-m-d', $date);
+//                    $customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($number['customer_id'], $date);
+//                    if (!$customer_rent) {
+//                        $msg[] = array(
+//                            'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'//.$this->CI->db->last_query()
+//                        );
+//                    }
                 }
             }
             $i++;
