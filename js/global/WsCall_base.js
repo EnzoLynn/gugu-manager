@@ -25,11 +25,11 @@ WsCall.addStatics({
      */
 
     call: function(url, fname, param, successCall, failureCall, showLoadMask, loadMsg, maskEl, maskDelay, async) {
-        //		 constErrRes = {
-        //			success:false,
-        //			code:-1,
-        //			msg:'response failed'
-        //		};		
+        //       constErrRes = {
+        //          success:false,
+        //          code:-1,
+        //          msg:'response failed'
+        //      };      
         param.req = 'call';
 
 
@@ -95,11 +95,11 @@ WsCall.addStatics({
         });
     },
     pcall: function(url, fname, param, successCall, failureCall, showLoadMask, loadMsg, maskEl, maskDelay, async) {
-        //		 constErrRes = {
-        //			success:false,
-        //			code:-1,
-        //			msg:'response failed'
-        //		};		
+        //       constErrRes = {
+        //          success:false,
+        //          code:-1,
+        //          msg:'response failed'
+        //      };      
         param.req = 'call';
 
 
@@ -165,11 +165,11 @@ WsCall.addStatics({
         });
     },
     jsonp: function(url, fname, param, successCall, failureCall, showLoadMask, loadMsg, maskEl, maskDelay, async) {
-        //		 constErrRes = {
-        //			success:false,
-        //			code:-1,
-        //			msg:'response failed'
-        //		};		
+        //       constErrRes = {
+        //          success:false,
+        //          code:-1,
+        //          msg:'response failed'
+        //      };      
         param.req = 'call';
 
 
@@ -241,46 +241,32 @@ WsCall.addStatics({
             sParam = '&' + sParam;
 
         var url = url + '?req=rc&rcname=' + rcName + sParam;
+        if (!Ext.isWebKit) {
+            Ext.getBody().mask('正在初始化下载数据...');
+        };
         if (typeof(me.iframe) == "undefined") {
-            // var iframe = document.createElement("iframe");
-
-            // me.iframe = iframe;
-
-            // if (me.iframe.attachEvent) {
-            //     // me.iframe.attachEvent("onload", function() {
-            //     // 	Ext.getBody().unmask();
-            //     //     alert("aaa");
-
-            //     // });
-            //     me.iframe.onreadystatechange = function() {
-            //         alert(this.readyState);
-            //         if (this.readyState == "loaded") {
-            //             Ext.getBody().unmask();
-            //             alert("aaa");
-            //         }
-            //     }
+            // if (Ext.isWebKit) {
+            //     var iframe = document.createElement("iframe");
+            //     iframe.onload = function() {
+            //         Ext.getBody().unmask();
+            //     };
+            //     me.iframe = iframe;
+            //     me.iframe.src = url;
 
             // } else {
-            //     me.iframe.onload = function() {
-            //         Ext.getBody().unmask();
-            //         alert("1212");
-
-            //     };
-            // }
-            
             var div = document.createElement("div");
             me.iframe = div;
             me.iframe.innerHTML = "<iframe onload=\"javascript:Ext.getBody().unmask();\" onreadystatechange=\"javascript:Ext.getBody().unmask();\" src='" + url + "'></iframe>";
+            //}
             document.body.appendChild(me.iframe);
 
-            //me.iframe.src = url;
-            //document.body.appendChild(me.iframe);
 
-        }else{
-        	me.iframe.innerHTML = "<iframe onload=\"javascript:Ext.getBody().unmask();\" onreadystatechange=\"javascript:Ext.getBody().unmask();\" src='" + url + "'></iframe>";
+
+        } else {
+            me.iframe.innerHTML = "<iframe onload=\"javascript:Ext.getBody().unmask();\" onreadystatechange=\"javascript:Ext.getBody().unmask();\" src='" + url + "'></iframe>";
         }
 
-        Ext.getBody().mask('正在初始化下载数据...');
+
         me.iframe.style.display = "none";
     },
     callchain: function(callname) {
@@ -475,7 +461,7 @@ Ext.define('html5uploadclass', {
             fd.append(me.formName, me.file);
             me.xhr.open("POST", me.url);
             //me.xhr.setRequestHeader("Content-type", me.file.type);
-            //console.log(encodeURI(me.file.name));		
+            //console.log(encodeURI(me.file.name));     
             //me.xhr.setRequestHeader("X_FILE_NAME", encodeURI(me.file.name));
             me.xhr.send(fd);
         }
