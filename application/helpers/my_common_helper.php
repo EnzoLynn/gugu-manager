@@ -216,6 +216,7 @@ function outputCVS($data, $header, $fileName = 'now') {
         unset($rows);
         $i++;
     }
+    ob_end_flush();
     exit;
 }
 
