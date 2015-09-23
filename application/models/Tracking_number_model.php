@@ -265,29 +265,29 @@ class Tracking_number_model extends CI_Model {
         return $msg;
     }
 
-    function validateIncome($tracking_numbers) {
-        foreach($tracking_numbers as $row) {
-            //导入的时候，不验证合同，现在开始赋值合同 ？
-            $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
-            if (!$rule_item) {
-                $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
-                $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
-                if (strtotime($row['arrive_time']) < strtotime($customer_rent['date_start'].' 00:00:00') || strtotime($row['arrive_time']) > strtotime($customer_rent['date_end'].' 23:59:59')) {
-                    $msg[] = array(
-                        'tracking_number' => $row['tracking_number'],
-                        'msg' =>  '揽收时间没有当前客户的合同期限内（客户名：'.$customer['customer_name'].')'
-                    );
-                }
-                $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
-                $area = $this->CI->area_model->getOne($point['province_code']);
-                $msg[] = array(
-                    'tracking_number' => $row['tracking_number'],
-                    'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
-                );
-            }
-        }
-        return $msg;
-    }
+//    function validateIncome($tracking_numbers) {
+//        foreach($tracking_numbers as $row) {
+//            //导入的时候，不验证合同，现在开始赋值合同 ？
+//            $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
+//            if (!$rule_item) {
+//                $customer = $this->CI->customer_model->getCustomer($row['customer_id']);
+//                $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
+//                if (strtotime($row['arrive_time']) < strtotime($customer_rent['date_start'].' 00:00:00') || strtotime($row['arrive_time']) > strtotime($customer_rent['date_end'].' 23:59:59')) {
+//                    $msg[] = array(
+//                        'tracking_number' => $row['tracking_number'],
+//                        'msg' =>  '揽收时间没有当前客户的合同期限内（客户名：'.$customer['customer_name'].')'
+//                    );
+//                }
+//                $point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
+//                $area = $this->CI->area_model->getOne($point['province_code']);
+//                $msg[] = array(
+//                    'tracking_number' => $row['tracking_number'],
+//                    'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+//                );
+//            }
+//        }
+//        return $msg;
+//    }
 
     /**
      * 快递单号数据计算成本
@@ -329,7 +329,7 @@ class Tracking_number_model extends CI_Model {
      */
     function incomeExpression($row) {
         $msg = array();
-        $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['arrive_express_point_code'], $row['weight']);
+        $rule_item = $this->CI->customer_express_rule_model->getItemByWeight($row['customer_rent_id'], $row['express_id'], $row['arrive_express_point_name'], $row['weight']);
         if ($rule_item) {
             if ($rule_item['weight_price_type'] == 0) {//进重（取整）
                 if ($rule_item['weight_pre'] == 0) {

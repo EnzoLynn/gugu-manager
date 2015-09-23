@@ -11,6 +11,7 @@ class Customer_express_rule_model extends CI_Model {
         parent::__construct();
         $this->CI = &get_instance();
         $this->CI->load->model('customer_rent_model');
+        $this->CI->load->model('express_point_model');
         $this->CI->load->model('customer_express_rule_item_model');
     }
 
@@ -105,11 +106,29 @@ class Customer_express_rule_model extends CI_Model {
         }
     }
 
+//    //通过重量得到规则
+//    function getItemByWeight($customer_rent_id, $express_point_code, $weight) {
+//        $this->db->where('express_point_code', $express_point_code);
+//        $query = $this->db->get('express_point');
+//        $express_point = $query->first_row();
+//        $province_code = $express_point['province_code'];
+//
+//        $rule = $this->getOneByRent($customer_rent_id, $province_code);
+//
+//        if ($rule) {
+//            $this->db->where('rule_id', $rule['rule_id']);
+//            $this->db->where("$weight BETWEEN weight_min AND weight_max");
+//            $this->db->order_by('sort_order', 'ASC');
+//            $query = $this->db->get('customer_express_rule_item');
+//            $rule_item = $query->first_row();
+//            return $rule_item;
+//        } else {
+//            return FALSE;
+//        }
+//    }
     //通过重量得到规则
-    function getItemByWeight($customer_rent_id, $express_point_code, $weight) {
-        $this->db->where('express_point_code', $express_point_code);
-        $query = $this->db->get('express_point');
-        $express_point = $query->first_row();
+    function getItemByWeight($customer_rent_id, $express_id, $express_point_name, $weight) {
+        $express_point = $this->CI->express_point_model->getPointByExpressIDAndName($express_id, $express_point_name);
         $province_code = $express_point['province_code'];
 
         $rule = $this->getOneByRent($customer_rent_id, $province_code);
@@ -125,4 +144,5 @@ class Customer_express_rule_model extends CI_Model {
             return FALSE;
         }
     }
+
 }
