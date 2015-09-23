@@ -237,10 +237,12 @@ class Tracking_number_model extends CI_Model {
                             'msg' => '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该网点代码（'. $row['计费目的网点代码'] .'）'
                         );
                     }
-                    $point = $this->CI->express_point_model->getPointByExpressIDAndName($row['express_id'], $row['arrive_express_point_name']);
-                    $msg[] = array(
-                        'msg' =>  '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该揽收网点名称（'. $row['计费目的网点名称'] .'）'
-                    );
+                    $point = $this->CI->express_point_model->getPointByExpressIDAndName($all_express[$row['快递公司']], $row['计费目的网点名称']);
+                    if ( !$point ) {
+                        $msg[] = array(
+                            'msg' =>  '第'.$i.'行，该系统中'.$row['快递公司'].'没有找到该揽收网点名称（'. $row['计费目的网点名称'] .'）'
+                        );
+                    }
                 }
                 //验证客户的合同时间
                 if ($number) {
@@ -255,8 +257,6 @@ class Tracking_number_model extends CI_Model {
 
                         $date = strtotime($row['揽收时间']);
                         if ($date<$date_start || $date>$date_end) {
-
-                            echo $date_start.'<br/>'.$date.'<br/>'.$date_end;exit;
 
                             $msg[] = array(
                                 'msg' => '第'.$i.'行，根据揽收时间（'.$row['揽收时间'].'）没找到该客户对应的租贷合同'
