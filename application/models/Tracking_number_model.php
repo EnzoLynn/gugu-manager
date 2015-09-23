@@ -141,18 +141,20 @@ class Tracking_number_model extends CI_Model {
     }
 
     function importData($data) {
-        $msg = $this->validateData($data);
-        if ($msg) {
-            return false;
-        }
+//        $msg = $this->validateData($data);
+//        if ($msg) {
+//            return false;
+//        }
+
+        //查询所有快递
+        $all_express = $this->express_company_model->getAllExpress();
+        $all_express = array_flip($all_express);
+
         $i = 0;
         foreach ($data as $row) {
             $customer = $this->CI->customer_number_model->getCustomerByTrackingNumber($row['运单号']);
-            //$express = $this->CI->express_point_model->getExpressByNameAndCode($row['计费目的网点名称'], $row['计费目的网点代码']);
-            $express = $this->CI->express_company_model->getExpressByName($row['快递公司']);
-            //$customer_rent = $this->CI->customer_rent_model->getCustomerRentByCustomerIDAndDate($customer['customer_id'], $row['揽收时间']);//直接调用用户信息的customer_rent_id
 
-            $customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
+            //$customer_rent = $this->CI->customer_rent_model->getCustomerRent($customer['customer_rent_id']);
 
             $number = $this->getTrackingNumber($row['运单号']);
             if ($number) {
@@ -170,8 +172,8 @@ class Tracking_number_model extends CI_Model {
                     'cost' => 0,
                     'customer_id' => $customer['customer_id'],
                     'admin_id' => $this->CI->admin_id,
-                    'customer_rent_id' => $customer_rent['customer_rent_id'],//计算的时候再判断合同号$customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
-                    'express_id' => $express['express_id']
+                    'customer_rent_id' => $customer['customer_rent_id'],//计算的时候再判断合同号$customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
+                    'express_id' => $all_express[$row['快递公司']]
                 );
                 $this->add($tracking_number);
 
