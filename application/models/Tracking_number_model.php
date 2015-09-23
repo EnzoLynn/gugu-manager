@@ -140,7 +140,28 @@ class Tracking_number_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    //批量导入
+    function importBatch($tracking_numbers) {
+        $insert_tracking_number = array();
+        foreach ($tracking_numbers as $tracking_number) {
+            array_push($insert_tracking_number, $tracking_number['tracking_number']);
+        }
+        //批量插入运单号
+        $this->db->insert_batch('tracking_number', $tracking_numbers);
+        //批量修改面单号使用状态
+        $upd_data = array(
+            'use_status' => 1,
+            'use_time' => date('y-m-d H:i:s')
+        );
+        $this->db->where_in('tracking_number', $insert_tracking_number);
+        $this->db->update('customer_number', $upd_data);
+    }
+
     function importData($data) {
+        $insert_batch_index = 0;
+        $insert_batch_num = 200;//每多少条执行一次批量插入
+        $insert_batch_data = array();
+
 //        $msg = $this->validateData($data);
 //        if ($msg) {
 //            return false;
@@ -173,13 +194,29 @@ class Tracking_number_model extends CI_Model {
                     'customer_id' => $customer['customer_id'],
                     'admin_id' => $this->CI->admin_id,
                     'customer_rent_id' => $customer['customer_rent_id'],//计算的时候再判断合同号$customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
-                    'express_id' => $all_express[$row['快递公司']]
+                    'express_id' => $all_express[$row['快递公司']],
+                    'updated_at'  => date('Y-m-d H:i:s')
                 );
-                $this->add($tracking_number);
+//                $this->add($tracking_number);
 
-                $this->CI->customer_number_model->updateByTrackingNumber($row['运单号']);
+                array_push($insert_batch_data, $tracking_number);
+
+                if ($insert_batch_index >= $insert_batch_num) {
+                    //批量插入运单号
+                    $this->importBatch($insert_batch_data);
+
+
+                    $insert_batch_index = 0;
+                    unset($insert_batch_data);
+                    $insert_batch_data = array();
+                }
+
             }
+            $insert_batch_index++;
         }
+
+        $this->importBatch($insert_batch_data);
+
         return $i;
     }
 
