@@ -147,9 +147,10 @@ class CustomerExpressRule extends AdminController {
 
 
         $rule_from = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code_from);
-        unset($rule_from['rule_id']);
-        $rule_from['province_code'] = $province_code_to;
-        $new_rule_id = $this->customer_express_rule_model->add($rule_from);
+        $rule_to = $rule_from;
+        unset($rule_to['rule_id']);
+        $rule_to['province_code'] = $province_code_to;
+        $new_rule_id = $this->customer_express_rule_model->add($rule_to);
 
 
         $rule_item_from = $this->customer_express_rule_item_model->getItems($rule_from['rule_id']);
