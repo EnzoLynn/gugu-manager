@@ -331,11 +331,12 @@ function output_success($msg = '', $total = 0, $data = []) {
 }
 //获取重复数据
 function get_repeat_in_array($array) {
+    $repeat_arr = array();
     $len = count ( $array );
     for($i = 0; $i < $len; $i ++) {
         for($j = $i + 1; $j < $len; $j ++) {
-            if ($array [$i] == $array [$j]) {
-                $repeat_arr [] = $array [$i];
+            if ($array[$i] == $array[$j]) {
+                $repeat_arr[] = $array[$i];
                 break;
             }
         }
