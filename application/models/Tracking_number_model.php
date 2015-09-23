@@ -355,10 +355,11 @@ class Tracking_number_model extends CI_Model {
             //$point = $this->CI->express_point_model->getPointByExpressIDAndCode($row['express_id'], $row['arrive_express_point_code']);
             //20150922 需求变更，收入计算根据网点名字
             $point = $this->CI->express_point_model->getPointByExpressIDAndName($row['express_id'], $row['arrive_express_point_name']);
-            $area = $this->CI->area_model->getOne($point['province_code']);
+            //$area = $this->CI->area_model->getOne($point['province_code']);
             $msg[] = array(
                 'tracking_number' => $row['tracking_number'],
-                'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+                'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
+                //'msg' =>  '没有匹配的收入规则（客户名：'.$customer['customer_name'].'；揽收网点地址：'. $area['area_name'] .' '.$row['arrive_express_point_name'].'；重量：'.$row['weight'].'kg)'
             );
         }
         return $msg;

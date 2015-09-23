@@ -206,7 +206,8 @@ function outputCVS($data, $header, $fileName = 'now') {
         $row_data = array();
         foreach ($header as $k => $v) {
             if ($k == 'tracking_number') {
-                $row_data[] = "\t" . iconv('utf-8', 'gbk', $data[$row][$k]);
+                //$row_data[] = "\t" . iconv('utf-8', 'gbk', $data[$row][$k]);
+                $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
             } else {
                 $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
             }
