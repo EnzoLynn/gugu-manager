@@ -51,7 +51,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
                     msgTarget: 'side',
                     itemId: 'fileupId',
                     buttonConfig: {
-                        iconCls: 'import',
+                        iconCls: 'fileupload',
                         width: 100
                     },
                     buttonText: '添加文件',
