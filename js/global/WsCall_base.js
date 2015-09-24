@@ -60,7 +60,7 @@ WsCall.addStatics({
         Ext.Ajax.request({
             url: url,
             method: 'GET', //'POST',
-            timeout: 30000,
+            timeout: 300000,
             async: isAsync,
             success: function(response, opts) {
                 if (taskWait)
@@ -130,7 +130,7 @@ WsCall.addStatics({
         Ext.Ajax.request({
             url: url,
             method: 'POST',
-            timeout: 30000,
+            timeout: 300000,
             async: isAsync,
             success: function(response, opts) {
                 if (taskWait)
