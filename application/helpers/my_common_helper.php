@@ -248,18 +248,30 @@ function saveCSV($data, $header, $fileName) {
     for ($row = 0; $row < $rows_length; $row++) {
         $row_data = array();
         foreach ($header as $k => $v) {
-            if ($k == 'tracking_number') {
-                //$row_data[] = "\t" . iconv('utf-8', 'gbk', $data[$row][$k]);
-                $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
-            } else {
-                $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
-            }
+            $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
         }
         fputcsv($fp, $row_data);
         unset($rows);
         $i++;
     }
     return TRUE;
+}
+//下载CSV
+function downloadCSV($file_path) {
+//    header('Content-Type: application/vnd.ms-excel');
+//    header('Content-Disposition: attachment;filename="'. $fileName .'.csv"');
+//    header('Cache-Control: max-age=0');
+
+    header('Content-Description: File Transfer');
+
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename='.basename($file_path));
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($file_path));
+    readfile($file_path);
 }
 //数组转对象
 function arrayToObject($e){
@@ -349,12 +361,14 @@ function output_success($msg = '', $total = 0, $data = []) {
 //获取重复数据
 function get_repeat_in_array($array) {
     $repeat_arr = array();
-    $len = count ( $array );
+    $len = count($array);
     for($i = 0; $i < $len; $i ++) {
         for($j = $i + 1; $j < $len; $j ++) {
             if ($array[$i] == $array[$j]) {
-                $repeat_arr[] = $array[$i];
-                break;
+                if (!empty($array[$i])) {
+                    $repeat_arr[] = $array[$i];
+                    break;
+                }
             }
         }
     }

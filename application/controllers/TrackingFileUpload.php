@@ -104,7 +104,8 @@ class TrackingFileUpload extends AdminController {
         $tempName = explode('.', $file['file_save_name']);
         $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
 
-            //public function validateExcel($file_path) {
+        write_log("开始验证". $file['file_name'] . " - ". $file['file_save_name']);
+
         $pars_default = array(
             'sheetIndex' => 0,
             'headerKey' => TRUE,
@@ -114,15 +115,7 @@ class TrackingFileUpload extends AdminController {
         $data = loadExcel($file_path, $pars_default);
 
         if (!$data) {
-            $json = array(
-                'success' => false,
-                'data' => array('msg' => 'excel没有数据匹配'),
-                'total' => 0,
-                'msg' => 'excel没有数据匹配',
-                'code' => '89'
-            );
-            echo json_encode($json);
-            exit;
+            output_error('excel没有数据匹配');
         }
 
         $repeat_number = $this->tracking_number_model->checkExcelField($data, '运单号');
@@ -147,7 +140,11 @@ class TrackingFileUpload extends AdminController {
             output_error('Excel内部运单号重复，验证未通过');
         }
 
+        write_log("Excel内部没有重复");
+
         $msg = $this->tracking_number_model->validateData($data);
+
+        write_log("验证". $file['file_name'] . " - ". $file['file_save_name'] . "完毕\r\n- - - - - - - - - - - - - - - - - - - - - - -");
 
         if ($msg) {
             //改为未通过
@@ -175,15 +172,74 @@ class TrackingFileUpload extends AdminController {
 
     public function import() {
         $file_id = (int)$this->input->get_post('file_id');
-        $this->file_upload_model->getFile($file_id);
+        $file = $this->file_upload_model->getFile($file_id);
+
+        if ($file['validate_status'] != 1) {
+            output_error('验证通过的才能导入');
+        }
+
+        $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
+        $file_path = FCPATH . $file_dir . $file['file_save_name'];
+
+        $tempName = explode('.', $file['file_save_name']);
+        $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
+
+        write_log("开始导入". $file['file_name']);
+
+        $pars_default = array(
+            'sheetIndex' => 0,
+            'headerKey' => TRUE,
+            'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间', '快递公司')
+        );
+
+        $data = loadExcel($file_path, $pars_default);
+        $num = $this->tracking_number_model->importData($data);
+
+        write_log("导入". $file['file_name'] ."完成\r\n- - - - - - - - - - - - - - - - - - - - - - -");
+
+        //状态改为导入成功
+        $upd_data = array(
+            'import_status' => 1
+        );
+        $this->file_upload_model->update($file_id, $upd_data);
+
+        //如果有错误日志文件，就删除
+        if (file_exists($err_file)) {
+            unlink($err_file);
+        }
+        output_success('导入成功！', $num);
     }
 
     public function downloadError() {
         $file_id = (int)$this->input->get_post('file_id');
-        $this->file_upload_model->getFile($file_id);
+        $file = $this->file_upload_model->getFile($file_id);
+
+        $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
+
+        $tempName = explode('.', $file['file_save_name']);
+        $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
+
+        downloadCSV($err_file);
     }
 
+    public function delete() {
+        $file_id = (int)$this->input->get_post('file_id');
+        $file = $this->file_upload_model->getFile($file_id);
 
+        $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
+        $file_path = FCPATH . $file_dir . $file['file_save_name'];
 
+        $tempName = explode('.', $file['file_save_name']);
+        $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
 
+        $this->file_upload_model->delete($file_id);
+
+        if (file_exists($err_file)) {
+            unlink($err_file);
+        }
+
+        if (file_exists($file_path)) {
+            unlink($file_path);
+        }
+    }
 }
