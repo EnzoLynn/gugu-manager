@@ -62,6 +62,9 @@ Ext.create('Ext.data.Store', {
                 //    GridManager.UserGrid.down("#last").setDisabled(true);
                 //}
             }
+            if (total>0) {
+                GridManager.AttachFileGrid.getSelectionModel().select(0, true);
+            };
             if (suc) {
 
             } else {

@@ -211,7 +211,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
             target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                ActionManager.translateError(response);
+                 Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
         }, true);
@@ -242,7 +242,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
             target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                ActionManager.translateError(response);
+               Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
         }, true);
@@ -583,3 +583,5 @@ ActionManager.searchAttachFile = function(traget) {
     }
 
 };
+
+

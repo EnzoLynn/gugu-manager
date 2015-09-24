@@ -168,8 +168,13 @@ GridManager.CreateAttachFileGrid = function(param) {
         text: '验证状态',
         dataIndex: 'validate_status',
         renderer: function(value) {
-
-            return value == 0 ? '未验证' : '已验证';
+        	if (value == 1) {
+        		return '验证通过';
+        	}
+        	if (value == 2) {
+        		return '验证未通过';
+        	};
+            return '未验证';
         },
         flex: 1
     }, {
