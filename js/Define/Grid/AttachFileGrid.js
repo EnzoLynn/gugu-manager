@@ -2,10 +2,12 @@
 //创建一个上下文菜单
 var AttachFileGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshAttachFile'), '-',
-        ActionBase.getAction('searchAttachFile'),
-        ActionBase.getAction('uploadAttachFile'), '-',
-        ActionBase.getAction('validateAttachFile'),
-        ActionBase.getAction('importAttachFile')
+            ActionBase.getAction('searchAttachFile'),
+            ActionBase.getAction('removeAttachFile'),
+            ActionBase.getAction('uploadAttachFile'), '-',
+            ActionBase.getAction('validateAttachFile'),
+            ActionBase.getAction('importAttachFile'),
+            ActionBase.getAction('dlErrorReportAttachFile')
     ]
 });
 
@@ -17,6 +19,7 @@ Ext.define('chl.gird.AttachFileGrid', {
     extend: 'chl.grid.BaseGrid',
     store: 'AttachFileGridStoreId',
     actionBaseName: 'AttachFileGridAction',
+    multiSelect: true,
     viewConfig: {
         loadingText: '<b>' + '正在加载数据...' + '</b>',
         enableTextSelection: true
@@ -52,9 +55,12 @@ Ext.define('chl.gird.AttachFileGrid', {
         },
         items: [ActionBase.getAction('refreshAttachFile'), '-',
             ActionBase.getAction('searchAttachFile'),
+            ActionBase.getAction('removeAttachFile'),
             ActionBase.getAction('uploadAttachFile'), '-',
             ActionBase.getAction('validateAttachFile'),
-            ActionBase.getAction('importAttachFile')
+            ActionBase.getAction('importAttachFile'),
+            ActionBase.getAction('dlErrorReportAttachFile')
+            
         ]
     }, {
         xtype: 'Pagingtoolbar',
