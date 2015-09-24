@@ -409,8 +409,8 @@ function getArrayByBetween($begin, $end) {
 function write_log($msg) {
     if (WRITE_LOG) {
         $date = date('Ymd');
-        $file = fopen(APPPATH . '\\logs\\' . $date . ".txt", "a") or die("Unable to open file!");
-        $txt = date('Y-m-d H:i:s') . "\t" . $msg . "\n";
+        $file = fopen(APPPATH . '/logs/' . $date . ".txt", "a") or die("Unable to open file!");
+        $txt = date('Y-m-d H:i:s') . "\t" . $msg . "\r\n";
         fwrite($file, $txt);
         fclose($file);
     }
