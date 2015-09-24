@@ -1,0 +1,42 @@
+Ext.define('chl.Model.AttachFileGridModel', {
+    extend: 'Ext.data.Model',
+    idProperty: 'file_id',
+    alternateClassName: ['AttachFileGridModel'],
+    fields: [{
+        name: 'file_id',
+        type: 'string'
+    },{
+        name: 'file_name',
+        type: 'string'
+    }, {
+        name: 'file_save_name', 
+        type: 'string'
+    }, {
+        name: 'file_size', 
+        type: 'string'
+    }, {
+        name: 'admin_id', 
+        type: 'string'
+    }, {
+        name: 'admin_name', 
+        type: 'string'
+    }, {
+        name: 'validate_status', 
+        type: 'string'
+    }, {
+        name: 'validate_status_name', 
+        type: 'string'
+    }, {
+        name: 'import_status', 
+        type: 'string'
+    }, {
+        name: 'import_status_name', 
+        type: 'string'
+    }, {
+        name: 'import_time', 
+        type: 'string'
+    }, {
+        name: 'created_at', 
+        type: 'string'
+    }]
+});
