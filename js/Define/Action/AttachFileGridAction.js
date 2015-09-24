@@ -36,75 +36,6 @@ Ext.create('chl.Action.AttachFileGridAction', {
             },
             items: [{
                 xtype: 'form',
-                itemId: 'formId',
-                hidden: true,
-                bodyPadding: 15,
-                items: [{
-                    xtype: 'filefield',
-                    name: 'fileUpload',
-
-                    fieldLabel: '请选择导入的文件',
-                    width: 600,
-                    labelWidth: 150,
-                    labelAlign: 'right',
-                    blankText: '请选择导入的文件',
-                    msgTarget: 'side',
-                    itemId: 'fileupId',
-                    buttonConfig: {
-                        iconCls: 'import',
-                        width: 100
-                    },
-                    buttonText: '添加文件',
-                    listeners: {
-                        change: function(com) {
-                            var me = com;
-                            var supType = new Array('xls', 'xlsx');
-                            var fNmae = me.getValue();
-                            var fType = fNmae.substring(
-                                fNmae.lastIndexOf('.') + 1,
-                                fNmae.length).toLowerCase();
-                            var returnFlag = true;
-
-                            Ext.Array.each(supType, function(rec) {
-                                if (rec == fType) {
-                                    returnFlag = false;
-                                    return false;
-                                }
-                            });
-
-                            if (returnFlag) {
-                                Ext.Msg.alert('添加文件', '不支持的文件格式！');
-                                return;
-                            }
-                            var f = me.up('form');
-                            var outWin = me.up('window');
-                            var form = f.getForm();
-                            var urlStr = GlobalConfig.Controllers.AttachFileGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken();
-                            form.submit({
-                                timeout: 60 * 10,
-                                url: urlStr,
-                                waitMsg: '正在上传...',
-                                waitTitle: '等待文件上传,请稍候...',
-                                success: function(fp, action) {
-                                    var data = action.result.data;
-
-                                    target.loadGrid();
-                                    outWin.close();
-                                },
-                                failure: function(fp, action) {
-                                    if (!GlobalFun.errorProcess(action.result.code)) {
-                                        var obj = {};
-                                        obj[fNmae] = action.result.data;
-                                        ActionManager.showUpLoadExcelError(obj);
-
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }]
-            }, {
-                xtype: 'form',
                 itemId: 'h5formId',
                 layout: 'vbox',
                 bodyPadding: 5,
@@ -126,7 +57,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
                         msgTarget: 'side',
                         itemId: 'fileupId',
                         buttonConfig: {
-                            iconCls: 'import',
+                            iconCls: 'fileupload',
                             width: 300
                         },
                         uploadUrl: GlobalConfig.Controllers.AttachFileGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
@@ -217,7 +148,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
         }, true);
     },
     updateStatus: function(selection) {
-        this.setDisabled(selection.length != 1 || selection[0].data.validate_status == 1);
+        this.setDisabled(selection.length != 1 || selection[0].data.validate_status != 0);
     }
 });
 
@@ -225,7 +156,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
     itemId: 'importAttachFile',
     iconCls: 'import',
     tooltip: '导入数据到票据管理',
-    text: '导入',
+    text: '导入到票据',
     handler: function() {
         var target = this.getTargetView();
         var sm = target.getSelectionModel();

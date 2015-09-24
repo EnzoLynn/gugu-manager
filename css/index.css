@@ -95,6 +95,12 @@
 .status-suc {
   background-image: url(../image/workFlow/task-suc.png) !important;
 }
+.attachFile {
+  background-image: url(../image/pub/attach.png) !important;
+}
 .upload {
   background-image: url(../image/sms/status/outstatus.1.png) !important;
+}
+.fileupload {
+  background-image: url(../image/toolbar/imgfolder.png) !important;
 }

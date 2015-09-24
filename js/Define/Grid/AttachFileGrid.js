@@ -20,10 +20,10 @@ Ext.define('chl.gird.AttachFileGrid', {
     store: 'AttachFileGridStoreId',
     actionBaseName: 'AttachFileGridAction',
     multiSelect: true,
-    viewConfig: {
-        loadingText: '<b>' + '正在加载数据...' + '</b>',
-        enableTextSelection: true
-    },
+    // viewConfig: {
+    //     loadingText: '<b>' + '正在加载数据...' + '</b>',
+    //     enableTextSelection: true
+    // },
     listeners: {
         itemclick: function(grid, record, hitem, index, e, opts) {
             var me = this;
