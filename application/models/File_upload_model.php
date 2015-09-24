@@ -57,4 +57,9 @@ class File_upload_model extends CI_Model {
         $this->db->where('file_id', $file_id);
         return $this->db->update('file_upload', $data);
     }
+
+    public function delete($file_id) {
+        $this->db->where('file_id', $file_id);
+        return $this->db->delete('file_upload');
+    }
 }
