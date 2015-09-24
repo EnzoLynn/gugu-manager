@@ -26,6 +26,7 @@ class UploadTrackingNumber extends AdminController {
     }
 
     public function upload() {
+        write_log('开始处理请求');
         $config['upload_path']      = './upload/excel/'.date('Ym').'/';
         $config['allowed_types']    = 'xlsx|xls|cvs';
         $config['file_name']        = 'upload_'.date('YmdHis').rand(0,9).rand(0,9).rand(0,9);
@@ -46,7 +47,7 @@ class UploadTrackingNumber extends AdminController {
         }
         else
         {
-
+            write_log('文件已经保存');
             $fileInfo = $this->upload->data();
 
             $fileData = array(
@@ -64,15 +65,16 @@ class UploadTrackingNumber extends AdminController {
 //            ob_flush();
 //            flush();
 //            sleep(1);
-//$this->show_runtime('读取到php数组');
+            write_log('读取到php数组');
             $data = $this->validateExcel($this->file_save_path);
-//$this->show_runtime('验证完毕');exit;
+            write_log('验证完毕');
 //            echo '<script>console.log("验证完成")</script><br />'.str_repeat(" ",256);
 //            ob_flush();
 //            flush();
 
             if ($data) {
                 $num = $this->tracking_number_model->importData($data);
+                write_log("导入完毕\r\n- - - - - - - - - - - - - - - - - - - - - - -");
                 $json = array(
                     'success' => true,
                     'data' => [],
