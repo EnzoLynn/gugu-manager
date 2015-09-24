@@ -142,7 +142,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
             target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                 Ext.Msg.alert('失败', response.msg);
+                Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
         }, true);
@@ -173,14 +173,13 @@ Ext.create('chl.Action.AttachFileGridAction', {
             target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-               Ext.Msg.alert('失败', response.msg);
+                Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
         }, true);
     },
     updateStatus: function(selection) {
-        this.setDisabled(selection.length != 1 || selection[0].data.import_status == 1
-            || selection[0].data.validate_status != 1);
+        this.setDisabled(selection.length != 1 || selection[0].data.import_status == 1 || selection[0].data.validate_status != 1);
     }
 });
 
@@ -327,13 +326,12 @@ ActionManager.delAttachFile = function(target, opts) {
         return;
     var ids = [];
     Ext.Array.each(records, function(rec) {
-        if (rec.data.account_status == 0) {
-            ids.push(rec.data.tracking_number_id);
-        };
-    }); 
+
+        ids.push(rec.data.file_id);
+    });
     var defConfig = {
         title: '提示',
-        msg: '您确定要删除选定的(未结算)项目吗？',
+        msg: '您确定要删除选定的文件吗？',
         buttons: Ext.MessageBox.YESNO,
         closable: false,
         fn: function(btn) {
@@ -343,7 +341,7 @@ ActionManager.delAttachFile = function(target, opts) {
                     sessiontoken: GlobalFun.getSeesionToken(),
                     file_ids: ids.join()
                 };
-               
+
                 // 调用
                 WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.destroy, 'AttachFileGrid', param, function(response, opts) {
                     (new Ext.util.DelayedTask(function() {
@@ -500,5 +498,3 @@ ActionManager.searchAttachFile = function(traget) {
     }
 
 };
-
-
