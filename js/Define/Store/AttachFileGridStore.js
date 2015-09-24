@@ -63,7 +63,11 @@ Ext.create('Ext.data.Store', {
                 //}
             }
             if (total>0) {
-                GridManager.AttachFileGrid.getSelectionModel().select(0, true);
+                var sm = GridManager.AttachFileGrid.getSelectionModel();
+                if (!sm.hasSelection()) {
+                    sm.select(0, true);
+                };
+                
             };
             if (suc) {
 
