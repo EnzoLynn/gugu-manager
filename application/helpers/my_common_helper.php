@@ -172,7 +172,7 @@ function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $typ
     exit;
 }
 
-function outputCVS($data, $header, $fileName = 'now') {
+function outputCSV($data, $header, $fileName = 'now') {
     if ($fileName == 'now') {
         $fileName = date('YmdHis');
     }
@@ -224,25 +224,42 @@ function outputCVS($data, $header, $fileName = 'now') {
     ob_end_flush();
     exit;
 }
+function saveCSV($data, $header, $fileName) {
+    $fp = fopen($fileName, 'w');
+    //fputcsv4($fp, split(',', $line));
 
-if (!function_exists('loadController'))
-{
-    function loadController($controller, $method = 'index')
-    {
-        $dirs = explode('/', $controller);
-        if(count($dirs) ==  1) {
-            require_once(APPPATH . 'controllers/' . $controller . '.php');
-            $controller = new $dirs[0]();
-        }else if(count($dirs) ==  2) {
-            require_once(APPPATH . 'controllers/' . $dirs[0] . '/' . $controller . '.php');
-            $controller = new $dirs[1]();
-        }else {
-            set_status_header(503);
-            echo 'Unable to locate the specified class: '.$controller.'.php';
-            exit(5); // EXIT_UNK_CLASS
-        }
-        return $controller->$method();
+    // 只获取指定数组
+    $data = getArrayByKey($data, array_keys($header));
+
+    $header_length = count($header);
+    $rows_length = count($data);
+    //输出头部
+    $i = 0;
+    $head = array_values($header);
+    foreach ($header as $k => $v) {
+        // CSV的Excel支持GBK编码，一定要转换，否则乱码
+        $head[$i] = iconv('utf-8', 'gbk', $v);
+        $i++;
     }
+    fputcsv($fp, $head);
+
+    // 计数器
+    $i = 0;
+    for ($row = 0; $row < $rows_length; $row++) {
+        $row_data = array();
+        foreach ($header as $k => $v) {
+            if ($k == 'tracking_number') {
+                //$row_data[] = "\t" . iconv('utf-8', 'gbk', $data[$row][$k]);
+                $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
+            } else {
+                $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
+            }
+        }
+        fputcsv($fp, $row_data);
+        unset($rows);
+        $i++;
+    }
+    return TRUE;
 }
 //数组转对象
 function arrayToObject($e){

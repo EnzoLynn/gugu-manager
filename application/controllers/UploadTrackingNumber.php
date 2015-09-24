@@ -180,7 +180,7 @@ class UploadTrackingNumber extends AdminController {
                 //'tracking_number' => '运单号',
                 'msg'   => '消息'
             );
-            outputCVS($msg, $header);
+            outputCSV($msg, $header);
         }
 
         $msg = $this->tracking_number_model->validateData($data);
@@ -188,6 +188,6 @@ class UploadTrackingNumber extends AdminController {
             //'tracking_number' => '运单号',
             'msg'   => '消息'
         );
-        outputCVS($msg, $header);
+        outputCSV($msg, $header);
     }
 }
