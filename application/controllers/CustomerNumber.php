@@ -239,7 +239,7 @@ class CustomerNumber extends AdminController {
                 //'tracking_number' => '运单号',
                 'msg'   => '消息'
             );
-            outputCVS($msg, $header);
+            outputCSV($msg, $header);
         }
 
         $msg = $this->customer_number_model->validateData($data);
@@ -248,6 +248,6 @@ class CustomerNumber extends AdminController {
             //'tracking_number' => '运单号',
             'msg'   => '消息'
         );
-        outputCVS($msg, $header);
+        outputCSV($msg, $header);
     }
 }

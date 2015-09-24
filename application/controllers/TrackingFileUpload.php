@@ -101,7 +101,10 @@ class TrackingFileUpload extends AdminController {
 
         $file_path = FCPATH . $file_dir . $file['file_save_name'];
 
-        //public function validateExcel($file_path) {
+        $tempName = explode('.', $file['file_save_name']);
+        $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
+
+            //public function validateExcel($file_path) {
         $pars_default = array(
             'sheetIndex' => 0,
             'headerKey' => TRUE,
@@ -125,43 +128,46 @@ class TrackingFileUpload extends AdminController {
         $repeat_number = $this->tracking_number_model->checkExcelField($data, '运单号');
 
         if ($repeat_number) {
+            //改为未通过
+            $upd_data = array(
+                'validate_status' => 2
+            );
+            $this->file_upload_model->update($file_id, $upd_data);
+
             $msg = array();
             foreach ($repeat_number as $number) {
                 $msg[] = array(
                     'msg' => 'Excel内部重复的运单号：' . $number
                 );
             }
-            $json = array(
-                'success' => false,
-                'data' => $msg,
-                'total' => 1,
-                'msg' => '数据有问题',
-                'code' => '89'
+            $header = array(
+                'msg'   => '消息'
             );
-            echo json_encode($json);
-            exit;
+            saveCSV($msg, $header, $err_file);
+            output_error('Excel内部运单号重复，验证未通过');
         }
 
         $msg = $this->tracking_number_model->validateData($data);
 
         if ($msg) {
-            $temp = array(
-                'error_upload_tracking_file' => $file_path
+            //改为未通过
+            $upd_data = array(
+                'validate_status' => 2
             );
-            $this->session_token_model->addData($this->session_token, $temp);
+            $this->file_upload_model->update($file_id, $upd_data);
 
-            $json = array(
-                'success' => false,
-                'data' => $msg,
-                'total' => count($msg),
-                'msg' => '数据有问题',
-                'code' => '89'
+            $header = array(
+                'msg'   => '消息'
             );
-            echo json_encode($json);
-            exit;
+            saveCSV($msg, $header, $err_file);
+            output_error('有错误，验证未通过');
         } else {
-//            $this->session_token_model->clearData($this->session_token, 'error_upload_tracking_file');
-//            return $data;
+            //改为验证通过
+            $upd_data = array(
+                'validate_status' => 1
+            );
+            $this->file_upload_model->update($file_id, $upd_data);
+
             output_success();
         }
 

@@ -153,7 +153,7 @@ class TrackingNumber extends AdminController {
             'express_name'                 => '快递公司'
         );
         //outputExcel($tracking_numbers, $header);
-        outputCVS($tracking_numbers, $header);
+        outputCSV($tracking_numbers, $header);
     }
 
     public function countPrice() {

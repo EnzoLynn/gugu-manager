@@ -52,4 +52,9 @@ class File_upload_model extends CI_Model {
         $file_id = $this->db->insert_id();
         return $file_id;
     }
+
+    public function update($file_id, $data) {
+        $this->db->where('file_id', $file_id);
+        return $this->db->update('file_upload', $data);
+    }
 }
