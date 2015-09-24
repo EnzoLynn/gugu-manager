@@ -226,6 +226,10 @@ class TrackingFileUpload extends AdminController {
         $file_id = (int)$this->input->get_post('file_ids');
         $file = $this->file_upload_model->getFile($file_id);
 
+        if ($file['import_status'] != 1) {
+            output_error('导入成功的文件不能删除');
+        }
+
         $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
         $file_path = FCPATH . $file_dir . $file['file_save_name'];
 
