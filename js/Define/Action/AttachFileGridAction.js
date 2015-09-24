@@ -323,20 +323,14 @@ ActionManager.delAttachFile = function(target, opts) {
     var store = target.getStore();
     var sm = target.getSelectionModel();
     var records = sm.getSelection();
-    if (!opts && !records[0])
+    if (!records[0])
         return;
     var ids = [];
     Ext.Array.each(records, function(rec) {
         if (rec.data.account_status == 0) {
             ids.push(rec.data.tracking_number_id);
         };
-    });
-
-    if (!opts && ids.length == 0) {
-        Ext.Msg.alert('提示', '至少需要1条未结算状态的项目.');
-        return;
-    };
-
+    }); 
     var defConfig = {
         title: '提示',
         msg: '您确定要删除选定的(未结算)项目吗？',
