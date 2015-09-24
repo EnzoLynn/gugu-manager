@@ -2,8 +2,8 @@
 var Tracking_numberGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshTracking_number'), '-',
         ActionBase.getAction('searchTracking_number'),
-        ActionBase.getAction('removeTracking_number'), '-',
-        ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number'), '-',
+        ActionBase.getAction('removeTracking_number'), '-', 
+         ActionBase.getAction('exportTracking_number'), '-',
         ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number'), '-', ActionBase.getAction('account_statusTracking_number')
     ]
 });
@@ -52,7 +52,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         items: [ActionBase.getAction('refreshTracking_number'), '-',
             ActionBase.getAction('searchTracking_number'),
             ActionBase.getAction('removeTracking_number_t'), '-',
-            ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number_t'), '-',
+             ActionBase.getAction('exportTracking_number_t'), '-',
             ActionBase.getAction('retranslateExpressTracking_number_t'), ActionBase.getAction('retranslateCostTracking_number_t'), '-', ActionBase.getAction('account_statusTracking_number_t')
             // , {
             //     xtype: 'button',
@@ -110,7 +110,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             text: '全部状态',
             filterParam: {
                 group: 'account_statusGroup',
-                text: '全部类别',
+                text: '全部状态',
                 filterKey: 'account_status',
                 GridTypeName: 'Tracking_numberGrid',
                 store: StoreManager.ComboStore.Tracking_numberGridTypeStore

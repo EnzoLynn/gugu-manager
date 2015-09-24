@@ -137,6 +137,15 @@ GlobalConfig.Controllers = {
         setAccount_status: '/trackingNumber/initAccount',
         errorReport: 'uploadTrackingNumber/downloadError'
     },
+    AttachFileGrid:{
+        create: globalFix + '/traking_numberGrid.json',
+        read: 'trackingFileUpload/getList', //globalFix + '/traking_numberGrid.json',
+        update: globalFix + '/traking_numberGrid.json',
+        destroy: '/trackingNumber/delete',
+        uploadExcel:'/trackingFileUpload/upload',
+        validateAttachFile:'trackingFileUpload/validate',
+        importAttachFile:'trackingFileUpload/import'
+    },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {
         create: 'expressPoint/add',

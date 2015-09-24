@@ -94,6 +94,12 @@ Ext.onReady(function() {
         });
         GridManager.SetCustomer_number_allGridSelectionChangeEvent();
 
+        //创建文件管理 
+        GridManager.CreateAttachFileGrid({
+            needLoad: false
+        });
+        GridManager.SetAttachFileGridSelectionChangeEvent();
+
         //创建主目录树
         TreeManager.CreateMainItemListTree({
             needLoad: false
@@ -175,6 +181,7 @@ Ext.onReady(function() {
                             //gridArr.push(GridManager.TestGrid);
                             gridArr.push(GridManager.CustomerGrid);
                             gridArr.push(GridManager.Tracking_numberGrid);
+                            gridArr.push(GridManager.AttachFileGrid);
                             gridArr.push(GridManager.ExpressPanel);
                             gridArr.push(GridManager.CompanyPanel_Cost);                            
                             gridArr.push(GridManager.Express_pointGrid);

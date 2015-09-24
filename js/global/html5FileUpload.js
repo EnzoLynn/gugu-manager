@@ -70,7 +70,7 @@
          // reader.readAsBinaryString(file);
          xhr.addEventListener("loadstart", function() {
              if (mywin) {
-                 mywin.el.mask('上传完毕,数据验证计算中...');
+                 mywin.el.mask('请稍候...');
              };
          });
 

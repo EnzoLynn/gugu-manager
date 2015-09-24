@@ -41,6 +41,11 @@
              text: "面单号查询",
              iconCls:'eidtCustomer_number',
              leaf: true
+         }, {
+             id: "006",
+             text: "文件管理",
+             iconCls:'attachFile',
+             leaf: true
          }]
      }
  });

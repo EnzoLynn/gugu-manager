@@ -34,6 +34,8 @@ module.exports = function(grunt) {
                 ,'<%= jsdest %>**/CustomerGridStore.js' ,'<%= jsdest %>**/CustomerGrid.js' 
                 ,'<%= jsdest %>**/Tracking_numberGridAction.js' ,'<%= jsdest %>**/Tracking_numberGridModel.js' 
                 ,'<%= jsdest %>**/Tracking_numberGridStore.js' ,'<%= jsdest %>**/Tracking_numberGrid.js' 
+                ,'<%= jsdest %>**/AttachFileGridAction.js' ,'<%= jsdest %>**/AttachFileGridModel.js' 
+                ,'<%= jsdest %>**/AttachFileGridStore.js' ,'<%= jsdest %>**/AttachFileGrid.js' 
                 ,'<%= jsdest %>**/Express_pointGridAction.js' ,'<%= jsdest %>**/Express_pointGridModel.js' 
                 ,'<%= jsdest %>**/Express_pointGridStore.js' ,'<%= jsdest %>**/Express_pointGrid.js' 
                 ,'<%= jsdest %>**/ExpressPanel.js' ,'<%= jsdest %>**/CompanyPanel.js' 

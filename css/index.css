@@ -95,3 +95,6 @@
 .status-suc {
   background-image: url(../image/workFlow/task-suc.png) !important;
 }
+.attachFile {
+  background-image: url(../image/pub/attach.png) !important;
+}
