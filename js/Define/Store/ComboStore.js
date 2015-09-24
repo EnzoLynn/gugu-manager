@@ -36,7 +36,10 @@ StoreManager.ComboStore.AttachFileGridValidate_statusStore = Ext.create('Ext.dat
         Name: '未验证'
     }, {
         Id: 1,
-        Name: '已验证'
+        Name: '验证通过'
+    }, {
+        Id: 2,
+        Name: '验证未通过'
     }]
 });
 StoreManager.ComboStore.AttachFileGridImport_statusStore = Ext.create('Ext.data.Store', {

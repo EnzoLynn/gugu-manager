@@ -98,7 +98,7 @@ ActionManager.delCustomer_number_all = function(target, opts) {
                 }, function(response, opts) {
 
                     if (!GlobalFun.errorProcess(response.code)) {
-                        Ext.Msg.alert('登录失败', response.msg);
+                        Ext.Msg.alert('失败', response.msg);
                     }
                 }, true);
 

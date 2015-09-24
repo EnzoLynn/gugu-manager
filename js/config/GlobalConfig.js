@@ -144,7 +144,8 @@ GlobalConfig.Controllers = {
         destroy: '/trackingNumber/delete',
         uploadExcel:'/trackingFileUpload/upload',
         validateAttachFile:'trackingFileUpload/validate',
-        importAttachFile:'trackingFileUpload/import'
+        importAttachFile:'trackingFileUpload/import',
+        dlErrorReportAttachFile:'trackingFileUpload/downloadError'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {

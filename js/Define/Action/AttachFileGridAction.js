@@ -18,7 +18,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
 
 Ext.create('chl.Action.AttachFileGridAction', {
     itemId: 'uploadAttachFile',
-    iconCls: 'import',
+    iconCls: 'upload',
     tooltip: '上传文件',
     text: '上传',
     handler: function() {
@@ -28,7 +28,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
             width: 800,
             modal: true,
             resizable: false,
-            iconCls: 'import',
+            iconCls: 'upload',
             title: '上传文件',
             bodyPadding: 5,
             defaults: {
@@ -87,9 +87,9 @@ Ext.create('chl.Action.AttachFileGridAction', {
                                 waitTitle: '等待文件上传,请稍候...',
                                 success: function(fp, action) {
                                     var data = action.result.data;
-                                    
+
                                     target.loadGrid();
-                                    outWin.close(); 
+                                    outWin.close();
                                 },
                                 failure: function(fp, action) {
                                     if (!GlobalFun.errorProcess(action.result.code)) {
@@ -197,30 +197,27 @@ Ext.create('chl.Action.AttachFileGridAction', {
     text: '验证',
     handler: function() {
         var target = this.getTargetView();
-        var store = target.getStore();
-        var extraParams = store.getProxy().extraParams;
-
+        var sm = target.getSelectionModel();
+        var records = sm.getSelection();
+        if (!records[0])
+            return;
         var param = {
             sessiontoken: GlobalFun.getSeesionToken(),
-            type: 'income',
-            arrive_time_start: extraParams.arrive_time_start,
-            arrive_time_end: extraParams.arrive_time_end,
-            dir: 'ASC',
-            sort: 'tracking_number',
-            filter: extraParams.filter
+            file_id: records[0].data.file_id
+
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validateAttachFile, 'translateExpress', param, function(response, opts) {
             target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                ActionManager.translateError(response);
+                 Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
         }, true);
     },
     updateStatus: function(selection) {
-         this.setDisabled(selection.length != 1 || selection[0].data.validate_status == 1);
+        this.setDisabled(selection.length != 1 || selection[0].data.validate_status == 1);
     }
 });
 
@@ -231,30 +228,28 @@ Ext.create('chl.Action.AttachFileGridAction', {
     text: '导入',
     handler: function() {
         var target = this.getTargetView();
-        var store = target.getStore();
-        var extraParams = store.getProxy().extraParams;
-
+        var sm = target.getSelectionModel();
+        var records = sm.getSelection();
+        if (!records[0])
+            return;
         var param = {
             sessiontoken: GlobalFun.getSeesionToken(),
-            type: 'income',
-            arrive_time_start: extraParams.arrive_time_start,
-            arrive_time_end: extraParams.arrive_time_end,
-            dir: 'ASC',
-            sort: 'tracking_number',
-            filter: extraParams.filter
+            file_id: records[0].data.file_id
+
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.importAttachFile, 'translateExpress', param, function(response, opts) {
             target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
-                ActionManager.translateError(response);
+               Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
         }, true);
     },
     updateStatus: function(selection) {
-         this.setDisabled(selection.length != 1 || selection[0].data.import_status == 1);
+        this.setDisabled(selection.length != 1 || selection[0].data.import_status == 1
+            || selection[0].data.validate_status != 1);
     }
 });
 
@@ -270,8 +265,46 @@ Ext.create('chl.Action.AttachFileGridAction', {
     },
     updateStatus: function(selection) {}
 });
+Ext.create('chl.Action.AttachFileGridAction', {
+    itemId: 'dlErrorReportAttachFile',
+    iconCls: 'download',
+    tooltip: '下载错误报告',
+    text: '下载错误报告',
+    handler: function() {
+        var target = this.getTargetView();
+        var store = target.getStore();
+        var sm = target.getSelectionModel();
+        var records = sm.getSelection();
+        if (!records[0])
+            return;
 
+        var param = {
+            downType: 'ErrorReport',
+            file_id: records[0].data.file_id,
+            sessiontoken: GlobalFun.getSeesionToken()
+        };
+        var url = GlobalConfig.Controllers.AttachFileGrid.dlErrorReportAttachFile;
+        WsCall.downloadFile(url, 'dlErrorReportAttachFile', param);
 
+    },
+    updateStatus: function(selection) {
+        this.setDisabled(selection.length != 1);
+    }
+});
+
+Ext.create('chl.Action.AttachFileGridAction', {
+    itemId: 'removeAttachFile',
+    iconCls: 'remove_base',
+    tooltip: '删除',
+    text: '删除',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.delAttachFile(target);
+    },
+    updateStatus: function(selection) {
+        this.setDisabled(selection.length != 1);
+    }
+});
 
 //刷新 
 ActionManager.refreshAttachFile = function(traget) {
@@ -332,26 +365,87 @@ ActionManager.showUpLoadExcelError = function(obj, isCustomer_number) {
             width: 660,
             items: items
         }],
-        buttons: [{
-            text: '下载错误报告',
-            iconCls: 'download',
-            handler: function(com) {
-                var param = {
-                    downType: 'ErrorReport',
-                    sessiontoken: GlobalFun.getSeesionToken()
-                };
-                var url = isCustomer_number ? GlobalConfig.Controllers.Customer_numberGrid.errorReport : GlobalConfig.Controllers.AttachFileGrid.errorReport;
-                WsCall.downloadFile(url, 'download', param);
+        buttons: [
+            // {
+            //     text: '下载错误报告',
+            //     iconCls: 'download',
+            //     handler: function(com) {
+            //         var param = {
+            //             downType: 'ErrorReport',
+            //             sessiontoken: GlobalFun.getSeesionToken()
+            //         };
+            //         var url = isCustomer_number ? GlobalConfig.Controllers.Customer_numberGrid.errorReport : GlobalConfig.Controllers.AttachFileGrid.errorReport;
+            //         WsCall.downloadFile(url, 'download', param);
+            //     }
+            // }, 
+            {
+                text: '确定',
+                handler: function(com) {
+                    com.up('window').close();
+                }
             }
-        }, {
-            text: '确定',
-            handler: function(com) {
-                com.up('window').close();
-            }
-        }]
+        ]
     }).show();
 };
+//删除 
+ActionManager.delAttachFile = function(target, opts) {
+    var store = target.getStore();
+    var sm = target.getSelectionModel();
+    var records = sm.getSelection();
+    if (!opts && !records[0])
+        return;
+    var ids = [];
+    Ext.Array.each(records, function(rec) {
+        if (rec.data.account_status == 0) {
+            ids.push(rec.data.tracking_number_id);
+        };
+    });
 
+    if (!opts && ids.length == 0) {
+        Ext.Msg.alert('提示', '至少需要1条未结算状态的项目.');
+        return;
+    };
+
+    var defConfig = {
+        title: '提示',
+        msg: '您确定要删除选定的(未结算)项目吗？',
+        buttons: Ext.MessageBox.YESNO,
+        closable: false,
+        fn: function(btn) {
+            if (btn == 'yes') {
+                //获取当前登录用户信息
+                var param = {
+                    sessiontoken: GlobalFun.getSeesionToken(),
+                    tracking_number_ids: ids.join()
+                };
+                if (opts && opts.filter) {
+                    var extraParams = store.getProxy().extraParams;
+                    param = {
+                        arrive_time_start: extraParams.arrive_time_start,
+                        arrive_time_end: extraParams.arrive_time_end,
+                        sessiontoken: GlobalFun.getSeesionToken(),
+                        filter: extraParams.filter
+                    }
+                };
+                // 调用
+                WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.destroy, 'Tracking_numberGrid', param, function(response, opts) {
+                    (new Ext.util.DelayedTask(function() {
+                        store.load();
+                    })).delay(500);
+                }, function(response, opts) {
+
+                    if (!GlobalFun.errorProcess(response.code)) {
+                        Ext.Msg.alert('失败', response.msg);
+                    }
+                }, true);
+
+            }
+        },
+        icon: Ext.MessageBox.QUESTION
+    };
+    var mesConfig = Ext.Object.merge(defConfig, opts);
+    GlobalConfig.newMessageBox.show(mesConfig);
+};
 //查询
 ActionManager.searchAttachFile = function(traget) {
     if (WindowManager.AttachFileWin && WindowManager.AttachFileWin != '') {
@@ -404,7 +498,7 @@ ActionManager.searchAttachFile = function(traget) {
                     fieldLabel: '原文件名',
                     itemId: 'file_name',
                     maxLength: 64
-                },{
+                }, {
                     fieldLabel: '服务器文件名',
                     itemId: 'file_save_name',
                     maxLength: 64
@@ -456,7 +550,7 @@ ActionManager.searchAttachFile = function(traget) {
                         GlobalFun.GridSearchInitFun('file_name', true, store, false);
                     }
 
-                     //名称
+                    //名称
                     var file_save_name = win.down('#file_save_name').getValue();
                     if (file_save_name != '') {
                         //加入filterMap
@@ -489,3 +583,5 @@ ActionManager.searchAttachFile = function(traget) {
     }
 
 };
+
+
