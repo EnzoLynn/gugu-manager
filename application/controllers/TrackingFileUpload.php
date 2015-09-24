@@ -226,7 +226,7 @@ class TrackingFileUpload extends AdminController {
         $file_id = (int)$this->input->get_post('file_ids');
         $file = $this->file_upload_model->getFile($file_id);
 
-        if ($file['import_status'] != 1) {
+        if ($file['import_status'] == 1) {
             output_error('导入成功的文件不能删除');
         }
 
