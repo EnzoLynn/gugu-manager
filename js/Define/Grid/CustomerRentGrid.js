@@ -324,7 +324,7 @@ ActionManager.copyCustomerRule = function(target, record) {
 //添加编辑窗口  规则
 Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
     extend: 'Ext.window.Window',
-    title: "添加", 
+    title: "添加",
     iconCls: '',
     record: false,
     closeAction: 'hide',
@@ -357,13 +357,13 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
         },
         items: [{
             name: 'rent_no',
-            fieldLabel: '合同编号', 
+            fieldLabel: '合同编号',
             allowBlank: false,
             blankText: '不能为空'
         }, {
             name: 'rent_area',
             fieldLabel: '租贷面积（平米）',
-            itemId: 'rent_areaItemId', 
+            itemId: 'rent_areaItemId',
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexNumber,
@@ -371,14 +371,14 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
         }, {
             name: 'area_to_order_number',
             fieldLabel: '面积单量比',
-            itemId: 'area_to_order_numberItemId', 
+            itemId: 'area_to_order_numberItemId',
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexMoney2Fixed,
             regexText: '请输入数字'
         }, {
             name: 'rent_pre_price',
-            fieldLabel: '房租单价', 
+            fieldLabel: '房租单价',
             allowBlank: false,
             blankText: '不能为空',
             regex: GlobalConfig.RegexController.regexMoney2Fixed,
@@ -403,10 +403,10 @@ Ext.define('chl.Grid.AddUpdateCustomerRuleWin', {
             itemId: 'date_end',
             vtype: 'daterange',
             startDateField: 'date_start'
-        },{
+        }, {
             name: 'customer_rent_id',
-            xtype:'hidden',
-            colspan:2,
+            xtype: 'hidden',
+            colspan: 2,
             fieldLabel: '自动编号'
         }, {
             xtype: 'container',
@@ -517,10 +517,10 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                         },
                         items: [{
                             fieldLabel: '首重重量(kg)',
-                            value: item['weight_start'] 
-                        },{
+                            value: item['weight_start']
+                        }, {
                             fieldLabel: '首重价格',
-                            value: item['weight_start_price'] 
+                            value: item['weight_start_price']
                         }, {
                             fieldLabel: '续重重量(kg)',
                             value: item['weight_pre']
@@ -654,7 +654,7 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                                 allowBlank: false,
                                 blankText: '不能为空'
                             }, {
-                                xtype: 'numberfield', 
+                                xtype: 'numberfield',
                                 name: 'weight_start_price',
                                 fieldLabel: '价格',
                                 decimalPrecision: 2,
@@ -815,6 +815,17 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                     }
                 },
                 buttons: [{
+                    itemId: 'copyCustomerRule',
+                    iconCls: 'copyCustomerRule',
+                    tooltip: '复制已有其他省份规则到该省份',
+                    text: '复制已有规则',
+                    handler: function() {
+                        var me = this;
+                        var w = me.up('window');
+                        //w.pid 'customer_rent_id': WindowManager.AddUpdateCustomerRuleWin.record.data.customer_rent_id,
+                        ActionManager.copyCustomerRule_Province(w.pid, WindowManager.AddUpdateCustomerRuleWin.record);
+                    }
+                }, {
                     text: '退出',
                     handler: function() {
                         var me = this;
@@ -829,4 +840,59 @@ GlobalFun.CustomerRent_CreateRuleFun = function(com) {
                 Ext.Msg.alert('失败', response.msg);
             }
         }, false);
+}
+
+
+//复制已有规则到省份 
+ActionManager.copyCustomerRule_Province = function(targetCode, record) {
+    Ext.create('Ext.window.Window', {
+        modal: true,
+        title: '复制已有其他省份规则到该省份',
+        iconCls: 'copyCustomerRule',
+        minWidth: 400,
+        minHeight: 100,
+        bodyPadding: 20,
+        items: [{
+            name: 'resourceType',
+            fieldLabel: '规则来源',
+            itemId: 'resourceType',
+            xtype: 'combobox',
+            store: StoreManager.ComboStore.ProvinceStore,
+            queryMode: 'local',
+            displayField: 'Name',
+            valueField: 'Id',
+            value: '310000',
+            editable: false
+        }],
+        buttons: [{
+            text: '确定',
+            handler: function(com) {
+                var win = com.up('window'); 
+                var param = {
+                    customer_rent_id : record.data.customer_rent_id,
+                    'province_code_from': win.down('#resourceType').getValue(),
+                    'province_code_to': targetCode,
+                    sessiontoken: GlobalFun.getSeesionToken()
+                };
+                // 调用
+                WsCall.pcall(GlobalConfig.Controllers.CustomerRentGrid.copyRuleToPrivice, 'copyRuleToPrivice', param, function(response, opts) {
+                        var data = response.data;
+                        Ext.Msg.alert('成功', '复制成功.');
+                        win.close();
+                    },
+                    function(response, opts) {
+                        if (!GlobalFun.errorProcess(response.code)) {
+                            Ext.Msg.alert('失败', response.msg);
+                        }
+                    }, false);
+            }
+        }, {
+            text: '关闭',
+            handler: function(com) {
+                var win = com.up('window');
+                win.close();
+            }
+        }]
+    }).show();
+
 }

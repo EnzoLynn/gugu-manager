@@ -76,7 +76,7 @@ GlobalConfig.Controllers = {
     Heartbeat: 'login/heartbeat', //'/login/heartbeat.json', //心跳
 
     User: { //用户登录相关
-        GetCurrUserInfo: '/login/ajaxLogin',//'http://localhost:8222/upload', //'/data/login.json',
+        GetCurrUserInfo: '/login/ajaxLogin', //'http://localhost:8222/upload', //'/data/login.json',
         CheckUserPassword: '/CheckUserPassword111',
         UserLoginOut: '/login/logout' //'/data/UserLoginOut.json'
     },
@@ -104,15 +104,17 @@ GlobalConfig.Controllers = {
         read: 'customerNumber/getList', //globalFix + '/Customer_numberGrid.json',
         update: 'customerNumber/update',
         destroy: 'customerNumber/delete',
-        uploadExcel: '/customerNumber/upload', 
-        downloadTemplate:'/downloadExcelTemplate/customerNumberExcel'
+        uploadExcel: '/customerNumber/upload',
+        downloadTemplate: '/downloadExcelTemplate/customerNumberExcel',
+        errorReport: 'customerNumber/downloadError'
     },
     CustomerRentGrid: { //合同
         create: '/customerRent/add', //globalFix + '/CustomerRentGrid.json',
         read: '/customerRent/getList', //globalFix + '/CustomerRentGrid.json',
         update: globalFix + '/CustomerRentGrid.json',
         destroy: globalFix + '/CustomerRentGrid.json',
-        copyRuleToRent:'/customerRent/copy'
+        copyRuleToRent: '/customerRent/copy',
+        copyRuleToPrivice: 'customerExpressRule/copyProvinceRule'
     },
     ExpressPanel: {
         GetCustomer_numberCount: 'expressRule/countProvinceRule', //globalFix + '/GetCustomer_numberCount.json',
@@ -124,15 +126,26 @@ GlobalConfig.Controllers = {
         create: globalFix + '/traking_numberGrid.json',
         read: 'trackingNumber/getList', //globalFix + '/traking_numberGrid.json',
         update: globalFix + '/traking_numberGrid.json',
-        destroy:'/trackingNumber/delete',
+        destroy: '/trackingNumber/delete',
         uploadExcel: '/uploadTrackingNumber/upload', //globalFix + '/uploadExcel',
         outPutExcel: '/trackingNumber/downloadExcel', //globalFix + '/outPutExcel',
         translateExpress: '/trackingNumber/countPrice',
-        translateCost: '/trackingNumber/countPrice', 
+        translateCost: '/trackingNumber/countPrice',
         retranslateExpress: '/trackingNumber/reCountPrice',
-        retranslateCost: '/trackingNumber/reCountPrice', 
-        downloadTemplate:'/downloadExcelTemplate/trackingNumberExcel',
-        setAccount_status:'/setAccount_status'
+        retranslateCost: '/trackingNumber/reCountPrice',
+        downloadTemplate: '/downloadExcelTemplate/trackingNumberExcel',
+        setAccount_status: '/trackingNumber/initAccount',
+        errorReport: 'uploadTrackingNumber/downloadError'
+    },
+    AttachFileGrid:{
+        create: globalFix + '/traking_numberGrid.json',
+        read: 'trackingFileUpload/getList', //globalFix + '/traking_numberGrid.json',
+        update: globalFix + '/traking_numberGrid.json',
+        destroy: '/trackingFileUpload/delete',
+        uploadExcel:'/trackingFileUpload/upload',
+        validateAttachFile:'trackingFileUpload/validate',
+        importAttachFile:'trackingFileUpload/import',
+        dlErrorReportAttachFile:'trackingFileUpload/downloadError'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {
@@ -267,3 +280,32 @@ if (cookie) {
         GlobalConfig.globalStatus = obj;
     }
 }
+
+//全局进度条 runner方法
+GlobalConfig.Pro_Runner = function() {
+    var f = function(v, pbar, btn, count, cb) {
+        return function() {
+            if (v > count) {
+                btn.setDisabled(false);
+                cb();
+            } else {
+                if (pbar.id == 'pbar4') {
+                    //give this one a different count style for fun
+                    var i = v / count;
+                    pbar.updateProgress(i, Math.round(100 * i) + '% 进行中...');
+                } else {
+                    pbar.updateProgress(v / count, '已加载 ' + v + ' of ' + count + '...');
+                }
+            }
+        };
+    };
+    return {
+        run: function(pbar, btn, count, cb) {
+            btn.setDisabled(true);
+            var ms = 5000 / count;
+            for (var i = 1; i < (count + 2); i++) {
+                setTimeout(f(i, pbar, btn, count, cb), i * ms);
+            }
+        }
+    };
+}();

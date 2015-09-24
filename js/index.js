@@ -94,6 +94,12 @@ Ext.onReady(function() {
         });
         GridManager.SetCustomer_number_allGridSelectionChangeEvent();
 
+        //创建文件管理 
+        GridManager.CreateAttachFileGrid({
+            needLoad: false
+        });
+        GridManager.SetAttachFileGridSelectionChangeEvent();
+
         //创建主目录树
         TreeManager.CreateMainItemListTree({
             needLoad: false
@@ -175,6 +181,7 @@ Ext.onReady(function() {
                             //gridArr.push(GridManager.TestGrid);
                             gridArr.push(GridManager.CustomerGrid);
                             gridArr.push(GridManager.Tracking_numberGrid);
+                            gridArr.push(GridManager.AttachFileGrid);
                             gridArr.push(GridManager.ExpressPanel);
                             gridArr.push(GridManager.CompanyPanel_Cost);                            
                             gridArr.push(GridManager.Express_pointGrid);
@@ -232,12 +239,12 @@ Ext.onReady(function() {
                 collapsible: false,
                 items: ['->', '-',{
                     xtype:'button',
-                    width: 120,
+                    width: 130,
                     iconCls: 'about',
-                    text: '关于(Version 9.17)',
+                    text: '关于(Version 9.24)',
                     tooltip: '关于本系统',
                     handler:function(){
-                        Ext.Msg.alert('关于本系统(Version 9.17)','Designed by EnzoLynn & YiHui. <br> Copyright © 2015-xxxx  gugu123.com 版权所有');
+                        Ext.Msg.alert('关于本系统(Version 9.24)','Designed by EnzoLynn & YiHui. <br> Copyright © 2015-xxxx  gugu123.com 版权所有');
                     }
                 }, '-',{
                     xtype: 'button',

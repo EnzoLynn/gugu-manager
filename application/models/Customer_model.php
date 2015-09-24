@@ -25,6 +25,17 @@ class Customer_model extends CI_Model{
         $query = $this->db->get('customer');
         return $query->first_row();
     }
+    //后期改为文件缓存
+    function getAllCustomers() {
+        $query = $this->db->get('customer');
+        //return $query->fetch_option('customer_id', 'customer_name');
+        $rows = $query->result_array();
+        $customers = array();
+        foreach ($rows as $row) {
+            $customers[$row['customer_id']] = $row['customer_name'];
+        }
+        return $customers;
+    }
 
     function getCustomers($data){
         $data = array(

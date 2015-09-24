@@ -26,7 +26,7 @@ class DownloadExcelTemplate extends AdminController
             '4' => '揽收时间',
             '5' => '快递公司'
         );
-        outputExcel([], $header, '客户面单号导入模版');
+        outputExcel([], $header, '快递发货单号导入');
     }
 
     public function customerNumberExcel() {
@@ -35,6 +35,6 @@ class DownloadExcelTemplate extends AdminController
             '1' => '商家代码',
             '2' => '快递公司'
         );
-        outputExcel([], $header, '快递发货单号导入');
+        outputExcel([], $header, '客户面单号导入模版');
     }
 }

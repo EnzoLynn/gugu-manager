@@ -28,6 +28,33 @@ StoreManager.ComboStore.Customer_numberGridStatusStore = Ext.create('Ext.data.St
     }]
 });
 
+StoreManager.ComboStore.AttachFileGridValidate_statusStore = Ext.create('Ext.data.Store', {
+    storeId: 'Tracking_numberGridTypeStoreId',
+    fields: ['Id', 'Name'],
+    data: [{
+        Id: 0,
+        Name: '未验证'
+    }, {
+        Id: 1,
+        Name: '验证通过'
+    }, {
+        Id: 2,
+        Name: '验证未通过'
+    }]
+});
+StoreManager.ComboStore.AttachFileGridImport_statusStore = Ext.create('Ext.data.Store', {
+    storeId: 'Tracking_numberGridTypeStoreId',
+    fields: ['Id', 'Name'],
+    data: [{
+        Id: 0,
+        Name: '未导入'
+    }, {
+        Id: 1,
+        Name: '已导入'
+    }]
+});
+
+
 //角色Store
 // StoreManager.ComboStore.RoleStore = Ext.create('Ext.data.Store', {
 //     storeId: 'RoleStoreId',

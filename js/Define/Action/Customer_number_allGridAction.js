@@ -26,6 +26,91 @@ Ext.create('chl.Action.Customer_number_allGridAction', {
     updateStatus: function(selection) {}
 });
 
+
+
+
+Ext.create('chl.Action.Customer_number_allGridAction', {
+    itemId: 'removeCustomer_number_all_t',
+    iconCls: 'remove',
+    tooltip: '删除所有匹配查询结果的项目',
+    text: '删除(匹配)',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.delCustomer_number_all(target,{
+            filter:true,
+            msg:'您确定要所有删除匹配查询结果的项目吗？'
+        });
+    },
+    updateStatus: function(selection) { 
+    }
+});
+Ext.create('chl.Action.Customer_number_allGridAction', {
+    itemId: 'removeCustomer_number_all',
+    iconCls: 'remove',
+    tooltip: '删除',
+    text: '删除',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.delCustomer_number_all(target);
+    },
+    updateStatus: function(selection) {
+        this.setDisabled(selection.length == 0);
+    }
+});
+
+//删除 
+ActionManager.delCustomer_number_all = function(target, opts) {
+
+
+    var sm = target.getSelectionModel();
+    var records = sm.getSelection();
+    if (!opts && !records[0])
+        return;
+    var ids = [];
+    Ext.Array.each(records, function(rec) {
+        ids.push(rec.data.number_id);
+    });
+    var store = target.getStore();
+    var defConfig = {
+        title: '提示',
+        msg: '您确定要删除选定的项目吗？',
+        buttons: Ext.MessageBox.YESNO,
+        closable: false,
+        fn: function(btn) {
+            if (btn == 'yes') {
+                //获取当前登录用户信息
+                var param = {
+                    sessiontoken: GlobalFun.getSeesionToken(),
+                    number_ids: ids.join()
+                };
+                if (opts && opts.filter) {
+                    var extraParams = store.getProxy().extraParams;
+                    param = {
+                        sessiontoken: GlobalFun.getSeesionToken(),
+                        filter:extraParams.filter
+                    }
+                };
+                // 调用
+                WsCall.pcall(GlobalConfig.Controllers.Customer_numberGrid.destroy, 'Customer_numberGrid', param, function(response, opts) {
+                    (new Ext.util.DelayedTask(function() {
+                        store.load();
+                    })).delay(500);
+                }, function(response, opts) {
+
+                    if (!GlobalFun.errorProcess(response.code)) {
+                        Ext.Msg.alert('失败', response.msg);
+                    }
+                }, true);
+
+            }
+        },
+        icon: Ext.MessageBox.QUESTION
+    };
+    var mesConfig = Ext.Object.merge(defConfig, opts);
+    GlobalConfig.newMessageBox.show(mesConfig);
+};
+
+
 //刷新
 ActionManager.refreshCustomer_number_all = function(target) {
     target.loadGrid();

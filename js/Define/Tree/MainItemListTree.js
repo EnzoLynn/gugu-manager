@@ -117,6 +117,10 @@ TreeManager.SetMainItemListTreeSelectionChangeEvent = function(param) {
             GlobalFun.TreeSelChangeGrid('Customer_number_allGrid', GridManager.Customer_number_allGrid, '面单号查询');
             return;
         }
+        if (seles[0].data.id == "006") {
+            GlobalFun.TreeSelChangeGrid('AttachFileGrid', GridManager.AttachFileGrid, '文件管理');
+            return;
+        }
         // if (seles[0].data.id == "003_1") {
 
         // }

@@ -12,11 +12,18 @@ class Login extends MY_Controller {
         if($this->input->post('admin_name') && $this->input->post('admin_pwd')) {
             $admin_name = $this->input->post('admin_name');
             $admin_pwd = $this->input->post('admin_pwd');
-            $admin = $this->admin_model->login($admin_name, $admin_pwd);
+            $where = array(
+                'admin_name' => $admin_name,
+                'admin_pwd'  => $admin_pwd
+            );
+            $admin = $this->admin_model->getOne($where);
         }else if($this->input->get_post('sessiontoken')){
             $session = $this->session_token_model->getSession($this->input->get_post('sessiontoken'));
-            if($session) {
-                $admin = $this->admin_model->getAdmin($session['admin_name']);
+            if(!empty($session) > 0) {
+                $where = array(
+                    'admin_name' => $session['admin_name']
+                );
+                $admin = $this->admin_model->getOne($where);
             }else{
                 delete_cookie('login_sessiontoken');
                 $json = array(

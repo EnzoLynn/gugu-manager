@@ -52,35 +52,46 @@
          // xhr.send(fd);
          me.FileUpload(file, scope);
      },
-     FileUpload: function(file, scope) {
+     FileUpload: function(file, scope, target, mywin) {
 
          //var reader = new FileReader();
          var xhr = new XMLHttpRequest();
+
          var fd = new FormData();
-
-         var xhr = new XMLHttpRequest();
-
-
          scope.updatePropress(xhr, scope);
 
          xhr.open("POST", scope.uploadUrl, true);
+
+         xhr.timeout = 600000;
          //xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
          // reader.onload = function(evt) {
          //     xhr.send(evt.target.result);
          // };
          // reader.readAsBinaryString(file);
+         xhr.addEventListener("loadstart", function() {
+             if (mywin) {
+                 mywin.el.mask('请稍候...');
+             };
+         });
+
 
          xhr.onreadystatechange = function() {
 
              if (xhr.readyState == 4 && xhr.status == 200) {
+                 if (mywin) {
+                     mywin.el.unmask();
+                 };
+
                  // Handle response. 
                  var data = Ext.JSON.decode(xhr.responseText);
+                 if (data.data && data.data.length > 0) {
+                     scope.multipleDataObj[file.name] = data.data;
+                 };
 
-                 scope.multipleDataObj[file.name] = data.data;
                  scope.progressEl.dom.value = 100;
                  scope.currentFile++;
                  scope.countEl.dom.innerHTML = "文件: " + scope.currentFile + '/' + scope.totalFile;
-               
+
                  if (scope.currentFile == scope.totalFile) {
                      scope.currentFile = 0;
                      scope.totalFile = 0;
@@ -92,7 +103,13 @@
                              scope.multipleDataObj = {};
                          });
 
-                     };
+                     } else {
+                         if (target) {
+                             target.loadGrid();
+                             var outWin = scope.up('window');
+                             outWin.close();
+                         };
+                     }
 
 
 
@@ -107,7 +124,7 @@
 
      },
 
-     sendFiles: function(files) {
+     sendFiles: function(files, target, mywin) {
          var me = this;
          me.progressEl.dom.value = 0;
          me.countEl.dom.innerHTML = "文件: 1" + '/' + files.length;
@@ -117,9 +134,10 @@
              str += files[i].name + ";";
          };
          me.fileNameLabelEl.dom.innerHTML = str;
+
          for (var i = 0; i < files.length; i++) {
 
-             new me.FileUpload(files[i], me);
+             me.FileUpload(files[i], me, target, mywin);
          }
      },
 

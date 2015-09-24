@@ -16,10 +16,6 @@ class CustomerNumber extends AdminController {
         $this->load->model('file_upload_model');
     }
 
-    public function index() {
-
-    }
-
     public function getList() {
         $data = array(
             'page' => (int)$this->input->post('page'),
@@ -110,18 +106,28 @@ class CustomerNumber extends AdminController {
     }
 
     public function delete() {
-        $number_ids = explode(',',$this->input->post('number_ids'));
-        foreach ($number_ids as $number_id) {
-            $this->customer_number_model->deleteCustomerNumber($number_id);
+        if ($this->input->post('number_ids')) {
+            $number_ids = explode(',',$this->input->post('number_ids'));
+            $cond = array('use_status=0');//未使用
+            $customer_numbers = $this->customer_number_model->getCustomerNumbersByIDS($number_ids, $cond);
+        } else {
+            $data = array(
+                'filter' => objectToArray(json_decode($this->input->post('filter'))),
+                'customer_id' => (int)$this->input->post('customer_id')
+            );
+            if (isset($data['filter']['use_time'])) {
+                $temp = explode(',', $data['filter']['use_time']);
+                $data['filter']['use_time_begin'] = $temp[0];
+                $data['filter']['use_time_end'] = $temp[1];
+            }
+            $data['filter']['account_status'] = 0;
+            $customer_numbers = $this->customer_number_model->getCustomerNumbers($data);
         }
-        $json = array(
-            'success' => true,
-            'data' => [],
-            'total' => 1,
-            'msg' => '成功',
-            'code' => '01'
-        );
-        echo json_encode($json);
+
+        foreach ($customer_numbers as $customer_number) {
+            $this->customer_number_model->deleteCustomerNumber($customer_number['number_id']);
+        }
+        output_success();
     }
     //上传excel
     public function upload() {
@@ -192,6 +198,12 @@ class CustomerNumber extends AdminController {
         $msg = $this->customer_number_model->validateData($data);
 
         if ($msg) {
+
+            $temp = array(
+                'error_upload_number_file' => $file_path
+            );
+            $this->session_token_model->addData($this->session_token, $temp);
+
             $json = array(
                 'success' => false,
                 'data' => $msg,
@@ -202,7 +214,40 @@ class CustomerNumber extends AdminController {
             echo json_encode($json);
             exit;
         } else {
+            $this->session_token_model->clearData($this->session_token, 'error_upload_number_file');
             return $data;
         }
+    }
+
+    function downloadError() {
+        $file = $this->session_token_model->getData($this->session_token, 'error_upload_number_file');
+        if (!$file) {
+            output_error('没有日志可供下载');
+        }
+        $pars_default = array(
+            'sheetIndex' => 0,
+            'headerKey' => TRUE,
+            'readColumn' => array('运单号码', '商家代码', '快递公司')
+        );
+
+        $data = loadExcel($file, $pars_default);
+
+        if (!$data) {
+            //output_error('数据有问题，列都不匹配');
+            $msg = array('数据有问题，列都不匹配');
+            $header = array(
+                //'tracking_number' => '运单号',
+                'msg'   => '消息'
+            );
+            outputCSV($msg, $header);
+        }
+
+        $msg = $this->customer_number_model->validateData($data);
+
+        $header = array(
+            //'tracking_number' => '运单号',
+            'msg'   => '消息'
+        );
+        outputCSV($msg, $header);
     }
 }

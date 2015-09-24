@@ -16,198 +16,187 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
 });
 
 
+// Ext.create('chl.Action.Tracking_numberGridAction', {
+//     itemId: 'importTracking_number',
+//     iconCls: 'import',
+//     tooltip: '导入',
+//     text: '导入',
+//     handler: function() {
+//         var target = this.getTargetView();
+//         var win = Ext.create('Ext.window.Window', {
+//             height: 200,
+//             width: 800,
+//             modal: true,
+//             resizable: false,
+//             iconCls: 'import',
+//             title: '上传文件',
+//             bodyPadding: 5,
+//             defaults: {
+//                 margin: '0 0 20 0'
+//             },
+//             items: [{
+//                 xtype: 'form',
+//                 itemId: 'formId',
+//                  hidden:true,
+//                 bodyPadding: 15,
+//                 items: [{
+//                     xtype: 'filefield',
+//                     name: 'fileUpload',
+                   
+//                     fieldLabel: '请选择导入的文件',
+//                     width: 600,
+//                     labelWidth: 150,
+//                     labelAlign: 'right',
+//                     blankText: '请选择导入的文件',
+//                     msgTarget: 'side',
+//                     itemId: 'fileupId',
+//                     buttonConfig: {
+//                         iconCls: 'import',
+//                         width: 100
+//                     },
+//                     buttonText: '添加文件',
+//                     listeners: {
+//                         change: function(com) {
+//                             var me = com;
+//                             var supType = new Array('xls', 'xlsx');
+//                             var fNmae = me.getValue();
+//                             var fType = fNmae.substring(
+//                                 fNmae.lastIndexOf('.') + 1,
+//                                 fNmae.length).toLowerCase();
+//                             var returnFlag = true;
+
+//                             Ext.Array.each(supType, function(rec) {
+//                                 if (rec == fType) {
+//                                     returnFlag = false;
+//                                     return false;
+//                                 }
+//                             });
+
+//                             if (returnFlag) {
+//                                 Ext.Msg.alert('添加文件', '不支持的文件格式！');
+//                                 return;
+//                             }
+//                             var f = me.up('form');
+//                             var outWin = me.up('window');
+//                             var form = f.getForm();
+//                             var urlStr = GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken();
+//                             form.submit({
+//                                 timeout: 60 * 10,
+//                                 url: urlStr,
+//                                 waitMsg: '正在上传...',
+//                                 waitTitle: '等待文件上传,请稍候...',
+//                                 success: function(fp, action) {
+//                                     var data = action.result.data;
+//                                     //if (action.result.success) {
+//                                     target.loadGrid();
+//                                     outWin.close();
+//                                     //} else {                                        
+//                                     //ActionManager.showUpLoadExcelError(action.result.data);
+//                                     //}
+//                                 },
+//                                 failure: function(fp, action) {
+//                                     if (!GlobalFun.errorProcess(action.result.code)) {
+//                                         var obj = {};
+//                                         obj[fNmae] = action.result.data;
+//                                         ActionManager.showUpLoadExcelError(obj);
+
+//                                     }
+//                                 }
+//                             });
+//                         }
+//                     }
+//                 }]
+//             }, {
+//                 xtype: 'form',
+//                 itemId: 'h5formId',
+//                 layout: 'vbox',
+//                 bodyPadding: 5,
+//                 items: [{
+//                     xtype: 'container',
+//                     style: {
+//                         border: '1px dotted  green'
+//                     },
+//                     items: [{
+//                         xtype: 'Html5FileUpload',
+//                         name: 'fileUpload',
+//                         labelAlign: 'right',
+
+//                         fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
+//                         width: 700,
+//                         height: 100,
+//                         buttonOnly: true,
+//                         labelWidth: 150,
+//                         msgTarget: 'side',
+//                         itemId: 'fileupId',
+//                         buttonConfig: {
+//                             iconCls: 'import',
+//                             width: 300
+//                         },
+//                         uploadUrl: GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
+//                         accept: ".xls*",
+//                         buttonText: '添加文件',
+//                         listeners: {
+//                             change: function(com) {
+//                                 var me = com;
+//                                 if (Ext.isIE) {
+//                                     Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
+//                                     return;
+//                                 }
+//                                 var supType = new Array('xls', 'xlsx');
+//                                 var fNmae = me.getValue();
+//                                 var fType = fNmae.substring(
+//                                     fNmae.lastIndexOf('.') + 1,
+//                                     fNmae.length).toLowerCase();
+//                                 var returnFlag = true;
+
+//                                 Ext.Array.each(supType, function(rec) {
+//                                     if (rec == fType) {
+//                                         returnFlag = false;
+//                                         return false;
+//                                     }
+//                                 });
+
+//                                 if (returnFlag) {
+//                                     Ext.Msg.alert('添加文件', '不支持的文件格式！');
+//                                     return;
+//                                 }
+//                                 me.sendFiles(me.fileInputEl.dom.files,target,win);
+//                                 me.fileInputEl.dom.value="";
+//                             }
+//                         }
+//                     }]
+//                 }]
+//             }],
+//             buttons: [{
+//                 text: '下载导入模版',
+//                 iconCls: 'downloadTpl',
+//                 width: 120,
+//                 handler: function() {
+
+//                     var param = {
+//                         downType: 'importTracking_number',
+//                         sessiontoken: GlobalFun.getSeesionToken()
+//                     };
+//                     WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.downloadTemplate, 'download', param);
+//                 }
+//             }, {
+//                 text: '关闭',
+//                 handler: function() {
+//                     win.close();
+//                 }
+//             }]
+//         });
+//         win.show();
+//     },
+//     updateStatus: function(selection) {
+
+//     }
+// });
 Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'importTracking_number',
-    iconCls: 'import',
-    tooltip: '导入',
-    text: '导入',
-    handler: function() {
-        var target = this.getTargetView();
-        var win = Ext.create('Ext.window.Window', {
-            height: 360,
-            width: 800,
-            modal: true,
-            resizable: false,
-            iconCls: 'import',
-            title: '上传文件',
-            bodyPadding: 15,
-            defaults: {
-                margin: '0 0 20 0'
-            },
-            items: [{
-                xtype: 'form',
-                itemId: 'formId',
-                bodyPadding: 15,
-                items: [{
-                    xtype: 'filefield',
-                    name: 'fileUpload',
-                    fieldLabel: '请选择导入的文件',
-                    width: 600,
-                    labelWidth: 150,
-                    labelAlign: 'right',
-                    blankText: '请选择导入的文件',
-                    msgTarget: 'side',
-                    itemId: 'fileupId',
-                    buttonConfig: {
-                        iconCls: 'import',
-                        width: 100
-                    },
-                    buttonText: '添加文件',
-                    listeners: {
-                        change: function(com) {
-                            var me = com;
-                            var supType = new Array('xls', 'xlsx');
-                            var fNmae = me.getValue();
-                            var fType = fNmae.substring(
-                                fNmae.lastIndexOf('.') + 1,
-                                fNmae.length).toLowerCase();
-                            var returnFlag = true;
-
-                            Ext.Array.each(supType, function(rec) {
-                                if (rec == fType) {
-                                    returnFlag = false;
-                                    return false;
-                                }
-                            });
-
-                            if (returnFlag) {
-                                Ext.Msg.alert('添加文件', '不支持的文件格式！');
-                                return;
-                            }
-                            var f = me.up('form');
-                            var outWin = me.up('window');
-                            var form = f.getForm();
-                            var urlStr = GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken();
-                            form.submit({
-                                timeout: 60 * 10,
-                                url: urlStr,
-                                waitMsg: '正在上传...',
-                                waitTitle: '等待文件上传,请稍候...',
-                                success: function(fp, action) {
-                                    var data = action.result.data;
-                                    //if (action.result.success) {
-                                    target.loadGrid();
-                                    outWin.close();
-                                    //} else {                                        
-                                    //ActionManager.showUpLoadExcelError(action.result.data);
-                                    //}
-                                },
-                                failure: function(fp, action) {
-                                    if (!GlobalFun.errorProcess(action.result.code)) {
-                                        var obj = {};
-                                        obj[fNmae] = action.result.data;
-                                        ActionManager.showUpLoadExcelError(obj);
-
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }]
-            }, {
-                xtype: 'form',
-                itemId: 'h5formId',
-                layout: 'vbox',
-                bodyPadding: 15,
-                items: [{
-                    xtype: 'label',
-                    style: {
-                        'font-weight': 'bold'
-                    },
-                    text: '如果您使用的是高级的支持Html5的浏览器，请使用的这里的上传'
-                }, {
-                    xtype: 'label',
-                    style: {
-                        color: 'red',
-                        'font-weight': 'bold'
-                    },
-                    text: '多文件批量，更快捷，可拖拽文件，可视化的真实上传进度显示,更大的文件'
-                }, {
-                    xtype: 'container',
-                    style: {
-                        border: '1px dotted  green'
-                    },
-                    items: [{
-                        xtype: 'Html5FileUpload',
-                        name: 'fileUpload',
-                        labelAlign: 'right',
-
-                        fieldLabel: '请选择导入的文件<br/>(可拖拽文件到此处)',
-                        width: 600,
-                        height: 100,
-                        buttonOnly: true,
-                        labelWidth: 150,
-                        msgTarget: 'side',
-                        itemId: 'fileupId',
-                        buttonConfig: {
-                            iconCls: 'import',
-                            width: 300
-                        },
-                        uploadUrl: GlobalConfig.Controllers.Tracking_numberGrid.uploadExcel + "?req=call&callname=uploadExcel&sessiontoken=" + GlobalFun.getSeesionToken(),
-                        accept: ".xls*",
-                        buttonText: '添加文件',
-                        listeners: {
-                            change: function(com) {
-                                var me = com;
-                                if (Ext.isIE) {
-                                    Ext.Msg.alert('消息', '您的浏览器不支持Html5上传,请更换浏览器或升级版本。');
-                                    return;
-                                }
-                                var supType = new Array('xls', 'xlsx');
-                                var fNmae = me.getValue();
-                                var fType = fNmae.substring(
-                                    fNmae.lastIndexOf('.') + 1,
-                                    fNmae.length).toLowerCase();
-                                var returnFlag = true;
-
-                                Ext.Array.each(supType, function(rec) {
-                                    if (rec == fType) {
-                                        returnFlag = false;
-                                        return false;
-                                    }
-                                });
-
-                                if (returnFlag) {
-                                    Ext.Msg.alert('添加文件', '不支持的文件格式！');
-                                    return;
-                                }
-                                me.sendFiles(me.fileInputEl.dom.files);
-
-                            }
-                        }
-                    }]
-                }]
-            }],
-            buttons: [{
-                text: '下载导入模版',
-                iconCls: 'downloadTpl',
-                width: 120,
-                handler: function() {
-
-                    var param = {
-                        downType: 'importTracking_number',
-                        sessiontoken: GlobalFun.getSeesionToken()
-                    };
-                    WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.downloadTemplate, 'download', param);
-                }
-            }, {
-                text: '关闭',
-                handler: function() {
-                    win.close();
-                }
-            }]
-        });
-        win.show();
-    },
-    updateStatus: function(selection) {
-
-    }
-});
-Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'exportTracking_number',
+    itemId: 'exportTracking_number_t',
     iconCls: 'export',
-    tooltip: '导出',
-    text: '导出',
+    tooltip: '导出所有匹配查询结果的项目',
+    text: '导出(匹配)',
     handler: function() {
         var target = this.getTargetView();
         var store = target.getStore();
@@ -222,6 +211,47 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
             sessiontoken: GlobalFun.getSeesionToken()
         };
         WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.outPutExcel, 'download', param);
+    },
+    updateStatus: function(selection) {}
+});
+
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'exportTracking_number',
+    iconCls: 'export',
+    tooltip: '导出',
+    text: '导出',
+    handler: function() {
+        var target = this.getTargetView();
+        var store = target.getStore();
+        var sm = target.getSelectionModel();
+        var records = sm.getSelection();
+        if (!records[0])
+            return;
+        var ids = [];
+        Ext.Array.each(records, function(rec) {
+            ids.push(rec.data.tracking_number_id);
+        });
+        var param = {
+            downType: 'Tracking_number',
+            tracking_number_ids: ids.join(),
+            sessiontoken: GlobalFun.getSeesionToken()
+        };
+        WsCall.downloadFile(GlobalConfig.Controllers.Tracking_numberGrid.outPutExcel, 'download', param);
+    },
+    updateStatus: function(selection) {}
+});
+
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'removeTracking_number_t',
+    iconCls: 'remove_base',
+    tooltip: '删除所有匹配查询结果的项目',
+    text: '删除(匹配)',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.delTracking_number(target, {
+            filter: true,
+            title: '您确定要所有删除匹配查询结果的项目吗？'
+        });
     },
     updateStatus: function(selection) {}
 });
@@ -254,49 +284,82 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
     updateStatus: function(selection) {}
 });
 
-Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'translateExpressTracking_number',
-    iconCls: 'translate',
-    tooltip: '计算收入',
-    text: '计算收入',
-    handler: function() {
-        var target = this.getTargetView();
-        var param = {
-            sessiontoken: GlobalFun.getSeesionToken(),
-            type: 'income'
-        };
-        // 调用
-        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
-            target.loadGrid();
+// Ext.create('chl.Action.Tracking_numberGridAction', {
+//     itemId: 'translateExpressTracking_number',
+//     iconCls: 'translate',
+//     tooltip: '计算收入',
+//     text: '计算收入',
+//     handler: function() {
+//         var target = this.getTargetView();
+//         var param = {
+//             sessiontoken: GlobalFun.getSeesionToken(),
+//             type: 'income'
+//         };
+//         // 调用
+//         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
+//             target.loadGrid();
 
-        }, function(response, opts) {
-            if (!GlobalFun.errorProcess(response.code)) {
-                ActionManager.translateError(response);
-            }
-            target.loadGrid();
-        }, true);
-    },
-    updateStatus: function(selection) {}
-});
+//         }, function(response, opts) {
+//             if (!GlobalFun.errorProcess(response.code)) {
+//                 ActionManager.translateError(response);
+//             }
+//             target.loadGrid();
+//         }, true);
+//     },
+//     updateStatus: function(selection) {}
+// });
+// Ext.create('chl.Action.Tracking_numberGridAction', {
+//     itemId: 'translateCostTracking_number',
+//     iconCls: 'translate',
+//     tooltip: '计算成本',
+//     text: '计算成本',
+//     handler: function() {
+//         var target = this.getTargetView();
+//         var param = {
+//             sessiontoken: GlobalFun.getSeesionToken(),
+//             type: 'cost'
+//         };
+//         // 调用
+//         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
+//             target.loadGrid();
+//         }, function(response, opts) {
+//             if (!GlobalFun.errorProcess(response.code)) {
+//                 ActionManager.translateError(response);
+//             }
+//             target.loadGrid();
+//         }, true);
+//     },
+//     updateStatus: function(selection) {}
+// });
+
 Ext.create('chl.Action.Tracking_numberGridAction', {
-    itemId: 'translateCostTracking_number',
+    itemId: 'retranslateExpressTracking_number_t',
     iconCls: 'translate',
-    tooltip: '计算成本',
-    text: '计算成本',
+    tooltip: '计算所有匹配查询结果的项目',
+    text: '计算收入(匹配)',
     handler: function() {
+
         var target = this.getTargetView();
+        var store = target.getStore();
+        var extraParams = store.getProxy().extraParams;
+
         var param = {
             sessiontoken: GlobalFun.getSeesionToken(),
-            type: 'cost'
+            type: 'income',
+            arrive_time_start: extraParams.arrive_time_start,
+            arrive_time_end: extraParams.arrive_time_end,
+            dir: 'ASC',
+            sort: 'tracking_number',
+            filter: extraParams.filter
         };
         // 调用
-        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.translateExpress, 'translateExpress', param, function(response, opts) {
-            target.loadGrid();
+        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
+            target.loadGrid(false, true);
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
                 ActionManager.translateError(response);
             }
-            target.loadGrid();
+            target.loadGrid(false, true);
         }, true);
     },
     updateStatus: function(selection) {}
@@ -304,9 +367,9 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'retranslateExpressTracking_number',
-    iconCls: 'retranslate',
-    tooltip: '重新计算收入',
-    text: '重新计算收入',
+    iconCls: 'translate',
+    tooltip: '计算收入',
+    text: '计算收入',
     handler: function() {
 
         var target = this.getTargetView();
@@ -321,7 +384,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         var param = {
             sessiontoken: GlobalFun.getSeesionToken(),
             type: 'income',
-            tracking_number_ids: ids
+            tracking_number_ids: ids.join()
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
@@ -337,12 +400,44 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         this.setDisabled(selection.length < 1);
     }
 });
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'retranslateCostTracking_number_t',
+    iconCls: 'translate',
+    tooltip: '计算所有匹配查询结果的项目',
+    text: '计算成本(匹配)',
+    handler: function() {
+        var target = this.getTargetView();
+        var store = target.getStore();
+        var extraParams = store.getProxy().extraParams;
+
+        var param = {
+            sessiontoken: GlobalFun.getSeesionToken(),
+            type: 'cost',
+            arrive_time_start: extraParams.arrive_time_start,
+            arrive_time_end: extraParams.arrive_time_end,
+            dir: 'ASC',
+            sort: 'tracking_number',
+            filter: extraParams.filter
+        };
+
+        // 调用
+        WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
+            target.loadGrid(false, true);
+        }, function(response, opts) {
+            if (!GlobalFun.errorProcess(response.code)) {
+                ActionManager.translateError(response);
+            }
+            target.loadGrid(false, true);
+        }, true);
+    },
+    updateStatus: function(selection) {}
+});
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'retranslateCostTracking_number',
-    iconCls: 'retranslate',
-    tooltip: '重新计算成本',
-    text: '重新计算成本',
+    iconCls: 'translate',
+    tooltip: '计算成本',
+    text: '计算成本',
     handler: function() {
         var target = this.getTargetView();
         var sm = target.getSelectionModel();
@@ -356,7 +451,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         var param = {
             sessiontoken: GlobalFun.getSeesionToken(),
             type: 'cost',
-            tracking_number_ids: ids
+            tracking_number_ids: ids.join()
         };
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.retranslateExpress, 'translateExpress', param, function(response, opts) {
@@ -372,7 +467,20 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
         this.setDisabled(selection.length < 1);
     }
 });
-
+Ext.create('chl.Action.Tracking_numberGridAction', {
+    itemId: 'account_statusTracking_number_t',
+    iconCls: 'status-suc',
+    tooltip: '设置结算所有匹配查询结果的项目)',
+    text: '设置结算状态(匹配)',
+    handler: function() {
+        var target = this.getTargetView();
+        ActionManager.account_statusTracking_number(target, {
+            filter: true,
+            title: '您确定要设置结算所有匹配查询结果的项目吗？'
+        });
+    },
+    updateStatus: function(selection) {}
+});
 
 Ext.create('chl.Action.Tracking_numberGridAction', {
     itemId: 'account_statusTracking_number',
@@ -391,64 +499,79 @@ ActionManager.refreshTracking_number = function(traget) {
     traget.loadGrid();
 };
 //导入excel错误
-ActionManager.showUpLoadExcelError = function(obj) {
-    var items = [];
+// ActionManager.showUpLoadExcelError = function(obj,isCustomer_number) {
+//     var items = [];
 
-    for (key in obj) {
-        var textItems = [];
-        Ext.Array.each(obj[key], function(item, index) {
-            textItems.push({
-                xtype: 'label',
-                text: item.msg
-            });
-
-        });
-        items.push({
-            xtype: 'fieldset',
-            title: key,
-            layout: 'vbox',
-            collapsible: true,
-            items: textItems
-        });
-    }
+//     for (key in obj) {
+//         var textItems = [];
+//         Ext.Array.each(obj[key], function(item, index) {
+//             textItems.push({
+//                 xtype: 'label',
+//                 text: item.msg
+//             });
+//             if (index >= 200) {
+//                 return false;
+//             };
 
 
+//         });
+//         items.push({
+//             xtype: 'fieldset',
+//             title: key,
+//             layout: 'vbox',
+//             collapsible: true,
+//             items: textItems
+//         });
+//     }
 
-    Ext.create('Ext.window.Window', {
-        title: '数据格式错误',
-        modal: true,
-        width: 700,
-        height: 600,
-        bodyPadding: 15,
-        layout: {
-            type: 'table',
-            columns: 2
-        },
-        items: [{
-            xtype: 'container',
-            cls: 'x-message-box-error ',
-            height: 34,
-            width: 34,
-        }, {
-            xtype: 'label',
-            text: '数据格式错误，请修改下列数据后重新上传'
-        }, {
-            xtype: 'container',
-            margin: '15 0 0 0',
-            colspan: 2,
-            autoScroll: true,
-            height: 470,
-            width: 660,
-            items: items
-        }],
-        buttons: [{
-            text: '确定',
-            handler: function(com) {
-                com.up('window').close();
-            }
-        }]
-    }).show();
-};
+
+
+//     Ext.create('Ext.window.Window', {
+//         title: '数据格式错误',
+//         modal: true,
+//         width: 700,
+//         height: 600,
+//         bodyPadding: 15,
+//         layout: {
+//             type: 'table',
+//             columns: 2
+//         },
+//         items: [{
+//             xtype: 'container',
+//             cls: 'x-message-box-error ',
+//             height: 34,
+//             width: 34,
+//         }, {
+//             xtype: 'label',
+//             text: '数据格式错误，请修改下列数据后重新上传'
+//         }, {
+//             xtype: 'container',
+//             margin: '15 0 0 0',
+//             colspan: 2,
+//             autoScroll: true,
+//             height: 470,
+//             width: 660,
+//             items: items
+//         }],
+//         buttons: [{
+//             text: '下载错误报告',
+//             iconCls:'download',
+//             handler: function(com) { 
+//                 var param = {
+//                     downType: 'ErrorReport',                     
+//                     sessiontoken: GlobalFun.getSeesionToken()
+//                 };
+//                 var url = isCustomer_number?GlobalConfig.Controllers.Customer_numberGrid.errorReport:GlobalConfig.Controllers.Tracking_numberGrid.errorReport;
+//                 WsCall.downloadFile(url, 'download', param);
+//             }
+//         }, {
+//             text: '确定',
+//             handler: function(com) {
+//                 com.up('window').close();
+//             }
+//         }]
+//     }).show();
+// };
 
 //查询
 ActionManager.searchTracking_number = function(traget) {
@@ -706,10 +829,11 @@ ActionManager.translateError = function(response) {
 
 
 //删除 
-ActionManager.delTracking_number = function(traget) {
-    var sm = traget.getSelectionModel();
+ActionManager.delTracking_number = function(target, opts) {
+    var store = target.getStore();
+    var sm = target.getSelectionModel();
     var records = sm.getSelection();
-    if (!records[0])
+    if (!opts && !records[0])
         return;
     var ids = [];
     Ext.Array.each(records, function(rec) {
@@ -718,11 +842,12 @@ ActionManager.delTracking_number = function(traget) {
         };
     });
 
-    if (ids.length == 0) {
-        Ext.Msg.alert('提示', '请选择至少1条未结算状态的项目.');
+    if (!opts && ids.length == 0) {
+        Ext.Msg.alert('提示', '至少需要1条未结算状态的项目.');
         return;
     };
-    GlobalConfig.newMessageBox.show({
+
+    var defConfig = {
         title: '提示',
         msg: '您确定要删除选定的(未结算)项目吗？',
         buttons: Ext.MessageBox.YESNO,
@@ -734,6 +859,15 @@ ActionManager.delTracking_number = function(traget) {
                     sessiontoken: GlobalFun.getSeesionToken(),
                     tracking_number_ids: ids.join()
                 };
+                if (opts && opts.filter) {
+                    var extraParams = store.getProxy().extraParams;
+                    param = {
+                        arrive_time_start: extraParams.arrive_time_start,
+                        arrive_time_end: extraParams.arrive_time_end,
+                        sessiontoken: GlobalFun.getSeesionToken(),
+                        filter: extraParams.filter
+                    }
+                };
                 // 调用
                 WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.destroy, 'Tracking_numberGrid', param, function(response, opts) {
                     (new Ext.util.DelayedTask(function() {
@@ -742,27 +876,54 @@ ActionManager.delTracking_number = function(traget) {
                 }, function(response, opts) {
 
                     if (!GlobalFun.errorProcess(response.code)) {
-                        Ext.Msg.alert('登录失败', response.msg);
+                        Ext.Msg.alert('失败', response.msg);
                     }
                 }, true);
 
             }
         },
         icon: Ext.MessageBox.QUESTION
-    });
+    };
+    var mesConfig = Ext.Object.merge(defConfig, opts);
+    GlobalConfig.newMessageBox.show(mesConfig);
 };
 
 //设置状态
-ActionManager.account_statusTracking_number = function(target) {
+ActionManager.account_statusTracking_number = function(target, opts) {
+
+
     var store = target.getStore();
-    var extraParams = store.getProxy().extraParams;
-    var param = {
-        arrive_time_start: extraParams.arrive_time_start,
-        arrive_time_end: extraParams.arrive_time_end,
-        filter: extraParams.filter,
-        sessiontoken: GlobalFun.getSeesionToken()
+    var sm = target.getSelectionModel();
+    var records = sm.getSelection();
+    if (!opts && !records[0])
+        return;
+    var ids = [];
+    Ext.Array.each(records, function(rec) {
+        if (rec.data.account_status == 0) {
+            ids.push(rec.data.tracking_number_id);
+        };
+    });
+
+    if (!opts && ids.length == 0) {
+        Ext.Msg.alert('提示', '至少需要1条未结算状态的项目.');
+        return;
     };
-    GlobalConfig.newMessageBox.show({
+
+    var param = {
+        sessiontoken: GlobalFun.getSeesionToken(),
+        tracking_number_ids: ids.join()
+    };
+    if (opts && opts.filter) {
+        var extraParams = store.getProxy().extraParams;
+        var param = {
+            arrive_time_start: extraParams.arrive_time_start,
+            arrive_time_end: extraParams.arrive_time_end,
+            filter: extraParams.filter,
+            sessiontoken: GlobalFun.getSeesionToken()
+        };
+    };
+
+    var defConfig = {
         title: '提示',
         msg: '您确定要设置当前的所有项目状态为已结算吗？',
         buttons: Ext.MessageBox.YESNO,
@@ -785,5 +946,7 @@ ActionManager.account_statusTracking_number = function(target) {
             }
         },
         icon: Ext.MessageBox.QUESTION
-    });
+    };
+    var mesConfig = Ext.Object.merge(defConfig, opts);
+    GlobalConfig.newMessageBox.show(mesConfig);
 };

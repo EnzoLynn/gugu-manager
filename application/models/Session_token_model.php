@@ -19,7 +19,8 @@ class Session_token_model extends CI_Model {
                 'session_token' => $data['session_token'],
                 'admin_id' => $data['admin_id'],
                 'admin_name' => $data['admin_name'],
-                'expires_time' => date('Y-m-d H:i:s')
+                'expires_time' => date('Y-m-d H:i:s'),
+                'data' => ''//serialize($data['data'])
             );
             $this->db->insert('session_token', $data);
         }
@@ -32,10 +33,20 @@ class Session_token_model extends CI_Model {
         $data = array(
             'session_token' => $session_token
         );
-        $this->db->select('session_token,admin_id,admin_name,expires_time');
+        //$this->db->select('session_token,admin_id,admin_name,expires_time');
         $this->db->where($data);
         $query = $this->db->get('session_token');
         $session = $query->first_row();
+
+        if (empty($session)) {
+            return FALSE;
+        }
+
+        if (empty($session['data'])) {
+            $session['data'] = array();
+        } else {
+            $session['data'] = unserialize($session['data']);
+        }
 
         return $session;
     }
@@ -56,15 +67,12 @@ class Session_token_model extends CI_Model {
             $this->db->where($data);
             $this->db->update('session_token', array('expires_time' => $new_time));
         }else{
-            //要求重新登录
+            return FALSE;
         }
     }
 
     function destroySession($session_token) {
-        $data = array(
-            'session_token' => $session_token
-        );
-        $this->db->where($data);
+        $this->db->where('session_token', $session_token);
         return $this->db->delete('session_token');
     }
 
@@ -72,7 +80,71 @@ class Session_token_model extends CI_Model {
         $timer = strtotime('now');
         $timer = $timer - 60*60*2;//2小时以前
         $new_time = date('Y-m-d H:i:s', $timer);
-        $this->db->where('expires_time <=', $new_time);
+        $this->db->where('expires_time <=' , $new_time);
         return $this->db->delete('session_token');
+    }
+
+    function saveData($session_token, $data) {
+        $session = $this->getSession($session_token);
+        if($session) {
+            $timer = strtotime('now');
+            $timer = $timer + 60*60*1;//一个小时
+
+            $new_time = date('Y-m-d H:i:s', $timer);
+
+            $upd_data = array(
+                'data' => serialize($data),
+                'expires_time' => $new_time
+            );
+
+            $this->db->where('session_token', $session_token);
+            return $this->db->update('session_token', $upd_data);
+        }
+    }
+
+    function addData($session_token, $data) {
+        $session = $this->getSession($session_token);
+        if($session) {
+            $new_data = array_merge($session['data'], $data);
+
+            $timer = strtotime('now');
+            $timer = $timer + 60*60*1;//一个小时
+
+            $new_time = date('Y-m-d H:i:s', $timer);
+
+            $upd_data = array(
+                'data' => serialize($new_data),
+                'expires_time' => $new_time
+            );
+
+            $this->db->where('session_token', $session_token);
+            return $this->db->update('session_token', $upd_data);
+        }
+    }
+
+    function getData($session_token, $key) {
+        $session = $this->getSession($session_token);
+        if($session) {
+            if (array_key_exists($key, $session['data'])) {
+                return $session['data'][$key];
+            }
+        }
+        return FALSE;
+    }
+
+    function clearData($session_token, $key) {
+        $session = $this->getSession($session_token);
+        if($session) {
+            if (array_key_exists($key, $session['data'])) {
+                unset($session['data'][$key]);
+                $this->saveData($session_token, $session['data']);
+            }
+        }
+        return FALSE;
+    }
+
+    function write_msg($session_token, $msg) {
+        $this->db->where('session_token', $session_token);
+        $this->db->update('session_token', array('msg' => $msg));
     }
 }

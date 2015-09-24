@@ -20,6 +20,11 @@ function loadExcel($filename, $pars) {
 //    ini_set('display_startup_errors', TRUE);
 
     require_once(APPPATH . 'libraries/PHPExcel.php');
+
+    $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+    $cacheSettings = array( 'memoryCacheSize'  => '16MB');
+    PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
     $objPHPExcel = new PHPExcel();
 
     $objReader = PHPExcel_IOFactory::createReaderForFile($filename);
@@ -89,8 +94,22 @@ function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $typ
 
     /** Include PHPExcel */
     require_once(APPPATH . 'libraries/PHPExcel.php');
+
+    // 设置缓存方式，减少对内存的占用
+//    $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
+//    $cacheSettings = array ( 'cacheTime' => 300 );
+//    PHPExcel_Settings::setCacheStorageMethod ( $cacheMethod, $cacheSettings );
+
+    $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory;
+    PHPExcel_Settings::setCacheStorageMethod($cacheMethod);
+
+//    $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+//    $cacheSettings = array( 'memoryCacheSize'  => '8MB');
+//    PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
     // Create new PHPExcel object
     $objPHPExcel = new PHPExcel();
+
     // Set document properties
     $objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
         ->setLastModifiedBy("Maarten Balliauw")
@@ -116,15 +135,21 @@ function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $typ
     for ($row = 0; $row < $rows_length; $row++) {
         $i = 0;
         foreach ($header as $k => $v) {
-            $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
-//            if ($k == 'tracking_number') {//强制为字符串显示
+            if ($k == 'tracking_number') {//强制为字符串显示
 //                $objPHPExcel->getActiveSheet()->setCellValueExplicit(chr($i + 65).($row + 2), $data[$row][$k],PHPExcel_Cell_DataType::TYPE_STRING);
 //                $objPHPExcel->getActiveSheet()->getStyle(chr($i + 65).($row + 2))->getNumberFormat()->setFormatCode("@");
-//            }
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), " " . $data[$row][$k]);
+            } else {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue(chr($i + 65).($row + 2), $data[$row][$k]);
+            }
             $i++;
         }
     }
+
+    //Set column widths 设置列宽度
+    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+//    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+
     // Rename worksheet
     $objPHPExcel->getActiveSheet()->setTitle($title);
     // Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -147,24 +172,106 @@ function outputExcel($data, $header, $fileName = 'now', $title = 'Sheet1' , $typ
     exit;
 }
 
-if (!function_exists('loadController'))
-{
-    function loadController($controller, $method = 'index')
-    {
-        $dirs = explode('/', $controller);
-        if(count($dirs) ==  1) {
-            require_once(APPPATH . 'controllers/' . $controller . '.php');
-            $controller = new $dirs[0]();
-        }else if(count($dirs) ==  2) {
-            require_once(APPPATH . 'controllers/' . $dirs[0] . '/' . $controller . '.php');
-            $controller = new $dirs[1]();
-        }else {
-            set_status_header(503);
-            echo 'Unable to locate the specified class: '.$controller.'.php';
-            exit(5); // EXIT_UNK_CLASS
-        }
-        return $controller->$method();
+function outputCSV($data, $header, $fileName = 'now') {
+    if ($fileName == 'now') {
+        $fileName = date('YmdHis');
     }
+
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="'. $fileName .'.csv"');
+    header('Cache-Control: max-age=0');
+
+    $fp = fopen('php://output', 'a');
+
+    // 只获取指定数组
+    $data = getArrayByKey($data, array_keys($header));
+
+    $header_length = count($header);
+    $rows_length = count($data);
+    //输出头部
+    $i = 0;
+    $head = array_values($header);
+    foreach ($header as $k => $v) {
+        // CSV的Excel支持GBK编码，一定要转换，否则乱码
+        $head[$i] = iconv('utf-8', 'gbk', $v);
+        $i++;
+    }
+    fputcsv($fp, $head);
+
+    // 计数器
+    $i = 0;
+    // 每隔$limit行，刷新一下输出buffer，不要太大，也不要太小
+    $limit = 10000;
+    for ($row = 0; $row < $rows_length; $row++) {
+        if ($limit == $i) { //刷新一下输出buffer，防止由于数据过多造成问题
+            ob_flush();
+            flush();
+            $i = 0;
+        }
+        $row_data = array();
+        foreach ($header as $k => $v) {
+            if ($k == 'tracking_number') {
+                //$row_data[] = "\t" . iconv('utf-8', 'gbk', $data[$row][$k]);
+                $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
+            } else {
+                $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
+            }
+        }
+        fputcsv($fp, $row_data);
+        unset($rows);
+        $i++;
+    }
+    ob_end_flush();
+    exit;
+}
+function saveCSV($data, $header, $fileName) {
+    $fp = fopen($fileName, 'w');
+    //fputcsv4($fp, split(',', $line));
+
+    // 只获取指定数组
+    $data = getArrayByKey($data, array_keys($header));
+
+    $header_length = count($header);
+    $rows_length = count($data);
+    //输出头部
+    $i = 0;
+    $head = array_values($header);
+    foreach ($header as $k => $v) {
+        // CSV的Excel支持GBK编码，一定要转换，否则乱码
+        $head[$i] = iconv('utf-8', 'gbk', $v);
+        $i++;
+    }
+    fputcsv($fp, $head);
+
+    // 计数器
+    $i = 0;
+    for ($row = 0; $row < $rows_length; $row++) {
+        $row_data = array();
+        foreach ($header as $k => $v) {
+            $row_data[] = iconv('utf-8', 'gbk', $data[$row][$k]);
+        }
+        fputcsv($fp, $row_data);
+        unset($rows);
+        $i++;
+    }
+    return TRUE;
+}
+//下载CSV
+function downloadCSV($file_path) {
+//    header('Content-Type: application/vnd.ms-excel');
+//    header('Content-Disposition: attachment;filename="'. $fileName .'.csv"');
+//    header('Cache-Control: max-age=0');
+
+    header('Content-Description: File Transfer');
+
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename='.basename($file_path));
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($file_path));
+    readfile($file_path);
 }
 //数组转对象
 function arrayToObject($e){
@@ -251,6 +358,22 @@ function output_success($msg = '', $total = 0, $data = []) {
     echo json_encode($json);
     exit;
 }
+//获取重复数据
+function get_repeat_in_array($array) {
+    $repeat_arr = array();
+    $len = count($array);
+    for($i = 0; $i < $len; $i ++) {
+        for($j = $i + 1; $j < $len; $j ++) {
+            if ($array[$i] == $array[$j]) {
+                if (!empty($array[$i])) {
+                    $repeat_arr[] = $array[$i];
+                    break;
+                }
+            }
+        }
+    }
+    return $repeat_arr;
+}
 //根据客户免单号区间生成单号数组
 function getArrayByBetween($begin, $end) {
     $begin_len = strlen($begin);
@@ -312,4 +435,14 @@ function getArrayByBetween($begin, $end) {
         $count++;
     }
     return $diff_arr;
+}
+//自定义写入消息到文件
+function write_log($msg) {
+    if (WRITE_LOG) {
+        $date = date('Ymd');
+        $file = fopen(APPPATH . '/logs/' . $date . ".txt", "a") or die("Unable to open file!");
+        $txt = date('Y-m-d H:i:s') . "\t" . $msg . "\r\n";
+        fwrite($file, $txt);
+        fclose($file);
+    }
 }

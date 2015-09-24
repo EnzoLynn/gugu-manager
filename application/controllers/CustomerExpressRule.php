@@ -135,7 +135,31 @@ class CustomerExpressRule extends AdminController {
         $this->show();
     }
 
-    public function copyRule() {
+    public function copyProvinceRule() {
+        $customer_rent_id = $this->input->get_post('customer_rent_id');
+        $province_code_from = $this->input->get_post('province_code_from');
+        $province_code_to = $this->input->get_post('province_code_to');
 
+        //清空旧数据
+        $rule_to = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code_to);
+        $this->customer_express_rule_item_model->deleteByRuleID($rule_to['rule_id']);
+        $this->customer_express_rule_model->delete($rule_to['rule_id']);
+
+
+        $rule_from = $this->customer_express_rule_model->getOneByRent($customer_rent_id, $province_code_from);
+        $rule_to = $rule_from;
+        unset($rule_to['rule_id']);
+        $rule_to['province_code'] = $province_code_to;
+        $new_rule_id = $this->customer_express_rule_model->add($rule_to);
+
+
+        $rule_item_from = $this->customer_express_rule_item_model->getItems($rule_from['rule_id']);
+        foreach ($rule_item_from as $rule_item) {
+            unset($rule_item['item_id']);
+            $rule_item['rule_id'] = $new_rule_id;
+            $this->customer_express_rule_item_model->add($rule_item);
+        }
+
+        output_success();
     }
 }

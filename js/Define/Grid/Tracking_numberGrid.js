@@ -2,13 +2,12 @@
 var Tracking_numberGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshTracking_number'), '-',
         ActionBase.getAction('searchTracking_number'),
-        ActionBase.getAction('removeTracking_number'), '-',
-        ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number'), '-',
-        ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number'), '-',
-        ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number')
-        ,'-',  ActionBase.getAction('account_statusTracking_number')
+        ActionBase.getAction('removeTracking_number'), '-', 
+         ActionBase.getAction('exportTracking_number'), '-',
+        ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number'), '-', ActionBase.getAction('account_statusTracking_number')
     ]
 });
+
 
 
 Ext.define('chl.gird.Tracking_numberGrid', {
@@ -52,11 +51,50 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         },
         items: [ActionBase.getAction('refreshTracking_number'), '-',
             ActionBase.getAction('searchTracking_number'),
-            ActionBase.getAction('removeTracking_number'), '-',
-            ActionBase.getAction('importTracking_number'), ActionBase.getAction('exportTracking_number'), '-',
-            ActionBase.getAction('translateExpressTracking_number'), ActionBase.getAction('translateCostTracking_number'), '-',
-            ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number')
-            ,'-',  ActionBase.getAction('account_statusTracking_number')
+            ActionBase.getAction('removeTracking_number_t'), '-',
+             ActionBase.getAction('exportTracking_number_t'), '-',
+            ActionBase.getAction('retranslateExpressTracking_number_t'), ActionBase.getAction('retranslateCostTracking_number_t'), '-', ActionBase.getAction('account_statusTracking_number_t')
+            // , {
+            //     xtype: 'button',
+            //     text: 'testProgram',
+            //     handler: function(com) {
+            //         var win = Ext.create('Ext.window.Window', {
+            //             title: '进度',
+            //             width: 200,
+            //             maxWidth:200,
+            //             maxHeight:100,
+            //             collapsible :true, 
+            //             closable:false,
+            //             resizable: false,
+            //             bodyPadding: 20,
+            //             layout: 'fit',
+            //             items: [{
+            //                 xtype: 'progressbar',
+            //                 text: '初始化...'
+            //             }],
+            //             listeners:{
+            //                 collapse:function(){
+            //                     win.setPosition(Ext.getBody().getWidth()-200,Ext.getBody().getHeight()-60);
+            //                     win.collapse();
+                                
+            //                 },
+            //                 expand:function(){
+            //                     win.center();
+            //                     win.expand();
+                               
+            //                 }
+            //             }
+            //         });
+            //         win.show(null, function() {
+            //             GlobalConfig.Pro_Runner.run(win.down('progressbar'), com, 10, function() {
+            //                 win.down('progressbar').reset(true);
+            //                 win.close();
+            //             });
+            //         });
+
+
+            //     }
+            // }
         ]
     }, {
         xtype: 'Pagingtoolbar',
@@ -72,7 +110,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             text: '全部状态',
             filterParam: {
                 group: 'account_statusGroup',
-                text: '全部类别',
+                text: '全部状态',
                 filterKey: 'account_status',
                 GridTypeName: 'Tracking_numberGrid',
                 store: StoreManager.ComboStore.Tracking_numberGridTypeStore
