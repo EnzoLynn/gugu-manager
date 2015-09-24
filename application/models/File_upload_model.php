@@ -20,6 +20,21 @@ class File_upload_model extends CI_Model {
         return $query->first_row();
     }
 
+    public function getWhere($data) {
+        if (isset($data['filter']['file_name'])) {
+            $this->db->like('file_name', $data['filter']['file_name']);
+        }
+        if (isset($data['filter']['file_save_name'])) {
+            $this->db->like('file_save_name', $data['filter']['file_save_name']);
+        }
+        if (isset($data['filter']['validate_status'])) {
+            $this->db->where('validate_status', $data['filter']['validate_status']);
+        }
+        if (isset($data['filter']['import_status'])) {
+            $this->db->where('import_status', $data['filter']['import_status']);
+        }
+    }
+
     public function getFiles($data) {
         $data = array(
             'page' => (int)$data['page'],
@@ -28,12 +43,7 @@ class File_upload_model extends CI_Model {
             'dir'  => $data['dir'],
             'filter' => $data['filter']
         );
-        if (isset($data['filter']['validate_status'])) {
-            $this->db->where('validate_status', $data['filter']['validate_status']);
-        }
-        if (isset($data['filter']['import_status'])) {
-            $this->db->where('import_status', $data['filter']['import_status']);
-        }
+        $this->getWhere($data);
         $this->db->limit($data['limit'],  (int)($data['page'] - 1) * $data['limit']);
         $this->db->order_by($data['sort'], $data['dir']);
         $query = $this->db->get('file_upload');
@@ -41,9 +51,7 @@ class File_upload_model extends CI_Model {
     }
 
     function getFilesTotal($data){
-//        $data = array(
-//            'filter' => $data['filter']
-//        );
+        $this->getWhere($data);
         return $this->db->count_all_results('file_upload');
     }
 

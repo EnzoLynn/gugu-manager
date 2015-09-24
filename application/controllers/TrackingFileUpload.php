@@ -64,8 +64,8 @@ class TrackingFileUpload extends AdminController {
         $config['max_size']          = 20480;
         $config['file_ext_tolower'] = TRUE;
 
-        if(!is_dir($config['upload_path'])) {
-            mkdir($config['upload_path']);
+        if(!is_dir(FCPATH . $config['upload_path'])) {
+            mkdir(FCPATH . $config['upload_path']);
         }
         $this->load->library('upload', $config);
 
