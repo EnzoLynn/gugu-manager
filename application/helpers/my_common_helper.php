@@ -343,7 +343,6 @@ function get_repeat_in_array($array) {
     }
     return $repeat_arr;
 }
-
 //根据客户免单号区间生成单号数组
 function getArrayByBetween($begin, $end) {
     $begin_len = strlen($begin);

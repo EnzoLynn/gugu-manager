@@ -64,9 +64,9 @@ class UploadTrackingNumber extends AdminController {
 //            ob_flush();
 //            flush();
 //            sleep(1);
-
+//$this->show_runtime('读取到php数组');
             $data = $this->validateExcel($this->file_save_path);
-
+//$this->show_runtime('验证完毕');exit;
 //            echo '<script>console.log("验证完成")</script><br />'.str_repeat(" ",256);
 //            ob_flush();
 //            flush();

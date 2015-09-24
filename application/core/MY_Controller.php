@@ -18,11 +18,13 @@ class AdminController extends MY_Controller
     var $admin_id = 0;
     var $admin_name = '';
     var $session_token = '';
+    var $time_begin = 0;//开始运行的时间
 
     public function __construct()
     {
         parent::__construct();
 
+        $this->time_begin = time();
         //设置头部为json
         //$this->output->set_content_type('application/json', strtolower($this->config->item('charset')));
 
@@ -55,5 +57,12 @@ class AdminController extends MY_Controller
 
     public function write_log($msg) {
 
+    }
+
+    //显示运行时间
+    function show_runtime($msg = '') {
+        $now = time();
+        $mic = ($now - $this->time_begin);
+        echo $mic/1000 . ' 秒<br/>';
     }
 }
