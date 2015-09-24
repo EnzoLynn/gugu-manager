@@ -225,7 +225,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
     itemId: 'importAttachFile',
     iconCls: 'import',
     tooltip: '导入数据到票据管理',
-    text: '导入',
+    text: '导入到票据',
     handler: function() {
         var target = this.getTargetView();
         var sm = target.getSelectionModel();
