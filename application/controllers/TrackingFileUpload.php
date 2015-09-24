@@ -104,7 +104,7 @@ class TrackingFileUpload extends AdminController {
         $tempName = explode('.', $file['file_save_name']);
         $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
 
-        write_log("开始验证". $file['file_name'] . " - ". $file['file_save_name']);
+        write_log("开始验证 ". $file['file_name'] . " - ". $file['file_save_name']);
 
         $pars_default = array(
             'sheetIndex' => 0,
@@ -144,7 +144,7 @@ class TrackingFileUpload extends AdminController {
 
         $msg = $this->tracking_number_model->validateData($data);
 
-        write_log("验证". $file['file_name'] . " - ". $file['file_save_name'] . "完毕\r\n- - - - - - - - - - - - - - - - - - - - - - -");
+        write_log("验证 ". $file['file_name'] . " - ". $file['file_save_name'] . " 完毕\r\n- - - - - - - - - - - - - - - - - - - - - - -");
 
         if ($msg) {
             //改为未通过
@@ -167,7 +167,6 @@ class TrackingFileUpload extends AdminController {
 
             output_success();
         }
-
     }
 
     public function import() {
@@ -195,11 +194,12 @@ class TrackingFileUpload extends AdminController {
         $data = loadExcel($file_path, $pars_default);
         $num = $this->tracking_number_model->importData($data);
 
-        write_log("导入". $file['file_name'] ."完成\r\n- - - - - - - - - - - - - - - - - - - - - - -");
+        write_log("导入 ". $file['file_name'] ." 完成\r\n- - - - - - - - - - - - - - - - - - - - - - -");
 
         //状态改为导入成功
         $upd_data = array(
-            'import_status' => 1
+            'import_status' => 1,
+            'import_time' => date('Y-m-d H:i:s')
         );
         $this->file_upload_model->update($file_id, $upd_data);
 
@@ -223,7 +223,7 @@ class TrackingFileUpload extends AdminController {
     }
 
     public function delete() {
-        $file_id = (int)$this->input->get_post('file_id');
+        $file_id = (int)$this->input->get_post('file_ids');
         $file = $this->file_upload_model->getFile($file_id);
 
         $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
@@ -241,5 +241,6 @@ class TrackingFileUpload extends AdminController {
         if (file_exists($file_path)) {
             unlink($file_path);
         }
+        output_success();
     }
 }
