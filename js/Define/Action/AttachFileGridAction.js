@@ -217,7 +217,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
         }, true);
     },
     updateStatus: function(selection) {
-        this.setDisabled(selection.length != 1 || selection[0].data.validate_status == 1);
+        this.setDisabled(selection.length != 1 || selection[0].data.validate_status != 0);
     }
 });
 
