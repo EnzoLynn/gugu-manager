@@ -234,10 +234,10 @@ Ext.onReady(function() {
                     xtype:'button',
                     width: 130,
                     iconCls: 'about',
-                    text: '关于(Version 9.17)',
+                    text: '关于(Version 9.24)',
                     tooltip: '关于本系统',
                     handler:function(){
-                        Ext.Msg.alert('关于本系统(Version 9.21)','Designed by EnzoLynn & YiHui. <br> Copyright © 2015-xxxx  gugu123.com 版权所有');
+                        Ext.Msg.alert('关于本系统(Version 9.24)','Designed by EnzoLynn & YiHui. <br> Copyright © 2015-xxxx  gugu123.com 版权所有');
                     }
                 }, '-',{
                     xtype: 'button',
