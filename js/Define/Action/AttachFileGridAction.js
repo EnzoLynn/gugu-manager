@@ -341,19 +341,11 @@ ActionManager.delAttachFile = function(target, opts) {
                 //获取当前登录用户信息
                 var param = {
                     sessiontoken: GlobalFun.getSeesionToken(),
-                    tracking_number_ids: ids.join()
+                    file_ids: ids.join()
                 };
-                if (opts && opts.filter) {
-                    var extraParams = store.getProxy().extraParams;
-                    param = {
-                        arrive_time_start: extraParams.arrive_time_start,
-                        arrive_time_end: extraParams.arrive_time_end,
-                        sessiontoken: GlobalFun.getSeesionToken(),
-                        filter: extraParams.filter
-                    }
-                };
+               
                 // 调用
-                WsCall.pcall(GlobalConfig.Controllers.Tracking_numberGrid.destroy, 'Tracking_numberGrid', param, function(response, opts) {
+                WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.destroy, 'AttachFileGrid', param, function(response, opts) {
                     (new Ext.util.DelayedTask(function() {
                         store.load();
                     })).delay(500);
