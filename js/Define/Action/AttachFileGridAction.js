@@ -18,7 +18,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
 
 Ext.create('chl.Action.AttachFileGridAction', {
     itemId: 'uploadAttachFile',
-    iconCls: 'import',
+    iconCls: 'upload',
     tooltip: '上传文件',
     text: '上传',
     handler: function() {
@@ -28,7 +28,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
             width: 800,
             modal: true,
             resizable: false,
-            iconCls: 'import',
+            iconCls: 'upload',
             title: '上传文件',
             bodyPadding: 5,
             defaults: {
