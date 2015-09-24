@@ -232,7 +232,7 @@ Ext.onReady(function() {
                 collapsible: false,
                 items: ['->', '-',{
                     xtype:'button',
-                    width: 120,
+                    width: 130,
                     iconCls: 'about',
                     text: '关于(Version 9.17)',
                     tooltip: '关于本系统',
