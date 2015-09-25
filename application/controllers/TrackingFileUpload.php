@@ -192,7 +192,7 @@ class TrackingFileUpload extends AdminController {
         );
 
         $data = loadExcel($file_path, $pars_default);
-        $num = $this->tracking_number_model->importData($data);
+        $num = $this->tracking_number_model->importData($data, $file_id);
 
         write_log("导入 ". $file['file_name'] ." 完成\r\n- - - - - - - - - - - - - - - - - - - - - - -");
 
@@ -246,5 +246,30 @@ class TrackingFileUpload extends AdminController {
             unlink($file_path);
         }
         output_success();
+    }
+
+    public function getLastImportFile() {
+        $limit = (int)$this->input->get_post('limit');
+        if ($limit == 0) {
+            $limit = 20;
+        }
+        $data = array(
+            'page' => 1,
+            'limit'=> $limit,
+            'sort' => 'created_at',
+            'dir'  => 'DESC',
+            'filter' => array(
+                'import_status' => 1
+            )
+        );
+        $files = $this->file_upload_model->getFiles($data);
+        $json = array(
+            'success' => true,
+            'data' => $files,
+            'total' => $limit,
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
     }
 }

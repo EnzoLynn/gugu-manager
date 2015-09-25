@@ -83,6 +83,9 @@ class Tracking_number_model extends CI_Model {
         if (isset($data['filter']['cost'])) {
             $this->db->where($data['filter']['cost']);
         }
+        if (isset($data['filter']['file_id'])) {
+            $this->db->where($data['filter']['file_id']);
+        }
         $arrive_time_start = $data['arrive_time_start'];
         $arrive_time_end = $data['arrive_time_end'];
         if ($arrive_time_start) {
@@ -121,7 +124,8 @@ class Tracking_number_model extends CI_Model {
             'admin_id'    => $data['admin_id'],
             'customer_rent_id'    => $data['customer_rent_id'],
             'express_id' => $data['express_id'],
-            'updated_at'  => date('Y-m-d H:i:s')
+            'updated_at'  => date('Y-m-d H:i:s'),
+            'file_id'      => $data['file_id']
         );
         $this->db->insert('tracking_number', $tracking_number);
         $tracking_number_id =  $this->db->insert_id();
@@ -157,7 +161,7 @@ class Tracking_number_model extends CI_Model {
         $this->db->update('customer_number', $upd_data);
     }
 
-    function importData($data) {
+    function importData($data, $file_id) {
         $insert_batch_index = 0;
         $insert_batch_num = 100;//每多少条执行一次批量插入
         $insert_batch_data = array();
@@ -193,7 +197,8 @@ class Tracking_number_model extends CI_Model {
                     'admin_id' => $this->CI->admin_id,
                     'customer_rent_id' => $customer['customer_rent_id'],//计算的时候再判断合同号$customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
                     'express_id' => $all_express[$row['快递公司']],
-                    'updated_at'  => date('Y-m-d H:i:s')
+                    'updated_at'  => date('Y-m-d H:i:s'),
+                    'file_id'     => $file_id
                 );
 //                $this->add($tracking_number);
 
