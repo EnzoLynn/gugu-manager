@@ -285,6 +285,7 @@ if (cookie) {
 
 //全局进度条 runner方法 
 GlobalConfig.taskOfReRunner = new Ext.util.TaskRunner();
+GlobalConfig.taskFlag = false; 
 GlobalConfig.Pro_Runner = function() {
     var f = function(v, pbar, btn, count, cb) {
         return function() {
@@ -306,6 +307,10 @@ GlobalConfig.Pro_Runner = function() {
 
             GlobalConfig.taskOfReRunner.start({
                 run: function() { 
+                    if (GlobalConfig.taskFlag) {
+                        return;
+                    };
+                    GlobalConfig.taskFlag = true;
                     var param = {
                         sessiontoken: GlobalFun.getSeesionToken(),
                         file_id: pbar.file_id
@@ -313,10 +318,11 @@ GlobalConfig.Pro_Runner = function() {
                     // 调用
                     WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.getProgress, 'translateExpress', param, function(response, opts) {
                         var data = response.data; 
+                        GlobalConfig.taskFlag=false;
                         f(parseInt(data.current), pbar, btn, parseInt(data.total), cb)();
                     }, function(response, opts) {}, false);
                 },
-                interval: 5 * 1000
+                interval: 2 * 1000
             });
 
         }
