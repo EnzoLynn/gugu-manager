@@ -137,15 +137,17 @@ GlobalConfig.Controllers = {
         setAccount_status: '/trackingNumber/initAccount',
         errorReport: 'uploadTrackingNumber/downloadError'
     },
-    AttachFileGrid:{
+    AttachFileGrid: {
         create: globalFix + '/traking_numberGrid.json',
         read: 'trackingFileUpload/getList', //globalFix + '/traking_numberGrid.json',
         update: globalFix + '/traking_numberGrid.json',
         destroy: '/trackingFileUpload/delete',
-        uploadExcel:'/trackingFileUpload/upload',
-        validateAttachFile:'trackingFileUpload/validate',
-        importAttachFile:'trackingFileUpload/import',
-        dlErrorReportAttachFile:'trackingFileUpload/downloadError'
+        uploadExcel: '/trackingFileUpload/upload',
+        validateAttachFile: 'trackingFileUpload/validate',
+        importAttachFile: 'trackingFileUpload/import',
+        dlErrorReportAttachFile: 'trackingFileUpload/downloadError',
+        validateBegin: 'trackingFileUpload/validateBegin',
+        getProgress: 'trackingFileUpload/getProgress'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {
@@ -281,31 +283,42 @@ if (cookie) {
     }
 }
 
-//全局进度条 runner方法
+//全局进度条 runner方法 
+GlobalConfig.taskOfReRunner = new Ext.util.TaskRunner();
 GlobalConfig.Pro_Runner = function() {
     var f = function(v, pbar, btn, count, cb) {
         return function() {
-            if (v > count) {
+            if (v >= count) {
                 btn.setDisabled(false);
+                GlobalConfig.taskOfReRunner.stopAll();
                 cb();
             } else {
-                if (pbar.id == 'pbar4') {
-                    //give this one a different count style for fun
-                    var i = v / count;
-                    pbar.updateProgress(i, Math.round(100 * i) + '% 进行中...');
-                } else {
-                    pbar.updateProgress(v / count, '已加载 ' + v + ' of ' + count + '...');
-                }
+
+                pbar.updateProgress(v / count, '已验证 ' + v + ' of ' + count + '条');
             }
         };
     };
     return {
         run: function(pbar, btn, count, cb) {
             btn.setDisabled(true);
-            var ms = 5000 / count;
-            for (var i = 1; i < (count + 2); i++) {
-                setTimeout(f(i, pbar, btn, count, cb), i * ms);
-            }
+            GlobalConfig.taskOfReRunner.stopAll();
+            GlobalConfig.taskOfReRunner = new Ext.util.TaskRunner();
+
+            GlobalConfig.taskOfReRunner.start({
+                run: function() { 
+                    var param = {
+                        sessiontoken: GlobalFun.getSeesionToken(),
+                        file_id: pbar.file_id
+                    }; 
+                    // 调用
+                    WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.getProgress, 'translateExpress', param, function(response, opts) {
+                        var data = response.data; 
+                        f(parseInt(data.current), pbar, btn, parseInt(data.total), cb)();
+                    }, function(response, opts) {}, false);
+                },
+                interval: 5 * 1000
+            });
+
         }
     };
 }();
