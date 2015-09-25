@@ -148,7 +148,7 @@ GlobalConfig.Controllers = {
         dlErrorReportAttachFile: 'trackingFileUpload/downloadError',
         validateBegin: 'trackingFileUpload/validateBegin',
         validate:'trackingFileUpload/validate',
-        getProgress: 'trackingFileUpload/getProgress'
+        getProgress: 'welcome/getProgress'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
     Express_pointGrid: {
