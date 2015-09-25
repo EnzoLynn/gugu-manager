@@ -77,14 +77,14 @@ class Tracking_number_model extends CI_Model {
         if (isset($data['filter']['arrive_express_point_code'])) {
             $this->db->where('arrive_express_point_code', $data['filter']['arrive_express_point_code']);
         }
-        if (isset($data['filter']['income'])) {
-            $this->db->where($data['filter']['income']);
-        }
-        if (isset($data['filter']['cost'])) {
-            $this->db->where($data['filter']['cost']);
-        }
+//        if (isset($data['filter']['income'])) {
+//            $this->db->where($data['filter']['income']);
+//        }
+//        if (isset($data['filter']['cost'])) {
+//            $this->db->where($data['filter']['cost']);
+//        }
         if (isset($data['filter']['file_id'])) {
-            $this->db->where($data['filter']['file_id']);
+            $this->db->where(file_id, $data['filter']['file_id']);
         }
         $arrive_time_start = $data['arrive_time_start'];
         $arrive_time_end = $data['arrive_time_end'];
