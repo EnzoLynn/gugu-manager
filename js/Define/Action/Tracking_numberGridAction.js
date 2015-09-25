@@ -42,7 +42,7 @@ Ext.create('chl.Action.Tracking_numberGridAction', {
 //                 items: [{
 //                     xtype: 'filefield',
 //                     name: 'fileUpload',
-                   
+
 //                     fieldLabel: '请选择导入的文件',
 //                     width: 600,
 //                     labelWidth: 150,
@@ -668,6 +668,10 @@ ActionManager.searchTracking_number = function(traget) {
                     fieldLabel: '客户名称',
                     itemId: 'customer_name',
                     maxLength: 64
+                }, {
+                    fieldLabel: '来源文件编号',
+                    itemId: 'file_id',
+                    maxLength: 9
                 }]
             }],
             listeners: {
@@ -760,6 +764,14 @@ ActionManager.searchTracking_number = function(traget) {
                         searchFlag = true;
                     } else {
                         GlobalFun.GridSearchInitFun('customer_name', true, store, false);
+                    }
+                    var file_id = win.down('#file_id').getValue();
+                    if (file_id != '') {
+                        //加入filterMap
+                        GlobalFun.GridSearchInitFun('file_id', false, store, file_id);
+                        searchFlag = true;
+                    } else {
+                        GlobalFun.GridSearchInitFun('file_id', true, store, false);
                     }
 
 

@@ -2,12 +2,12 @@
 //创建一个上下文菜单
 var AttachFileGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshAttachFile'), '-',
-            ActionBase.getAction('searchAttachFile'),
-            ActionBase.getAction('removeAttachFile'),
-            ActionBase.getAction('uploadAttachFile'), '-',
-            ActionBase.getAction('validateAttachFile'),
-            ActionBase.getAction('importAttachFile'),
-            ActionBase.getAction('dlErrorReportAttachFile')
+        ActionBase.getAction('searchAttachFile'),
+        ActionBase.getAction('removeAttachFile'),
+        ActionBase.getAction('uploadAttachFile'), '-',
+        ActionBase.getAction('validateAttachFile'),
+        ActionBase.getAction('importAttachFile'),
+        ActionBase.getAction('dlErrorReportAttachFile')
     ]
 });
 
@@ -60,7 +60,7 @@ Ext.define('chl.gird.AttachFileGrid', {
             ActionBase.getAction('validateAttachFile'),
             ActionBase.getAction('importAttachFile'),
             ActionBase.getAction('dlErrorReportAttachFile')
-            
+
         ]
     }, {
         xtype: 'Pagingtoolbar',
@@ -142,7 +142,14 @@ GridManager.CreateAttachFileGrid = function(param) {
     var tmpArr = [{
         text: '文件编号',
         dataIndex: 'file_id',
-        renderer: GlobalFun.UpdateRecord,
+        renderer: function(value,metaData,record) {
+        	if (record.data.import_status == 1) {
+        		return "<a><img src='image/toolbar/NewDoc.png' style='margin-bottom: -2px;height:14px;'>&nbsp;" + value + '</a>';
+        		 
+        	};
+            
+            return value;
+        },
         flex: 1
     }, {
         text: '原文件名',
@@ -168,12 +175,12 @@ GridManager.CreateAttachFileGrid = function(param) {
         text: '验证状态',
         dataIndex: 'validate_status',
         renderer: function(value) {
-        	if (value == 1) {
-        		return '验证通过';
-        	}
-        	if (value == 2) {
-        		return '验证未通过';
-        	};
+            if (value == 1) {
+                return '验证通过';
+            }
+            if (value == 2) {
+                return '验证未通过';
+            };
             return '未验证';
         },
         flex: 1
