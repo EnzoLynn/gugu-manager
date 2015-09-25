@@ -101,6 +101,10 @@ class TrackingFileUpload extends AdminController {
 
         $file_path = FCPATH . $file_dir . $file['file_save_name'];
 
+        if (file_exists($file_path)) {
+            output_error('文件不存在');
+        }
+
         $tempName = explode('.', $file['file_save_name']);
         $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
 
@@ -179,6 +183,10 @@ class TrackingFileUpload extends AdminController {
 
         $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
         $file_path = FCPATH . $file_dir . $file['file_save_name'];
+
+        if (file_exists($file_path)) {
+            output_error('文件不存在');
+        }
 
         $tempName = explode('.', $file['file_save_name']);
         $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
