@@ -20,6 +20,8 @@ class Tracking_number_model extends CI_Model {
         $this->CI->load->model('express_company_model');
         $this->CI->load->model('express_point_model');
         $this->CI->load->model('express_rule_model');
+
+        $this->CI->load->model('file_upload_model');
     }
 
     function getTrackingNumberByID($tracking_number_id) {
@@ -222,7 +224,7 @@ class Tracking_number_model extends CI_Model {
         return $i;
     }
 
-    function validateData($data) {
+    function validateData($data, $file_id) {
 /*
 [运单号] => 560082711439
 [重量] => 0.3
@@ -250,13 +252,15 @@ class Tracking_number_model extends CI_Model {
         $i = 2;//对应excel中的行
         foreach($data as $row) {
 
-//            if ($num >= $limit) {
-//                echo '<script>console.log("'. ($i - 2) .'/'. $total .'")</script><br />'.str_repeat(" ",256);
-//                ob_flush();
-//                flush();
-//                $num = 0;
-//                exit;
-//            }
+            if ($num >= $limit) {
+                //修改状态
+                $upd_data = array(
+                    'validate_progress' => ($i - 2)
+                );
+                $this->file_upload_model->update($file_id, $upd_data);
+
+                $num = 0;
+            }
 
             $number = $this->getTrackingNumber($row['运单号']);
             if ($number) {

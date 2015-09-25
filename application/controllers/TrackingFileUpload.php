@@ -122,6 +122,16 @@ class TrackingFileUpload extends AdminController {
             'code' => '01'
         );
         echo json_encode($json);
+
+        //file_get_contents(current_url() . '?sessiontoken='.$this->session_token.'&file_id=' . $file_id);
+
+        $ch = curl_init(current_url() . '?sessiontoken='.$this->session_token.'&file_id=' . $file_id) ;
+        //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
+        //curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
+        curl_setopt($ch, CURLOPT_HEADER, 0); //不取得返回头信息
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        curl_exec($ch) ;
+
         exit;
     }
 
@@ -187,7 +197,7 @@ class TrackingFileUpload extends AdminController {
 
         write_log("Excel内部没有重复");
 
-        $msg = $this->tracking_number_model->validateData($data);
+        $msg = $this->tracking_number_model->validateData($data, $file_id);
 
         write_log("验证 ". $file['file_name'] . " - ". $file['file_save_name'] . " 完毕\r\n- - - - - - - - - - - - - - - - - - - - - - -");
 
@@ -331,6 +341,7 @@ class TrackingFileUpload extends AdminController {
             'success' => true,
             'data' => array(
                 'current' => $file['validate_progress'],
+                //'import' => $file['import_progress'],
                 'total' => $file['item_total'],
             ),
             'total' => $file['item_total'],
