@@ -145,10 +145,22 @@ Ext.create('chl.Action.AttachFileGridAction', {
                 file_id: records[0].data.file_id
 
             };
-            // 调用
-            WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param1, function(response, opts) {
-             
-            }, function(response, opts) { }, false);
+            Ext.Ajax.request({
+                url: GlobalConfig.Controllers.AttachFileGrid.validate,
+                method: 'POST',
+                timeout: 10,
+                async: isAsync,
+                success: function(response, opts) {
+                    
+                },
+                failure: function(response, opts) {
+                    
+                },
+                headers: {
+                    'AJaxCall': 'true'
+                },
+                params: param1
+            });
             var win = Ext.create('Ext.window.Window', {
                 title: '验证进度',
                 width: 400,
