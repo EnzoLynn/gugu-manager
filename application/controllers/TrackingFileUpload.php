@@ -86,15 +86,50 @@ class TrackingFileUpload extends AdminController {
                 'admin_id' => $this->admin_id
             );
 
+            //计算总条数
+            $file_path = FCPATH . $config['upload_path'] . $fileData['file_save_name'];
+
+            $pars_default = array(
+                'sheetIndex' => 0,
+                'headerKey' => TRUE,
+                'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间', '快递公司')
+            );
+
+            $data = loadExcel($file_path, $pars_default);
+
+            //插入数据
+            $fileData['item_total'] = count($data);
+
             $this->file_upload_model->addFile($fileData);
 
-            $this->file_save_path = FCPATH . $config['upload_path'] . $fileData['file_save_name'];
             output_success();
         }
     }
 
-    public function validate() {
+    public function validateBegin() {
         $file_id = (int)$this->input->get_post('file_id');
+        $this->validate($file_id);
+
+        $file = $this->file_upload_model->getFile($file_id);
+
+        $json = array(
+            'success' => true,
+            'data' => array(
+                'current' => $file['validate_progress'],
+                'total' => $file['item_total'],
+            ),
+            'total' => $file['item_total'],
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
+        exit;
+    }
+
+    public function validate($file_id = '') {
+        if (empty($file_id)) {
+            $file_id = (int)$this->input->get_post('file_id');
+        }
         $file = $this->file_upload_model->getFile($file_id);
 
         $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
@@ -167,6 +202,7 @@ class TrackingFileUpload extends AdminController {
         } else {
             //改为验证通过
             $upd_data = array(
+                'item_total' => count($data),
                 'validate_status' => 1
             );
             $this->file_upload_model->update($file_id, $upd_data);
@@ -281,5 +317,23 @@ class TrackingFileUpload extends AdminController {
             'code' => '01'
         );
         echo json_encode($json);
+    }
+
+    public function getProgress() {
+        $file_id = (int)$this->input->get_post('file_ids');
+        $file = $this->file_upload_model->getFile($file_id);
+
+        $json = array(
+            'success' => true,
+            'data' => array(
+                'current' => $file['validate_progress'],
+                'total' => $file['item_total'],
+            ),
+            'total' => $file['item_total'],
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
+        exit;
     }
 }
