@@ -124,14 +124,14 @@ class TrackingFileUpload extends AdminController {
         echo json_encode($json);
 
         //file_get_contents(current_url() . '?sessiontoken='.$this->session_token.'&file_id=' . $file_id);
-
+/*
         $ch = curl_init(current_url() . '?sessiontoken='.$this->session_token.'&file_id=' . $file_id) ;
         //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
         //curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         curl_setopt($ch, CURLOPT_HEADER, 0); //不取得返回头信息
         curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         curl_exec($ch) ;
-
+*/
         exit;
     }
 
