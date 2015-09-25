@@ -138,7 +138,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
 
         };
         // 调用
-        WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validateBegin, 'translateExpress', param, function(response, opts) {
+        WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validateBegin, 'validateBegin', param, function(response, opts) {
             var data = response.data;
             var param1 = {
                 sessiontoken: GlobalFun.getSeesionToken(),
@@ -146,7 +146,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
 
             };
             // 调用
-            WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'translateExpress', param1, function(response, opts) {
+            WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param1, function(response, opts) {
              
             }, function(response, opts) { }, false);
             var win = Ext.create('Ext.window.Window', {
