@@ -322,7 +322,7 @@ GlobalConfig.Pro_Runner = function() {
                         f(parseInt(data.current), pbar, btn, parseInt(data.total), cb)();
                     }, function(response, opts) {}, false);
                 },
-                interval: 2 * 1000
+                interval: 5 * 1000
             });
 
         }
