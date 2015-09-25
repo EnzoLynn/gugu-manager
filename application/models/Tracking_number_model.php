@@ -84,7 +84,7 @@ class Tracking_number_model extends CI_Model {
 //            $this->db->where($data['filter']['cost']);
 //        }
         if (isset($data['filter']['file_id'])) {
-            $this->db->where(file_id, $data['filter']['file_id']);
+            $this->db->where('file_id', $data['filter']['file_id']);
         }
         $arrive_time_start = $data['arrive_time_start'];
         $arrive_time_end = $data['arrive_time_end'];
