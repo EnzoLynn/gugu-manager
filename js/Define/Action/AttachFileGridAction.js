@@ -137,6 +137,23 @@ Ext.create('chl.Action.AttachFileGridAction', {
             file_id: records[0].data.file_id
 
         };
+        var win = Ext.create('Ext.window.Window', {
+            title: '验证进度',
+            width: 400,
+            Height: 100,
+            modal: true,
+            collapsible: false,
+            closable: false,
+            resizable: false,
+            bodyPadding: 20,
+            layout: 'fit',
+            items: [{
+                xtype: 'progressbar',
+                file_id: records[0].data.file_id,
+                text: '初始化...'
+            }]
+        });
+        win.show();
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validateBegin, 'validateBegin', param, function(response, opts) {
             var data = response.data;
@@ -146,38 +163,21 @@ Ext.create('chl.Action.AttachFileGridAction', {
 
             };
             // // 调用
-            // WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param1, function(response, opts) {
-             
-            // }, function(response, opts) { }, false);
-            var win = Ext.create('Ext.window.Window', {
-                title: '验证进度',
-                width: 400,
-                Height: 100,
-                modal: true,
-                collapsible: false,
-                closable: false,
-                resizable: false,
-                bodyPadding: 20,
-                layout: 'fit',
-                items: [{
-                    xtype: 'progressbar',
-                    file_id: records[0].data.file_id,
-                    text: '初始化...'
-                }]
-            });
-            win.show(null, function() {
-                GlobalConfig.Pro_Runner.run(win.down('progressbar'), com, data.total, function() {
-                    win.down('progressbar').reset(true);
-                    win.close();
-                    target.loadGrid(false, true);
-                });
+            WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param1, function(response, opts) {
+
+            }, function(response, opts) {}, false);
+
+            GlobalConfig.Pro_Runner.run(win.down('progressbar'), com, data.total, function() {
+                win.down('progressbar').reset(true);
+                win.close();
+                target.loadGrid(false, true);
             });
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
                 Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
-        }, true, '正在初始化验证...');
+        }, false);
 
 
 
