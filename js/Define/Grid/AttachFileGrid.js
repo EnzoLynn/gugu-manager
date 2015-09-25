@@ -176,7 +176,7 @@ GridManager.CreateAttachFileGrid = function(param) {
         dataIndex: 'file_id',
         renderer: function(value, metaData, record) {
             if (record.data.import_status == 1) {
-                return "<span onclick='GridManager.AttachFileGridSerachfor_file_id(" + value + ")'><img src='image/toolbar/NewDoc.png' style='margin-bottom: -2px;height:14px;'>&nbsp;" + value + '</span>';
+                return "<span onclick='GridManager.AttachFileGridSerachfor_file_id(" + value + ")'>" + value + "&nbsp;<img src='image/toolbar/NewDoc.png' style='margin-bottom: -2px;height:14px;'></span>";
 
             };
 

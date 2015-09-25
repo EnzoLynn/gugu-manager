@@ -147,6 +147,7 @@ GlobalConfig.Controllers = {
         importAttachFile: 'trackingFileUpload/import',
         dlErrorReportAttachFile: 'trackingFileUpload/downloadError',
         validateBegin: 'trackingFileUpload/validateBegin',
+        validate:'trackingFileUpload/validate',
         getProgress: 'trackingFileUpload/getProgress'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 
@@ -322,7 +323,7 @@ GlobalConfig.Pro_Runner = function() {
                         f(parseInt(data.current), pbar, btn, parseInt(data.total), cb)();
                     }, function(response, opts) {}, false);
                 },
-                interval: 2 * 1000
+                interval: 5 * 1000
             });
 
         }
