@@ -163,7 +163,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
 
             };
             // // 调用
-            WsCall.call(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param1, function(response, opts) {
+            WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param1, function(response, opts) {
 
             }, function(response, opts) {}, false);
 
