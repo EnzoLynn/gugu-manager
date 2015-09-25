@@ -89,13 +89,14 @@ class TrackingFileUpload extends AdminController {
             //计算总条数
             $file_path = FCPATH . $config['upload_path'] . $fileData['file_save_name'];
 
-            $pars_default = array(
-                'sheetIndex' => 0,
-                'headerKey' => TRUE,
-                'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间', '快递公司')
-            );
-
-            $data = loadExcel($file_path, $pars_default);
+//            $pars_default = array(
+//                'sheetIndex' => 0,
+//                'headerKey' => TRUE,
+//                'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间', '快递公司')
+//            );
+//
+//            $data = loadExcel($file_path, $pars_default);
+            $data = 13000;
 
             //插入数据
             $fileData['item_total'] = count($data);
@@ -157,7 +158,12 @@ class TrackingFileUpload extends AdminController {
         if (!$data) {
             output_error('excel没有数据匹配');
         }
-
+        //更新总数
+        $upd_data = array(
+            'item_total' => count($data)
+        );
+        $this->file_upload_model->update($file_id, $upd_data);
+        //更新总数完毕
         $repeat_number = $this->tracking_number_model->checkExcelField($data, '运单号');
 
         if ($repeat_number) {
