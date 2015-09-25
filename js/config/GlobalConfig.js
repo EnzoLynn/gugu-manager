@@ -147,6 +147,7 @@ GlobalConfig.Controllers = {
         importAttachFile: 'trackingFileUpload/import',
         dlErrorReportAttachFile: 'trackingFileUpload/downloadError',
         validateBegin: 'trackingFileUpload/validateBegin',
+        validate:'trackingFileUpload/validate',
         getProgress: 'trackingFileUpload/getProgress'
     },
     MainItemListTree: '/data/LoadMainItemListTree.json', //主目录树 

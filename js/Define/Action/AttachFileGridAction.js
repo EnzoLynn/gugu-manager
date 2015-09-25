@@ -140,11 +140,20 @@ Ext.create('chl.Action.AttachFileGridAction', {
         // 调用
         WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validateBegin, 'translateExpress', param, function(response, opts) {
             var data = response.data;
+            var param1 = {
+                sessiontoken: GlobalFun.getSeesionToken(),
+                file_id: records[0].data.file_id
+
+            };
+            // 调用
+            WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'translateExpress', param1, function(response, opts) {
+             
+            }, function(response, opts) { }, false);
             var win = Ext.create('Ext.window.Window', {
                 title: '验证进度',
-                width: 400, 
+                width: 400,
                 Height: 100,
-                modal:true,                
+                modal: true,
                 collapsible: false,
                 closable: false,
                 resizable: false,
@@ -152,9 +161,9 @@ Ext.create('chl.Action.AttachFileGridAction', {
                 layout: 'fit',
                 items: [{
                     xtype: 'progressbar',
-                    file_id:records[0].data.file_id,
+                    file_id: records[0].data.file_id,
                     text: '初始化...'
-                }] 
+                }]
             });
             win.show(null, function() {
                 GlobalConfig.Pro_Runner.run(win.down('progressbar'), com, data.total, function() {
@@ -168,7 +177,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
                 Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
-        }, true,'正在初始化验证...');
+        }, true, '正在初始化验证...');
 
 
 
