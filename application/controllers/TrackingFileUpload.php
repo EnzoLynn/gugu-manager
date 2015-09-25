@@ -96,10 +96,9 @@ class TrackingFileUpload extends AdminController {
 //            );
 //
 //            $data = loadExcel($file_path, $pars_default);
-            $data = 13000;
 
             //插入数据
-            $fileData['item_total'] = count($data);
+            $fileData['item_total'] = 13000;//count($data);
 
             $this->file_upload_model->addFile($fileData);
 
