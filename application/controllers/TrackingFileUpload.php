@@ -334,12 +334,13 @@ class TrackingFileUpload extends AdminController {
     }
 
     public function getProgress() {
-        $file_id = (int)$this->input->get_post('file_ids');
+        $file_id = (int)$this->input->get_post('file_id');
         $file = $this->file_upload_model->getFile($file_id);
 
         $json = array(
             'success' => true,
             'data' => array(
+                'file_id'  => $file['file_id'],
                 'current' => $file['validate_progress'],
                 //'import' => $file['import_progress'],
                 'total' => $file['item_total'],
