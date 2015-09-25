@@ -136,18 +136,50 @@ Ext.define('chl.gird.AttachFileGrid', {
     }
 });
 
+GridManager.AttachFileGridSerachfor_file_id = function(fileid) {
+    var node = TreeManager.MainItemListTree.getStore().getNodeById('002');
+    TreeManager.MainItemListTree.getSelectionModel().select(node, true);
+    var store = GridManager.Tracking_numberGrid.getStore();
+    var sessiontoken = store.getProxy().extraParams.sessiontoken;
+    var filter = {};
+    filter['file_id'] = fileid;
+    if (!store.filterMap.containsKey('file_id')) {
+        store.filterMap.add('file_id', fileid);
+    } else {
+        store.filterMap.replace('file_id', fileid);
+    }
+    store.getProxy().extraParams.filter = Ext.JSON.encode(filter);
+    store.loadPage(1, {
+        callback: function(records, operation, success) {
+            if (WindowManager.Tracking_numberWin && WindowManager.Tracking_numberWin != '') {
 
+                var f = WindowManager.Tracking_numberWin.down('#formId');
+                f.getForm().reset();
+                WindowManager.Tracking_numberWin.down('#file_id').setValue(fileid);
+            }
+
+            var menuID = GridManager.Tracking_numberGrid.down('#menuID');
+
+            menuID.setText(menuID.filterParam.text);
+            menuID.setTooltip(menuID.filterParam.text);
+            menuID.menu.items.items[0].setChecked(true);
+        }
+    });
+
+
+
+};
 //根据传入参数创建客户表，返回自身
 GridManager.CreateAttachFileGrid = function(param) {
     var tmpArr = [{
         text: '文件编号',
         dataIndex: 'file_id',
-        renderer: function(value,metaData,record) {
-        	if (record.data.import_status == 1) {
-        		return "<a><img src='image/toolbar/NewDoc.png' style='margin-bottom: -2px;height:14px;'>&nbsp;" + value + '</a>';
-        		 
-        	};
-            
+        renderer: function(value, metaData, record) {
+            if (record.data.import_status == 1) {
+                return "<span onclick='GridManager.AttachFileGridSerachfor_file_id(" + value + ")'><img src='image/toolbar/NewDoc.png' style='margin-bottom: -2px;height:14px;'>&nbsp;" + value + '</span>';
+
+            };
+
             return value;
         },
         flex: 1
