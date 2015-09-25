@@ -98,7 +98,7 @@ class TrackingFileUpload extends AdminController {
 //            $data = loadExcel($file_path, $pars_default);
 
             //插入数据
-            $fileData['item_total'] = 13000;//count($data);
+            //$fileData['item_total'] = 13000;//count($data);
 
             $this->file_upload_model->addFile($fileData);
 
@@ -108,37 +108,6 @@ class TrackingFileUpload extends AdminController {
 
     public function validateBegin() {
         $file_id = (int)$this->input->get_post('file_id');
-
-        $file = $this->file_upload_model->getFile($file_id);
-
-        $json = array(
-            'success' => true,
-            'data' => array(
-                'current' => $file['validate_progress'],
-                'total' => $file['item_total'],
-            ),
-            'total' => $file['item_total'],
-            'msg' => '成功',
-            'code' => '01'
-        );
-        echo json_encode($json);
-
-        //file_get_contents(current_url() . '?sessiontoken='.$this->session_token.'&file_id=' . $file_id);
-/*
-        $ch = curl_init(current_url() . '?sessiontoken='.$this->session_token.'&file_id=' . $file_id) ;
-        //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
-        //curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
-        curl_setopt($ch, CURLOPT_HEADER, 0); //不取得返回头信息
-        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-        curl_exec($ch) ;
-*/
-        exit;
-    }
-
-    public function validate($file_id = '') {
-        if (empty($file_id)) {
-            $file_id = (int)$this->input->get_post('file_id');
-        }
         $file = $this->file_upload_model->getFile($file_id);
 
         $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
@@ -151,8 +120,6 @@ class TrackingFileUpload extends AdminController {
 
         $tempName = explode('.', $file['file_save_name']);
         $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
-
-        //ignore_user_abort();
 
         write_log("开始验证 ". $file['file_name'] . " - ". $file['file_save_name']);
 
@@ -195,11 +162,121 @@ class TrackingFileUpload extends AdminController {
             output_error('Excel内部运单号重复，验证未通过');
         }
 
-        write_log("Excel内部没有重复");
+        write_log("Excel内部验证完毕，开始数据库验证 \r\n - - - -  - - - - - - - - - -- - -  -");
+        //Excel内部验证完毕，进行后续数据库遍历验证
+
+        $json = array(
+            'success' => true,
+            'data' => array(
+                'current' => $file['validate_progress'],
+                'total' => $file['item_total'],
+            ),
+            'total' => $file['item_total'],
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
+        exit;
+/*
+        $url_validate = str_replace('validateBegin', 'validate' , current_url());
+        $url = $url_validate . '?sessiontoken='.$this->session_token.'&file_id=' . $file_id;
+        $ch = curl_init($url);
+        //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
+        //curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
+        curl_setopt($ch, CURLOPT_HEADER, 0); //不取得返回头信息
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_exec($ch);
+//        sleep(5);
+        curl_close($ch);
+*/
+
+/*
+        $url_validate = str_replace('validateBegin', 'validate' , current_url());
+        $url = $url_validate . '?sessiontoken='.$this->session_token.'&file_id=' . $file_id ;
+
+        $url = str_replace("http://", "" , $url);
+
+        $fp = fsockopen($url, 80, $errno, $errstr, 30);
+        if (!$fp) {
+            echo "$errstr ($errno)<br />\n";
+        } else {
+            $out = "GET /trackingFileUpload/validate?sessiontoken=".$this->session_token."&file_id=" . $file_id ." / HTTP/1.1\r\n";
+            $out .= "Host: gg.com\r\n";
+            $out .= "Connection: Close\r\n\r\n";
+
+            fwrite($fp, $out);
+            fclose($fp);
+        }
+*/
+    }
+
+    public function validate($file_id = '') {
+        if (empty($file_id)) {
+            $file_id = (int)$this->input->get_post('file_id');
+        }
+        $file = $this->file_upload_model->getFile($file_id);
+
+        $file_dir      = './upload/excel/'.date('Ym', strtotime($file['created_at'])).'/';
+
+        $file_path = FCPATH . $file_dir . $file['file_save_name'];
+
+        if (!file_exists($file_path)) {
+            output_error('文件不存在');
+        }
+
+        $tempName = explode('.', $file['file_save_name']);
+        $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
+
+        //write_log("开始验证 ". $file['file_name'] . " - ". $file['file_save_name']);
+
+        $pars_default = array(
+            'sheetIndex' => 0,
+            'headerKey' => TRUE,
+            'readColumn' => array('运单号', '重量', '计费目的网点名称', '计费目的网点代码', '揽收时间', '快递公司')
+        );
+
+        $data = loadExcel($file_path, $pars_default);
+/*
+        if (!$data) {
+            output_error('excel没有数据匹配');
+        }
+        //更新总数
+        $upd_data = array(
+            'item_total' => count($data)
+        );
+        $this->file_upload_model->update($file_id, $upd_data);
+        //更新总数完毕
+        $repeat_number = $this->tracking_number_model->checkExcelField($data, '运单号');
+
+        if ($repeat_number) {
+            //改为未通过
+            $upd_data = array(
+                'validate_status' => 2
+            );
+            $this->file_upload_model->update($file_id, $upd_data);
+
+            $msg = array();
+            foreach ($repeat_number as $number) {
+                $msg[] = array(
+                    'msg' => 'Excel内部重复的运单号：' . $number
+                );
+            }
+            $header = array(
+                'msg'   => '消息'
+            );
+            saveCSV($msg, $header, $err_file);
+            output_error('Excel内部运单号重复，验证未通过');
+        }
+
+        //write_log("Excel内部没有重复");
+*/
+        ignore_user_abort();
+        set_time_limit(0);
+
 
         $msg = $this->tracking_number_model->validateData($data, $file_id);
 
-        write_log("验证 ". $file['file_name'] . " - ". $file['file_save_name'] . " 完毕\r\n- - - - - - - - - - - - - - - - - - - - - - -");
+        //write_log("验证 ". $file['file_name'] . " - ". $file['file_save_name'] . " 完毕\r\n- - - - - - - - - - - - - - - - - - - - - - -");
 
         if ($msg) {
             //改为未通过

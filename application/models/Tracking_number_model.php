@@ -251,14 +251,13 @@ class Tracking_number_model extends CI_Model {
         $msg = array();//错误信息，一行一个
         $i = 2;//对应excel中的行
         foreach($data as $row) {
-
+            //每$limit条更新一次状态
             if ($num >= $limit) {
-                //修改状态
+                //修改进度
                 $upd_data = array(
                     'validate_progress' => ($i - 2)
                 );
                 $this->file_upload_model->update($file_id, $upd_data);
-
                 $num = 0;
             }
 
@@ -336,6 +335,13 @@ class Tracking_number_model extends CI_Model {
             $i++;
             $num++;
         }
+
+        //修改验证条数
+        $upd_data = array(
+            'validate_progress' => count($data)
+        );
+        $this->file_upload_model->update($file_id, $upd_data);
+
         return $msg;
     }
 
