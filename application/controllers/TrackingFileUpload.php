@@ -108,7 +108,6 @@ class TrackingFileUpload extends AdminController {
 
     public function validateBegin() {
         $file_id = (int)$this->input->get_post('file_id');
-        $this->validate($file_id);
 
         $file = $this->file_upload_model->getFile($file_id);
 
@@ -143,7 +142,7 @@ class TrackingFileUpload extends AdminController {
         $tempName = explode('.', $file['file_save_name']);
         $err_file = FCPATH . $file_dir . $tempName[0] .'_error.csv';
 
-        ignore_user_abort();
+        //ignore_user_abort();
 
         write_log("开始验证 ". $file['file_name'] . " - ". $file['file_save_name']);
 
