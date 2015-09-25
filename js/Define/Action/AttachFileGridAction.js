@@ -149,7 +149,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
                 url: GlobalConfig.Controllers.AttachFileGrid.validate,
                 method: 'POST',
                 timeout: 10,
-                async: isAsync,
+                async: true,
                 success: function(response, opts) {
                     
                 },
