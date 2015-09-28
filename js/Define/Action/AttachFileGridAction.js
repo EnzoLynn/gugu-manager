@@ -153,27 +153,28 @@ Ext.create('chl.Action.AttachFileGridAction', {
                 text: '初始化...'
             }]
         });
-        //win.show();
-        // 调用
-        //WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validateBegin, 'validateBegin', param, function(response, opts) {
-            //var data = response.data;
-           
-            // // 调用
-            WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param, function(response, opts) {
+        win.show();
+        //调用
+        WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validateBegin, 'validateBegin', param, function(response, opts) {
+            var data = response.data;
 
-            }, function(response, opts) {}, true);
+            // // // 调用
+            // WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param, function(response, opts) {
 
-        //     GlobalConfig.Pro_Runner.run(win.down('progressbar'), com, data.total, function() {
-        //         win.down('progressbar').reset(true);
-        //         win.close();
-        //         target.loadGrid(false, true);
-        //     });
-        // }, function(response, opts) {
-        //     if (!GlobalFun.errorProcess(response.code)) {
-        //         Ext.Msg.alert('失败', response.msg);
-        //     }
-        //     target.loadGrid(false, true);
-        // }, false);
+            // }, function(response, opts) {}, true);
+
+            GlobalConfig.Pro_Runner.run(win.down('progressbar'), com, data.total, function() {
+                win.down('progressbar').reset(true);
+                win.close();
+                target.loadGrid(false, true);
+            });
+        }, function(response, opts) {
+            if (!GlobalFun.errorProcess(response.code)) {
+                Ext.Msg.alert('失败', response.msg);
+            }
+            target.loadGrid(false, true);
+            win.close();
+        }, false);
 
 
 
