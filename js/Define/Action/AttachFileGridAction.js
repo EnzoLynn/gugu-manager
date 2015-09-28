@@ -139,10 +139,10 @@ Ext.create('chl.Action.AttachFileGridAction', {
         };
         var win = Ext.create('Ext.window.Window', {
             title: '验证进度',
-            width: 400,
+            width: 200,
             Height: 100,
-            modal: true,
-            collapsible: false,
+            //modal: true,
+            collapsible: true,
             closable: false,
             resizable: false,
             bodyPadding: 20,
@@ -151,7 +151,20 @@ Ext.create('chl.Action.AttachFileGridAction', {
                 xtype: 'progressbar',
                 file_id: records[0].data.file_id,
                 text: '初始化...'
-            }]
+            }],
+            listeners: {
+                collapse: function() {
+                    win.setPosition(Ext.getBody().getWidth() - 200, Ext.getBody().getHeight() - 60);
+                    win.collapse();
+                    target.loadGrid(false, true);
+                },
+                expand: function() {
+                    win.center();
+                    win.expand();
+
+                }
+            }
+
         });
         win.show();
         //调用
