@@ -21,10 +21,10 @@ Ext.define('chl.Model.AttachFileGridModel', {
         name: 'admin_name', 
         type: 'string'
     }, {
-        name: 'validate_status', 
+        name: 'status', 
         type: 'string'
     }, {
-        name: 'validate_status_name', 
+        name: 'status_name', 
         type: 'string'
     }, {
         name: 'import_status', 

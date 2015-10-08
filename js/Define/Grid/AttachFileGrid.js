@@ -2,12 +2,12 @@
 //创建一个上下文菜单
 var AttachFileGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshAttachFile'), '-',
-            ActionBase.getAction('searchAttachFile'),
-            ActionBase.getAction('removeAttachFile'),
-            ActionBase.getAction('uploadAttachFile'), '-',
-            ActionBase.getAction('validateAttachFile'),
-            ActionBase.getAction('importAttachFile'),
-            ActionBase.getAction('dlErrorReportAttachFile')
+        ActionBase.getAction('searchAttachFile'),
+        ActionBase.getAction('removeAttachFile'),
+        ActionBase.getAction('uploadAttachFile'), '-',
+        ActionBase.getAction('validateAttachFile'),
+      //  ActionBase.getAction('importAttachFile'),
+        ActionBase.getAction('dlErrorReportAttachFile')
     ]
 });
 
@@ -58,9 +58,9 @@ Ext.define('chl.gird.AttachFileGrid', {
             ActionBase.getAction('removeAttachFile'),
             ActionBase.getAction('uploadAttachFile'), '-',
             ActionBase.getAction('validateAttachFile'),
-            ActionBase.getAction('importAttachFile'),
+           // ActionBase.getAction('importAttachFile'),
             ActionBase.getAction('dlErrorReportAttachFile')
-            
+
         ]
     }, {
         xtype: 'Pagingtoolbar',
@@ -73,24 +73,13 @@ Ext.define('chl.gird.AttachFileGrid', {
         }, {
             xtype: 'GridFilterMenuButton',
             itemId: 'menuID',
-            text: '全部验证状态',
+            text: '全部状态',
             filterParam: {
                 group: 'validate_statusGroup',
-                text: '全部验证状态',
-                filterKey: 'validate_status',
+                text: '全部状态',
+                filterKey: 'status',
                 GridTypeName: 'AttachFileGrid',
                 store: StoreManager.ComboStore.AttachFileGridValidate_statusStore
-            }
-        }, {
-            xtype: 'GridFilterMenuButton',
-            itemId: 'import_statusmenuID',
-            text: '全部导入状态',
-            filterParam: {
-                group: 'import_statusGroup',
-                text: '全部导入状态',
-                filterKey: 'import_status',
-                GridTypeName: 'AttachFileGrid',
-                store: StoreManager.ComboStore.AttachFileGridImport_statusStore
             }
         }, '-', {
             xtype: 'GridSelectCancelMenuButton',
@@ -136,13 +125,53 @@ Ext.define('chl.gird.AttachFileGrid', {
     }
 });
 
+GridManager.AttachFileGridSerachfor_file_id = function(fileid) {
+    var node = TreeManager.MainItemListTree.getStore().getNodeById('002');
+    TreeManager.MainItemListTree.getSelectionModel().select(node, true);
+    var store = GridManager.Tracking_numberGrid.getStore();
+    var sessiontoken = store.getProxy().extraParams.sessiontoken;
+    var filter = {};
+    filter['file_id'] = fileid;
+    if (!store.filterMap.containsKey('file_id')) {
+        store.filterMap.add('file_id', fileid);
+    } else {
+        store.filterMap.replace('file_id', fileid);
+    }
+    store.getProxy().extraParams.filter = Ext.JSON.encode(filter);
+    store.loadPage(1, {
+        callback: function(records, operation, success) {
+            GlobalFun.SetGridTitle(GridManager.Tracking_numberGrid.up('#centerGridDisplayContainer'), store, "票据列表");
+            if (WindowManager.Tracking_numberWin && WindowManager.Tracking_numberWin != '') {
 
+                var f = WindowManager.Tracking_numberWin.down('#formId');
+                f.getForm().reset();
+                WindowManager.Tracking_numberWin.down('#file_id').setValue(fileid);
+            }
+
+            var menuID = GridManager.Tracking_numberGrid.down('#menuID');
+
+            menuID.setText(menuID.filterParam.text);
+            menuID.setTooltip(menuID.filterParam.text);
+            menuID.menu.items.items[0].setChecked(true);
+        }
+    });
+
+
+
+};
 //根据传入参数创建客户表，返回自身
 GridManager.CreateAttachFileGrid = function(param) {
     var tmpArr = [{
         text: '文件编号',
         dataIndex: 'file_id',
-        renderer: GlobalFun.UpdateRecord,
+        renderer: function(value, metaData, record) {
+            if (record.data.status == 1) {
+                return "<span onclick='GridManager.AttachFileGridSerachfor_file_id(" + value + ")'><img src='/dist/image/toolbar/NewDoc.png' style='margin-bottom: -2px;height:14px;'>&nbsp;" + value + "</span>";
+
+            }
+
+            return "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+value;
+        },
         flex: 1
     }, {
         text: '原文件名',
@@ -165,24 +194,26 @@ GridManager.CreateAttachFileGrid = function(param) {
         renderer: GlobalFun.UpdateRecord,
         flex: 1
     }, {
-        text: '验证状态',
-        dataIndex: 'validate_status',
+        text: '状态',
+        dataIndex: 'status',
         renderer: function(value) {
-        	if (value == 1) {
-        		return '验证通过';
-        	}
-        	if (value == 2) {
-        		return '验证未通过';
-        	};
-            return '未验证';
-        },
-        flex: 1
-    }, {
-        text: '导入状态',
-        dataIndex: 'import_status',
-        renderer: function(value) {
+            if (value == 1) {
+                return '导入成功';
+            }
+            if (value == 2) {
+                return '验证中';
+            };
+            if (value == 3) {
+                return '验证失败';
+            }
+            if (value == 4) {
+                return '导入中';
+            }
+            if (value == 5) {
+                return '导入失败';
+            }
 
-            return value == 0 ? '未导入' : '已导入';
+            return '未验证';
         },
         flex: 1
     }, {

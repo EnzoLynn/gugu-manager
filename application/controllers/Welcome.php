@@ -15,6 +15,9 @@ class Welcome extends CI_Controller {
 
         $this->load->model('express_rule_model');
         $this->load->model('express_rule_item_model');
+
+
+        $this->load->model('file_upload_model');
     }
 
 	/**
@@ -32,28 +35,41 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
+
+    public function getProgress() {
+        $file_id = (int)$this->input->get_post('file_id');
+        $file = $this->file_upload_model->getFile($file_id);
+
+        $json = array(
+            'success' => true,
+            'data' => array(
+                'file_id'  => $file['file_id'],
+                'current' => $file['validate_progress'],
+                //'import' => $file['import_progress'],
+                'total' => $file['item_total'],
+            ),
+            'total' => $file['item_total'],
+            'msg' => '成功',
+            'code' => '01'
+        );
+        echo json_encode($json);
+        exit;
+    }
+
+
 	public function index() {
 
-        $row['快递公司'] = '圆通快递';
+//        require_once(FCPATH . 'shell/validate.php');
+//        echo 123;
+        //echo 'Hello '.$name;
 
-        //查询所有快递
-        $all_express = $this->express_company_model->getAllExpress();
-        $all_express = array_flip($all_express);
+        $this->db->where('id', 1);
+        $this->db->set('num', 'num+1', FALSE);
+        $this->db->update('zzz');
 
-        echo '<pre>';
-        print_r($all_express);
-
-        if (!isset($all_express[$row['快递公司']])) {
-            $msg[] = array(
-                'msg' => '快递公司（'.$row['快递公司'].'）还未录入或者名字有误'
-            );
-        }
-
-        echo $all_express[$row['快递公司']];
-
-        print_r($msg);
-
-		$this->load->view('welcome_message');
+//        echo current_url();
+//
+//		$this->load->view('welcome_message');
 	}
 
     public function getData() {

@@ -20,6 +20,8 @@ class Tracking_number_model extends CI_Model {
         $this->CI->load->model('express_company_model');
         $this->CI->load->model('express_point_model');
         $this->CI->load->model('express_rule_model');
+
+        $this->CI->load->model('file_upload_model');
     }
 
     function getTrackingNumberByID($tracking_number_id) {
@@ -77,11 +79,14 @@ class Tracking_number_model extends CI_Model {
         if (isset($data['filter']['arrive_express_point_code'])) {
             $this->db->where('arrive_express_point_code', $data['filter']['arrive_express_point_code']);
         }
-        if (isset($data['filter']['income'])) {
-            $this->db->where($data['filter']['income']);
-        }
-        if (isset($data['filter']['cost'])) {
-            $this->db->where($data['filter']['cost']);
+//        if (isset($data['filter']['income'])) {
+//            $this->db->where($data['filter']['income']);
+//        }
+//        if (isset($data['filter']['cost'])) {
+//            $this->db->where($data['filter']['cost']);
+//        }
+        if (isset($data['filter']['file_id'])) {
+            $this->db->where('file_id', $data['filter']['file_id']);
         }
         $arrive_time_start = $data['arrive_time_start'];
         $arrive_time_end = $data['arrive_time_end'];
@@ -121,7 +126,8 @@ class Tracking_number_model extends CI_Model {
             'admin_id'    => $data['admin_id'],
             'customer_rent_id'    => $data['customer_rent_id'],
             'express_id' => $data['express_id'],
-            'updated_at'  => date('Y-m-d H:i:s')
+            'updated_at'  => date('Y-m-d H:i:s'),
+            'file_id'      => $data['file_id']
         );
         $this->db->insert('tracking_number', $tracking_number);
         $tracking_number_id =  $this->db->insert_id();
@@ -141,7 +147,7 @@ class Tracking_number_model extends CI_Model {
     }
 
     //批量导入
-    function importBatch($tracking_numbers) {
+    function importBatch($tracking_numbers, $file_id) {
         $insert_tracking_number = array();
         foreach ($tracking_numbers as $tracking_number) {
             array_push($insert_tracking_number, $tracking_number['tracking_number']);
@@ -155,11 +161,18 @@ class Tracking_number_model extends CI_Model {
         );
         $this->db->where_in('tracking_number', $insert_tracking_number);
         $this->db->update('customer_number', $upd_data);
+        //更新导入的进度
+        $this->db->where('file_id', $file_id);
+        $this->db->set('import_progress', 'import_progress+'.count($tracking_numbers), FALSE);
+        $this->db->update('file_upload');
     }
 
-    function importData($data) {
+    function importData($data, $file_id) {
+        $file = $this->CI->file_upload_model->getFile($file_id);
+        $admin_id = $file['admin_id'];
+
         $insert_batch_index = 0;
-        $insert_batch_num = 100;//每多少条执行一次批量插入
+        $insert_batch_num = 200;//每多少条执行一次批量插入
         $insert_batch_data = array();
 
 //        $msg = $this->validateData($data);
@@ -190,10 +203,11 @@ class Tracking_number_model extends CI_Model {
                     'income' => 0,
                     'cost' => 0,
                     'customer_id' => $customer['customer_id'],
-                    'admin_id' => $this->CI->admin_id,
+                    'admin_id' => $admin_id,
                     'customer_rent_id' => $customer['customer_rent_id'],//计算的时候再判断合同号$customer['customer_rent_id'],//$customer_rent['customer_rent_id'],
                     'express_id' => $all_express[$row['快递公司']],
-                    'updated_at'  => date('Y-m-d H:i:s')
+                    'updated_at'  => date('Y-m-d H:i:s'),
+                    'file_id'     => $file_id
                 );
 //                $this->add($tracking_number);
 
@@ -201,7 +215,7 @@ class Tracking_number_model extends CI_Model {
 
                 if ($insert_batch_index >= $insert_batch_num) {
                     //批量插入运单号
-                    $this->importBatch($insert_batch_data);
+                    $this->importBatch($insert_batch_data, $file_id);
 
                     $insert_batch_index = 0;
                     unset($insert_batch_data);
@@ -212,12 +226,12 @@ class Tracking_number_model extends CI_Model {
             $insert_batch_index++;
         }
 
-        $this->importBatch($insert_batch_data);
+        $this->importBatch($insert_batch_data, $file_id);
 
         return $i;
     }
 
-    function validateData($data) {
+    function validateData($data, $file_id) {
 /*
 [运单号] => 560082711439
 [重量] => 0.3
@@ -244,14 +258,15 @@ class Tracking_number_model extends CI_Model {
         $msg = array();//错误信息，一行一个
         $i = 2;//对应excel中的行
         foreach($data as $row) {
-
-//            if ($num >= $limit) {
-//                echo '<script>console.log("'. ($i - 2) .'/'. $total .'")</script><br />'.str_repeat(" ",256);
-//                ob_flush();
-//                flush();
-//                $num = 0;
-//                exit;
-//            }
+            //每$limit条更新一次状态
+            if ($num >= $limit) {
+                //修改进度
+                $upd_data = array(
+                    'validate_progress' => ($i - 2)
+                );
+                $this->file_upload_model->update($file_id, $upd_data);
+                $num = 0;
+            }
 
             $number = $this->getTrackingNumber($row['运单号']);
             if ($number) {
@@ -327,6 +342,13 @@ class Tracking_number_model extends CI_Model {
             $i++;
             $num++;
         }
+
+        //修改验证条数
+        $upd_data = array(
+            'validate_progress' => count($data)
+        );
+        $this->file_upload_model->update($file_id, $upd_data);
+
         return $msg;
     }
 

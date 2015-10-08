@@ -374,7 +374,7 @@ function get_repeat_in_array($array) {
     }
     return $repeat_arr;
 }
-//根据客户免单号区间生成单号数组
+//根据客户免单号区间生成单号数组，已经过期，未使用
 function getArrayByBetween($begin, $end) {
     $begin_len = strlen($begin);
     $end_len = strlen($end);

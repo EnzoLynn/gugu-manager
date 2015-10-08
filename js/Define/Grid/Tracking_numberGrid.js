@@ -2,8 +2,8 @@
 var Tracking_numberGrid_RightMenu = Ext.create('Ext.menu.Menu', {
     items: [ActionBase.getAction('refreshTracking_number'), '-',
         ActionBase.getAction('searchTracking_number'),
-        ActionBase.getAction('removeTracking_number'), '-', 
-         ActionBase.getAction('exportTracking_number'), '-',
+        ActionBase.getAction('removeTracking_number'), '-',
+        ActionBase.getAction('exportTracking_number'), '-',
         ActionBase.getAction('retranslateExpressTracking_number'), ActionBase.getAction('retranslateCostTracking_number'), '-', ActionBase.getAction('account_statusTracking_number')
     ]
 });
@@ -52,7 +52,7 @@ Ext.define('chl.gird.Tracking_numberGrid', {
         items: [ActionBase.getAction('refreshTracking_number'), '-',
             ActionBase.getAction('searchTracking_number'),
             ActionBase.getAction('removeTracking_number_t'), '-',
-             ActionBase.getAction('exportTracking_number_t'), '-',
+            ActionBase.getAction('exportTracking_number_t'), '-',
             ActionBase.getAction('retranslateExpressTracking_number_t'), ActionBase.getAction('retranslateCostTracking_number_t'), '-', ActionBase.getAction('account_statusTracking_number_t')
             // , {
             //     xtype: 'button',
@@ -76,12 +76,12 @@ Ext.define('chl.gird.Tracking_numberGrid', {
             //                 collapse:function(){
             //                     win.setPosition(Ext.getBody().getWidth()-200,Ext.getBody().getHeight()-60);
             //                     win.collapse();
-                                
+
             //                 },
             //                 expand:function(){
             //                     win.center();
             //                     win.expand();
-                               
+
             //                 }
             //             }
             //         });
@@ -230,6 +230,10 @@ GridManager.CreateTracking_numberGrid = function(param) {
         flex: 1,
         groupable: false,
         sortable: false
+    }, {
+        text: '来源文件编号',
+        dataIndex: 'file_id',
+        flex: 1
     }];
     GridManager.Tracking_numberGrid = Ext.create('chl.gird.Tracking_numberGrid',
         GridManager.BaseGridCfg('Tracking_numberGrid', 'Tracking_numberGridState', tmpArr));

@@ -124,9 +124,9 @@ Ext.create('chl.Action.AttachFileGridAction', {
 Ext.create('chl.Action.AttachFileGridAction', {
     itemId: 'validateAttachFile',
     iconCls: 'translate',
-    tooltip: '验证数据',
-    text: '验证',
-    handler: function() {
+    tooltip: '验证&导入数据',
+    text: '验证&导入数据',
+    handler: function(com) {
         var target = this.getTargetView();
         var sm = target.getSelectionModel();
         var records = sm.getSelection();
@@ -137,51 +137,96 @@ Ext.create('chl.Action.AttachFileGridAction', {
             file_id: records[0].data.file_id
 
         };
-        // 调用
-        WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validateAttachFile, 'translateExpress', param, function(response, opts) {
-            target.loadGrid(false, true);
+        // var win = Ext.create('Ext.window.Window', {
+        //     title: '验证进度',
+        //     width: 200,
+        //     Height: 100,
+        //     //modal: true,
+        //     collapsible: true,
+        //     closable: false,
+        //     resizable: false,
+        //     bodyPadding: 20,
+        //     layout: 'fit',
+        //     items: [{
+        //         xtype: 'progressbar',
+        //         file_id: records[0].data.file_id,
+        //         text: '初始化...'
+        //     }],
+        //     listeners: {
+        //         collapse: function() {
+        //             win.setPosition(Ext.getBody().getWidth() - 200, Ext.getBody().getHeight() - 60);
+        //             win.collapse();
+        //             target.loadGrid(false, true);
+        //         },
+        //         expand: function() {
+        //             win.center();
+        //             win.expand();
+
+        //         }
+        //     }
+
+        // });
+        // win.show();
+        //调用
+        WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param, function(response, opts) {
+            var data = response.data;
+
+            // // // 调用
+            // WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.validate, 'validate', param, function(response, opts) {
+
+            // }, function(response, opts) {}, true);
+
+            // GlobalConfig.Pro_Runner.run(win.down('progressbar'), com, data.total, function() {
+            //     win.down('progressbar').reset(true);
+            //     win.close();
+                target.loadGrid(false, true);
+            //});
         }, function(response, opts) {
             if (!GlobalFun.errorProcess(response.code)) {
                 Ext.Msg.alert('失败', response.msg);
             }
             target.loadGrid(false, true);
-        }, true);
+            //win.close();
+        }, false);
+
+
+
     },
     updateStatus: function(selection) {
-        this.setDisabled(selection.length != 1 || selection[0].data.validate_status != 0);
+        this.setDisabled(selection.length != 1 || selection[0].data.status != 0);
     }
 });
 
-Ext.create('chl.Action.AttachFileGridAction', {
-    itemId: 'importAttachFile',
-    iconCls: 'import',
-    tooltip: '导入数据到票据管理',
-    text: '导入到票据',
-    handler: function() {
-        var target = this.getTargetView();
-        var sm = target.getSelectionModel();
-        var records = sm.getSelection();
-        if (!records[0])
-            return;
-        var param = {
-            sessiontoken: GlobalFun.getSeesionToken(),
-            file_id: records[0].data.file_id
+// Ext.create('chl.Action.AttachFileGridAction', {
+//     itemId: 'importAttachFile',
+//     iconCls: 'import',
+//     tooltip: '导入数据到票据管理',
+//     text: '导入到票据',
+//     handler: function() {
+//         var target = this.getTargetView();
+//         var sm = target.getSelectionModel();
+//         var records = sm.getSelection();
+//         if (!records[0])
+//             return;
+//         var param = {
+//             sessiontoken: GlobalFun.getSeesionToken(),
+//             file_id: records[0].data.file_id
 
-        };
-        // 调用
-        WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.importAttachFile, 'translateExpress', param, function(response, opts) {
-            target.loadGrid(false, true);
-        }, function(response, opts) {
-            if (!GlobalFun.errorProcess(response.code)) {
-                Ext.Msg.alert('失败', response.msg);
-            }
-            target.loadGrid(false, true);
-        }, true);
-    },
-    updateStatus: function(selection) {
-        this.setDisabled(selection.length != 1 || selection[0].data.import_status == 1 || selection[0].data.validate_status != 1);
-    }
-});
+//         };
+//         // 调用
+//         WsCall.pcall(GlobalConfig.Controllers.AttachFileGrid.importAttachFile, 'translateExpress', param, function(response, opts) {
+//             target.loadGrid(false, true);
+//         }, function(response, opts) {
+//             if (!GlobalFun.errorProcess(response.code)) {
+//                 Ext.Msg.alert('失败', response.msg);
+//             }
+//             target.loadGrid(false, true);
+//         }, false);
+//     },
+//     updateStatus: function(selection) {
+//         this.setDisabled(selection.length != 1 || selection[0].data.import_status == 1 || selection[0].data.validate_status != 1);
+//     }
+// });
 
 
 Ext.create('chl.Action.AttachFileGridAction', {
@@ -218,7 +263,7 @@ Ext.create('chl.Action.AttachFileGridAction', {
 
     },
     updateStatus: function(selection) {
-        this.setDisabled(selection.length != 1 || selection[0].data.validate_status != 2);
+        this.setDisabled(selection.length != 1 || selection[0].data.status != 3|| selection[0].data.status != 5);
     }
 });
 

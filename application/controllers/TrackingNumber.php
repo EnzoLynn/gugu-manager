@@ -266,6 +266,9 @@ class TrackingNumber extends AdminController {
             if (isset($data['arrive_time_start']) && isset($data['arrive_time_end']) && !empty($data['arrive_time_start']) && !empty($data['arrive_time_end'])) {
                 $enable = TRUE;
             }
+            if (isset($data['filter']['file_id']) && !empty($data['filter']['file_id'])) {
+                $enable = TRUE;
+            }
         }
         return $enable;
     }

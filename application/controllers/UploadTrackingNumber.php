@@ -24,7 +24,7 @@ class UploadTrackingNumber extends AdminController {
     public function index() {
 
     }
-
+/*
     public function upload() {
         write_log('开始处理请求');
         $config['upload_path']      = './upload/excel/'.date('Ym').'/';
@@ -61,16 +61,9 @@ class UploadTrackingNumber extends AdminController {
 
             $this->file_save_path = FCPATH . $config['upload_path'] .$fileData['file_save_name'] ;
 
-//            echo '<script>console.log("上传完成，正在验证")</script><br />'.str_repeat(" ",256);
-//            ob_flush();
-//            flush();
-//            sleep(1);
             write_log('读取到php数组');
             $data = $this->validateExcel($this->file_save_path);
             write_log('验证完毕');
-//            echo '<script>console.log("验证完成")</script><br />'.str_repeat(" ",256);
-//            ob_flush();
-//            flush();
 
             if ($data) {
                 $num = $this->tracking_number_model->importData($data);
@@ -149,14 +142,6 @@ class UploadTrackingNumber extends AdminController {
         } else {
             $this->session_token_model->clearData($this->session_token, 'error_upload_tracking_file');
             return $data;
-//            $json = array(
-//                'success' => true,
-//                'data' => [],
-//                'total' => count($data),
-//                'msg' => '成功',
-//                'code' => '01'
-//            );
-//            echo json_encode($json);
         }
     }
 
@@ -190,4 +175,5 @@ class UploadTrackingNumber extends AdminController {
         );
         outputCSV($msg, $header);
     }
+*/
 }

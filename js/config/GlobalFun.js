@@ -825,7 +825,7 @@ DropDragControl.initializeHospitalDropZone = function(v, window) {
 };
 
 //设置Grid标题
-GlobalFun.SetGridTitle = function(cardPanel, store, title) {
+GlobalFun.SetGridTitle = function(cardPanel, store, title) { 
     if (store.filterMap.getCount() > 0 || store.getProxy().extraParams.DateFilter) {
         cardPanel.setTitle('查找结果 { ' + title + ' }');
     } else {

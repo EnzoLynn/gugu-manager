@@ -51,5 +51,9 @@ Ext.define('chl.Model.Tracking_numberGridModel', {
         name:'express_id'
     },{
         name:'express_name'
+    },{
+        name:'file_id'
+    },{
+        name:'file_name'
     }]
 });
